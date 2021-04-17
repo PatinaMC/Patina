@@ -5,10 +5,6 @@ on:
     paths-ignore:
       - '*.md'
       - 'Jenkinsfile'
-    branches:
-      - ver/1.16.5
-      - dev/*
-      - staging/1.16.5
   pull_request:
     paths-ignore:
       - '*.md'
@@ -29,38 +25,38 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: ${{ matrix.java }}
-        
+
     - name: Pull Gradle Cache
       uses: actions/cache@v2
       id: gradle-cache
       with:
         path: ~/.gradle
         key: ${{ runner.os }}-maven-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}-java-${{ matrix.java }}
-            
-    - name: Setup Yatopia Project
+
+    - name: Setup Project
       run: |
          git config --global user.email "ci@github.com"
          git config --global user.name "Github CI"
          git config --global gc.auto 0
          sudo chmod -R -f 777 ./gradlew
          ./gradlew initGitSubmodules
-         
+
     - name: Get MC Version
       run: echo "::set-output name=mcver::$(cat "Paper/work/BuildData/info.json"  | grep minecraftVersion | cut -d '"' -f 4)" 
       id: mcver
-      
+
     - name: Pull Minecraft Decompile Cache
       uses: actions/cache@v2
       id: decompile-cache
       with:
         path: Paper/work/Minecraft/${{ steps.mcver.outputs.mcver }}
         key: ${{ hashFiles('Paper/work/BuildData/mappings/bukkit-$STEPS_MCVER_OUTPUTS_MCVER-cl.csrg') }}-${{ steps.mcver.outputs.mcver }}-${{ runner.os }}-java-${{ matrix.java }}-minecraft-decomp
-        
+
     - name: Apply Patches
       run: |
         ./gradlew setupUpstream
         ./gradlew applyPatches
-                 
+
     - name: Pull Maven Cache
       uses: actions/cache@v2
       id: maven-cache
@@ -68,13 +64,13 @@ jobs:
         path: ~/.m2/repository
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
 
-    - name: Build Yatopia
+    - name: Build
       run: |
         ./gradlew clean build paperclip
-        
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: Yatopia-${{ matrix.java }}
-        path: yatopia-1.16.5-paperclip.jar
-      
+        name: ${{ matrix.java }}
+        path: ${{ steps.mcver.outputs.mcver }}-paperclip.jar
+
