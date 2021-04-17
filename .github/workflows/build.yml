@@ -1,4 +1,4 @@
-name: Yatopia Build Script
+name: Build
 
 on:
   push:
