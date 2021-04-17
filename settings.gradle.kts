@@ -6,11 +6,11 @@ val forkNameLowercase = forkName.toLowerCase(Locale.ENGLISH)
 rootProject.name = forkNameLowercase
 
 setupSubproject("api") {
-    projectDir = File("$forkName-API")
+    projectDir = File("API")
     buildFileName = "../subprojects/api.gradle.kts"
 }
 setupSubproject("server") {
-    projectDir = File("$forkName-Server")
+    projectDir = File("Server")
     buildFileName = "../subprojects/server.gradle.kts"
 }
 setupSubproject("Yatoclip") { }

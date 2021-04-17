@@ -52,9 +52,9 @@ manifest.mf
 run/
 docs/build/
 
-Yatopia-Server
-Yatopia-API
-mc-dev
+Server/
+API/
+mc-dev/
 yatopia-launcher.jar
 *clip.jar
 last-paper

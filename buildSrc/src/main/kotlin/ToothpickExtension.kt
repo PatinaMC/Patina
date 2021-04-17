@@ -51,10 +51,10 @@ open class ToothpickExtension(objects: ObjectFactory) {
     }
 
     val subprojects: Map<String, ToothpickSubproject>
-        get() = if (::forkName.isInitialized) mapOf(
-            "$forkName-API" to apiProject,
-            "$forkName-Server" to serverProject
-        ) else emptyMap()
+        get() = mapOf(
+            "API" to apiProject,
+            "Server" to serverProject
+        )
 
     val paperDir: File by lazy {
         if (upstream == "Paper") {
