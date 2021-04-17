@@ -29,7 +29,7 @@ toothpick {
     upstream = "Paper"
     upstreamBranch = "origin/master"
 
-    paperclipName = "yatopia-$minecraftVersion-paperclip.jar"
+    paperclipName = "$minecraftVersion-paperclip.jar"
 
     patchCreditsOutput = "PATCHES.md"
     patchCreditsTemplate = ".template.md"
