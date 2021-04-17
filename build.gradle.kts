@@ -39,7 +39,7 @@ toothpick {
         patchesDir = rootProject.projectDir.resolve("patches/server")
     }
     api {
-        project = project(":$forkNameLowercase-api")
+        project = project("api")
         patchesDir = rootProject.projectDir.resolve("patches/api")
     }
 
