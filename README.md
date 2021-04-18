@@ -13,3 +13,11 @@ Run the following commands in the root directory:
 ./gradlew paperclip
 ```
 
+## Development Commands
+
+`./gradlew rebuildPatches`
+
+`./gradlew updateUpstream`
+
+`./gradlew upstreamCommit`
+
