@@ -5,7 +5,7 @@ Subject: [PATCH] hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 001b1e5197eaa51bfff9031aa6c69876c9a47960..1109ba9c506d182d8b5436a21947b61dd1d839df 100644
+index 674096cab190d62622f9947853b056f57d43a2a5..1109ba9c506d182d8b5436a21947b61dd1d839df 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -9,21 +9,6 @@ import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ index 001b1e5197eaa51bfff9031aa6c69876c9a47960..1109ba9c506d182d8b5436a21947b61d
      public static String getBukkitVersion() {
 -        String result = "Unknown-Version";
 -
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.tuinity/tuinity-api/pom.properties"); // Tuinity
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
 -        Properties properties = new Properties();
 -
 -        if (stream != null) {

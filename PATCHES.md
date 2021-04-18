@@ -86,7 +86,6 @@ This is an overview over all patches that are currently used.
 | server |  Separate lookup locking from state access in UserCache      | Spottedleaf |  |
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Time scoreboard search      | Spottedleaf |  |
-| server |  Tuinity POM Changes      | Spottedleaf |  |
 | api |  Tuinity POM Changes      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
