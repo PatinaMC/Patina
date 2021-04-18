@@ -60,7 +60,7 @@ private fun Project.updatePatches(
         ?.forEach { it -> it.delete() }
 
     ensureSuccess(
-        if (name != "Yatopia") {
+        if (name != "$forkName") {
             gitCmd(
                 "checkout", "$name-$folder", dir = projectDir,
                 printOut = true

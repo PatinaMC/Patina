@@ -5,7 +5,7 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index de7da911833569c97b7f800a43ee7354d19677e2..a6bcd09995eea3549e214288f856e9db0179c928 100644
+index de7da911833569c97b7f800a43ee7354d19677e2..cd14db21bd01a260621cc222d9ad981d838caef1 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -41,7 +41,7 @@ index de7da911833569c97b7f800a43ee7354d19677e2..a6bcd09995eea3549e214288f856e9db
 -            <groupId>com.tuinity</groupId>
 -            <artifactId>tuinity-api</artifactId>
 +            <groupId>com.ayff</groupId>
-+            <artifactId>ayff-parent</artifactId>
++            <artifactId>ayff-api</artifactId>
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
