@@ -21,3 +21,6 @@ Run the following commands in the root directory:
 
 `./gradlew upstreamCommit`
 
+## Use this Framwork: Rebrand
+
+Modify name in `rebrand.sh` and run it.
