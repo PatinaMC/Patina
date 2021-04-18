@@ -5,19 +5,19 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index de7da911833569c97b7f800a43ee7354d19677e2..978a89122a397573cd6c79aaaea344851d3f0a21 100644
+index 1f07aeac064f810c57e615ae9099645b8a5bf9ce..45fe33893ee96e3a38aca4160f05cbd70bc68173 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
  <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
      <modelVersion>4.0.0</modelVersion>
--    <artifactId>tuinity</artifactId>
+-    <artifactId>paper</artifactId>
 +    <artifactId>patina</artifactId>
      <packaging>jar</packaging>
      <version>1.16.5-R0.1-SNAPSHOT</version>
--    <name>Tuinity-Server</name>
--    <url>https://github.com/Spottedleaf/Tuinity</url>
+-    <name>Paper</name>
+-    <url>https://papermc.io</url>
 +    <name>patina</name>
 +    <url>https://github.com/foss-mc/Patina</url>
  
@@ -27,8 +27,8 @@ index de7da911833569c97b7f800a43ee7354d19677e2..978a89122a397573cd6c79aaaea34485
      </properties>
  
      <parent>
--        <groupId>com.tuinity</groupId>
--        <artifactId>tuinity-parent</artifactId>
+-        <groupId>com.destroystokyo.paper</groupId>
+-        <artifactId>paper-parent</artifactId>
 +        <groupId>foss.patina</groupId>
 +        <artifactId>patina-parent</artifactId>
          <version>dev-SNAPSHOT</version>
@@ -38,27 +38,27 @@ index de7da911833569c97b7f800a43ee7354d19677e2..978a89122a397573cd6c79aaaea34485
  
      <dependencies>
          <dependency>
--            <groupId>com.tuinity</groupId>
--            <artifactId>tuinity-api</artifactId>
+-            <groupId>com.destroystokyo.paper</groupId>
+-            <artifactId>paper-api</artifactId>
 +            <groupId>foss.patina</groupId>
 +            <artifactId>patina-api</artifactId>
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
-@@ -170,7 +170,7 @@
+@@ -184,7 +184,7 @@
  
      <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
      <build>
--        <finalName>tuinity-${minecraft.version}</finalName>
+-        <finalName>paper-${minecraft.version}</finalName>
 +        <finalName>patina-${minecraft.version}</finalName>
-         <defaultGoal>install</defaultGoal> <!-- Paper -->
+         <defaultGoal>clean install</defaultGoal> <!-- Paper -->
          <plugins>
              <plugin>
-@@ -178,7 +178,7 @@
+@@ -192,7 +192,7 @@
                  <artifactId>gitdescribe-maven-plugin</artifactId>
                  <version>1.3</version>
                  <configuration>
--                    <outputPrefix>git-Tuinity-</outputPrefix> <!-- Tuinity -->
+-                    <outputPrefix>git-Paper-</outputPrefix>
 +                    <outputPrefix>git-Patina-</outputPrefix> <!-- Patina -->
                      <scmDirectory>..</scmDirectory>
                  </configuration>

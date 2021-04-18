@@ -12,17 +12,23 @@ This is an overview over all patches that are currently used.
 | server |  Add Velocity natives for encryption and compression      | Andrew Steinborn |  |
 | server |  Add packet limiter config      | Spottedleaf |  |
 | server |  Add soft async catcher      | Spottedleaf |  |
+| server |  Airplane Configuration      | Paul Sauve |  |
+| server |  Airplane MC Dev Fixes      | Paul Sauve |  |
+| server |  Airplane Profiler      | Paul Sauve |  |
 | server |  Allow Entities to be removed from a world while ticking      | Spottedleaf |  |
 | server |  Allow controlled flushing for network manager      | Spottedleaf |  |
 | server |  Attempt to recalculate regionfile header if it is corrupt      | Spottedleaf |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |
 | server |  Brand changes      | Spottedleaf |  |
+| server |  Cache entityhuman display name      | Paul Sauve |  |
+| server |  Cache palette array      | Paul Sauve |  |
 | server |  Change writes to use NORMAL priority rather than LOW      | Spottedleaf |  |
 | server |  Consolidate flush calls for entity tracker packets      | Spottedleaf |  |
 | server |  Copy passenger list in enderTeleportTo      | Spottedleaf |  |
 | server |  Custom table implementation for blockstate state lookups      | Spottedleaf |  |
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
+| server |  Disable Paper timings by default      | Paul Sauve |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
@@ -32,8 +38,11 @@ This is an overview over all patches that are currently used.
 | server |  Do not run raytrace logic for AIR      | Spottedleaf |  |
 | server |  Do not update TE&#39;s in generating chunks      | Spottedleaf |  |
 | server |  Don&#39;t allow StructureLocateEvent to change worlds      | Spottedleaf |  |
+| server |  Don&#39;t get entity equipment if not needed      | Paul Sauve |  |
 | server |  Don&#39;t lookup fluid state when raytracing      | Spottedleaf |  |
 | server |  Don&#39;t read neighbour chunk data off disk when converting      | Spottedleaf |  |
+| server |  Dynamic activation range      | Paul Sauve |  |
+| server |  Early return optimization for target finding      | Paul Sauve |  |
 | server |  Execute chunk tasks mid-tick      | Spottedleaf |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
@@ -42,6 +51,7 @@ This is an overview over all patches that are currently used.
 | server |  Highly optimise single and multi-AABB VoxelShapes and      | Spottedleaf |  |
 | server |  Improve abnormal server shutdown process      | Spottedleaf |  |
 | server |  Improve async tp to not load chunks when crossing worlds      | Spottedleaf |  |
+| server |  Improve fluid direction caching      | Paul Sauve |  |
 | server |  Improve paper prevent moving into unloaded chunk check      | Spottedleaf |  |
 | server |  Improved oversized chunk data packet handling      | Spottedleaf |  |
 | server |  Lag compensate block breaking      | Spottedleaf |  |
@@ -52,9 +62,11 @@ This is an overview over all patches that are currently used.
 | server |  Manually inline methods in BlockPosition      | Spottedleaf |  |
 | server |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
+| server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
 | server |  Multi-Threaded Server Ticking Vanilla      | Spottedleaf |  |
 | server |  Multi-Threaded ticking CraftBukkit      | Spottedleaf |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
+| server |  Only check for spooky season once an hour      | Paul Sauve |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
 | server |  Optimise chunk tick iteration      | Spottedleaf |  |
@@ -66,6 +78,7 @@ This is an overview over all patches that are currently used.
 | server |  Optimise non-flush packet sending      | Spottedleaf |  |
 | server |  Optimise snow &amp; ice in chunk ticking      | Spottedleaf |  |
 | server |  Optimise tab complete      | Spottedleaf |  |
+| server |  Optimize random calls in chunk ticking      | Paul Sauve |  |
 | server |  Per World Spawn Limits      | Chase Whipple |  |
 | api |  Per player viewdistances      | Spottedleaf |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
@@ -73,9 +86,16 @@ This is an overview over all patches that are currently used.
 | server |  Properly handle cancellation of projectile hit event      | Spottedleaf |  |
 | server |  Range check flag dirty calls in PlayerChunk      | Spottedleaf |  |
 | server |  Reduce allocation rate from crammed entities      | Spottedleaf |  |
+| server |  Reduce allocs &amp; improve perf of StructureManager      | Paul Sauve |  |
+| server |  Reduce chunk loading &amp; lookups      | Paul Sauve |  |
+| server |  Reduce entity chunk ticking checks from 3 to 1      | Paul Sauve |  |
 | server |  Reduce iterator allocation from chunk gen      | Spottedleaf |  |
+| server |  Reduce memory allocations      | Paul Sauve |  |
 | server |  Reduce pathfinder branches      | Spottedleaf |  |
+| server |  Reduce projectile chunk loading      | Paul Sauve |  |
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
+| server |  Remove iterators from inventory contains      | Paul Sauve |  |
+| server |  Remove streams      | Paul Sauve |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
@@ -84,14 +104,19 @@ This is an overview over all patches that are currently used.
 | server |  Rewrite the light engine      | Spottedleaf |  |
 | server |  Send full pos packets for hard colliding entities      | Spottedleaf |  |
 | server |  Separate lookup locking from state access in UserCache      | Spottedleaf |  |
+| server |  Simpler ShapelessRecipes comparison for Vanilla      | Paul Sauve |  |
+| server |  Skip POI finding if stuck in vehicle      | Paul Sauve |  |
+| server |  Skip copying unloading tile entities      | Paul Sauve |  |
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
+| server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
+| server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
 | server |  Time scoreboard search      | Spottedleaf |  |
-| server |  Tuinity POM Changes      | Spottedleaf |  |
 | api |  Tuinity POM Changes      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
 | server |  Update version fetcher repo      | JRoy |  |
 | server |  Use entity ticking chunk map for entity tracker      | Spottedleaf |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
+| server |  Use unmodifiableMap instead of making copy      | Paul Sauve |  |
 | server |  Util patch      | Spottedleaf |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |

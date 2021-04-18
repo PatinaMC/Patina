@@ -12,3 +12,7 @@
 
 [submodule "Server"]
 	path = Server
+
+[submodule "upstream/Airplane"]
+	path = upstream/Airplane
+	url = https://github.com/Technove/Airplane.git
