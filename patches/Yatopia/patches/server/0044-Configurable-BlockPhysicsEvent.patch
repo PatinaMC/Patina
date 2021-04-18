@@ -8,10 +8,10 @@ Paper does alleviate this quite well by only firing if plugins are listening, bu
 This patch implements a hard toggle for the event.
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bb92e1814db8384a6a6268969d4ff0dd718a330d..515c6f8d7372e30c622fe1d15edd2bb4b99ea484 100644
+index c45c7778521f89d1a82decc0006fe106d19fa4d9..2d4aea5d2314fb845cf4086ca0cbf029981a2a15 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1536,7 +1536,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1533,7 +1533,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
  
          while (iterator.hasNext()) {
              WorldServer worldserver = (WorldServer) iterator.next();

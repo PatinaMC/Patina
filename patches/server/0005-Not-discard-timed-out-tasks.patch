@@ -1,0 +1,92 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sun, 18 Apr 2021 09:35:35 +0000
+Subject: [PATCH] Not discard timed-out tasks
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 13c89e3c31c2bfad738eeed80aff4e8245c4683f..2b291d9c25d43722d95672a902fe74bd533f53e2 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -183,7 +183,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
+ import io.papermc.paper.util.PaperJvmChecker; // Paper
+ import io.papermc.paper.event.server.ServerResourcesReloadedEvent; // Paper
+ 
+-public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements /*IMojangStatistics, // Patina - Disable Snooper. Not to send anonymous server information to Mojang */ ICommandListener, AutoCloseable {
++public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<Runnable/*Patina*/> implements /*IMojangStatistics, // Patina - Disable Snooper. Not to send anonymous server information to Mojang */ ICommandListener, AutoCloseable {
+ 
+     private static MinecraftServer SERVER; // Paper
+     public static final Logger LOGGER = LogManager.getLogger();
+@@ -1310,19 +1310,17 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+     // Tuinity - replace logic
+ 
+     @Override
+-    public TickTask postToMainThread(Runnable runnable) {
++    public Runnable/*Patina*/ postToMainThread(Runnable runnable) {
+         // Paper start - anything that does try to post to main during watchdog crash, run on watchdog
+         if (this.hasStopped && Thread.currentThread().equals(shutdownThread)) {
+             runnable.run();
+             runnable = () -> {};
+         }
+         // Paper end
+-        return new TickTask(this.ticks, runnable);
++        return runnable;
+     }
+ 
+-    protected boolean canExecute(TickTask ticktask) {
+-        return ticktask.a() + 3 < this.ticks || this.canSleepForTick();
+-    }
++    // Patina - remove
+ 
+     @Override
+     public boolean executeNext() {
+@@ -1353,10 +1351,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         }
+     }
+ 
+-    protected void c(TickTask ticktask) {
+-        this.getMethodProfiler().c("runTask");
+-        super.executeTask(ticktask);
+-    }
++    // Patina - remove
+ 
+     private void a(ServerPing serverping) {
+         File file = this.c("server-icon.png");
+diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
+index 424cd048f905cd0ed3f7a4545a26ffde8da1f91f..a50662c44c5ed6953a25c245576e16bb5924dc43 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
++++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
+@@ -1218,10 +1218,7 @@ public class ChunkProviderServer extends IChunkProvider {
+             return runnable;
+         }
+ 
+-        @Override
+-        protected boolean canExecute(Runnable runnable) {
+-            return true;
+-        }
++        // Patina - remove
+ 
+         @Override
+         protected boolean isNotMainThread() {
+diff --git a/src/main/java/net/minecraft/util/thread/IAsyncTaskHandler.java b/src/main/java/net/minecraft/util/thread/IAsyncTaskHandler.java
+index 158ea6d77698d62ba795aff6c061a80652e42e03..dd13e3a2c08ab65d4622c0e7f8ddf0cc69e7af39 100644
+--- a/src/main/java/net/minecraft/util/thread/IAsyncTaskHandler.java
++++ b/src/main/java/net/minecraft/util/thread/IAsyncTaskHandler.java
+@@ -22,7 +22,7 @@ public abstract class IAsyncTaskHandler<R extends Runnable> implements Mailbox<R
+ 
+     protected abstract R postToMainThread(Runnable runnable);
+ 
+-    protected abstract boolean canExecute(R r0);
++    // Patina - remove
+ 
+     public boolean isMainThread() {
+         return Thread.currentThread() == this.getThread();
+@@ -103,7 +103,7 @@ public abstract class IAsyncTaskHandler<R extends Runnable> implements Mailbox<R
+ 
+         if (r0 == null) {
+             return false;
+-        } else if (this.e == 0 && !this.canExecute(r0)) {
++        } else if (this.e == 0 && !true/*this.canExecute(r0)*/ /* Patina */) {
+             return false;
+         } else {
+             this.executeTask(this.d.remove()); // Paper - decompile fix

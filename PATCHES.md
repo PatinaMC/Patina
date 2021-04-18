@@ -46,9 +46,9 @@ This is an overview over all patches that are currently used.
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
 | server |  Disable Paper timings by default      | Paul Sauve |  |
+| server |  Disable Snooper      | foss-mc |  |
 | server |  Disable outdated build check      | William Blake Galbreath |  |
 | api |  Disable reload command      | Ivan Pekov |  |
-| server |  Disable the Snooper      | Sotr |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
@@ -115,6 +115,7 @@ This is an overview over all patches that are currently used.
 | server |  Multithreaded entity tracking      | Paul Sauve |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
+| server |  Not discard timed-out tasks      | foss-mc |  |
 | server |  Nuke streams off BlockPosition      | Ivan Pekov |  |
 | server |  Nuke streams off SectionPosition      | Ivan Pekov |  |
 | server |  Only check for spooky season once an hour      | Paul Sauve |  |

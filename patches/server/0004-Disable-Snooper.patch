@@ -1,0 +1,94 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sun, 18 Apr 2021 09:32:03 +0000
+Subject: [PATCH] Disable Snooper
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e8245c4683f 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -183,7 +183,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
+ import io.papermc.paper.util.PaperJvmChecker; // Paper
+ import io.papermc.paper.event.server.ServerResourcesReloadedEvent; // Paper
+ 
+-public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements IMojangStatistics, ICommandListener, AutoCloseable {
++public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTask> implements /*IMojangStatistics, // Patina - Disable Snooper. Not to send anonymous server information to Mojang */ ICommandListener, AutoCloseable {
+ 
+     private static MinecraftServer SERVER; // Paper
+     public static final Logger LOGGER = LogManager.getLogger();
+@@ -191,7 +191,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+     public static final WorldSettings c = new WorldSettings("Demo World", EnumGamemode.SURVIVAL, false, EnumDifficulty.NORMAL, false, new GameRules(), DataPackConfiguration.a);
+     public Convertable.ConversionSession convertable;
+     public final WorldNBTStorage worldNBTStorage;
+-    private final MojangStatisticsGenerator snooper = new MojangStatisticsGenerator("server", this, SystemUtils.getMonotonicMillis());
++    //private final MojangStatisticsGenerator snooper = new MojangStatisticsGenerator("server", this, SystemUtils.getMonotonicMillis()); // Patina - Disable Snooper. Not to send anonymous server information to Mojang
+     private final List<Runnable> tickables = Lists.newArrayList();
+     private final GameProfilerSwitcher m;
+     private GameProfilerFiller methodProfiler;
+@@ -938,9 +938,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+             }
+         }
+ 
+-        if (this.snooper.d()) {
++        /*if (this.snooper.d()) { // Patina - Disable Snooper. Not to send anonymous server information to Mojang
+             this.snooper.e();
+-        }
++        }*/
+ 
+         this.dataPackResources.close();
+ 
+@@ -1450,14 +1450,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+             //MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
+         //} // Paper
+ 
+-        this.methodProfiler.enter("snooper");
++        /*this.methodProfiler.enter("snooper"); // Patina - Disable Snooper. Not to send anonymous server information to Mojang
+         if (((DedicatedServer) this).getDedicatedServerProperties().snooperEnabled && !this.snooper.d() && this.ticks > 100) { // Spigot
+             this.snooper.a();
+         }
+ 
+         if (((DedicatedServer) this).getDedicatedServerProperties().snooperEnabled && this.ticks % 6000 == 0) { // Spigot
+             this.snooper.b();
+-        }
++        }*/
+ 
+         this.methodProfiler.exit();
+ 
+@@ -1804,7 +1804,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         this.L = s1;
+     }
+ 
+-    @Override
++    /*@Override // Patina - Disable Snooper. Not to send anonymous server information to Mojang
+     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
+         mojangstatisticsgenerator.a("whitelist_enabled", false);
+         mojangstatisticsgenerator.a("whitelist_count", 0);
+@@ -1836,7 +1836,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+         }
+ 
+         mojangstatisticsgenerator.a("worlds", i);
+-    }
++    }*/
+ 
+     public abstract boolean j();
+ 
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 2959113e45ad85c515c88dd4a55dd156e35b91cd..9056866adb70b719ded1502d0d76f50ae27b7a2e 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -446,12 +446,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+         return this.getDedicatedServerProperties().allowNether;
+     }
+ 
+-    @Override
++    /*@Override // Patina - Disable Snooper. Not to send anonymous server information to Mojang
+     public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
+         mojangstatisticsgenerator.a("whitelist_enabled", this.getPlayerList().getHasWhitelist());
+         mojangstatisticsgenerator.a("whitelist_count", this.getPlayerList().getWhitelisted().length);
+         super.a(mojangstatisticsgenerator);
+-    }
++    }*/
+ 
+     public void issueCommand(String s, CommandListenerWrapper commandlistenerwrapper) {
+         this.serverCommandQueue.add(new ServerCommand(s, commandlistenerwrapper));
