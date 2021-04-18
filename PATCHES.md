@@ -11,9 +11,11 @@ This is an overview over all patches that are currently used.
 | server |  Actually unload POI data      | Spottedleaf |  |
 | server |  Add MC-4 fix back      | BillyGalbreath |  |
 | server |  Add Velocity natives for encryption and compression      | Andrew Steinborn |  |
+| server |  Add option to disable observer clocks      | Phoenix616 |  |
 | server |  Add packet limiter config      | Spottedleaf |  |
 | server |  Add permission for F3+N debug      | William Blake Galbreath |  |
 | server |  Add soft async catcher      | Spottedleaf |  |
+| server |  Add timings for Behavior      | Phoenix616 |  |
 | server |  Airplane Configuration      | Paul Sauve |  |
 | server |  Airplane MC Dev Fixes      | Paul Sauve |  |
 | server |  Airplane Profiler      | Paul Sauve |  |
@@ -44,20 +46,26 @@ This is an overview over all patches that are currently used.
 | server |  Do not update TE&#39;s in generating chunks      | Spottedleaf |  |
 | server |  Don&#39;t allow StructureLocateEvent to change worlds      | Spottedleaf |  |
 | server |  Don&#39;t get entity equipment if not needed      | Paul Sauve |  |
+| server |  Don&#39;t load chunk with seed based feature search      | Phoenix616 |  |
 | server |  Don&#39;t lookup fluid state when raytracing      | Spottedleaf |  |
 | server |  Don&#39;t read neighbour chunk data off disk when converting      | Spottedleaf |  |
+| server |  Don&#39;t trigger Lootable Refresh for non player interaction      | Aikar |  |
+| server |  Don&#39;t wake up entities when damage event is cancelled      | Phoenix616 |  |
 | server |  Dont send useless entity packets      | William Blake Galbreath |  |
 | server |  Dynamic activation range      | Paul Sauve |  |
 | server |  Early return optimization for target finding      | Paul Sauve |  |
 | server |  Execute chunk tasks mid-tick      | Spottedleaf |  |
 | api |  Expose findClass for profiler      | Paul Sauve |  |
 | server |  Fix &#39;outdated server&#39; showing in ping before server fully      | William Blake Galbreath |  |
+| server |  Fix Bukkit.createInventory() with type LECTERN      | willies952002 |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
+| server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
 | server |  Fix incorrect isRealPlayer init      | Spottedleaf |  |
 | server |  Fix swamp hut cat generation deadlock      | Spottedleaf |  |
 | server |  Fix the dead lagging the server      | William Blake Galbreath |  |
 | server |  Highly optimise single and multi-AABB VoxelShapes and      | Spottedleaf |  |
+| server |  Hopper Optimizations      | Phoenix616 |  |
 | server |  Improve abnormal server shutdown process      | Spottedleaf |  |
 | server |  Improve async tp to not load chunks when crossing worlds      | Spottedleaf |  |
 | server |  Improve fluid direction caching      | Paul Sauve |  |
@@ -92,7 +100,9 @@ This is an overview over all patches that are currently used.
 | server |  Optimise non-flush packet sending      | Spottedleaf |  |
 | server |  Optimise snow &amp; ice in chunk ticking      | Spottedleaf |  |
 | server |  Optimise tab complete      | Spottedleaf |  |
+| server |  Optimize inventory API item handling      | Phoenix616 |  |
 | server |  Optimize random calls in chunk ticking      | Paul Sauve |  |
+| server |  Origami Server Config      | Phoenix616 |  |
 | server |  Per World Spawn Limits      | Chase Whipple |  |
 | api |  Per player viewdistances      | Spottedleaf |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
@@ -111,6 +121,7 @@ This is an overview over all patches that are currently used.
 | server |  Reduce projectile chunk loading      | Paul Sauve |  |
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
 | server |  Remove iterators from inventory contains      | Paul Sauve |  |
+| server |  Remove some streams and object allocations      | Phoenix616 |  |
 | server |  Remove streams      | Paul Sauve |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
@@ -137,4 +148,5 @@ This is an overview over all patches that are currently used.
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
 | server |  Use unmodifiableMap instead of making copy      | Paul Sauve |  |
 | server |  Util patch      | Spottedleaf |  |
+| server |  dont load chunks for physics      | Aikar |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |

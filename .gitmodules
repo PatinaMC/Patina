@@ -19,3 +19,9 @@
 [submodule "upstream/Purpur"]
 	path = upstream/Purpur
 	url = https://github.com/pl3xgaming/Purpur.git
+[submodule "upstream/Origami"]
+	path = upstream/Origami
+	url = https://github.com/Minebench/Origami.git
+[submodule "upstream/Empirecraft"]
+	path = upstream/Empirecraft
+	url = https://github.com/starlis/empirecraft.git
