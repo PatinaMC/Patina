@@ -167,6 +167,7 @@ This is an overview over all patches that are currently used.
 | server |  Remove some streams and object allocations      | Phoenix616 |  |
 | server |  Remove streams      | Paul Sauve |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
+| server |  Remove unnecessary &#96;LogManager.getLogger()&#96;      | foss-mc |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
 | server |  Revert getChunkAt(Async) retaining chunks for long periods of      | Spottedleaf |  |
@@ -185,6 +186,7 @@ This is an overview over all patches that are currently used.
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Stop wasting resources on JsonList#get      | Ivan Pekov |  |
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
+| server |  Subtle Changes      | foss-mc |  |
 | server |  Suspected plugins report      | ishland |  |
 | api |  Suspected plugins report      | ishland |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
