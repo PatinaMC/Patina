@@ -1358,3 +1358,16 @@ index c25cbfa7a467dfe5022ea8f887361ef5b85466a3..00000000000000000000000000000000
 -        }
 -    }
 -}
+diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
+index 564285c1c96f3faf99022eec639dbefed54f2a7d..30d56a9bd108971c2b4b92835ba55c1ae6cd70e8 100644
+--- a/src/main/java/org/spigotmc/SpigotConfig.java
++++ b/src/main/java/org/spigotmc/SpigotConfig.java
+@@ -48,7 +48,7 @@ public class SpigotConfig
+     static int version;
+     static Map<String, Command> commands;
+     /*========================================================================*/
+-    private static Metrics metrics;
++    //private static Metrics metrics; // Patina - remove unused variable
+ 
+     public static void init(File configFile)
+     {
