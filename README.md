@@ -1,5 +1,7 @@
 # Patina
 
+[![Discord](https://img.shields.io/discord/833269599449382913?label=Discord)](https://discord.gg/4cVWCyBrDs)
+
 A distribution of performance-oriented Bukkit patches
 
 ![logo](logo.png)
