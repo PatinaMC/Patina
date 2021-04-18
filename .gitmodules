@@ -16,3 +16,6 @@
 [submodule "upstream/Airplane"]
 	path = upstream/Airplane
 	url = https://github.com/Technove/Airplane.git
+[submodule "upstream/Purpur"]
+	path = upstream/Purpur
+	url = https://github.com/pl3xgaming/Purpur.git
