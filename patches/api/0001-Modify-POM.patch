@@ -5,28 +5,28 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index 6c200882954adc4831307f3d6dfa3202571fb30b..bfb6e564193c3c0060c6a0beab848b2644f643de 100644
+index e66661eb84308dc13faa0d39b7487f40c1180443..8430011844b40101da52003965e69e5c0e74e987 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -3,18 +3,18 @@
+@@ -3,18 +3,17 @@
           xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
      <modelVersion>4.0.0</modelVersion>
      <parent>
--        <groupId>com.tuinity</groupId>
--        <artifactId>tuinity-parent</artifactId>
+-        <groupId>com.destroystokyo.paper</groupId>
+-        <artifactId>paper-parent</artifactId>
 +        <groupId>com.ayff</groupId>
 +        <artifactId>ayff-parent</artifactId>
          <version>dev-SNAPSHOT</version>
-         <relativePath>../pom.xml</relativePath>
      </parent>
  
--    <artifactId>tuinity-api</artifactId>
+-    <groupId>com.destroystokyo.paper</groupId>
+-    <artifactId>paper-api</artifactId>
 +    <artifactId>ayff-api</artifactId>
      <version>1.16.5-R0.1-SNAPSHOT</version>
      <packaging>jar</packaging>
  
--    <name>Tuinity-API</name>
--    <url>https://github.com/Spottedleaf/Tuinity</url>
+-    <name>Paper-API</name>
+-    <url>https://github.com/PaperMC/Paper</url>
 +    <name>ayff-API</name>
 +    <url>https://github.com/foss-mc/A-Yatopia-Framwork-Fork</url>
      <description>An enhanced plugin API for Minecraft servers.</description>
