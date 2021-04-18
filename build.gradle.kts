@@ -53,6 +53,7 @@ subprojects {
         maven("https://nexus.velocitypowered.com/repository/velocity-artifacts-snapshots/")
         maven("https://libraries.minecraft.net")
         maven("https://repo.codemc.io/repository/maven-public/")
+        maven("https://jitpack.io") // https://github.com/TECHNOVE/Airplane/commit/3ed988c05fd9256e658c626997df4d98d520333c
         mavenLocal()
         maven("${rootProjectDir}/.repository")
     }
