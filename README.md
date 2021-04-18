@@ -12,3 +12,7 @@ A distribution of performance-oriented Bukkit patches
 ./gradlew applyPatches
 ./gradlew paperclip
 ```
+
+## Download
+
+[1.16.5](https://github.com/foss-mc/Patina/raw/releases/1.16.5/1.16.5-paperclip.jar)
