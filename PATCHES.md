@@ -98,6 +98,7 @@ This is an overview over all patches that are currently used.
 | server |  Prevent unload() calls removing tickets for sync loads      | Spottedleaf |  |
 | server |  Properly handle cancellation of projectile hit event      | Spottedleaf |  |
 | server |  Purpur config files      | William Blake Galbreath |  |
+| api |  Purpur config files      | William Blake Galbreath |  |
 | server |  Range check flag dirty calls in PlayerChunk      | Spottedleaf |  |
 | server |  Reduce allocation rate from crammed entities      | Spottedleaf |  |
 | server |  Reduce allocs &amp; improve perf of StructureManager      | Paul Sauve |  |
@@ -126,6 +127,7 @@ This is an overview over all patches that are currently used.
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
+| server |  Tick fluids config      | BillyGalbreath |  |
 | server |  Time scoreboard search      | Spottedleaf |  |
 | api |  Tuinity POM Changes      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
