@@ -74,3 +74,16 @@ jobs:
         name: ${{ matrix.java }}
         path: ${{ steps.mcver.outputs.mcver }}-paperclip.jar
 
+    - name: Prepare Github Page Files
+      run: |
+        mkdir -p public
+        cp ${{ steps.mcver.outputs.mcver }}-paperclip.jar public/
+    - name: Deploy to Github Pages
+      if: matrix.java == 11
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public
+        publish_branch: releases/${{ steps.mcver.outputs.mcver }}
+
+
