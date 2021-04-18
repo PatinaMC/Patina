@@ -94,3 +94,4 @@ This is an overview over all patches that are currently used.
 | server |  Use entity ticking chunk map for entity tracker      | Spottedleaf |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
 | server |  Util patch      | Spottedleaf |  |
+| server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
