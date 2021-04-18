@@ -9,7 +9,7 @@ setupSubproject("api") {
     projectDir = File("API")
     buildFileName = "../subprojects/api.gradle.kts"
 }
-setupSubproject("server") {
+setupSubproject("$forkNameLowercase-server") {
     projectDir = File("Server")
     buildFileName = "../subprojects/server.gradle.kts"
 }

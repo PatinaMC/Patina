@@ -35,7 +35,7 @@ toothpick {
     patchCreditsTemplate = ".template.md"
 
     server {
-        project = project(":server")
+        project = project(":$forkNameLowercase-server")
         patchesDir = rootProject.projectDir.resolve("patches/server")
     }
     api {
