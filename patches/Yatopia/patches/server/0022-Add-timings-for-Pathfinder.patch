@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: MrIvanPlays <ivan@mrivanplays.com>
+Date: Sun, 16 Aug 2020 13:45:32 +0300
+Subject: [PATCH] Add timings for Pathfinder
+
+
+diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
+index 67980e1dc186c0b458eca9f00acfea7d2b26d575..e5df5045c7fb9faf692fed894e1a64fe6e1449af 100644
+--- a/src/main/java/co/aikar/timings/MinecraftTimings.java
++++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
+@@ -57,6 +57,8 @@ public final class MinecraftTimings {
+         return Timings.ofSafe(taskName);
+     }
+ 
++    public static Timing getPathfinderTiming(String mobName) { return Timings.ofSafe("Pathfinder - " + mobName); } // Yatopia
++
+     /**
+      * Gets a timer associated with a plugins tasks.
+      * @param bukkitTask
+diff --git a/src/main/java/net/minecraft/world/entity/ai/navigation/NavigationAbstract.java b/src/main/java/net/minecraft/world/entity/ai/navigation/NavigationAbstract.java
+index 48e6a4c588ef39a4bde067d79b96a656c68750ce..f528968fe6c719fa7fa273355f083ad2142f4b93 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/navigation/NavigationAbstract.java
++++ b/src/main/java/net/minecraft/world/entity/ai/navigation/NavigationAbstract.java
+@@ -51,6 +51,7 @@ public abstract class NavigationAbstract {
+     private float r;
+     private final Pathfinder s; public Pathfinder getPathfinder() { return this.s; } // Paper - OBFHELPER
+     private boolean t;
++    private co.aikar.timings.Timing timing; // Yatopia
+ 
+     // Tuinity start
+     public boolean isViableForPathRecalculationChecking() {
+@@ -69,6 +70,7 @@ public abstract class NavigationAbstract {
+         int i = MathHelper.floor(entityinsentient.b(GenericAttributes.FOLLOW_RANGE) * 16.0D);
+ 
+         this.s = this.a(i);
++        timing = co.aikar.timings.MinecraftTimings.getPathfinderTiming(entityinsentient.getClass().getSimpleName()); // Yatopia
+     }
+ 
+     public void g() {
+@@ -252,6 +254,10 @@ public abstract class NavigationAbstract {
+     }
+ 
+     public void c() {
++        // Yatopia start
++        timing.startTiming();
++        try {
++        // Yatopia end
+         ++this.e;
+         if (this.m) {
+             this.j();
+@@ -279,6 +285,11 @@ public abstract class NavigationAbstract {
+                 this.a.getControllerMove().a(vec3d.x, this.b.getType(blockposition.down()).isAir() ? vec3d.y : PathfinderNormal.a((IBlockAccess) this.b, blockposition), vec3d.z, this.d);
+             }
+         }
++        // Yatopia start
++        } finally {
++            timing.stopTiming();
++        }
++        // Yatopia end
+     }
+ 
+     protected void l() {

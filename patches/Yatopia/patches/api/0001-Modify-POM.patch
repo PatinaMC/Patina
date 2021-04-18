@@ -1,0 +1,72 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: YatopiaMC <yatopiamc@gmail.com>
+Date: Sat, 1 Aug 2020 15:51:49 -0500
+Subject: [PATCH] Modify POM
+
+
+diff --git a/pom.xml b/pom.xml
+index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd3339832e370 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -24,6 +24,19 @@
+         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+     </properties>
+ 
++    <!-- Yatopia start -->
++    <distributionManagement>
++        <repository>
++            <id>codemc-releases</id>
++            <url>https://repo.codemc.io/repository/maven-releases/</url>
++        </repository>
++        <snapshotRepository>
++            <id>codemc-snapshots</id>
++            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
++        </snapshotRepository>
++    </distributionManagement>
++    <!-- Yatopia end -->
++
+     <repositories>
+         <repository>
+             <id>sonatype</id>
+@@ -67,7 +80,7 @@
+         <dependency>
+             <groupId>it.unimi.dsi</groupId>
+             <artifactId>fastutil</artifactId>
+-            <version>8.2.2</version>
++            <version>8.5.4</version>
+             <scope>provided</scope>
+         </dependency>
+         <dependency>
+@@ -114,7 +127,7 @@
+         <dependency>
+             <groupId>org.yaml</groupId>
+             <artifactId>snakeyaml</artifactId>
+-            <version>1.27</version>
++            <version>1.28</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- annotations -->
+@@ -128,7 +141,7 @@
+         <dependency>
+             <groupId>org.slf4j</groupId>
+             <artifactId>slf4j-api</artifactId>
+-            <version>1.7.25</version>
++            <version>1.7.30</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- testing -->
+@@ -154,12 +167,12 @@
+         <dependency>
+             <groupId>org.ow2.asm</groupId>
+             <artifactId>asm</artifactId>
+-            <version>9.0</version>
++            <version>9.1</version>
+         </dependency>
+         <dependency>
+             <groupId>org.ow2.asm</groupId>
+             <artifactId>asm-commons</artifactId>
+-            <version>9.0</version>
++            <version>9.1</version>
+         </dependency>
+     </dependencies>
+ 

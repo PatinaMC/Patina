@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: JellySquid <jellysquid+atwork@protonmail.com>
+Date: Sun, 24 Jan 2021 22:55:55 +0100
+Subject: [PATCH] lithium entity
+
+Co-authored-by: Hugo Planque <hookwood01@gmail.com>
+
+diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
+index 8729743f7d8b0cfc302b06d3d6cdede3bdbb26a1..c30982c3cc54525b5c3c824a7bde324c15626683 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
++++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
+@@ -284,6 +284,11 @@ public abstract class EntityLiving extends Entity {
+         return BehaviorController.a((Collection) ImmutableList.of(), (Collection) ImmutableList.of());
+     }
+ 
++    private IBlockData lastStateAtFeet = null;
++
++    private long lastPos = Long.MIN_VALUE;
++    // Yatopia end
++
+     protected BehaviorController<?> a(Dynamic<?> dynamic) {
+         return this.cK().a(dynamic);
+     }
+@@ -350,6 +355,10 @@ public abstract class EntityLiving extends Entity {
+ 
+     @Override
+     public void entityBaseTick() {
++        // Yatopia start - port lithium
++        this.lastStateAtFeet = null;
++        this.lastPos = Long.MIN_VALUE;
++        // Yatopia end
+         this.ar = this.as;
+         if (this.justCreated) {
+             this.getBedPosition().ifPresent(this::a);
+@@ -1755,6 +1764,26 @@ public abstract class EntityLiving extends Entity {
+ 
+     public IBlockData ds() {
+         return this.world.getBlockStateIfLoaded(this.getChunkCoordinates()); // Yatopia
++        /*
++        // Yatopia start - port lithium
++        int x = MathHelper.floor(this.locX());
++        int y = MathHelper.floor(this.locY());
++        int z = MathHelper.floor(this.locZ());
++
++        long pos = getChunkCoordinates().asLong();
++
++        if (this.lastPos == pos) {
++            return this.lastStateAtFeet;
++        }
++
++        IBlockData state = this.world.getType(getChunkCoordinates());
++
++        this.lastPos = pos;
++        this.lastStateAtFeet = state;
++
++        return state;
++        // Yatopia end
++        */
+     }
+ 
+     private boolean c(BlockPosition blockposition, IBlockData iblockdata) {

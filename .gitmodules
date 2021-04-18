@@ -28,3 +28,6 @@
 [submodule "upstream/Akarin"]
 	path = upstream/Akarin
 	url = https://github.com/Akarin-project/Akarin.git
+[submodule "upstream/Yatopia"]
+	path = upstream/Yatopia
+	url = https://github.com/YatopiaMC/Yatopia.git
