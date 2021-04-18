@@ -14,21 +14,21 @@ index 6c200882954adc4831307f3d6dfa3202571fb30b..bfb6e564193c3c0060c6a0beab848b26
      <parent>
 -        <groupId>com.tuinity</groupId>
 -        <artifactId>tuinity-parent</artifactId>
-+        <groupId>com.ayff</groupId>
-+        <artifactId>ayff-parent</artifactId>
++        <groupId>foss.patina</groupId>
++        <artifactId>patina-parent</artifactId>
          <version>dev-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
  
 -    <artifactId>tuinity-api</artifactId>
-+    <artifactId>ayff-api</artifactId>
++    <artifactId>patina-api</artifactId>
      <version>1.16.5-R0.1-SNAPSHOT</version>
      <packaging>jar</packaging>
  
 -    <name>Tuinity-API</name>
 -    <url>https://github.com/Spottedleaf/Tuinity</url>
-+    <name>ayff-API</name>
-+    <url>https://github.com/foss-mc/A-Yatopia-Framwork-Fork</url>
++    <name>patina-API</name>
++    <url>https://github.com/foss-mc/Patina</url>
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>

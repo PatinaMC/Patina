@@ -28,6 +28,6 @@ index 001b1e5197eaa51bfff9031aa6c69876c9a47960..1109ba9c506d182d8b5436a21947b61d
 -        }
 -
 -        return result;
-+        return "1.16.5-R0.1-SNAPSHOT"; // AYFF - hardcode BukkitVersion
++        return "1.16.5-R0.1-SNAPSHOT"; // Patina - hardcode BukkitVersion
      }
  }
