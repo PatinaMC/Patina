@@ -25,3 +25,6 @@
 [submodule "upstream/Empirecraft"]
 	path = upstream/Empirecraft
 	url = https://github.com/starlis/empirecraft.git
+[submodule "upstream/Akarin"]
+	path = upstream/Akarin
+	url = https://github.com/Akarin-project/Akarin.git

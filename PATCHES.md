@@ -22,6 +22,7 @@ This is an overview over all patches that are currently used.
 | server |  Allow Entities to be removed from a world while ticking      | Spottedleaf |  |
 | server |  Allow controlled flushing for network manager      | Spottedleaf |  |
 | server |  Attempt to recalculate regionfile header if it is corrupt      | Spottedleaf |  |
+| server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |
 | server |  Brand changes      | Spottedleaf |  |
 | server |  Cache entityhuman display name      | Paul Sauve |  |
@@ -36,6 +37,7 @@ This is an overview over all patches that are currently used.
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
 | server |  Disable Paper timings by default      | Paul Sauve |  |
 | server |  Disable outdated build check      | William Blake Galbreath |  |
+| server |  Disable the Snooper      | Sotr |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
@@ -139,6 +141,7 @@ This is an overview over all patches that are currently used.
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
+| server |  Swaps the predicate order of collision      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Tick fluids config      | BillyGalbreath |  |
 | server |  Time scoreboard search      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
