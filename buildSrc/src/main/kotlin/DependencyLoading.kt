@@ -49,10 +49,10 @@ private fun DependencyHandlerScope.loadDependencies(project: Project, dependenci
 
     // Special case API
     if (artifactId == project.toothpick.apiProject.project.name
-      || artifactId == "api"
+      || artifactId == "${project.toothpick.upstreamLowercase}-api"
     ) {
       if (project == project.toothpick.serverProject.project) {
-        add("api", project(":api"))
+        add("api", project(":${project.toothpick.forkNameLowercase}-api"))
       }
       return@forEach
     }
