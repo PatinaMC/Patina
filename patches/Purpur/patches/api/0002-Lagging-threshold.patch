@@ -1,0 +1,42 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: William Blake Galbreath <blake.galbreath@gmail.com>
+Date: Tue, 23 Jul 2019 10:07:24 -0500
+Subject: [PATCH] Lagging threshold
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 5f7208196684d9c8373df28b7cfb5f9e21baa41e..d450f0d709211bf7d2ad39f6f9dfcf760f3524af 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -1943,4 +1943,14 @@ public final class Bukkit {
+     public static Server.Spigot spigot() {
+         return server.spigot();
+     }
++
++    // Purpur
++    /**
++     * Check if server is lagging according to laggy threshold setting
++     *
++     * @return True if lagging
++     */
++    public static boolean isLagging() {
++        return server.isLagging();
++    }
+ }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index c4aa05ae1fbc67b455f82ca6c08c7706659269ad..a5b96008662d91589563fcf44c1cf08961fe9ab0 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1719,4 +1719,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @NotNull
+     com.destroystokyo.paper.entity.ai.MobGoals getMobGoals();
+     // Paper end
++
++    // Purpur
++    /**
++     * Check if server is lagging according to laggy threshold setting
++     *
++     * @return True if lagging
++     */
++    boolean isLagging();
+ }

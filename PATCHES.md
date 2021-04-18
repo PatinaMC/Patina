@@ -65,6 +65,7 @@ This is an overview over all patches that are currently used.
 | server |  Improved oversized chunk data packet handling      | Spottedleaf |  |
 | server |  Lag compensate block breaking      | Spottedleaf |  |
 | server |  Lagging threshold      | William Blake Galbreath |  |
+| api |  Lagging threshold      | William Blake Galbreath |  |
 | server |  Logger settings (suppressing pointless logs)      | William Blake Galbreath |  |
 | server |  MC-168772 Fix - Add turtle egg block options      | William Blake Galbreath |  |
 | server |  MC-Dev fixes      | Spottedleaf |  |
@@ -129,7 +130,6 @@ This is an overview over all patches that are currently used.
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
 | server |  Tick fluids config      | BillyGalbreath |  |
 | server |  Time scoreboard search      | Spottedleaf |  |
-| api |  Tuinity POM Changes      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
 | server |  Update version fetcher repo      | JRoy |  |
