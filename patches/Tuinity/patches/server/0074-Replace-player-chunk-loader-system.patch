@@ -1750,10 +1750,10 @@ index 3fe1508b091e1fd0325eae50138d02fa6445c9ff..a19a26a88f247d359354902efeece992
          return new Vec3D((double) baseblockposition.getX() + 0.5D, (double) baseblockposition.getY() + 0.5D, (double) baseblockposition.getZ() + 0.5D);
      }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index b0801ca77620753ab61dba62429ce76e95aaba8f..91005e112950d79e1120e5595570970b94cd3c67 100644
+index 0128a24f1de7468ff60ba2de0ed825ff62363f6b..09cef73a92679e47c8670e4e4c1ba988878aee24 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -2638,14 +2638,14 @@ public class CraftWorld implements World {
+@@ -2631,14 +2631,14 @@ public class CraftWorld implements World {
              throw new IllegalArgumentException("View distance " + viewDistance + " is out of range of [2, 32]");
          }
          PlayerChunkMap chunkMap = getHandle().getChunkProvider().playerChunkMap;
@@ -1770,7 +1770,7 @@ index b0801ca77620753ab61dba62429ce76e95aaba8f..91005e112950d79e1120e5595570970b
      }
  
      @Override
-@@ -2654,11 +2654,22 @@ public class CraftWorld implements World {
+@@ -2647,11 +2647,22 @@ public class CraftWorld implements World {
              throw new IllegalArgumentException("View distance " + viewDistance + " is out of range of [2, 32]");
          }
          PlayerChunkMap chunkMap = getHandle().getChunkProvider().playerChunkMap;

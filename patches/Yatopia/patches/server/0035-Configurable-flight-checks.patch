@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable flight checks
 
 
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index 83ad913e46f44aabb41b7e441cba2ef2f7bcbc46..16cda55dc6a683d81740884255a1d8c2721f2a89 100644
+index 80b77cdffd64690bb9066b8745ea0ee08d60a7a4..067846b14cd6bfdef18dac36292ee259cc1dfd7e 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-@@ -325,7 +325,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -327,7 +327,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
          ++this.e;
          this.processedMovePackets = this.receivedMovePackets;
          if (this.B && !this.player.isSleeping()) {
@@ -17,7 +17,7 @@ index 83ad913e46f44aabb41b7e441cba2ef2f7bcbc46..16cda55dc6a683d81740884255a1d8c2
                  PlayerConnection.LOGGER.warn("{} was kicked for floating too long!", this.player.getDisplayName().getString());
                  this.disconnect(com.destroystokyo.paper.PaperConfig.flyingKickPlayerMessage); // Paper - use configurable kick message
                  return;
-@@ -344,7 +344,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -346,7 +346,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
              this.w = this.r.locY();
              this.x = this.r.locZ();
              if (this.D && this.player.getRootVehicle().getRidingPassenger() == this.player) {
