@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/discord/833269599449382913?label=Discord)](https://discord.gg/4cVWCyBrDs)
 
-A distribution of performance-oriented Bukkit patches
+A distribution of performance-oriented Bukkit patches that aims to keep stability and vanilla behaviour.
 
 ![logo](logo.png)
 
