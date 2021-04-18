@@ -210,7 +210,6 @@ This is an overview over all patches that are currently used.
 | server |  lithium PerlinNoiseSamplerMixin      | JellySquid | Bud Gidiere |
 | server |  lithium VoronoiBiomeAccessTypeMixin      | JellySquid |  |
 | server |  lithium block      | JellySquid | Hugo Planque |
-| server |  lithium entity      | JellySquid | Hugo Planque |
 | server |  lithium enum_values      | JellySquid |  |
 | server |  lithium gen      | JellySquid | Hugo Planque |
 | server |  lithium reduce allocations      | JellySquid | Mykyta Komarnytskyy |
