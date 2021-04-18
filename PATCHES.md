@@ -50,6 +50,7 @@ This is an overview over all patches that are currently used.
 | server |  Dynamic activation range      | Paul Sauve |  |
 | server |  Early return optimization for target finding      | Paul Sauve |  |
 | server |  Execute chunk tasks mid-tick      | Spottedleaf |  |
+| api |  Expose findClass for profiler      | Paul Sauve |  |
 | server |  Fix &#39;outdated server&#39; showing in ping before server fully      | William Blake Galbreath |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
