@@ -5,8 +5,8 @@ plugins {
 }
 
 toothpick {
-    forkName = "Yatopia"
-    groupId = "org.yatopiamc"
+    forkName = "AYFF"
+    groupId = "com.ayff"
     val versionTag = System.getenv("BUILD_NUMBER")
         ?: "\"${gitCmd("rev-parse", "--short", "HEAD").output}\""
     if(!System.getenv("BRANCH_NAME").isNullOrEmpty()) {
@@ -20,7 +20,7 @@ toothpick {
         if(currentBranch == "HEAD") logger.warn("You are currently in \'detached HEAD\' state, branch information isn\'t available")
     }
     forkVersion = "git-$forkName-$currentBranch-$versionTag"
-    forkUrl = "https://github.com/YatopiaMC/Yatopia"
+    forkUrl = "https://github.com/foss-mc/A-Yatopia-Framwork-Fork"
 
     minecraftVersion = "1.16.5"
     nmsPackage = "1_16_R3"

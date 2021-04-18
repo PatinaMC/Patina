@@ -1,6 +1,6 @@
 import java.util.Locale
 
-val forkName = "Yatopia"
+val forkName = "AYFF"
 val forkNameLowercase = forkName.toLowerCase(Locale.ENGLISH)
 
 rootProject.name = forkNameLowercase
