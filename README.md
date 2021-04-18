@@ -2,6 +2,8 @@
 
 A distribution of performance-oriented Bukkit patches
 
+![logo](logo.png)
+
 ## Build
 
 ```

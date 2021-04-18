@@ -215,4 +215,5 @@ This is an overview over all patches that are currently used.
 | server |  lithium reduce allocations      | JellySquid | Mykyta Komarnytskyy |
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
 | server |  lithium: optimize &#96;BlockPos.iterateOutwards&#96; by caching      | 2No2Name |  |
+| server |  logo      | foss-mc |  |
 | server |  tic-tacs: unblocking      | Gegy |  |
