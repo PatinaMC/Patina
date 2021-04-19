@@ -9,22 +9,18 @@ This is an overview over all patches that are currently used.
 | Side | Patch        | Author           | CoAuthors  |
 | ----- | ------------- |:-------------:| -----:|
 | server |  Actually unload POI data      | Spottedleaf |  |
-| server |  Add IntelliJ IDEA runnable      | Zoe |  |
 | server |  Add MC-4 fix back      | BillyGalbreath |  |
 | server |  Add Velocity natives for encryption and compression      | Andrew Steinborn |  |
-| server |  Add nspt command      | Ivan Pekov |  |
 | server |  Add option to disable observer clocks      | Phoenix616 |  |
 | server |  Add packet limiter config      | Spottedleaf |  |
 | server |  Add permission for F3+N debug      | William Blake Galbreath |  |
 | server |  Add soft async catcher      | Spottedleaf |  |
 | server |  Add timings for Behavior      | Phoenix616 |  |
-| server |  Add timings for Pathfinder      | MrIvanPlays |  |
 | server |  Airplane Configuration      | Paul Sauve |  |
 | server |  Airplane MC Dev Fixes      | Paul Sauve |  |
 | server |  Airplane Profiler      | Paul Sauve |  |
 | server |  Allow Entities to be removed from a world while ticking      | Spottedleaf |  |
 | server |  Allow controlled flushing for network manager      | Spottedleaf |  |
-| server |  Allow to change the piston push limit      | tr7zw |  |
 | server |  Attempt to recalculate regionfile header if it is corrupt      | Spottedleaf |  |
 | server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |
@@ -32,23 +28,15 @@ This is an overview over all patches that are currently used.
 | server |  Cache entityhuman display name      | Paul Sauve |  |
 | server |  Cache palette array      | Paul Sauve |  |
 | server |  Change writes to use NORMAL priority rather than LOW      | Spottedleaf |  |
-| server |  Configurable BlockPhysicsEvent      | Mykyta Komarnytskyy |  |
 | server |  Configurable TPS Catchup      | William Blake Galbreath |  |
-| server |  Configurable criterion triggers      | Mykyta Komarnytskyy |  |
-| server |  Configurable enchanting table tick      | Ivan Pekov |  |
-| server |  Configurable flight checks      | l_MrBoom_l |  |
-| server |  Configurable movement checks      | l_MrBoom_l |  |
 | server |  Configurable villager brain ticks      | William Blake Galbreath |  |
 | server |  Consolidate flush calls for entity tracker packets      | Spottedleaf |  |
 | server |  Copy passenger list in enderTeleportTo      | Spottedleaf |  |
-| server |  Custom Locale Support      | Zoe |  |
 | server |  Custom table implementation for blockstate state lookups      | Spottedleaf |  |
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
 | server |  Disable Paper timings by default      | Paul Sauve |  |
-| server |  Disable Snooper      | foss-mc |  |
 | server |  Disable outdated build check      | William Blake Galbreath |  |
-| api |  Disable reload command      | Ivan Pekov |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
@@ -67,36 +55,28 @@ This is an overview over all patches that are currently used.
 | server |  Dont send useless entity packets      | William Blake Galbreath |  |
 | server |  Dynamic activation range      | Paul Sauve |  |
 | server |  Early return optimization for target finding      | Paul Sauve |  |
-| server |  Ensure pools create daemon threads      | Ivan Pekov |  |
 | server |  Execute chunk tasks mid-tick      | Spottedleaf |  |
 | api |  Expose findClass for profiler      | Paul Sauve |  |
 | server |  Fix &#39;outdated server&#39; showing in ping before server fully      | William Blake Galbreath |  |
 | server |  Fix Bukkit.createInventory() with type LECTERN      | willies952002 |  |
-| server |  Fix IndexOutOfBoundsException when sending too many changes      | Ivan Pekov |  |
 | server |  Fix LightEngineThreaded memory leak      | Ivan Pekov |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
 | server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
 | server |  Fix incorrect isRealPlayer init      | Spottedleaf |  |
-| server |  Fix lead fall dmg config      | tr7zw |  |
 | server |  Fix swamp hut cat generation deadlock      | Spottedleaf |  |
 | server |  Fix the dead lagging the server      | William Blake Galbreath |  |
-| server |  Global Eula file      | tr7zw |  |
-| server |  Heavily optimize furnance fuel and recipe lookups      | tr7zw | Mykyta Komarn |
 | server |  Heavily optimize recipe lookups in CraftingManager      | Mykyta Komarn | Ivan Pekov, ishland |
 | server |  Highly optimise single and multi-AABB VoxelShapes and      | Spottedleaf |  |
-| server |  Highly optimize VillagePlace filtering      | Ivan Pekov |  |
 | server |  Hopper Optimizations      | Phoenix616 |  |
 | server |  Improve abnormal server shutdown process      | Spottedleaf |  |
 | server |  Improve async tp to not load chunks when crossing worlds      | Spottedleaf |  |
 | server |  Improve fluid direction caching      | Paul Sauve |  |
 | server |  Improve paper prevent moving into unloaded chunk check      | Spottedleaf |  |
 | server |  Improved oversized chunk data packet handling      | Spottedleaf |  |
-| server |  Item stuck sleep config      | tr7zw |  |
 | server |  Lag compensate block breaking      | Spottedleaf |  |
 | server |  Lagging threshold      | William Blake Galbreath |  |
 | api |  Lagging threshold      | William Blake Galbreath |  |
-| server |  Lithium: CompactSineLUT      | JellySquid |  |
 | server |  Logger settings (suppressing pointless logs)      | William Blake Galbreath |  |
 | server |  MC-168772 Fix - Add turtle egg block options      | William Blake Galbreath |  |
 | server |  MC-Dev fixes      | Spottedleaf |  |
@@ -105,19 +85,14 @@ This is an overview over all patches that are currently used.
 | server |  Make sure inlined getChunkAt has inlined logic for loaded      | Spottedleaf |  |
 | server |  Manually inline methods in BlockPosition      | Spottedleaf |  |
 | server |  Modify POM      | YatopiaMC |  |
-| server |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
-| server |  Modify default configs      | tr7zw |  |
 | server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
 | server |  Multi-Threaded Server Ticking Vanilla      | Spottedleaf |  |
 | server |  Multi-Threaded ticking CraftBukkit      | Spottedleaf |  |
 | server |  Multithreaded entity tracking      | Paul Sauve |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
-| server |  Not discard timed-out tasks      | foss-mc |  |
-| server |  Nuke streams off BlockPosition      | Ivan Pekov |  |
-| server |  Nuke streams off SectionPosition      | Ivan Pekov |  |
 | server |  Only check for spooky season once an hour      | Paul Sauve |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
@@ -131,27 +106,20 @@ This is an overview over all patches that are currently used.
 | server |  Optimise snow &amp; ice in chunk ticking      | Spottedleaf |  |
 | server |  Optimise tab complete      | Spottedleaf |  |
 | server |  Optimize BehaviorController      | MrIvanPlays |  |
-| server |  Optimize TileEntity load/unload      | tr7zw |  |
-| server |  Optimize Villagers      | Ivan Pekov |  |
 | server |  Optimize advancement loading      | Ivan Pekov |  |
 | server |  Optimize inventory API item handling      | Phoenix616 |  |
 | server |  Optimize random calls in chunk ticking      | Paul Sauve |  |
-| server |  Optimize some stuff in WorldServer ticking      | MrIvanPlays |  |
 | server |  Optimize whitelist command for multiple additions / removals      | Ivan Pekov |  |
 | server |  Option for simpler Villagers      | tr7zw |  |
 | server |  Origami Server Config      | Phoenix616 |  |
 | server |  Per World Spawn Limits      | Chase Whipple |  |
-| server |  Per entity (type) collision settings      | MrIvanPlays | tr7zw |
 | api |  Per player viewdistances      | Spottedleaf |  |
-| server |  Port LazyDFU      | Andrew Steinborn |  |
-| server |  Preload ProtocolLib EnumWrappers      | ishland |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
 | server |  Prevent unload() calls removing tickets for sync loads      | Spottedleaf |  |
 | server |  Properly handle cancellation of projectile hit event      | Spottedleaf |  |
 | server |  Purpur config files      | William Blake Galbreath |  |
 | api |  Purpur config files      | William Blake Galbreath |  |
 | server |  Range check flag dirty calls in PlayerChunk      | Spottedleaf |  |
-| server |  Redirect Configs      | tr7zw |  |
 | server |  Reduce allocation rate from crammed entities      | Spottedleaf |  |
 | server |  Reduce allocs &amp; improve perf of StructureManager      | Paul Sauve |  |
 | server |  Reduce chunk loading &amp; lookups      | Paul Sauve |  |
@@ -160,14 +128,11 @@ This is an overview over all patches that are currently used.
 | server |  Reduce memory allocations      | Paul Sauve |  |
 | server |  Reduce pathfinder branches      | Spottedleaf |  |
 | server |  Reduce projectile chunk loading      | Paul Sauve |  |
-| server |  Remove PaperMC Metrics      | foss-mc |  |
-| server |  Remove VersionFetcher      | foss-mc |  |
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
 | server |  Remove iterators from inventory contains      | Paul Sauve |  |
 | server |  Remove some streams and object allocations      | Phoenix616 |  |
 | server |  Remove streams      | Paul Sauve |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
-| server |  Remove unnecessary &#96;LogManager.getLogger()&#96;      | foss-mc |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
 | server |  Revert getChunkAt(Async) retaining chunks for long periods of      | Spottedleaf |  |
@@ -175,7 +140,6 @@ This is an overview over all patches that are currently used.
 | server |  Rewrite the light engine      | Spottedleaf |  |
 | server |  Send full pos packets for hard colliding entities      | Spottedleaf |  |
 | server |  Separate lookup locking from state access in UserCache      | Spottedleaf |  |
-| server |  Shutdown Bootstrap thread pool      | foss-mc |  |
 | server |  Simpler ShapelessRecipes comparison for Vanilla      | Paul Sauve |  |
 | server |  Skip POI finding if stuck in vehicle      | Paul Sauve |  |
 | server |  Skip copying unloading tile entities      | Paul Sauve |  |
@@ -186,9 +150,6 @@ This is an overview over all patches that are currently used.
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Stop wasting resources on JsonList#get      | Ivan Pekov |  |
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
-| server |  Subtle Changes      | foss-mc |  |
-| server |  Suspected plugins report      | ishland |  |
-| api |  Suspected plugins report      | ishland |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
 | server |  Swaps the predicate order of collision      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Tick fluids config      | BillyGalbreath |  |
@@ -203,9 +164,7 @@ This is an overview over all patches that are currently used.
 | server |  Utilities      | YatopiaMC | Mykyta Komarnytskyy, Ivan Pekov |
 | api |  Yatopia Config &amp; Redirect Config      | YatopiaMC |  |
 | server |  Yatopia configuration      | tr7zw |  |
-| server |  add config for logging login location      | Simon Gardling |  |
 | server |  dont load chunks for physics      | Aikar |  |
-| server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
 | server |  lithium DataTrackerMixin      | JellySquid | tr7zw |
 | server |  lithium HashedList      | JellySquid |  |
 | server |  lithium MixinBox      | JellySquid |  |
@@ -214,11 +173,6 @@ This is an overview over all patches that are currently used.
 | server |  lithium NoiseChunkGeneratorMixin      | JellySquid |  |
 | server |  lithium PerlinNoiseSamplerMixin      | JellySquid | Bud Gidiere |
 | server |  lithium VoronoiBiomeAccessTypeMixin      | JellySquid |  |
-| server |  lithium block      | JellySquid | Hugo Planque |
 | server |  lithium enum_values      | JellySquid |  |
-| server |  lithium gen      | JellySquid | Hugo Planque |
 | server |  lithium reduce allocations      | JellySquid | Mykyta Komarnytskyy |
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
-| server |  lithium: optimize &#96;BlockPos.iterateOutwards&#96; by caching      | 2No2Name |  |
-| server |  logo      | foss-mc |  |
-| server |  tic-tacs: unblocking      | Gegy |  |

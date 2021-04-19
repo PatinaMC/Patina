@@ -42,10 +42,10 @@ index be408aebbccbda46e8aa82ef337574137cfa0096..739839314fd8a88b5fca8b9678e1df07
      private final boolean threadRestricted;
  
 diff --git a/src/main/java/gg/airplane/AirplaneConfig.java b/src/main/java/gg/airplane/AirplaneConfig.java
-index a77e628518920e84b03a8a00e1308a9a53a00896..5a20ad857b7c550281000e8d94dac78d72591f31 100644
+index 7ec84ef1d1cbb1fabf4c590a2f2c1da3cc181010..b9118cc08ac38e0813d0677700d3d7dcf9b74159 100644
 --- a/src/main/java/gg/airplane/AirplaneConfig.java
 +++ b/src/main/java/gg/airplane/AirplaneConfig.java
-@@ -96,4 +96,17 @@ public class AirplaneConfig {
+@@ -102,4 +102,17 @@ public class AirplaneConfig {
      }
  
  

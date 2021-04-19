@@ -149,12 +149,12 @@ index 5539c4cbea46398e92ab6ec56bb9b821e5f01e02..9aa9bb5f99c79e679fdf53ef343726f0
              MinecraftServer minecraftserver = ((WorldServer) this.world).getMinecraftServer();
  
 diff --git a/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java b/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
-index a790e1e5161d956ccc1023b0d4bcac647627150a..0f3803757a81c7ecaad48637ede8a3dc95b93f13 100644
+index f5a43e607f9c13e07a0f5e7e139eed93f159185b..ed57db2b7427f0fe9f327b67dbbc4098fe2f93d3 100644
 --- a/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
 +++ b/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
-@@ -199,4 +199,11 @@ public class YatopiaConfig {
-     private static void itemStuckSleepTicks() {
-         itemStuckSleepTicks = getInt("settings.itemStuckSleepTicks", 1);
+@@ -189,4 +189,11 @@ public class YatopiaConfig {
+     private static void brandName() {
+         brandName = getString("brand-name", brandName);
      }
 +
 +    public static boolean simplerVillagerBehavior = false;

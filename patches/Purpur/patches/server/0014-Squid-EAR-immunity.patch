@@ -21,7 +21,7 @@ index 98ada5d2cf768b3ceb0715d8eade5cb9e038ba21..1aa7810b914fca470ccf0b999488d203
      public boolean villagerUseBrainTicksOnlyWhenLagging = true;
      private void villagerSettings() {
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 6c4c4580faef39e48de5af4db003cf2e3b8a99b5..18471808c24f030d5b3b94d6d9f2b179f0ffbb33 100644
+index 8b36ca5062f8e0e8bd58aa506e91704a747de81b..a81bdb0429d29b2da4e7e897045c2b0445366616 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityLiving;
@@ -32,7 +32,7 @@ index 6c4c4580faef39e48de5af4db003cf2e3b8a99b5..18471808c24f030d5b3b94d6d9f2b179
  import net.minecraft.world.entity.boss.EntityComplexPart;
  import net.minecraft.world.entity.boss.enderdragon.EntityEnderCrystal;
  import net.minecraft.world.entity.boss.enderdragon.EntityEnderDragon;
-@@ -385,6 +386,7 @@ public class ActivationRange
+@@ -386,6 +387,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
