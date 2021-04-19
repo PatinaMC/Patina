@@ -15,7 +15,6 @@ This is an overview over all patches that are currently used.
 | server |  Add packet limiter config      | Spottedleaf |  |
 | server |  Add permission for F3+N debug      | William Blake Galbreath |  |
 | server |  Add soft async catcher      | Spottedleaf |  |
-| server |  Add timings for Behavior      | Phoenix616 |  |
 | server |  Airplane Configuration      | Paul Sauve |  |
 | server |  Airplane MC Dev Fixes      | Paul Sauve |  |
 | server |  Airplane Profiler      | Paul Sauve |  |
