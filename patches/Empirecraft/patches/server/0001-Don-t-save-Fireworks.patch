@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Aikar <aikar@aikar.co>
+Date: Sat, 28 Dec 2013 21:25:06 -0500
+Subject: [PATCH] Don't save Fireworks
+
+Fireworks can bug out and not detonate, and an automated
+launcher can very easily fill a chunk.
+
+Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index cd79fe68f5e53d9bac058995bfa6ae86549f00db..8bcee2cecbe58bc1eca111b17a4390d294a47685 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -70,6 +70,7 @@ import net.minecraft.world.entity.animal.EntityFish;
+ import net.minecraft.world.entity.decoration.EntityHanging;
+ import net.minecraft.world.entity.item.EntityItem;
+ import net.minecraft.world.entity.player.EntityHuman;
++import net.minecraft.world.entity.projectile.EntityFireworks;
+ import net.minecraft.world.entity.vehicle.EntityBoat;
+ import net.minecraft.world.entity.vehicle.EntityMinecartAbstract;
+ import net.minecraft.world.item.ItemStack;
+@@ -1861,6 +1862,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+     }
+ 
+     public boolean d(NBTTagCompound nbttagcompound) {
++        if (this instanceof EntityFireworks) return false; // EMC
+         return this.isPassenger() ? false : this.a_(nbttagcompound);
+     }
+ 

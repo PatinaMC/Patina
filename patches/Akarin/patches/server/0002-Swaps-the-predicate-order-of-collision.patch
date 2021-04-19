@@ -6,10 +6,10 @@ Subject: [PATCH] Swaps the predicate order of collision
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index cd79fe68f5e53d9bac058995bfa6ae86549f00db..a5a353ab134ac4b504c1f3db0a0b4e757ea9b000 100644
+index 8bcee2cecbe58bc1eca111b17a4390d294a47685..66c1afc21c11930f90cfb82e2af033aec4d44be0 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1714,8 +1714,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1715,8 +1715,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
      public void pickup(EntityHuman entityhuman) {}
  
      public void collide(Entity entity) {

@@ -51,7 +51,9 @@ This is an overview over all patches that are currently used.
 | server |  Don&#39;t load chunk with seed based feature search      | Phoenix616 |  |
 | server |  Don&#39;t lookup fluid state when raytracing      | Spottedleaf |  |
 | server |  Don&#39;t read neighbour chunk data off disk when converting      | Spottedleaf |  |
+| server |  Don&#39;t save Fireworks      | Aikar |  |
 | server |  Don&#39;t trigger Lootable Refresh for non player interaction      | Aikar |  |
+| server |  Don&#39;t use force unload for keep spawn setting change      | Aikar |  |
 | server |  Don&#39;t wake up entities when damage event is cancelled      | Phoenix616 |  |
 | server |  Dont send useless entity packets      | William Blake Galbreath |  |
 | server |  Dynamic activation range      | Paul Sauve |  |
