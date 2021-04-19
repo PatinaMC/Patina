@@ -5,7 +5,7 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e8245c4683f 100644
+index 26bf55db34f9de616506af9245ded0de638b9508..156b013f4293df3ce94a4cb8981ccafd0c4479db 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -183,7 +183,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
@@ -38,7 +38,7 @@ index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e82
  
          this.dataPackResources.close();
  
-@@ -1450,14 +1450,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1445,14 +1445,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              //MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -55,7 +55,7 @@ index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e82
  
          this.methodProfiler.exit();
  
-@@ -1804,7 +1804,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1799,7 +1799,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.L = s1;
      }
  
@@ -64,7 +64,7 @@ index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e82
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
          mojangstatisticsgenerator.a("whitelist_enabled", false);
          mojangstatisticsgenerator.a("whitelist_count", 0);
-@@ -1836,7 +1836,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1831,7 +1831,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
          mojangstatisticsgenerator.a("worlds", i);
@@ -74,10 +74,10 @@ index aa691249eaf89bc931a69d716147d5deef5edbee..13c89e3c31c2bfad738eeed80aff4e82
      public abstract boolean j();
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 2959113e45ad85c515c88dd4a55dd156e35b91cd..9056866adb70b719ded1502d0d76f50ae27b7a2e 100644
+index 78f7155c8bbeb2b93d42fc2b108ff4135038ea72..abe8e051a0337559edbeabf94e89c704f0d99772 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -446,12 +446,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -445,12 +445,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          return this.getDedicatedServerProperties().allowNether;
      }
  

@@ -36,6 +36,7 @@ This is an overview over all patches that are currently used.
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
 | server |  Disable Paper timings by default      | Paul Sauve |  |
+| server |  Disable Snooper      | foss-mc |  |
 | server |  Disable outdated build check      | William Blake Galbreath |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
@@ -85,6 +86,7 @@ This is an overview over all patches that are currently used.
 | server |  Make sure inlined getChunkAt has inlined logic for loaded      | Spottedleaf |  |
 | server |  Manually inline methods in BlockPosition      | Spottedleaf |  |
 | server |  Modify POM      | YatopiaMC |  |
+| server |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
 | server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
@@ -93,6 +95,7 @@ This is an overview over all patches that are currently used.
 | server |  Multithreaded entity tracking      | Paul Sauve |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
+| server |  Not discard timed-out tasks      | foss-mc |  |
 | server |  Only check for spooky season once an hour      | Paul Sauve |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
@@ -128,11 +131,14 @@ This is an overview over all patches that are currently used.
 | server |  Reduce memory allocations      | Paul Sauve |  |
 | server |  Reduce pathfinder branches      | Spottedleaf |  |
 | server |  Reduce projectile chunk loading      | Paul Sauve |  |
+| server |  Remove PaperMC Metrics      | foss-mc |  |
+| server |  Remove VersionFetcher      | foss-mc |  |
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
 | server |  Remove iterators from inventory contains      | Paul Sauve |  |
 | server |  Remove some streams and object allocations      | Phoenix616 |  |
 | server |  Remove streams      | Paul Sauve |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
+| server |  Remove unnecessary &#96;LogManager.getLogger()&#96;      | foss-mc |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
 | server |  Revert getChunkAt(Async) retaining chunks for long periods of      | Spottedleaf |  |
@@ -150,6 +156,7 @@ This is an overview over all patches that are currently used.
 | server |  Stop large move vectors in player packet handling from      | Spottedleaf |  |
 | server |  Stop wasting resources on JsonList#get      | Ivan Pekov |  |
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
+| server |  Subtle Changes      | foss-mc |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
 | server |  Swaps the predicate order of collision      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Tick fluids config      | BillyGalbreath |  |
@@ -165,6 +172,7 @@ This is an overview over all patches that are currently used.
 | api |  Yatopia Config &amp; Redirect Config      | YatopiaMC |  |
 | server |  Yatopia configuration      | tr7zw |  |
 | server |  dont load chunks for physics      | Aikar |  |
+| server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
 | server |  lithium DataTrackerMixin      | JellySquid | tr7zw |
 | server |  lithium HashedList      | JellySquid |  |
 | server |  lithium MixinBox      | JellySquid |  |
@@ -176,3 +184,4 @@ This is an overview over all patches that are currently used.
 | server |  lithium enum_values      | JellySquid |  |
 | server |  lithium reduce allocations      | JellySquid | Mykyta Komarnytskyy |
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
+| server |  logo      | foss-mc |  |
