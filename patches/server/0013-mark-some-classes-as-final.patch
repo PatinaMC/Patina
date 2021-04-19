@@ -3255,19 +3255,6 @@ index 847c91305d23b99e612b9e5f988df14d3fb84a8c..867f5eb9dab01618fd269db5efea754b
  
      private static final IChatBaseComponent a = new ChatMessage("multiplayer.status.request_handled");
      private final MinecraftServer minecraftServer;
-diff --git a/src/main/java/net/minecraft/server/packs/ResourcePackVanilla.java b/src/main/java/net/minecraft/server/packs/ResourcePackVanilla.java
-index 658341cbcde0a19869bab81fed8f19ac3e4bcca5..30d06ff58a1cdd1e894077912efd0ca9ff67d449 100644
---- a/src/main/java/net/minecraft/server/packs/ResourcePackVanilla.java
-+++ b/src/main/java/net/minecraft/server/packs/ResourcePackVanilla.java
-@@ -33,7 +33,7 @@ import net.minecraft.server.packs.metadata.ResourcePackMetaParser;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
- 
--public class ResourcePackVanilla implements IResourcePack {
-+final public class ResourcePackVanilla implements IResourcePack {
- 
-     public static Path a;
-     private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/packs/repository/ResourcePackSourceVanilla.java b/src/main/java/net/minecraft/server/packs/repository/ResourcePackSourceVanilla.java
 index 884b2f0dc7885192c4cfb68c0328df2d6bf6db81..0a28048aea7fcf99c6f39f34f0d76e5e4653d1e2 100644
 --- a/src/main/java/net/minecraft/server/packs/repository/ResourcePackSourceVanilla.java

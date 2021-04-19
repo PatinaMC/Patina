@@ -135,6 +135,7 @@ This is an overview over all patches that are currently used.
 | server |  Reduce projectile chunk loading      | Paul Sauve |  |
 | server |  Remove PaperMC Metrics      | foss-mc |  |
 | server |  Remove VersionFetcher      | foss-mc |  |
+| api |  Remove VersionFetcher      | foss-mc |  |
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
 | server |  Remove iterators from inventory contains      | Paul Sauve |  |
 | server |  Remove some streams and object allocations      | Phoenix616 |  |
@@ -190,3 +191,4 @@ This is an overview over all patches that are currently used.
 | server |  logo      | foss-mc |  |
 | server |  mark some OBFHELPER as final      | foss-mc |  |
 | server |  mark some classes as final      | foss-mc |  |
+| server |  mc-dev fix      | foss-mc |  |
