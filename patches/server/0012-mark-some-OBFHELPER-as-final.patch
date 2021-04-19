@@ -1,0 +1,149 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 19 Apr 2021 10:35:27 +0000
+Subject: [PATCH] mark some OBFHELPER as final
+
+
+diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutEntity.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutEntity.java
+index 2b54a5f3347f788b751892105f888663bb349629..beeee3cc749247e7015cc4416c7218ff15b0a6d0 100644
+--- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutEntity.java
++++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutEntity.java
+@@ -9,11 +9,11 @@ import net.minecraft.world.phys.Vec3D;
+ public class PacketPlayOutEntity implements Packet<PacketListenerPlayOut> {
+ 
+     protected int a;
+-    protected short b; public short getX() { return b; } // Purpur - OBFHELPER
+-    protected short c; public short getY() { return c; } // Purpur - OBFHELPER
+-    protected short d; public short getZ() { return d; } // Purpur - OBFHELPER
+-    protected byte e; public byte getYaw() { return e; } // Purpur - OBFHELPER
+-    protected byte f; public byte getPitch() { return f; } // Purpur - OBFHELPER
++    protected short b; public final short getX() { return b; } // Purpur - OBFHELPER
++    protected short c; public final short getY() { return c; } // Purpur - OBFHELPER
++    protected short d; public final short getZ() { return d; } // Purpur - OBFHELPER
++    protected byte e; public final byte getYaw() { return e; } // Purpur - OBFHELPER
++    protected byte f; public final byte getPitch() { return f; } // Purpur - OBFHELPER
+     protected boolean g;
+     protected boolean h;
+     protected boolean i;
+diff --git a/src/main/java/net/minecraft/network/protocol/status/ServerPing.java b/src/main/java/net/minecraft/network/protocol/status/ServerPing.java
+index b9e36a83837913cd3e5abe598f695ba7a9ffc417..e2f0ac82acb8463e7fe858d80e0c8f6d2ce12924 100644
+--- a/src/main/java/net/minecraft/network/protocol/status/ServerPing.java
++++ b/src/main/java/net/minecraft/network/protocol/status/ServerPing.java
+@@ -31,7 +31,7 @@ public class ServerPing {
+         this.a = ichatbasecomponent;
+     }
+ 
+-    public ServerPingPlayerSample getPlayers() { return b(); } // Paper - OBFHELPER
++    public final ServerPingPlayerSample getPlayers() { return b(); } // Paper - OBFHELPER
+     public ServerPing.ServerPingPlayerSample b() {
+         return this.b;
+     }
+@@ -163,12 +163,12 @@ public class ServerPing {
+             return this.b;
+         }
+ 
+-        public GameProfile[] getSample() { return c(); } // Paper - OBFHELPER
++        public final GameProfile[] getSample() { return c(); } // Paper - OBFHELPER
+         public GameProfile[] c() {
+             return this.c;
+         }
+ 
+-        public void setSample(GameProfile[] sample) { a(sample); } // Paper - OBFHELPER
++        public final void setSample(GameProfile[] sample) { a(sample); } // Paper - OBFHELPER
+         public void a(GameProfile[] agameprofile) {
+             this.c = agameprofile;
+         }
+diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
+index c9d6ddd8874195c07b3573c6b1f61ffdcff2dddd..5aac86895287a32c2c5351780a46c146b74185bc 100644
+--- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
+@@ -1960,7 +1960,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+     }
+     // Paper end - optimise isOutsideOfRange
+ 
+-    private boolean cannotLoadChunks(EntityPlayer entityplayer) { return this.b(entityplayer); } // Paper - OBFHELPER
++    private final boolean cannotLoadChunks(EntityPlayer entityplayer) { return this.b(entityplayer); } // Paper - OBFHELPER
+     private boolean b(EntityPlayer entityplayer) {
+         return entityplayer.isSpectator() && !this.world.getGameRules().getBoolean(GameRules.SPECTATORS_GENERATE_CHUNKS);
+     }
+@@ -2474,7 +2474,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+ 
+     }
+ 
+-    public VillagePlace getVillagePlace() { return this.h(); } // Paper - OBFHELPER
++    public final VillagePlace getVillagePlace() { return this.h(); } // Paper - OBFHELPER
+     protected VillagePlace h() {
+         return this.m;
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
+index 79816446cbe322672dd21c86c19b6ec92541d319..88a31046dc3109294e106b7853b7fa0ff1ad209b 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
++++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
+@@ -1584,7 +1584,7 @@ public abstract class EntityLiving extends Entity {
+         }
+     }
+ 
+-    protected org.bukkit.event.entity.EntityDeathEvent processDeath(DamageSource damagesource) { return d(damagesource); } // Paper - OBFHELPER
++    protected final org.bukkit.event.entity.EntityDeathEvent processDeath(DamageSource damagesource) { return d(damagesource); } // Paper - OBFHELPER
+     protected org.bukkit.event.entity.EntityDeathEvent d(DamageSource damagesource) { // Paper
+         Entity entity = damagesource.getEntity();
+         int i;
+@@ -2256,7 +2256,7 @@ public abstract class EntityLiving extends Entity {
+         return 1.0F;
+     }
+ 
+-    public float getSoundPitch() { return dH();} // Paper - OBFHELPER
++    public final float getSoundPitch() { return dH();} // Paper - OBFHELPER
+     protected float dH() {
+         return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F;
+     }
+@@ -3412,12 +3412,12 @@ public abstract class EntityLiving extends Entity {
+         return this.activeItem;
+     }
+ 
+-    public int getItemUseRemainingTime() { return this.dZ(); } // Paper - OBFHELPER
++    public final int getItemUseRemainingTime() { return this.dZ(); } // Paper - OBFHELPER
+     public int dZ() {
+         return this.bd;
+     }
+ 
+-    public int getHandRaisedTime() { return this.ea(); } // Paper - OBFHELPER
++    public final int getHandRaisedTime() { return this.ea(); } // Paper - OBFHELPER
+     public int ea() {
+         return this.isHandRaised() ? this.activeItem.k() - this.dZ() : 0;
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
+index 10611b8c72b0c0c3202e9ae5b956974ec1a37aa3..abc16ae6ecd5d03639ff8854d56f5cd5bb54c929 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
+@@ -40,7 +40,7 @@ public class PathfinderGoalSelector {
+         this.e = supplier;
+     }
+ 
+-    public void addGoal(int priority, PathfinderGoal goal) {a(priority, goal);} public void a(int i, PathfinderGoal pathfindergoal) { // Paper - OBFHELPER
++    public final void addGoal(int priority, PathfinderGoal goal) {a(priority, goal);} public void a(int i, PathfinderGoal pathfindergoal) { // Paper - OBFHELPER
+         this.d.add(new PathfinderGoalWrapped(i, pathfindergoal));
+     }
+ 
+@@ -64,7 +64,7 @@ public class PathfinderGoalSelector {
+     }
+     // Paper end
+ 
+-    public void removeGoal(PathfinderGoal goal) {a(goal);} public void a(PathfinderGoal pathfindergoal) { // Paper - OBFHELPER
++    public final void removeGoal(PathfinderGoal goal) {a(goal);} public void a(PathfinderGoal pathfindergoal) { // Paper - OBFHELPER
+         // Paper start - remove streams from pathfindergoalselector
+         for (Iterator<PathfinderGoalWrapped> iterator = this.d.iterator(); iterator.hasNext();) {
+             PathfinderGoalWrapped goalWrapped = iterator.next();
+diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
+index 68d42d3445b40bd6c90e2a415e6c09cddbf25fb6..efde29ef6acd78472e423fc41e2e07866b7f4145 100644
+--- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
++++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
+@@ -2132,7 +2132,7 @@ public abstract class EntityHuman extends EntityLiving {
+         this.datawatcher.set(EntityHuman.bl, nbttagcompound);
+     }
+ 
+-    public float getCooldownPeriod() { return this.eR(); } // Paper - OBFHELPER
++    public final float getCooldownPeriod() { return this.eR(); } // Paper - OBFHELPER
+     public float eR() {
+         return (float) (1.0D / this.b(GenericAttributes.ATTACK_SPEED) * 20.0D);
+     }

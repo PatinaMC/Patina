@@ -97,6 +97,7 @@ This is an overview over all patches that are currently used.
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
 | server |  Not discard timed-out tasks      | foss-mc |  |
+| server |  Nuke Bootstrap thread pool      | foss-mc |  |
 | server |  Only check for spooky season once an hour      | Paul Sauve |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
@@ -172,6 +173,7 @@ This is an overview over all patches that are currently used.
 | server |  Utilities      | YatopiaMC | Mykyta Komarnytskyy, Ivan Pekov |
 | api |  Yatopia Config &amp; Redirect Config      | YatopiaMC |  |
 | server |  Yatopia configuration      | tr7zw |  |
+| server |  don&#39;t create new random instance      | foss-mc |  |
 | server |  dont load chunks for physics      | Aikar |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
 | server |  lithium DataTrackerMixin      | JellySquid | tr7zw |
@@ -186,3 +188,4 @@ This is an overview over all patches that are currently used.
 | server |  lithium reduce allocations      | JellySquid | Mykyta Komarnytskyy |
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
 | server |  logo      | foss-mc |  |
+| server |  mark some OBFHELPER as final      | foss-mc |  |

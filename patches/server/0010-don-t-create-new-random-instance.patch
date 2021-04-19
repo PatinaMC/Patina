@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 19 Apr 2021 10:33:02 +0000
+Subject: [PATCH] don't create new random instance
+
+
+diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
+index fd6dbbf619b828c4ef3d00f8dc30d3893007db7b..fdd9484718b36c272c12d29505cf4034ccd2fc23 100644
+--- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
+@@ -322,7 +322,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+             long l = k * k;
+             int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
+             int j1 = this.u(i1);
+-            int k1 = (new Random()).nextInt(i1);
++            int k1 = worldserver.random.nextInt(i1); // Yatopia - don't create new random instance
+ 
+             for (int l1 = 0; l1 < i1; ++l1) {
+                 int i2 = (k1 + j1 * l1) % i1;
+@@ -360,7 +360,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+             long l = k * k;
+             int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
+             int j1 = this.u(i1);
+-            int k1 = (new Random()).nextInt(i1);
++            int k1 = worldserver.random.nextInt(i1); // Yatopia - don't create new random instance
+ 
+             for (int l1 = 0; l1 < i1; ++l1) {
+                 int i2 = (k1 + j1 * l1) % i1;
