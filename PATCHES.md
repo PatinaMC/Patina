@@ -189,3 +189,4 @@ This is an overview over all patches that are currently used.
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
 | server |  logo      | foss-mc |  |
 | server |  mark some OBFHELPER as final      | foss-mc |  |
+| server |  mark some classes as final      | foss-mc |  |
