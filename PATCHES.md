@@ -61,6 +61,7 @@ This is an overview over all patches that are currently used.
 | api |  Expose findClass for profiler      | Paul Sauve |  |
 | server |  Fix &#39;outdated server&#39; showing in ping before server fully      | William Blake Galbreath |  |
 | server |  Fix Bukkit.createInventory() with type LECTERN      | willies952002 |  |
+| server |  Fix Give command      | foss-mc |  |
 | server |  Fix LightEngineThreaded memory leak      | Ivan Pekov |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
@@ -191,4 +192,3 @@ This is an overview over all patches that are currently used.
 | server |  logo      | foss-mc |  |
 | server |  mark some OBFHELPER as final      | foss-mc |  |
 | server |  mark some classes as final      | foss-mc |  |
-| server |  mc-dev fix      | foss-mc |  |

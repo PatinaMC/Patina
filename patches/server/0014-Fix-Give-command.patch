@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Tue, 20 Apr 2021 10:18:23 +0000
+Subject: [PATCH] Fix Give command
+
+
+diff --git a/src/main/java/net/minecraft/server/commands/CommandGive.java b/src/main/java/net/minecraft/server/commands/CommandGive.java
+index 75d617b0a24ea7fd7ef5d6f5ac73d98a39a79f75..8d2ad009d4053587bce345d0fc2b907c76dc5250 100644
+--- a/src/main/java/net/minecraft/server/commands/CommandGive.java
++++ b/src/main/java/net/minecraft/server/commands/CommandGive.java
+@@ -47,6 +47,7 @@ final public class CommandGive {
+                 boolean flag = entityplayer.inventory.pickup(itemstack);
+                 EntityItem entityitem;
+ 
++                if (true) continue; // EMC - never drop items
+                 if (flag && itemstack.isEmpty()) {
+                     itemstack.setCount(1);
+                     entityitem = entityplayer.drop(itemstack, false);
