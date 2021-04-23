@@ -193,3 +193,4 @@ This is an overview over all patches that are currently used.
 | server |  logo      | foss-mc |  |
 | server |  mark some OBFHELPER as final      | foss-mc |  |
 | server |  mark some classes as final      | foss-mc |  |
+| server |  remove Yatopia&#39;s brand-name: it is incomplete      | foss-mc |  |
