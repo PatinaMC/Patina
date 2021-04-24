@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sat, 24 Apr 2021 06:56:03 +0000
+Subject: [PATCH] anti Fast Async WorldEdit Yatopia detection
+
+
+diff --git a/pom.xml b/pom.xml
+index 82542633a6da3a5203148817388f1d5a5cc3f8ab..39312e9ad602a49881ff090bffc3577d34dc7356 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -318,6 +318,11 @@
+                                     <!--<pattern>it.unimi</pattern>-->
+                                     <!--<shadedPattern>org.bukkit.craftbukkit.libs.it.unimi</shadedPattern>-->
+                                 <!--</relocation>-->
++                                <!-- Patina - anti Fast Async WorldEdit Yatopia detection - https://github.com/Incendo/ServerLib/blob/29c849777db81aac2c4ab1d4f875e7416dca94aa/src/main/java/org/incendo/serverlib/forks/Yatopia.java -->
++                                <relocation>
++                                    <pattern>org.yatopiamc.yatopia.server.YatopiaConfig</pattern>
++                                    <shadedPattern>org.yatopiamc.yatopia.server.YatopiaCfg</shadedPattern>
++                                </relocation>
+                                 <relocation>
+                                     <pattern>org.apache.commons.codec</pattern>
+                                     <shadedPattern>org.bukkit.craftbukkit.libs.org.apache.commons.codec</shadedPattern>

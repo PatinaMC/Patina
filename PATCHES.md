@@ -176,6 +176,7 @@ This is an overview over all patches that are currently used.
 | server |  Utilities      | YatopiaMC | Mykyta Komarnytskyy, Ivan Pekov |
 | api |  Yatopia Config &amp; Redirect Config      | YatopiaMC |  |
 | server |  Yatopia configuration      | tr7zw |  |
+| server |  anti Fast Async WorldEdit Yatopia detection      | foss-mc |  |
 | server |  don&#39;t create new random instance      | foss-mc |  |
 | server |  dont load chunks for physics      | Aikar |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
