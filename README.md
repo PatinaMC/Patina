@@ -6,6 +6,8 @@ A distribution of performance-oriented Bukkit patches that aims to keep stabilit
 
 ![logo](logo.png)
 
+You can find explanation of configuration files on the [wiki](https://github.com/foss-mc/Patina/wiki/Config-Entries). Check out the list of patches included in this distribution and who created them [here](PATCHES.md).
+
 ## Build
 
 ```
