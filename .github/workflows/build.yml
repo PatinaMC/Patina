@@ -80,7 +80,7 @@ jobs:
         mkdir -p public
         cp ${{ steps.mcver.outputs.mcver }}-paperclip.jar public/
     - name: Deploy to Github Pages
-      if: matrix.java == 11
+      if: matrix.java == 8
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
