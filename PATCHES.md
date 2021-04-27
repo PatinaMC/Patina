@@ -184,6 +184,7 @@ This is an overview over all patches that are currently used.
 | server |  Utilities      | YatopiaMC | Mykyta Komarnytskyy, Ivan Pekov |
 | api |  Yatopia Config &amp; Redirect Config      | YatopiaMC |  |
 | server |  Yatopia configuration      | tr7zw |  |
+| server |  add repositories section from Purpur&#39;s and Yatopia&#39;s      | foss-mc |  |
 | server |  anti Fast Async WorldEdit Yatopia detection      | foss-mc |  |
 | server |  don&#39;t create new random instance      | foss-mc |  |
 | server |  dont load chunks for physics      | Aikar |  |
