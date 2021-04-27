@@ -11,10 +11,7 @@ You can find explanation of configuration files on the [wiki](https://github.com
 ## Build
 
 ```
-./gradlew initGitSubmodules
-./gradlew setupUpstream
-./gradlew applyPatches
-./gradlew paperclip
+./gradlew initGitSubmodules setupUpstream applyPatches paperclip
 ```
 
 ## Download
