@@ -6,20 +6,28 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 35810f42d7a0cd50a4cbe90e8d698fe57914c889..5a6636cc02d9a0df9a330d744a13fd584a510f5d 100644
+index 4b171a2a60e24947e884f8988920f335bd99a471..5431ec9e8794397b3082a1eb49f82767f083a217 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -231,6 +231,8 @@ public class TimingsExport extends Thread {
-             pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Tuinity - add config to timings report
-             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)) // Tuinity - add config to timings report
-+                ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add purpur config to timings report in Yatopia's patch
+@@ -234,6 +234,7 @@ public class TimingsExport extends Thread {
+                 pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)),
+                 pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)), // Tuinity - add config to timings report
+                 pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null))
 +                , pair("yatopia", mapAsJSON(Bukkit.spigot().getYatopiaConfig(), null)) // Yatopia - add config to timings report
+                 // Purpur end
          ));
  
-         new TimingsExport(listeners, parent, history).start();
+@@ -324,7 +325,7 @@ public class TimingsExport extends Thread {
+         String response = null;
+         String timingsURL = null;
+         try {
+-            HttpURLConnection con = (HttpURLConnection) new URL(net.pl3x.purpur.PurpurConfig.timingsUrl + "/post").openConnection(); // Purpur
++            HttpURLConnection con = (HttpURLConnection) new URL("http://timings.aikar.co/post").openConnection(); // Purpur // Yatopia
+             con.setDoOutput(true);
+             String hostName = "BrokenHost";
+             try {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 28d47ef97939309ce26b6e4cae14925b510755fd..78f7155c8bbeb2b93d42fc2b108ff4135038ea72 100644
+index 6d39b777a0f708d61f611d9c16c3b3c48f89d477..8601b91e12be70474b2f1396487b1431e66799cf 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -227,6 +227,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -39,7 +47,7 @@ index 28d47ef97939309ce26b6e4cae14925b510755fd..78f7155c8bbeb2b93d42fc2b108ff413
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.ba());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 26a7c5c14be333858766ae7ccd4e61d7a6f67b1b..b602d69de2165eed25a06393c76c4de706b1be80 100644
+index d710834422afa1d4336f68e2425aaffd64d444e2..26a3eeb58a7862e1efdf02d39a56f49bac7b5c1f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {
@@ -52,10 +60,10 @@ index 26a7c5c14be333858766ae7ccd4e61d7a6f67b1b..b602d69de2165eed25a06393c76c4de7
          playerconnection.sendPacket(new PacketPlayOutAbilities(entityplayer.abilities));
          playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 15e6b53a53db17c62c25e1acb89bf7a02212e5bb..64d6c5c91d15dbd54c185caf2ce1eb6e30b6e5e6 100644
+index 890326cf415a7c5b0d62e9597895d3060ba12d7a..fa94b5da0b2ae83093305ad6be7fac8ec15ec46d 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-@@ -362,6 +362,7 @@ public abstract class EntityLiving extends Entity {
+@@ -367,6 +367,7 @@ public abstract class EntityLiving extends Entity {
          this.world.getMethodProfiler().enter("livingEntityBaseTick");
          boolean flag = this instanceof EntityHuman;
  
@@ -63,7 +71,7 @@ index 15e6b53a53db17c62c25e1acb89bf7a02212e5bb..64d6c5c91d15dbd54c185caf2ce1eb6e
          if (this.isAlive()) {
              if (this.inBlock()) {
                  this.damageEntity(DamageSource.STUCK, 1.0F);
-@@ -377,6 +378,7 @@ public abstract class EntityLiving extends Entity {
+@@ -383,6 +384,7 @@ public abstract class EntityLiving extends Entity {
                  }
              }
          }
@@ -72,7 +80,7 @@ index 15e6b53a53db17c62c25e1acb89bf7a02212e5bb..64d6c5c91d15dbd54c185caf2ce1eb6e
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5f3210e77e2769ecc0e735aeb6299fa5d1565910..2468152fb0861cb2dcfa1c8e513bd9039f544349 100644
+index 449fce2d76c701b789dd09326c9a8fc818b39c45..bf7d1480609d4cfc79c772d3b80255e0138404d8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -860,6 +860,7 @@ public final class CraftServer implements Server {
@@ -83,7 +91,7 @@ index 5f3210e77e2769ecc0e735aeb6299fa5d1565910..2468152fb0861cb2dcfa1c8e513bd903
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2384,6 +2385,13 @@ public final class CraftServer implements Server {
+@@ -2385,6 +2386,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -98,7 +106,7 @@ index 5f3210e77e2769ecc0e735aeb6299fa5d1565910..2468152fb0861cb2dcfa1c8e513bd903
          public void broadcast(BaseComponent component) {
              for (Player player : getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 17d0d0ec4e22ed8b344a2208925a2e9cba5dd58c..25bd74011d2d4b7b629b96c1bdee7181b9b70fc4 100644
+index 73d2287cc4b45b440612b863cea0ca5067e99ed9..86912aeec22feb7c519ede370651f292ec5a01da 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -164,6 +164,14 @@ public class Main {
