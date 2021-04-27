@@ -5,7 +5,7 @@ Subject: [PATCH] remove Yatopia's brand-name: it is incomplete
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index d4c2afc9acac13fea83ddf18e23a07b97e8eeaf0..9a8e4e4e9dd416a8f8b9a9661e13ab84890b7214 100644
+index b4439146be2a832074fb63844ce4bffc5ae5cb7e..1e5f3cd2de78579c31aa42fce1a02319d338de2e 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {

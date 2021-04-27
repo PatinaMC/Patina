@@ -5,7 +5,7 @@ Subject: [PATCH] Remove unnecessary `LogManager.getLogger()`
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 66c1afc21c11930f90cfb82e2af033aec4d44be0..3e2d816538dc191be8288d25996c368ab3524b8d 100644
+index 160bd334c0390189da5c5cd78e59b9268b4651be..6d6c97fc8f9f53b92edc10115d33a3ceeaf8e511 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -159,7 +159,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
@@ -17,7 +17,7 @@ index 66c1afc21c11930f90cfb82e2af033aec4d44be0..3e2d816538dc191be8288d25996c368a
              } else {
                  super.setSeed(seed);
                  locked = true;
-@@ -2125,7 +2125,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -2156,7 +2156,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
                  try {
                      spawnReason = org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.valueOf(spawnReasonName);
                  } catch (Exception ignored) {

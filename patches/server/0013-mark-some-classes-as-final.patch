@@ -6,7 +6,7 @@ Subject: [PATCH] mark some classes as final
 They are not meant to be extended
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 5a6636cc02d9a0df9a330d744a13fd584a510f5d..b9c83da7d795a2750b5c0e7c88c04f49ef669031 100644
+index 1aad306e575af46324ef640419a13254cf5e1a32..7c7361a55d48df227a5d1ac23a91aa90e1c327b2 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -61,7 +61,7 @@ import static co.aikar.util.JSONUtil.toArrayMapper;
@@ -45,7 +45,7 @@ index d0211d4f39f9d6af1d751ac66342b42cc6d7ba6d..4654eecc70685231272dd6304be24a58
  
      public MSPTCommand(String name) {
 diff --git a/src/main/java/com/destroystokyo/paper/PaperCommand.java b/src/main/java/com/destroystokyo/paper/PaperCommand.java
-index 848eb25ed0640db61a0f28bc26ddabd0444e9ed4..1d8430dcd8263d9919672bc8d6d2c0936f862f2b 100644
+index ec2b9995f1bf0f6cf029df7bfac526c2672acf3a..813c8f21b13eb80084db4330fd1368281a7bcb2e 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperCommand.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperCommand.java
 @@ -60,7 +60,7 @@ import java.util.Map;
@@ -838,7 +838,7 @@ index 9d36ed2b7d967b3e04efa817c7b697b655b84b8f..a8b9bef2dc06b360a32cd5c8ead2315b
      private int a;
      private int b;
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInHeldItemSlot.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInHeldItemSlot.java
-index d68f3e6b35f0af846c8a66710c5752508c095179..e90e626d4940c64859e9ca6bdda21a8fab1b56a5 100644
+index 0e8ee44d0104ca7c666f57bdb54e0957935d5b34..970c1b44b9bec433eb1ac544b36bdbac1d69e02b 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInHeldItemSlot.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInHeldItemSlot.java
 @@ -4,7 +4,7 @@ import java.io.IOException;
@@ -2580,7 +2580,7 @@ index feebe4812ff7aec17a50cb5f2789fe88e10a5032..bc2f6aeb906ba19d35c18192076f6257
      public static void a(CommandDispatcher<CommandListenerWrapper> commanddispatcher) {
          final LiteralArgumentBuilder<CommandListenerWrapper> literalargumentbuilder = (LiteralArgumentBuilder) net.minecraft.commands.CommandDispatcher.a("gamerule").requires((commandlistenerwrapper) -> {
 diff --git a/src/main/java/net/minecraft/server/commands/CommandGive.java b/src/main/java/net/minecraft/server/commands/CommandGive.java
-index 6685bf1757458d908e32d4069f7a8a22a28c28d7..75d617b0a24ea7fd7ef5d6f5ac73d98a39a79f75 100644
+index a10207f7cb9455e29db7e6906cb2138ad5609a1f..5cbe3ed2987dcd2e2fa0fcc428e5fcf0c2b12372 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandGive.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandGive.java
 @@ -20,7 +20,7 @@ import net.minecraft.world.entity.item.EntityItem;
@@ -3165,7 +3165,7 @@ index e3649d0fb08ae30a448d0e69c6f0c1066e99b9a4..e111c24ca9d1faaffef55db3c8ee84c2
      private static final SuggestionProvider<CommandListenerWrapper> b = (commandcontext, suggestionsbuilder) -> {
          return ICompletionProvider.a(b(commandcontext).a(), suggestionsbuilder);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index abe8e051a0337559edbeabf94e89c704f0d99772..5fc4724cc89979ac9e12f1f576baed4e1072515b 100644
+index 5e66a86da655c9f7b4a6079e2efdc83c8e0b79cb..93b89ab31c30a074566abd9ad76222c014cfe3e1 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -71,7 +71,7 @@ import org.bukkit.craftbukkit.util.Waitable;
@@ -3217,7 +3217,7 @@ index d1d98c2f192514a3f511bebb00c088b03e6be84c..b4fa07584ae66707779d4567e0d2d299
      private static final Font a = new Font("Monospaced", 0, 12);
      private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 5aac86895287a32c2c5351780a46c146b74185bc..822c8d8cf777e6f61178ea5d1e0a6ac29601708a 100644
+index f760dfda02183577975ac87a22e23726ff94aa91..80ff4da3b6eaa6b2b8c61b0afd58fd9d3713e3bf 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
@@ -3828,7 +3828,7 @@ index b6143d474b98304aa8ccc82dc390886fbe4efca3..a9e07151e7af739afebf0f7e3678d51e
  
      public CraftProfileBanList(GameProfileBanList list) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 481230dbdb6eecb0f5b153c2ad026b5ca6c51445..dc4692bb8ab52bb13b0512975d558a5aa62e131c 100644
+index c9a276c45f3e2e24d700b1525b15a6e346dc0ee0..61e4fae054f3bfbc8c97d1d782ddedf75bec79a6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -269,7 +269,7 @@ import org.bukkit.util.Consumer;
@@ -3984,7 +3984,7 @@ index 7c0d90552eeb6de7dab174e2ba4acfc89a7b3db0..d56c82014664a2e716525a5338004083
  
      private transient Object[] data; public final Object[] getRawDataArray() { return this.data; } // Paper - expose for raw get
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index a81bdb0429d29b2da4e7e897045c2b0445366616..b501550d617c44d1406c35541dd4e5d363ea1ef4 100644
+index 6cc482a2231e356e8b4ab4917d5bc2229582666b..2cbb97c70e44e728c598fe216557ddee01e41bbe 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -52,7 +52,7 @@ import net.minecraft.world.entity.projectile.EntityEnderSignal;

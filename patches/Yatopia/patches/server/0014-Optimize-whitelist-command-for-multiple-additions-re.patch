@@ -10,7 +10,7 @@ added.
 These changes aim to reduce that load whenever you are using the /whitelist command.
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9a2f6588aca3d03a3b94cf51995a940059816894..c45c7778521f89d1a82decc0006fe106d19fa4d9 100644
+index cc32e9e4ef22a68a8c3e6f5c71b865874c5b112b..4fe74550455344ed65ce9db02920dc844c76bf3a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2103,6 +2103,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -169,7 +169,7 @@ index 96fbb1a3d216302aa937e07bf88fdb19c6ccc764..0521fa09488ef501cc5bcdf6c3134ac9
          return (String[]) this.d.keySet().toArray(new String[this.d.size()]);
      }
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index ad85dda5c50b797904824a08513fbcec042128ea..1a41c7594c6fe5ea67ec902ddb27a4248ed866b7 100644
+index 5f9e64df007ebc40f7bcb50be495b10e51d5b87a..d6bc9ec6321c8b5ff0706096c0af4ae78a390e9f 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 @@ -175,6 +175,7 @@ public abstract class EntityHuman extends EntityLiving {
@@ -180,7 +180,7 @@ index ad85dda5c50b797904824a08513fbcec042128ea..1a41c7594c6fe5ea67ec902ddb27a424
  
      @Override
      public CraftHumanEntity getBukkitEntity() {
-@@ -1993,6 +1994,15 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -2005,6 +2006,15 @@ public abstract class EntityHuman extends EntityLiving {
          return this.getProfile().getName();
      }
  

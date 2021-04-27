@@ -5,7 +5,7 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 26bf55db34f9de616506af9245ded0de638b9508..156b013f4293df3ce94a4cb8981ccafd0c4479db 100644
+index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031e8a8543f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -183,7 +183,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
@@ -74,10 +74,10 @@ index 26bf55db34f9de616506af9245ded0de638b9508..156b013f4293df3ce94a4cb8981ccafd
      public abstract boolean j();
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 78f7155c8bbeb2b93d42fc2b108ff4135038ea72..abe8e051a0337559edbeabf94e89c704f0d99772 100644
+index 11c634162dd077f532e8f84a203bfbbd8dc77750..5e66a86da655c9f7b4a6079e2efdc83c8e0b79cb 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -445,12 +445,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -446,12 +446,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          return this.getDedicatedServerProperties().allowNether;
      }
  

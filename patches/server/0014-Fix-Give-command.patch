@@ -5,7 +5,7 @@ Subject: [PATCH] Fix Give command
 
 
 diff --git a/src/main/java/net/minecraft/server/commands/CommandGive.java b/src/main/java/net/minecraft/server/commands/CommandGive.java
-index 75d617b0a24ea7fd7ef5d6f5ac73d98a39a79f75..8d2ad009d4053587bce345d0fc2b907c76dc5250 100644
+index 5cbe3ed2987dcd2e2fa0fcc428e5fcf0c2b12372..8b8dafc0722bdf6bc36d6428fb077725b20fac78 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandGive.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandGive.java
 @@ -47,6 +47,7 @@ final public class CommandGive {
@@ -15,4 +15,4 @@ index 75d617b0a24ea7fd7ef5d6f5ac73d98a39a79f75..8d2ad009d4053587bce345d0fc2b907c
 +                if (true) continue; // EMC - never drop items
                  if (flag && itemstack.isEmpty()) {
                      itemstack.setCount(1);
-                     entityitem = entityplayer.drop(itemstack, false);
+                     entityitem = entityplayer.drop(itemstack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel

@@ -5,11 +5,11 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd3339832e370 100644
+index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..8da56c1fccfb08c99de480ed5855b8a2f51547ee 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -24,6 +24,19 @@
-         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+@@ -25,6 +25,19 @@
+         <adventure.version>4.7.0</adventure.version> <!-- Paper - When updating this make sure to update the linked JavaDocs on the homepage as well! -->
      </properties>
  
 +    <!-- Yatopia start -->
@@ -28,7 +28,7 @@ index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd333
      <repositories>
          <repository>
              <id>sonatype</id>
-@@ -67,7 +80,7 @@
+@@ -68,7 +81,7 @@
          <dependency>
              <groupId>it.unimi.dsi</groupId>
              <artifactId>fastutil</artifactId>
@@ -37,7 +37,7 @@ index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd333
              <scope>provided</scope>
          </dependency>
          <dependency>
-@@ -114,7 +127,7 @@
+@@ -115,7 +128,7 @@
          <dependency>
              <groupId>org.yaml</groupId>
              <artifactId>snakeyaml</artifactId>
@@ -46,7 +46,7 @@ index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd333
              <scope>compile</scope>
          </dependency>
          <!-- annotations -->
-@@ -128,7 +141,7 @@
+@@ -129,7 +142,7 @@
          <dependency>
              <groupId>org.slf4j</groupId>
              <artifactId>slf4j-api</artifactId>
@@ -55,7 +55,7 @@ index e66661eb84308dc13faa0d39b7487f40c1180443..e9d74b00c9a815fa0b0426b303ebd333
              <scope>compile</scope>
          </dependency>
          <!-- testing -->
-@@ -154,12 +167,12 @@
+@@ -155,12 +168,12 @@
          <dependency>
              <groupId>org.ow2.asm</groupId>
              <artifactId>asm</artifactId>

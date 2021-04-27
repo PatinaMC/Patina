@@ -24,13 +24,17 @@ This is an overview over all patches that are currently used.
 | server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |
 | server |  Brand changes      | Spottedleaf |  |
+| server |  Cache climbing check for activation      | Paul Sauve |  |
+| server |  Cache coordinate key for micro opt      | Paul Sauve |  |
 | server |  Cache entityhuman display name      | Paul Sauve |  |
 | server |  Cache palette array      | Paul Sauve |  |
 | server |  Change writes to use NORMAL priority rather than LOW      | Spottedleaf |  |
+| server |  Config to disable method profiler      | Paul Sauve |  |
 | server |  Configurable TPS Catchup      | William Blake Galbreath |  |
 | server |  Configurable villager brain ticks      | William Blake Galbreath |  |
 | server |  Consolidate flush calls for entity tracker packets      | Spottedleaf |  |
 | server |  Copy passenger list in enderTeleportTo      | Spottedleaf |  |
+| server |  Correctly handle recursion for chunkholder updates      | Spottedleaf |  |
 | server |  Custom table implementation for blockstate state lookups      | Spottedleaf |  |
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
@@ -40,6 +44,7 @@ This is an overview over all patches that are currently used.
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
+| server |  Do not copy visible chunks      | Spottedleaf |  |
 | server |  Do not load chunks during a crash report      | Spottedleaf |  |
 | server |  Do not retain playerchunkmap instance in light thread factory      | Spottedleaf |  |
 | server |  Do not run close logic for inventories on chunk unload      | Spottedleaf |  |
@@ -115,6 +120,7 @@ This is an overview over all patches that are currently used.
 | server |  Optimize advancement loading      | Ivan Pekov |  |
 | server |  Optimize inventory API item handling      | Phoenix616 |  |
 | server |  Optimize random calls in chunk ticking      | Paul Sauve |  |
+| server |  Optimize redundant calls      | Paul Sauve |  |
 | server |  Optimize whitelist command for multiple additions / removals      | Ivan Pekov |  |
 | server |  Option for simpler Villagers      | tr7zw |  |
 | server |  Origami Server Config      | Phoenix616 |  |
@@ -129,7 +135,7 @@ This is an overview over all patches that are currently used.
 | server |  Reduce allocation rate from crammed entities      | Spottedleaf |  |
 | server |  Reduce allocs &amp; improve perf of StructureManager      | Paul Sauve |  |
 | server |  Reduce chunk loading &amp; lookups      | Paul Sauve |  |
-| server |  Reduce entity chunk ticking checks from 3 to 1      | Paul Sauve |  |
+| server |  Reduce frequency of checking for entity despawn      | Paul Sauve |  |
 | server |  Reduce iterator allocation from chunk gen      | Spottedleaf |  |
 | server |  Reduce memory allocations      | Paul Sauve |  |
 | server |  Reduce pathfinder branches      | Spottedleaf |  |
@@ -144,6 +150,7 @@ This is an overview over all patches that are currently used.
 | server |  Remove streams for villager AI      | Spottedleaf |  |
 | server |  Remove unnecessary &#96;LogManager.getLogger()&#96;      | foss-mc |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
+| server |  Replace ticket level propagator      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
 | server |  Revert Yatopia&#39;s update of hamcrest version      | foss-mc |  |
 | server |  Revert getChunkAt(Async) retaining chunks for long periods of      | Spottedleaf |  |
@@ -154,6 +161,7 @@ This is an overview over all patches that are currently used.
 | server |  Simpler ShapelessRecipes comparison for Vanilla      | Paul Sauve |  |
 | server |  Skip POI finding if stuck in vehicle      | Paul Sauve |  |
 | server |  Skip copying unloading tile entities      | Paul Sauve |  |
+| server |  Skip creating hashset for entity track range      | Paul Sauve |  |
 | server |  Skip events if there&#39;s no listeners      | William Blake Galbreath |  |
 | server |  Smarter statistics ticking      | Mykyta Komarnytskyy |  |
 | server |  Smol entity optimisations      | Ivan Pekov |  |

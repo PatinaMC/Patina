@@ -8,10 +8,10 @@ In vanilla, statistics that count time spent for an action (i.e. time played or 
 With an interval of 20, this patch saves roughly 3ms per tick on a server w/ 80 players online.
 
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index 1a41c7594c6fe5ea67ec902ddb27a4248ed866b7..68d42d3445b40bd6c90e2a415e6c09cddbf25fb6 100644
+index d6bc9ec6321c8b5ff0706096c0af4ae78a390e9f..04049dce991eea6be333540e836e4ca34fe5f560 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-@@ -261,18 +261,23 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -266,18 +266,23 @@ public abstract class EntityHuman extends EntityLiving {
          this.p();
          if (!this.world.isClientSide) {
              this.foodData.a(this);

@@ -54,10 +54,10 @@ index b9e36a83837913cd3e5abe598f695ba7a9ffc417..e2f0ac82acb8463e7fe858d80e0c8f6d
              this.c = agameprofile;
          }
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index c9d6ddd8874195c07b3573c6b1f61ffdcff2dddd..5aac86895287a32c2c5351780a46c146b74185bc 100644
+index 737851cde7752e7cccf226f1868a38d6411bfb31..f760dfda02183577975ac87a22e23726ff94aa91 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-@@ -1960,7 +1960,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1930,7 +1930,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
      }
      // Paper end - optimise isOutsideOfRange
  
@@ -66,7 +66,7 @@ index c9d6ddd8874195c07b3573c6b1f61ffdcff2dddd..5aac86895287a32c2c5351780a46c146
      private boolean b(EntityPlayer entityplayer) {
          return entityplayer.isSpectator() && !this.world.getGameRules().getBoolean(GameRules.SPECTATORS_GENERATE_CHUNKS);
      }
-@@ -2474,7 +2474,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2444,7 +2444,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
  
      }
  
@@ -76,7 +76,7 @@ index c9d6ddd8874195c07b3573c6b1f61ffdcff2dddd..5aac86895287a32c2c5351780a46c146
          return this.m;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 79816446cbe322672dd21c86c19b6ec92541d319..88a31046dc3109294e106b7853b7fa0ff1ad209b 100644
+index 250b7965cb3f109e536721e8a7cff23d5b144b5a..70ffd2e2c3fb68606fc7db7bbf448842bcccee07 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1584,7 +1584,7 @@ public abstract class EntityLiving extends Entity {
@@ -88,7 +88,7 @@ index 79816446cbe322672dd21c86c19b6ec92541d319..88a31046dc3109294e106b7853b7fa0f
      protected org.bukkit.event.entity.EntityDeathEvent d(DamageSource damagesource) { // Paper
          Entity entity = damagesource.getEntity();
          int i;
-@@ -2256,7 +2256,7 @@ public abstract class EntityLiving extends Entity {
+@@ -2269,7 +2269,7 @@ public abstract class EntityLiving extends Entity {
          return 1.0F;
      }
  
@@ -97,7 +97,7 @@ index 79816446cbe322672dd21c86c19b6ec92541d319..88a31046dc3109294e106b7853b7fa0f
      protected float dH() {
          return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F;
      }
-@@ -3412,12 +3412,12 @@ public abstract class EntityLiving extends Entity {
+@@ -3425,12 +3425,12 @@ public abstract class EntityLiving extends Entity {
          return this.activeItem;
      }
  
@@ -135,10 +135,10 @@ index 10611b8c72b0c0c3202e9ae5b956974ec1a37aa3..abc16ae6ecd5d03639ff8854d56f5cd5
          for (Iterator<PathfinderGoalWrapped> iterator = this.d.iterator(); iterator.hasNext();) {
              PathfinderGoalWrapped goalWrapped = iterator.next();
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index 68d42d3445b40bd6c90e2a415e6c09cddbf25fb6..efde29ef6acd78472e423fc41e2e07866b7f4145 100644
+index 04049dce991eea6be333540e836e4ca34fe5f560..fe99fa4216c2b4873eda1d07235f7601a97e6e82 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-@@ -2132,7 +2132,7 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -2144,7 +2144,7 @@ public abstract class EntityHuman extends EntityLiving {
          this.datawatcher.set(EntityHuman.bl, nbttagcompound);
      }
  

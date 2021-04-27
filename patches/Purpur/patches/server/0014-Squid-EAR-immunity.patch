@@ -21,7 +21,7 @@ index 98ada5d2cf768b3ceb0715d8eade5cb9e038ba21..1aa7810b914fca470ccf0b999488d203
      public boolean villagerUseBrainTicksOnlyWhenLagging = true;
      private void villagerSettings() {
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 8b36ca5062f8e0e8bd58aa506e91704a747de81b..a81bdb0429d29b2da4e7e897045c2b0445366616 100644
+index 94910bf0c53c79588c55b89e4a023273d6c859ef..6cc482a2231e356e8b4ab4917d5bc2229582666b 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -11,6 +11,7 @@ import net.minecraft.world.entity.EntityLiving;
