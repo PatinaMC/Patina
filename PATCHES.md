@@ -189,6 +189,7 @@ This is an overview over all patches that are currently used.
 | server |  don&#39;t create new random instance      | foss-mc |  |
 | server |  dont load chunks for physics      | Aikar |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |
+| api |  inline adventure.version      | foss-mc |  |
 | server |  lithium DataTrackerMixin      | JellySquid | tr7zw |
 | server |  lithium HashedList      | JellySquid |  |
 | server |  lithium MixinBox      | JellySquid |  |
