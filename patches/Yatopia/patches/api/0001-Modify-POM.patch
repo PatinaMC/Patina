@@ -5,9 +5,33 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..8da56c1fccfb08c99de480ed5855b8a2f51547ee 100644
+index 4d826aa8ea1139e66514767da6ba17811f7ecc5c..0f456204857fc9dea93a7dd47189bb059d1712fc 100644
 --- a/pom.xml
 +++ b/pom.xml
+@@ -3,18 +3,18 @@
+          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+     <modelVersion>4.0.0</modelVersion>
+     <parent>
+-        <groupId>com.tuinity</groupId>
+-        <artifactId>tuinity-parent</artifactId>
++        <groupId>org.yatopiamc</groupId>
++        <artifactId>yatopia-parent</artifactId>
+         <version>dev-SNAPSHOT</version>
+         <relativePath>../pom.xml</relativePath>
+     </parent>
+ 
+-    <artifactId>tuinity-api</artifactId>
++    <artifactId>yatopia-api</artifactId>
+     <version>1.16.5-R0.1-SNAPSHOT</version>
+     <packaging>jar</packaging>
+ 
+-    <name>Tuinity-API</name>
+-    <url>https://github.com/Spottedleaf/Tuinity</url>
++    <name>Yatopia-API</name>
++    <url>https://github.com/YatopiaMC/Yatopia</url>
+     <description>An enhanced plugin API for Minecraft servers.</description>
+ 
+     <properties>
 @@ -25,6 +25,19 @@
          <adventure.version>4.7.0</adventure.version> <!-- Paper - When updating this make sure to update the linked JavaDocs on the homepage as well! -->
      </properties>
