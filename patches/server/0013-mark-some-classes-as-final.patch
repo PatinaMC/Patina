@@ -6,7 +6,7 @@ Subject: [PATCH] mark some classes as final
 They are not meant to be extended
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 1aad306e575af46324ef640419a13254cf5e1a32..7c7361a55d48df227a5d1ac23a91aa90e1c327b2 100644
+index f15a8ef9e589eadbfd92b4ad7a8b2db642a6634c..6fd81d7130814a5d7c2c4f8f8d3a3d1d9d3b6795 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -61,7 +61,7 @@ import static co.aikar.util.JSONUtil.toArrayMapper;

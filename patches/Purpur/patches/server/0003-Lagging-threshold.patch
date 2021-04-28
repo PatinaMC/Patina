@@ -25,7 +25,7 @@ index 00a3da68c97a87393cbd5fa99b82d7d627b0a3e7..80721751567cac4f4d4875b4e9e35f51
                      }
                      // Tuinity - replace logic
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 19541e7071c05dce30c384093c8eae5beff3e515..d542411e7754971bc1e33a35a05c12c2a48c5a7c 100644
+index 2207d5ec00c0f6e4d332c0bbecbc224b24855927..3c21329b7bc0c9059fe70163426235b03618813e 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
 @@ -127,4 +127,9 @@ public class PurpurConfig {

@@ -61,7 +61,7 @@ index 37e64e24ca3a90370cdf12e5ff9cd1fceede796b..f63ec5fa5a1cb34f4809a06a29d01603
          this.tracker.c(entityplayer);
          entityplayer.c(this.tracker);
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 7ca3b1d6ad96bc9a22e5919b90dbe3c25f2ca8eb..77a98e5b74463086362608af2bf7f9a0e596acdc 100644
+index 9c5222f435e13573d423bbf5f6b2c0d4e8dfbc59..9757874ef702e6a380dfe521515f23ab2f6dd25c 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
 @@ -133,6 +133,11 @@ public class PurpurConfig {

@@ -291,10 +291,10 @@ index 5759f91d5e9dc52b16c8955b8d318da2b53c7af4..0960f415fd3c6c764cf3dd273bb9e9c5
  }
 +// Tuinity end
 diff --git a/src/main/java/net/minecraft/server/network/LoginListener.java b/src/main/java/net/minecraft/server/network/LoginListener.java
-index 185667110cd6f566b23546728d20fc79223f3c92..dc98ef48a664d9ee2a302fff8c611fd16dc704b6 100644
+index c67b94840e4c967baebf6eb351df15f0e4ead4be..ed836462123efc6903e406fa926e55e1cedddb95 100644
 --- a/src/main/java/net/minecraft/server/network/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/network/LoginListener.java
-@@ -255,7 +255,7 @@ public class LoginListener implements PacketLoginInListener {
+@@ -256,7 +256,7 @@ public class LoginListener implements PacketLoginInListener {
  
              s = (new BigInteger(MinecraftEncryption.a("", this.server.getKeyPair().getPublic(), this.loginKey))).toString(16);
              this.g = LoginListener.EnumProtocolState.AUTHENTICATING;
