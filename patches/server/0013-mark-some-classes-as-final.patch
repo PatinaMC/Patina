@@ -3217,7 +3217,7 @@ index d1d98c2f192514a3f511bebb00c088b03e6be84c..b4fa07584ae66707779d4567e0d2d299
      private static final Font a = new Font("Monospaced", 0, 12);
      private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index f760dfda02183577975ac87a22e23726ff94aa91..80ff4da3b6eaa6b2b8c61b0afd58fd9d3713e3bf 100644
+index 501c1017d8cfc53879eabf06a8067b4aba978bdd..1332be6a15ecb84e7b70adc6bce5dc009ec5dbd8 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
@@ -3828,7 +3828,7 @@ index b6143d474b98304aa8ccc82dc390886fbe4efca3..a9e07151e7af739afebf0f7e3678d51e
  
      public CraftProfileBanList(GameProfileBanList list) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index c9a276c45f3e2e24d700b1525b15a6e346dc0ee0..61e4fae054f3bfbc8c97d1d782ddedf75bec79a6 100644
+index 0cd582818076f91cc328e6b0f843869336d6a256..e4a20af5f2e4bd4796d2673d805eaa0df87696d4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -269,7 +269,7 @@ import org.bukkit.util.Consumer;

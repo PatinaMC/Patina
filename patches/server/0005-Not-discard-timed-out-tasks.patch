@@ -66,7 +66,7 @@ index 4a5ab9d7f40679fa9012a792ac71225663f9f653..b05940cc74f519ac6197e82a79842f46
          this.b = runnable;
      }
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 424cd048f905cd0ed3f7a4545a26ffde8da1f91f..a50662c44c5ed6953a25c245576e16bb5924dc43 100644
+index 207a9c3928aad7c6e89a120b54d87e003ebd232c..5e958201acf9c12e4fda5adfd3668d847f38474c 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -1218,10 +1218,7 @@ public class ChunkProviderServer extends IChunkProvider {

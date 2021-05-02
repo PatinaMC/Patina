@@ -39,7 +39,7 @@ index a76219e59c24862b9c1e09e4a2a29cf2a6260514..11c634162dd077f532e8f84a203bfbbd
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.ba());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c50a426ec15685a8bb68acc4f7c3f3d8ead1f3ce..0e2e8182c306a797ea843eca5222edb400f86990 100644
+index b60a33517b2ceda8e1693cd035643dac3147306c..7e6756a999b17370161432b8c372fe841c3f4865 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {
