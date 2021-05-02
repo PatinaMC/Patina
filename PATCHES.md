@@ -99,6 +99,7 @@ This is an overview over all patches that are currently used.
 | server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
 | server |  Multi-Threaded Server Ticking Vanilla      | Spottedleaf |  |
 | server |  Multi-Threaded ticking CraftBukkit      | Spottedleaf |  |
+| server |  Multithreaded entity tracking      | Paul Sauve |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
 | server |  Not discard timed-out tasks      | foss-mc |  |
