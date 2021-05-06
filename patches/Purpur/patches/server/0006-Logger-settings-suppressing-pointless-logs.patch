@@ -17,12 +17,12 @@ index 7a8a1960882e291c46301d07da3e1c5415516893..59d781b5e61c5d2c004bc92300d8d42e
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 3c21329b7bc0c9059fe70163426235b03618813e..9c5222f435e13573d423bbf5f6b2c0d4e8dfbc59 100644
+index 14db392490b9392e86d49d940156ed7af6cd3a30..e2133fbc98d1fb2edba4390b5db0cd454400ddde 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-@@ -132,4 +132,11 @@ public class PurpurConfig {
-     private static void tickLoopSettings() {
-         laggingThreshold = getDouble("settings.lagging-threshold", laggingThreshold);
+@@ -137,4 +137,11 @@ public class PurpurConfig {
+     private static void useAlternateKeepAlive() {
+         useAlternateKeepAlive = getBoolean("settings.use-alternate-keepalive", useAlternateKeepAlive);
      }
 +
 +    public static boolean loggerSuppressInitLegacyMaterialError = false;

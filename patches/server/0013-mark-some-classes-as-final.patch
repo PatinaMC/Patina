@@ -864,7 +864,7 @@ index d52d31b7f7e46876d3873a3df74cb4c54c2949a0..d0595bbd97f30b20aee5f8de919a8a12
      private String a;
  
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInKeepAlive.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInKeepAlive.java
-index b4c37287362907b8507d156b978ba5b9d961bb7b..66555ba9d31aff2b33ccd4255e7eb8083a8305cb 100644
+index 9e6e6636539702507abb78515e002819661027af..b69af137b482ecd441cc6a4592c58d2366867f34 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInKeepAlive.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInKeepAlive.java
 @@ -4,7 +4,7 @@ import java.io.IOException;

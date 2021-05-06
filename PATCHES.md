@@ -20,6 +20,7 @@ This is an overview over all patches that are currently used.
 | server |  Airplane Profiler      | Paul Sauve |  |
 | server |  Allow Entities to be removed from a world while ticking      | Spottedleaf |  |
 | server |  Allow controlled flushing for network manager      | Spottedleaf |  |
+| server |  Alternative Keepalive Handling      | William Blake Galbreath |  |
 | server |  Attempt to recalculate regionfile header if it is corrupt      | Spottedleaf |  |
 | server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |

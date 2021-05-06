@@ -24,10 +24,10 @@ index 80721751567cac4f4d4875b4e9e35f51f621da21..cc32e9e4ef22a68a8c3e6f5c71b86587
                      this.methodProfiler.exit();
                      this.methodProfiler.b();
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index 9757874ef702e6a380dfe521515f23ab2f6dd25c..f26786094c2de757b0afaf4b091b836d7cf8a482 100644
+index bf317a46eaaa88de3865625975ebf7d4e67e3c03..272efa22e6d989d016a5c97f866cdb2ddbf449c6 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-@@ -144,4 +144,9 @@ public class PurpurConfig {
+@@ -149,4 +149,9 @@ public class PurpurConfig {
          loggerSuppressInitLegacyMaterialError = getBoolean("settings.logger.suppress-init-legacy-material-errors", loggerSuppressInitLegacyMaterialError);
          loggerSuppressIgnoredAdvancementWarnings = getBoolean("settings.logger.suppress-ignored-advancement-warnings", loggerSuppressIgnoredAdvancementWarnings);
      }
