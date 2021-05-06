@@ -68,6 +68,7 @@ This is an overview over all patches that are currently used.
 | server |  Fix Bukkit.createInventory() with type LECTERN      | willies952002 |  |
 | server |  Fix Give command      | foss-mc |  |
 | server |  Fix LightEngineThreaded memory leak      | Ivan Pekov |  |
+| server |  Fix Log4j Warning      | snoopdoooggyttv |  |
 | server |  Fix NPE in pickup logic for arrow      | Spottedleaf |  |
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
 | server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
