@@ -39,10 +39,10 @@ index 2207d5ec00c0f6e4d332c0bbecbc224b24855927..3c21329b7bc0c9059fe70163426235b0
 +    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 546af82e136cc7e5815ae2cd089483c306b5775c..848cc9eca967e8479abe566767bdb8aea3d497c5 100644
+index fc12a554d38b73c1f204e53c4052aada5d1794f8..4015e8ee82f211918eb5d4346853b5b14ea88f64 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2525,4 +2525,10 @@ public final class CraftServer implements Server {
+@@ -2524,4 +2524,10 @@ public final class CraftServer implements Server {
          return mobGoals;
      }
      // Paper end

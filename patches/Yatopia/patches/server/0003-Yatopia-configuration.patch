@@ -39,7 +39,7 @@ index a76219e59c24862b9c1e09e4a2a29cf2a6260514..11c634162dd077f532e8f84a203bfbbd
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.ba());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index b60a33517b2ceda8e1693cd035643dac3147306c..7e6756a999b17370161432b8c372fe841c3f4865 100644
+index 02a3e6e6e4fa44bd08a3d619883418bb0dc6db1c..a7b78e1821a470841609fc67cc33f8ccb270d850 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {
@@ -72,7 +72,7 @@ index d22c17b40f51a6a173fd7665b877fe09c33adf45..f52094accbd65f973a0e4b0fc6bc3fb9
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5f3210e77e2769ecc0e735aeb6299fa5d1565910..2468152fb0861cb2dcfa1c8e513bd9039f544349 100644
+index bac8f7e98909e4e8a38cd255c4467f38569c357c..1af389452bd533588aaccf83023c2892179fe15b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -860,6 +860,7 @@ public final class CraftServer implements Server {
@@ -83,7 +83,7 @@ index 5f3210e77e2769ecc0e735aeb6299fa5d1565910..2468152fb0861cb2dcfa1c8e513bd903
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2384,6 +2385,13 @@ public final class CraftServer implements Server {
+@@ -2383,6 +2384,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

@@ -279,7 +279,7 @@ index 9dae34370d014a291f025f83b55e18bff4619a23..88b758fae46448df3519db53d728097a
  
      public PaperTileEntityLootableInventory(TileEntityLootable tileEntityLootable) {
 diff --git a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
-index 040fd0c3fc4bc3a04fe5dff919a41fe9b474708e..f85b2f0261b73c1b93d28656b7df7a03b57b1b2c 100644
+index 3d9452892a4077e64f37424052a9e52d76dd7a6d..549e8c340d5db69444854081d634229ad3a8800b 100644
 --- a/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
 +++ b/src/main/java/com/destroystokyo/paper/profile/CraftPlayerProfile.java
 @@ -20,7 +20,7 @@ import java.util.Objects;
@@ -422,7 +422,7 @@ index b6ba31fbc9c95e6da6617cf4a6b2b65345dabc1f..7d66ed149c6982e5a4c279f6d6ef7d25
      private static final Logger LOGGER = LogManager.getLogger();
      public final Map<MinecraftKey, Advancement> advancements = Maps.newHashMap();
 diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-index c25440e810e61bcdc299a0caebaec54b6862dd3c..ee9baa80c039e6da3e0df5813c2b8f40f3534a74 100644
+index 7cb062043a8a5e997557a23bdf71cbdf8dd457ae..3e21d4fcc9871e7794d9554b07b95500e3517325 100644
 --- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
 +++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
 @@ -111,7 +111,7 @@ import org.bukkit.event.player.PlayerCommandSendEvent;
@@ -3269,7 +3269,7 @@ index 884b2f0dc7885192c4cfb68c0328df2d6bf6db81..0a28048aea7fcf99c6f39f34f0d76e5e
      private final ResourcePackVanilla a = new ResourcePackVanilla(new String[]{"minecraft"});
  
 diff --git a/src/main/java/net/minecraft/server/players/UserCache.java b/src/main/java/net/minecraft/server/players/UserCache.java
-index ee5c038c4ede294ec5b9b9b9f705ba46b6c7ac8c..90c17b3e209703ab9124b8925bebbdb7641c08d9 100644
+index 7ce5bd130441a3bc32ee5fa3630edce23dadd0b8..24229b86409e0b9a16b70052466bff73d6e91022 100644
 --- a/src/main/java/net/minecraft/server/players/UserCache.java
 +++ b/src/main/java/net/minecraft/server/players/UserCache.java
 @@ -41,7 +41,7 @@ import net.minecraft.world.entity.player.EntityHuman;
@@ -3867,7 +3867,7 @@ index 25bd74011d2d4b7b629b96c1bdee7181b9b70fc4..d02b159147d1aeab79f57aa0b8b516ea
      public static boolean useConsole = true;
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/BlockStateListPopulator.java b/src/main/java/org/bukkit/craftbukkit/util/BlockStateListPopulator.java
-index 26d63e20435e3a0111224acfc7dfce739a87cf6f..30dfcff8e295e37df6958c4c4412ebd447357fbd 100644
+index 133d0f85e95384fcec622db5b565b57b926c7e2d..4247569d67a20ea6a3e201c58189356297fded9b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/BlockStateListPopulator.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/BlockStateListPopulator.java
 @@ -11,7 +11,7 @@ import net.minecraft.world.level.material.Fluid;

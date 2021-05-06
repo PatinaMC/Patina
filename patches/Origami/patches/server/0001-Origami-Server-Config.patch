@@ -150,7 +150,7 @@ index e79f36975f8282269450698c203b304c81919482..c598ddc9d9184745a7c4f26555f17117
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName()); // Tuinity - Server Config
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName())); // Purpur
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 848cc9eca967e8479abe566767bdb8aea3d497c5..5f3210e77e2769ecc0e735aeb6299fa5d1565910 100644
+index 4015e8ee82f211918eb5d4346853b5b14ea88f64..bac8f7e98909e4e8a38cd255c4467f38569c357c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -866,6 +866,7 @@ public final class CraftServer implements Server {

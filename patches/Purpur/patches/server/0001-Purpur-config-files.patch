@@ -333,7 +333,7 @@ index 0000000000000000000000000000000000000000..536955124afaec5c8a070249c7432cb9
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b955c13add5a7a263e236973650b8c6d4708efc8..546af82e136cc7e5815ae2cd089483c306b5775c 100644
+index 48156c2684f81b1c9bcdb1d45b51e3d65fc1cc04..fc12a554d38b73c1f204e53c4052aada5d1794f8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -865,6 +865,7 @@ public final class CraftServer implements Server {
@@ -360,7 +360,7 @@ index b955c13add5a7a263e236973650b8c6d4708efc8..546af82e136cc7e5815ae2cd089483c3
          overrideAllCommandBlockCommands = commandsConfiguration.getStringList("command-block-overrides").contains("*");
          ignoreVanillaPermissions = commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2362,6 +2365,18 @@ public final class CraftServer implements Server {
+@@ -2361,6 +2364,18 @@ public final class CraftServer implements Server {
          }
          // Tuinity end - add config to timings report
  
