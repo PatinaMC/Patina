@@ -422,7 +422,7 @@ index b6ba31fbc9c95e6da6617cf4a6b2b65345dabc1f..7d66ed149c6982e5a4c279f6d6ef7d25
      private static final Logger LOGGER = LogManager.getLogger();
      public final Map<MinecraftKey, Advancement> advancements = Maps.newHashMap();
 diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-index 7cb062043a8a5e997557a23bdf71cbdf8dd457ae..3e21d4fcc9871e7794d9554b07b95500e3517325 100644
+index 5ae31658fb1183eab66f682cc5477bc526c27753..f13498bbb634f9553dc24ee69c7ae294efaa2491 100644
 --- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
 +++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
 @@ -111,7 +111,7 @@ import org.bukkit.event.player.PlayerCommandSendEvent;
