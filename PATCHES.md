@@ -130,7 +130,6 @@ This is an overview over all patches that are currently used.
 | api |  Per player viewdistances      | Spottedleaf |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
 | server |  Prevent unload() calls removing tickets for sync loads      | Spottedleaf |  |
-| server |  Properly handle cancellation of projectile hit event      | Spottedleaf |  |
 | server |  Purpur config files      | William Blake Galbreath |  |
 | api |  Purpur config files      | William Blake Galbreath |  |
 | server |  Range check flag dirty calls in PlayerChunk      | Spottedleaf |  |

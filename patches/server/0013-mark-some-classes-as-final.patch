@@ -396,7 +396,7 @@ index b7544cfaba21b5b983c5183ee18fdd5585457df6..3d2c1599fe689884295041414a079194
      private static final AtomicInteger c = new AtomicInteger(1);
      //private static final ExecutorService d = a("Bootstrap", -2); // Paper - add -2 priority // Yatopia - nuke this shit
 diff --git a/src/main/java/net/minecraft/advancements/Advancement.java b/src/main/java/net/minecraft/advancements/Advancement.java
-index 52a3e62abfcceb62af20b520b60af2d2be046092..35d9647d483ce8b47f21fd74132264a0a01795f0 100644
+index 67e6e802191acdc9f7289edc333f3b0e5626b5ae..20021a2dae355bb1f63026619783217d01d852d3 100644
 --- a/src/main/java/net/minecraft/advancements/Advancement.java
 +++ b/src/main/java/net/minecraft/advancements/Advancement.java
 @@ -29,7 +29,7 @@ import net.minecraft.world.item.ItemStack;
@@ -2957,7 +2957,7 @@ index f54f3b30c837243e621768125ea38dcccf81ee34..f344952e0d7390f5a3844ba13c166069
      public static void a(CommandDispatcher<CommandListenerWrapper> commanddispatcher) {
          RequiredArgumentBuilder<CommandListenerWrapper, EntitySelector> requiredargumentbuilder = (RequiredArgumentBuilder) ((RequiredArgumentBuilder) net.minecraft.commands.CommandDispatcher.a("targets", (ArgumentType) ArgumentEntity.d()).executes((commandcontext) -> {
 diff --git a/src/main/java/net/minecraft/server/commands/CommandSummon.java b/src/main/java/net/minecraft/server/commands/CommandSummon.java
-index f71441c8a936273745d0a48be289c92eba794722..b040ef930edc57776e256f88aaa8e6078ac0c15b 100644
+index c35e0d4044da8f2c2257e3c66d85feaa34128903..c0eaa369ece27ad8a5f90b3acd0372ce4b9e1533 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandSummon.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandSummon.java
 @@ -24,7 +24,7 @@ import net.minecraft.world.entity.GroupDataEntity;
@@ -3217,7 +3217,7 @@ index d1d98c2f192514a3f511bebb00c088b03e6be84c..b4fa07584ae66707779d4567e0d2d299
      private static final Font a = new Font("Monospaced", 0, 12);
      private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 501c1017d8cfc53879eabf06a8067b4aba978bdd..1332be6a15ecb84e7b70adc6bce5dc009ec5dbd8 100644
+index fd779a3638d4c5b1974ee744b8d041bf0e24daf4..061137e71909d5821dd450c2772822c9ec6022eb 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
@@ -3880,7 +3880,7 @@ index 133d0f85e95384fcec622db5b565b57b926c7e2d..4247569d67a20ea6a3e201c581893562
      private final LinkedHashMap<BlockPosition, CraftBlockState> list;
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
-index 21f265e3c6d9952f9e0e9a28f8c8de9ee733bf1e..f6b5a5bccd1c4afc84dde74d8a76a32d7c9952e8 100644
+index 49e5a86c223f1b28ce7da6ced276b2f880777856..26bf86a5ee1fd68aa9fac0a2e42a1e4918f28012 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Commodore.java
 @@ -37,7 +37,7 @@ import javax.annotation.Nonnull;

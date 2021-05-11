@@ -19,7 +19,7 @@ index f8261e21a84bf8c29d72116fc3166dc745a59c02..e79f36975f8282269450698c203b304c
              try {
                  // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBase.java b/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
-index 6124b56d935386784371422960a07d518f848cf3..ee382bd46500d6e4df8096adbf0879417459f43b 100644
+index 1d82f719440c95765c01a588f4785d630b8b527a..9465bce44f5ac4b448736d9c029ea411c27843ac 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
 @@ -646,7 +646,8 @@ public abstract class BlockBase {

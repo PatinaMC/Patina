@@ -5,10 +5,10 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031e8a8543f 100644
+index c125ac1b3f95a10b38f20a00b30097bb72007614..bcff2ac951c9ac37b09bb4b9ce7f8b989f947244 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -183,7 +183,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
+@@ -184,7 +184,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
  import io.papermc.paper.util.PaperJvmChecker; // Paper
  import io.papermc.paper.event.server.ServerResourcesReloadedEvent; // Paper
  
@@ -17,7 +17,7 @@ index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogManager.getLogger();
-@@ -191,7 +191,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -192,7 +192,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      public static final WorldSettings c = new WorldSettings("Demo World", EnumGamemode.SURVIVAL, false, EnumDifficulty.NORMAL, false, new GameRules(), DataPackConfiguration.a);
      public Convertable.ConversionSession convertable;
      public final WorldNBTStorage worldNBTStorage;
@@ -26,7 +26,7 @@ index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031
      private final List<Runnable> tickables = Lists.newArrayList();
      private final GameProfilerSwitcher m;
      private GameProfilerFiller methodProfiler;
-@@ -938,9 +938,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -939,9 +939,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
          }
  
@@ -38,7 +38,7 @@ index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031
  
          this.dataPackResources.close();
  
-@@ -1445,14 +1445,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1446,14 +1446,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              //MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -55,7 +55,7 @@ index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031
  
          this.methodProfiler.exit();
  
-@@ -1799,7 +1799,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1800,7 +1800,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.L = s1;
      }
  
@@ -64,7 +64,7 @@ index 68d605b9b9063ea32897323736358be2ab415339..5fc0a9930ef1f2796176a86cb9531031
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
          mojangstatisticsgenerator.a("whitelist_enabled", false);
          mojangstatisticsgenerator.a("whitelist_count", 0);
-@@ -1831,7 +1831,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1832,7 +1832,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
          mojangstatisticsgenerator.a("worlds", i);

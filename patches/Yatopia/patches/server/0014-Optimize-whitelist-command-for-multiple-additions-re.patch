@@ -10,10 +10,10 @@ added.
 These changes aim to reduce that load whenever you are using the /whitelist command.
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cc32e9e4ef22a68a8c3e6f5c71b865874c5b112b..4fe74550455344ed65ce9db02920dc844c76bf3a 100644
+index c50adb20e8969f14f63c66ada518392564643cd9..5b09f37559b43d50641c1ba6a81f8390528d7446 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -2103,6 +2103,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -2104,6 +2104,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          return new DataPackConfiguration(list, list1);
      }
  

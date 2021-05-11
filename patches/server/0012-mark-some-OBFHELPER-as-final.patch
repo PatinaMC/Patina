@@ -54,10 +54,10 @@ index b9e36a83837913cd3e5abe598f695ba7a9ffc417..e2f0ac82acb8463e7fe858d80e0c8f6d
              this.c = agameprofile;
          }
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 914c7a1b18151f29183cfe9474313ce18e7c4ae2..501c1017d8cfc53879eabf06a8067b4aba978bdd 100644
+index 0b48961a18da76dd25c0930f393f0ac9f709ad78..fd779a3638d4c5b1974ee744b8d041bf0e24daf4 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-@@ -1925,7 +1925,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1933,7 +1933,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
      }
      // Paper end - optimise isOutsideOfRange
  
@@ -66,7 +66,7 @@ index 914c7a1b18151f29183cfe9474313ce18e7c4ae2..501c1017d8cfc53879eabf06a8067b4a
      private boolean b(EntityPlayer entityplayer) {
          return entityplayer.isSpectator() && !this.world.getGameRules().getBoolean(GameRules.SPECTATORS_GENERATE_CHUNKS);
      }
-@@ -2419,7 +2419,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2427,7 +2427,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
  
      }
  
