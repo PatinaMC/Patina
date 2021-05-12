@@ -172,6 +172,7 @@ This is an overview over all patches that are currently used.
 | server |  Strip raytracing for EntityLiving#hasLineOfSight      | Paul Sauve |  |
 | server |  Subtle Changes      | foss-mc |  |
 | server |  Suspected plugins report      | ishland |  |
+| api |  Suspected plugins report      | ishland |  |
 | server |  Swap priority of checks in chunk ticking      | Paul Sauve |  |
 | server |  Swaps the predicate order of collision      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Tick fluids config      | BillyGalbreath |  |
