@@ -291,7 +291,7 @@ index 5759f91d5e9dc52b16c8955b8d318da2b53c7af4..0960f415fd3c6c764cf3dd273bb9e9c5
  }
 +// Tuinity end
 diff --git a/src/main/java/net/minecraft/server/network/LoginListener.java b/src/main/java/net/minecraft/server/network/LoginListener.java
-index c67b94840e4c967baebf6eb351df15f0e4ead4be..ed836462123efc6903e406fa926e55e1cedddb95 100644
+index f54af7cabc6b4e062948dc97e577e7fe04b5add4..4e28b58731c7e76a727ed8f0967150f8fe22ab66 100644
 --- a/src/main/java/net/minecraft/server/network/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/network/LoginListener.java
 @@ -256,7 +256,7 @@ public class LoginListener implements PacketLoginInListener {

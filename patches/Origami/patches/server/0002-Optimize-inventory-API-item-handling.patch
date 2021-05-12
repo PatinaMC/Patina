@@ -5,7 +5,7 @@ Subject: [PATCH] Optimize inventory API item handling
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
-index c3fa97ac34e1fc61ae02f224f8afe5a0b486fb4d..1c71c12869a11d0745f6082350f05726bb0b1e57 100644
+index f6001047ada8308cfa1d9b26677a7a5d7774de51..5efae1af23e7a52571bb18885bd45255fb68f1f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftInventory.java
 @@ -274,11 +274,13 @@ public class CraftInventory implements Inventory {
