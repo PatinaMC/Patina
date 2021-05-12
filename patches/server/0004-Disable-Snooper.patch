@@ -5,7 +5,7 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c125ac1b3f95a10b38f20a00b30097bb72007614..bcff2ac951c9ac37b09bb4b9ce7f8b989f947244 100644
+index 1f0d8344eb0529a86360a9ed20689005a162c31b..5852bb6f3de97500d126dd1a0bde11e6cf7ff1cd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -184,7 +184,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
@@ -38,7 +38,7 @@ index c125ac1b3f95a10b38f20a00b30097bb72007614..bcff2ac951c9ac37b09bb4b9ce7f8b98
  
          this.dataPackResources.close();
  
-@@ -1446,14 +1446,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1450,14 +1450,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              //MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -55,7 +55,7 @@ index c125ac1b3f95a10b38f20a00b30097bb72007614..bcff2ac951c9ac37b09bb4b9ce7f8b98
  
          this.methodProfiler.exit();
  
-@@ -1800,7 +1800,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1804,7 +1804,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.L = s1;
      }
  
@@ -64,7 +64,7 @@ index c125ac1b3f95a10b38f20a00b30097bb72007614..bcff2ac951c9ac37b09bb4b9ce7f8b98
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
          mojangstatisticsgenerator.a("whitelist_enabled", false);
          mojangstatisticsgenerator.a("whitelist_count", 0);
-@@ -1832,7 +1832,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1836,7 +1836,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
          mojangstatisticsgenerator.a("worlds", i);

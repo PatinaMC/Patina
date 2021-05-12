@@ -370,7 +370,7 @@ index e0a2f10f92430fd59519e57dee3286035c287bf3..fb7a2e2e99aabca1233d26d83ba1dc91
      static final UnsafeList<AxisAlignedBB> TEMP_COLLISION_LIST = new UnsafeList<>(1024);
      static boolean tempCollisionListInUse;
 diff --git a/src/main/java/net/minecraft/CrashReport.java b/src/main/java/net/minecraft/CrashReport.java
-index 9b7a51890c667601b195ff15b2bf0d6c76c7f19f..6cfa551f61c1a3079638f199cac268c17988f6cf 100644
+index d7dd6208d1fc47dd95badecaaee0ed98292a5f7f..b0a2bef1a18d01068119b2d81a8a62b720cae8e3 100644
 --- a/src/main/java/net/minecraft/CrashReport.java
 +++ b/src/main/java/net/minecraft/CrashReport.java
 @@ -18,7 +18,7 @@ import org.apache.commons.lang3.ArrayUtils;
@@ -4138,7 +4138,7 @@ index 58a9534816c7b8a86cc6a620bbc1fcda86444d1a..4fd046d7040f8045e1ceafc0c3de8d1f
  
      public static String limit(String str, int limit)
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 00c728704a1a7aa8b3a2e7679eaa0d2f604da087..786cf2b3ef13cf7574c0808b5ccafff887518bfa 100644
+index b16b25fa7dfaea726986106f9e0acc68ff6fa0ae..069be57a78839b6a2b8d79cd2c6b5a347fb5171d 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -10,7 +10,7 @@ import com.destroystokyo.paper.io.chunk.ChunkTaskManager; // Paper
