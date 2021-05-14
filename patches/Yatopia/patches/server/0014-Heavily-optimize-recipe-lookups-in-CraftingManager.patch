@@ -11,7 +11,7 @@ Co-authored-by: Ivan Pekov <ivan@mrivanplays.com>
 Co-authored-by: ishland <ishlandmc@yeah.net>
 
 diff --git a/src/main/java/net/minecraft/world/item/ItemStack.java b/src/main/java/net/minecraft/world/item/ItemStack.java
-index fee862951f2767d4a3c5268dff157c185378a939..bd19ce613c1c23f9df3548f0a36a3ef83a67c758 100644
+index 366ceb65d40c685117d1c79a933864ab91d8aa11..d82347b7bb90abcdeefd4725a5e3ac860bfa2b7a 100644
 --- a/src/main/java/net/minecraft/world/item/ItemStack.java
 +++ b/src/main/java/net/minecraft/world/item/ItemStack.java
 @@ -625,6 +625,7 @@ public final class ItemStack {

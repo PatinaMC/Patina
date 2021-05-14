@@ -113,10 +113,10 @@ index 250b7965cb3f109e536721e8a7cff23d5b144b5a..70ffd2e2c3fb68606fc7db7bbf448842
          return this.isHandRaised() ? this.activeItem.k() - this.dZ() : 0;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
-index 10611b8c72b0c0c3202e9ae5b956974ec1a37aa3..abc16ae6ecd5d03639ff8854d56f5cd5bb54c929 100644
+index 697e666a027d5e2ace7d0758909be5a658c480d2..7557541324675d87e23532cfe504c09dec79ac96 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
-@@ -40,7 +40,7 @@ public class PathfinderGoalSelector {
+@@ -39,7 +39,7 @@ public class PathfinderGoalSelector {
          this.e = supplier;
      }
  
@@ -125,7 +125,7 @@ index 10611b8c72b0c0c3202e9ae5b956974ec1a37aa3..abc16ae6ecd5d03639ff8854d56f5cd5
          this.d.add(new PathfinderGoalWrapped(i, pathfindergoal));
      }
  
-@@ -64,7 +64,7 @@ public class PathfinderGoalSelector {
+@@ -63,7 +63,7 @@ public class PathfinderGoalSelector {
      }
      // Paper end
  
