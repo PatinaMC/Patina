@@ -5,7 +5,7 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index 1f07aeac064f810c57e615ae9099645b8a5bf9ce..53dcb7182c854ba58e08ed989b5a036cea913080 100644
+index a382fc20eaed6a82c68d859f860feee072fd84a6..b23bbe726c4bef3fd5c56bddb27295fe2c20613d 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -25,6 +25,15 @@
@@ -42,7 +42,7 @@ index 1f07aeac064f810c57e615ae9099645b8a5bf9ce..53dcb7182c854ba58e08ed989b5a036c
              <scope>runtime</scope>
          </dependency>
          <!--
-@@ -149,14 +158,14 @@
+@@ -176,14 +185,14 @@
          <dependency>
              <groupId>org.hamcrest</groupId>
              <artifactId>hamcrest-library</artifactId>
@@ -59,7 +59,7 @@ index 1f07aeac064f810c57e615ae9099645b8a5bf9ce..53dcb7182c854ba58e08ed989b5a036c
              <scope>test</scope>
          </dependency>
          <!-- for optimized protocol handling -->
-@@ -180,6 +189,12 @@
+@@ -207,6 +216,12 @@
              <version>master-SNAPSHOT</version>
              <scope>compile</scope>
          </dependency>

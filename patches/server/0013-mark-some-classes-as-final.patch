@@ -422,7 +422,7 @@ index b6ba31fbc9c95e6da6617cf4a6b2b65345dabc1f..7d66ed149c6982e5a4c279f6d6ef7d25
      private static final Logger LOGGER = LogManager.getLogger();
      public final Map<MinecraftKey, Advancement> advancements = Maps.newHashMap();
 diff --git a/src/main/java/net/minecraft/commands/CommandDispatcher.java b/src/main/java/net/minecraft/commands/CommandDispatcher.java
-index 5ae31658fb1183eab66f682cc5477bc526c27753..f13498bbb634f9553dc24ee69c7ae294efaa2491 100644
+index b1bfc42b4153b225243ba65e7f937c0314cb39a5..e79571969d96148efbc426861efaf8274e90f894 100644
 --- a/src/main/java/net/minecraft/commands/CommandDispatcher.java
 +++ b/src/main/java/net/minecraft/commands/CommandDispatcher.java
 @@ -111,7 +111,7 @@ import org.bukkit.event.player.PlayerCommandSendEvent;
@@ -3854,7 +3854,7 @@ index 31f197ded3335cf6615a7e7d4e502323daad13e4..436061587dc90fbd4ccbbb5e90badd1d
      private final World world;
      private final net.minecraft.world.level.border.WorldBorder handle;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 25bd74011d2d4b7b629b96c1bdee7181b9b70fc4..d02b159147d1aeab79f57aa0b8b516ea91d6e7d7 100644
+index bb42ca085f359d1da2d96acf471be8945344c53e..201cd6f73ebb5ea4d6fb3806209c1aec36d0a251 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -16,7 +16,7 @@ import net.minecraft.util.ExceptionSuppressor;

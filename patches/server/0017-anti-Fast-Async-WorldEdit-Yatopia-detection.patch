@@ -5,10 +5,10 @@ Subject: [PATCH] anti Fast Async WorldEdit Yatopia detection
 
 
 diff --git a/pom.xml b/pom.xml
-index 82542633a6da3a5203148817388f1d5a5cc3f8ab..eca9c5ca72cbe072a23e770d69cfc8e3b7e56659 100644
+index 534042f03373b1d6008525227cd8b937fa82828b..ea932878c354ea2fb116acb325897f973cb64e59 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -318,6 +318,20 @@
+@@ -351,6 +351,20 @@
                                      <!--<pattern>it.unimi</pattern>-->
                                      <!--<shadedPattern>org.bukkit.craftbukkit.libs.it.unimi</shadedPattern>-->
                                  <!--</relocation>-->

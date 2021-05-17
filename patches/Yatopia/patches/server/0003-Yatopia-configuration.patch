@@ -39,7 +39,7 @@ index a76219e59c24862b9c1e09e4a2a29cf2a6260514..11c634162dd077f532e8f84a203bfbbd
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.ba());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 02a3e6e6e4fa44bd08a3d619883418bb0dc6db1c..a7b78e1821a470841609fc67cc33f8ccb270d850 100644
+index d3cb32694708e6a6e43ed8c3bfbe3be5507d4418..8fe1228fbe92ce12a2070afe8ca24e07f89be345 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {
@@ -72,10 +72,10 @@ index d22c17b40f51a6a173fd7665b877fe09c33adf45..f52094accbd65f973a0e4b0fc6bc3fb9
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c5fa6a8c9fd02f923e268751f281f3dd364d7299..68f1e5f81e204f8cfae879a5a3821cf937dd6851 100644
+index e14e731a114fff48abdab851f15c3412753748bf..03138cc5e14751fe81a3b9de714ca0ce68e9e2a7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -860,6 +860,7 @@ public final class CraftServer implements Server {
+@@ -863,6 +863,7 @@ public final class CraftServer implements Server {
              playerList.getProfileBans().load();
          } catch (IOException ex) {
              logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -83,7 +83,7 @@ index c5fa6a8c9fd02f923e268751f281f3dd364d7299..68f1e5f81e204f8cfae879a5a3821cf9
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2391,6 +2392,13 @@ public final class CraftServer implements Server {
+@@ -2394,6 +2395,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -98,10 +98,10 @@ index c5fa6a8c9fd02f923e268751f281f3dd364d7299..68f1e5f81e204f8cfae879a5a3821cf9
          public void broadcast(BaseComponent component) {
              for (Player player : getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 17d0d0ec4e22ed8b344a2208925a2e9cba5dd58c..25bd74011d2d4b7b629b96c1bdee7181b9b70fc4 100644
+index 42b1569a3786200d685463dfa130d2aaf3479ed8..bb42ca085f359d1da2d96acf471be8945344c53e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -164,6 +164,14 @@ public class Main {
+@@ -170,6 +170,14 @@ public class Main {
                          .describedAs("Yml file");
                  // Origami end - Server Config
  

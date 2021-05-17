@@ -74,6 +74,7 @@ This is an overview over all patches that are currently used.
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
 | server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
 | server |  Fix incorrect isRealPlayer init      | Spottedleaf |  |
+| server |  Fix incorrect status dataconverter for pre 1.13 chunks      | Spottedleaf |  |
 | server |  Fix swamp hut cat generation deadlock      | Spottedleaf |  |
 | server |  Fix the dead lagging the server      | William Blake Galbreath |  |
 | server |  Heavily optimize recipe lookups in CraftingManager      | Mykyta Komarn | Ivan Pekov, ishland |

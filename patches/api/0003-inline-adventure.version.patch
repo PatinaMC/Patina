@@ -5,7 +5,7 @@ Subject: [PATCH] inline adventure.version
 
 
 diff --git a/pom.xml b/pom.xml
-index 84fe5834bd2048543d2a96f186367f4421481cad..e54d3da9a9c79213923427c6238d90314df66ffe 100644
+index c2fdaad1f5afa1fe7124e857fd771446481c2abc..91a65b5fac0d1c63f15693f47f18849411e3e77b 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -21,7 +21,6 @@
@@ -25,7 +25,7 @@ index 84fe5834bd2048543d2a96f186367f4421481cad..e54d3da9a9c79213923427c6238d9031
                  <type>pom</type>
                  <scope>import</scope>
              </dependency>
-@@ -274,10 +273,10 @@
+@@ -293,10 +292,10 @@
                          <link>https://javadoc.io/doc/org.jetbrains/annotations-java5/20.1.0/</link>
                          <link>https://javadoc.io/doc/net.md-5/bungeecord-chat/1.16-R0.4/</link>
                          <!-- Paper start -->

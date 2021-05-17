@@ -5,7 +5,7 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..8da56c1fccfb08c99de480ed5855b8a2f51547ee 100644
+index 73fbd5d5a591871a3a386fb5c455cd96a3992e7a..817dfb05c1fa0062b790e5c73d22809a9797a61c 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -25,6 +25,19 @@
@@ -45,8 +45,8 @@ index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..8da56c1fccfb08c99de480ed5855b8a2
 +            <version>1.28</version>
              <scope>compile</scope>
          </dependency>
-         <!-- annotations -->
-@@ -129,7 +142,7 @@
+         <!-- not part of the API proper -->
+@@ -148,7 +161,7 @@
          <dependency>
              <groupId>org.slf4j</groupId>
              <artifactId>slf4j-api</artifactId>
@@ -55,7 +55,7 @@ index c2e9ca1cc7f14d3a696385edc3cb341f902fa2fd..8da56c1fccfb08c99de480ed5855b8a2
              <scope>compile</scope>
          </dependency>
          <!-- testing -->
-@@ -155,12 +168,12 @@
+@@ -174,12 +187,12 @@
          <dependency>
              <groupId>org.ow2.asm</groupId>
              <artifactId>asm</artifactId>

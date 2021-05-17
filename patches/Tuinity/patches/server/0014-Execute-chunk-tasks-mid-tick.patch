@@ -279,7 +279,7 @@ index c5038aa66703484a9243579ba4a6c92d138fc388..e38e507ccc26058b4f4d2e8fe0611885
          @Override
          protected boolean executeNext() {
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 6b1577f0498cce01bb8d04d327cb1f2e2863bdc9..e64daf204cc77fd1b4a6eeabbd13b0b098857202 100644
+index 5917aa80c967bad447202c35f7130bf961735105..3fde8c164bb816caf5a55d333b7b7a77a76d586c 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -410,6 +410,10 @@ public class WorldServer extends World implements GeneratorAccessSeed {

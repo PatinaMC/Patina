@@ -5,10 +5,10 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index fb61b6ac167b34486282a24e598020fb96081f28..b158f85639f832652b41949f51d1b1795ac751dd 100644
+index aea8d85aa087d896ea93f944b8d3403ea90c9bf4..d51452ac236253d366efe12ee1492f6a95910aa7 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-@@ -322,7 +322,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -323,7 +323,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.u(i1);
@@ -17,7 +17,7 @@ index fb61b6ac167b34486282a24e598020fb96081f28..b158f85639f832652b41949f51d1b179
  
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
-@@ -360,7 +360,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -361,7 +361,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.u(i1);
