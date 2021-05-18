@@ -150,10 +150,10 @@ index e79f36975f8282269450698c203b304c81919482..c598ddc9d9184745a7c4f26555f17117
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName()); // Tuinity - Server Config
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName())); // Purpur
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c18e3d28c68ef43347f360b9208a47a9aa0735bd..e14e731a114fff48abdab851f15c3412753748bf 100644
+index 4d7d43284500e7631675c5c6eecc992a283d981f..8d088da7c5ff12833d612102cbb33a4bb6152c2c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -869,6 +869,7 @@ public final class CraftServer implements Server {
+@@ -866,6 +866,7 @@ public final class CraftServer implements Server {
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
          net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
@@ -161,7 +161,7 @@ index c18e3d28c68ef43347f360b9208a47a9aa0735bd..e14e731a114fff48abdab851f15c3412
          for (WorldServer world : console.getWorlds()) {
              world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
-@@ -905,6 +906,7 @@ public final class CraftServer implements Server {
+@@ -902,6 +903,7 @@ public final class CraftServer implements Server {
              world.paperConfig.init(); // Paper
              world.tuinityConfig.init(); // Tuinity - Server Config
              world.purpurConfig.init(); // Purpur

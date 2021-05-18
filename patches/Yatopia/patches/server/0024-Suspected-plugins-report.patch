@@ -75,7 +75,7 @@ index 71a000edfab27c9965d1929af78582821d5af97a..5c5ac70b4dae5d51303ab974261055aa
                              LOGGER.error("Error whilst processing packet {} for {}[{}]", packet, networkmanager.getPlayer().getName(), networkmanager.getSocketAddress(), e);
                          } else {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c125ac1b3f95a10b38f20a00b30097bb72007614..1f0d8344eb0529a86360a9ed20689005a162c31b 100644
+index 244569cbbfa6ef9b5491ae511cdb991ec3634fe6..6c4fd7eda4cf057c6c369ae666c3c0b74708d6e6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1158,7 +1158,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas

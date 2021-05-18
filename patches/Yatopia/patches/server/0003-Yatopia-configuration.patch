@@ -72,10 +72,10 @@ index d22c17b40f51a6a173fd7665b877fe09c33adf45..f52094accbd65f973a0e4b0fc6bc3fb9
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e14e731a114fff48abdab851f15c3412753748bf..03138cc5e14751fe81a3b9de714ca0ce68e9e2a7 100644
+index 8d088da7c5ff12833d612102cbb33a4bb6152c2c..5adb3223f104896e190bb7fbb2e24a6803a828d5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -863,6 +863,7 @@ public final class CraftServer implements Server {
+@@ -860,6 +860,7 @@ public final class CraftServer implements Server {
              playerList.getProfileBans().load();
          } catch (IOException ex) {
              logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -83,7 +83,7 @@ index e14e731a114fff48abdab851f15c3412753748bf..03138cc5e14751fe81a3b9de714ca0ce
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2394,6 +2395,13 @@ public final class CraftServer implements Server {
+@@ -2389,6 +2390,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

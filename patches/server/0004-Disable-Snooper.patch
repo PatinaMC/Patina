@@ -5,7 +5,7 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1f0d8344eb0529a86360a9ed20689005a162c31b..5852bb6f3de97500d126dd1a0bde11e6cf7ff1cd 100644
+index 6c4fd7eda4cf057c6c369ae666c3c0b74708d6e6..f25a3548ec4280a72313628e073dd667d09a0f18 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -184,7 +184,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot

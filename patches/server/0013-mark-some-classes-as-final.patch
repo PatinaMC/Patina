@@ -2541,7 +2541,7 @@ index 490008ad39a2f5701f3c3ce93877387411630670..71a140ce20ba04744c12edb841f71954
      public static final SuggestionProvider<CommandListenerWrapper> a = (commandcontext, suggestionsbuilder) -> {
          CustomFunctionData customfunctiondata = ((CommandListenerWrapper) commandcontext.getSource()).getServer().getFunctionData();
 diff --git a/src/main/java/net/minecraft/server/commands/CommandGamemode.java b/src/main/java/net/minecraft/server/commands/CommandGamemode.java
-index 376d5eac9c17365266d8a4986bf4c19030454c9a..807600c56b1dc251f40cf07ff3a418a8fcab26d6 100644
+index 8da48d9cbadfbe83ae8410cf49d78df49f50fb08..0ad49e10dee0a23a0417634fda059bbb99231806 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandGamemode.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandGamemode.java
 @@ -15,7 +15,7 @@ import net.minecraft.server.level.EntityPlayer;
@@ -2554,7 +2554,7 @@ index 376d5eac9c17365266d8a4986bf4c19030454c9a..807600c56b1dc251f40cf07ff3a418a8
      public static void a(CommandDispatcher<CommandListenerWrapper> commanddispatcher) {
          LiteralArgumentBuilder<CommandListenerWrapper> literalargumentbuilder = (LiteralArgumentBuilder) net.minecraft.commands.CommandDispatcher.a("gamemode").requires((commandlistenerwrapper) -> {
 diff --git a/src/main/java/net/minecraft/server/commands/CommandGamemodeDefault.java b/src/main/java/net/minecraft/server/commands/CommandGamemodeDefault.java
-index 5790699b3898910dfde46f588996dd8af42757d1..fa208146e976f99a3cc3c2d19491aebae469963d 100644
+index 2a731594c22bb266d3dfef4d64d55b9772565cca..2e06bf202de8052415db207cb4cb99b300d772f9 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandGamemodeDefault.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandGamemodeDefault.java
 @@ -9,7 +9,7 @@ import net.minecraft.server.MinecraftServer;

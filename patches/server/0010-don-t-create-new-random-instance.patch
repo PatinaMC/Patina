@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index aea8d85aa087d896ea93f944b8d3403ea90c9bf4..d51452ac236253d366efe12ee1492f6a95910aa7 100644
+index 32e400632ec1e61374f772c6262580f84a5b2288..c528eb42da524f765f998c558c9c3602f7fdec3b 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
 @@ -323,7 +323,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {

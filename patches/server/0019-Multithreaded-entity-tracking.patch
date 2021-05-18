@@ -212,7 +212,7 @@ index 5e958201acf9c12e4fda5adfd3668d847f38474c..a50662c44c5ed6953a25c245576e16bb
  
      public ChunkProviderServer(WorldServer worldserver, Convertable.ConversionSession convertable_conversionsession, DataFixer datafixer, DefinedStructureManager definedstructuremanager, Executor executor, ChunkGenerator chunkgenerator, int i, boolean flag, WorldLoadListener worldloadlistener, Supplier<WorldPersistentData> supplier) {
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index d51452ac236253d366efe12ee1492f6a95910aa7..173f35164f0f3e2140a58fe693048003aab3c592 100644
+index c528eb42da524f765f998c558c9c3602f7fdec3b..7ba44a69b58ed7c91d81399eb2e0ae2951f2605d 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
 @@ -183,7 +183,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
