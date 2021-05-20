@@ -72,10 +72,10 @@ index d22c17b40f51a6a173fd7665b877fe09c33adf45..f52094accbd65f973a0e4b0fc6bc3fb9
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8d088da7c5ff12833d612102cbb33a4bb6152c2c..5adb3223f104896e190bb7fbb2e24a6803a828d5 100644
+index d69054c7739d067041509abafb7add681f3e0ebb..240ee1ffc2fcd69a3ec294739c2fe31d7e44f5ad 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -860,6 +860,7 @@ public final class CraftServer implements Server {
+@@ -877,6 +877,7 @@ public final class CraftServer implements Server {
              playerList.getProfileBans().load();
          } catch (IOException ex) {
              logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -83,7 +83,7 @@ index 8d088da7c5ff12833d612102cbb33a4bb6152c2c..5adb3223f104896e190bb7fbb2e24a68
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2389,6 +2390,13 @@ public final class CraftServer implements Server {
+@@ -2406,6 +2407,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -98,7 +98,7 @@ index 8d088da7c5ff12833d612102cbb33a4bb6152c2c..5adb3223f104896e190bb7fbb2e24a68
          public void broadcast(BaseComponent component) {
              for (Player player : getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 42b1569a3786200d685463dfa130d2aaf3479ed8..bb42ca085f359d1da2d96acf471be8945344c53e 100644
+index 8b344d69b9076e1bf2a5ba310ecf3f8ddd375fdc..2726df053c4647f8ce2f02f1ae614009ffaba083 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -170,6 +170,14 @@ public class Main {

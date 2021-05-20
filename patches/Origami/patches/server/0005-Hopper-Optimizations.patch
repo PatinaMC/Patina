@@ -122,13 +122,13 @@ index fb7a1a854efcf42f0351ef521aff67d5fcc4ab27..96dfe05ed57f7e2c3dac3a784ae3445a
 +    // Origami end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/TileEntityHopper.java b/src/main/java/net/minecraft/world/level/block/entity/TileEntityHopper.java
-index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21ee9d689f2 100644
+index 056d280c7db6fc532d83b2a547d6a01402a49bd0..878e853826d633f6f93981eb182cf35739c26d2a 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/TileEntityHopper.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/TileEntityHopper.java
 @@ -47,8 +47,9 @@ import org.bukkit.inventory.Inventory;
  public class TileEntityHopper extends TileEntityLootable implements IHopper, ITickable {
  
-     private NonNullList<ItemStack> items;
+     private gg.airplane.structs.ItemListWithBitset items; // Airplane
 -    private int j;
 +    private int j; public int getCooldown() { return this.j; } // Origami - OBFHELPER
      private long k;
@@ -136,7 +136,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
  
      // CraftBukkit start - add fields and methods
      public List<HumanEntity> transaction = new java.util.ArrayList<HumanEntity>();
-@@ -126,7 +127,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -143,7 +144,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
          if (itemstack.getCount() > this.getMaxStackSize()) {
              itemstack.setCount(this.getMaxStackSize());
          }
@@ -145,7 +145,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
      }
  
      @Override
-@@ -136,7 +137,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -153,7 +154,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
  
      @Override
      public void tick() {
@@ -154,7 +154,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
              --this.j;
              this.k = this.world.getTime();
              if (!this.m()) {
-@@ -145,7 +146,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -162,7 +163,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
                  boolean result = this.a(() -> {
                      return a((IHopper) this);
                  });
@@ -163,7 +163,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
                      this.setCooldown(this.world.spigotConfig.hopperCheck);
                  }
                  // Spigot end
-@@ -154,6 +155,26 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -171,6 +172,26 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
          }
      }
  
@@ -190,7 +190,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
      private boolean a(Supplier<Boolean> supplier) {
          if (this.world != null && !this.world.isClientSide) {
              if (!this.m() && (Boolean) this.getBlock().get(BlockHopper.ENABLED)) {
-@@ -161,6 +182,10 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -178,6 +199,10 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
  
                  if (!this.isEmpty()) {
                      flag = this.k();
@@ -201,7 +201,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
                  }
  
                  if (!this.j()) {
-@@ -240,7 +265,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -260,7 +285,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
              }
          }
          if (foundItem && world.paperConfig.cooldownHopperWhenFull) { // Inventory was full - cooldown
@@ -210,7 +210,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
          }
          return false;
      }
-@@ -280,7 +305,13 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -300,7 +325,13 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
          origItemStack.setCount(origCount);
  
          if (world.paperConfig.cooldownHopperWhenFull) {
@@ -225,7 +225,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
          }
  
          return false;
-@@ -488,6 +519,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -518,6 +549,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
                  entityitem = (EntityItem) iterator.next();
              } while (!a((IInventory) ihopper, entityitem));
  
@@ -233,7 +233,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
              return true;
          }
      }
-@@ -576,7 +608,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -606,7 +638,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
                  itemstack = a(iinventory, iinventory1, itemstack, k, enumdirection);
              }
          }
@@ -242,7 +242,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
          return itemstack;
      }
  
-@@ -717,7 +749,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -747,7 +779,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
          return (double) this.position.getZ() + 0.5D;
      }
  
@@ -251,7 +251,7 @@ index 537dc52e5ff3325555ee6049bc7f277952983b76..a859e12571ceff2199842e03df77b21e
          this.j = i;
      }
  
-@@ -744,6 +776,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
+@@ -774,6 +806,7 @@ public class TileEntityHopper extends TileEntityLootable implements IHopper, ITi
              BlockPosition blockposition = this.getPosition();
  
              if (VoxelShapes.c(VoxelShapes.a(entity.getBoundingBox().d((double) (-blockposition.getX()), (double) (-blockposition.getY()), (double) (-blockposition.getZ()))), this.aa_(), OperatorBoolean.AND)) {

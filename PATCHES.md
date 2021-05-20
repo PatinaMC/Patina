@@ -82,17 +82,18 @@ This is an overview over all patches that are currently used.
 | server |  Hopper Optimizations      | Phoenix616 |  |
 | server |  Improve abnormal server shutdown process      | Spottedleaf |  |
 | server |  Improve async tp to not load chunks when crossing worlds      | Spottedleaf |  |
+| server |  Improve container checking with a bitset      | Paul Sauve |  |
 | server |  Improve fluid direction caching      | Paul Sauve |  |
 | server |  Improve paper prevent moving into unloaded chunk check      | Spottedleaf |  |
 | server |  Improved oversized chunk data packet handling      | Spottedleaf |  |
 | server |  Lag compensate block breaking      | Spottedleaf |  |
 | server |  Lagging threshold      | William Blake Galbreath |  |
 | api |  Lagging threshold      | William Blake Galbreath |  |
-| server |  Lazily retrieve Entity&#39;s item in hand for collision      | Paul Sauve |  |
 | server |  Logger settings (suppressing pointless logs)      | William Blake Galbreath |  |
 | server |  MC-168772 Fix - Add turtle egg block options      | William Blake Galbreath |  |
 | server |  MC-Dev fixes      | Spottedleaf |  |
 | server |  Make CallbackExecutor strict again      | Spottedleaf |  |
+| server |  Make VoxelShapeCollisionEntity lazier      | Paul Sauve |  |
 | server |  Make entity tracker use highest range of passengers      | Spottedleaf |  |
 | server |  Make sure inlined getChunkAt has inlined logic for loaded      | Spottedleaf |  |
 | server |  Manually inline methods in BlockPosition      | Spottedleaf |  |
@@ -103,7 +104,6 @@ This is an overview over all patches that are currently used.
 | server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
 | server |  Multi-Threaded Server Ticking Vanilla      | Spottedleaf |  |
 | server |  Multi-Threaded ticking CraftBukkit      | Spottedleaf |  |
-| server |  Multithreaded entity tracking      | Paul Sauve |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  New nbt cache      | Hugo Planque | ishland |
 | server |  Not discard timed-out tasks      | foss-mc |  |
@@ -186,6 +186,7 @@ This is an overview over all patches that are currently used.
 | server |  Use entity ticking chunk map for entity tracker      | Spottedleaf |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
 | server |  Use list for fast iteration over pathfinder goals      | Paul Sauve |  |
+| server |  Use raw iterator where possible      | Paul Sauve |  |
 | server |  Use unmodifiableMap instead of making copy      | Paul Sauve |  |
 | server |  Util patch      | Spottedleaf |  |
 | server |  Utilities      | YatopiaMC | Mykyta Komarnytskyy, Ivan Pekov |

@@ -4,30 +4,6 @@ Date: Thu, 9 May 2019 18:09:43 -0500
 Subject: [PATCH] Purpur config files
 
 
-diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
-index b480bd3044370b8eb733166f0c4b737344475993..4d8740678049aa749b42618470e9cc838555528d 100644
---- a/src/main/java/com/destroystokyo/paper/Metrics.java
-+++ b/src/main/java/com/destroystokyo/paper/Metrics.java
-@@ -593,7 +593,7 @@ public class Metrics {
-             boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
-             // Only start Metrics, if it's enabled in the config
-             if (config.getBoolean("enabled", true)) {
--                Metrics metrics = new Metrics("Airplane", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page // Airplane
-+                Metrics metrics = new Metrics("Purpur", serverUUID, logFailedRequests, Bukkit.getLogger()); // Purpur
- 
-                 metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
-                     String minecraftVersion = Bukkit.getVersion();
-@@ -602,8 +602,8 @@ public class Metrics {
-                 }));
- 
-                 metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
--                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() || PaperConfig.isProxyOnlineMode() ? "online" : "offline"));
--                metrics.addCustomChart(new Metrics.SimplePie("airplane_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page // Airplane
-+                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (PaperConfig.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
-+                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur
- 
-                 metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
-                     Map<String, Map<String, Integer>> map = new HashMap<>();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 index 14ac28d4d6b1ab0f0a70dfefc589f7723a1d2e1a..4eb122cfd31902df9789d2e8ff2615207a65ab06 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
@@ -45,7 +21,7 @@ index 14ac28d4d6b1ab0f0a70dfefc589f7723a1d2e1a..4eb122cfd31902df9789d2e8ff261520
              config.save(CONFIG_FILE);
          } catch (IOException ex) {
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 3e63ea5ae2d31a502fa639806a926cd1ab8b6796..cbccb889167f8e235f417e224bbf5f025a6304f5 100644
+index 858bd62d2a17c15ee573c5cd607a876d3a99c2b1..a76219e59c24862b9c1e09e4a2a29cf2a6260514 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -212,6 +212,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
@@ -65,10 +41,10 @@ index 3e63ea5ae2d31a502fa639806a926cd1ab8b6796..cbccb889167f8e235f417e224bbf5f02
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 51e6cd6119465f9fd6385072997971449afb5f42..f8261e21a84bf8c29d72116fc3166dc745a59c02 100644
+index 63ba178df4968ab02fe8b78ec36ccde83ba76ee8..4a385a4b0fcb3af21dc6a7f9c8ccc957af369da5 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -157,6 +157,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -159,6 +159,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      public final ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
  
      public final com.tuinity.tuinity.config.TuinityConfig.WorldConfig tuinityConfig; // Tuinity - Server Config
@@ -76,7 +52,7 @@ index 51e6cd6119465f9fd6385072997971449afb5f42..f8261e21a84bf8c29d72116fc3166dc7
  
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPosition lastPhysicsProblem; // Spigot
-@@ -249,6 +250,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -251,6 +252,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.WorldDataServer) worlddatamutable).getName(), this.spigotConfig); // Paper
          this.chunkPacketBlockController = this.paperConfig.antiXray ? new ChunkPacketBlockControllerAntiXray(this, executor) : ChunkPacketBlockController.NO_OPERATION_INSTANCE; // Paper - Anti-Xray
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName()); // Tuinity - Server Config
@@ -357,7 +333,7 @@ index 0000000000000000000000000000000000000000..536955124afaec5c8a070249c7432cb9
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0c3a095aa77f0406881cdacb118ffd93cf5b6060..5ff123626972215afcb29c8070aca26e1e5c3509 100644
+index 980257ace00a6b1be43809e4b6cfa20dae616820..8c5b6636f4a0ba66ec0c6da1108205dbeba8f58e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -882,6 +882,7 @@ public final class CraftServer implements Server {

@@ -129,10 +129,10 @@ index 0000000000000000000000000000000000000000..fe7330fabe386966c2d203a190a00a78
 +}
 \ No newline at end of file
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index e79f36975f8282269450698c203b304c81919482..c598ddc9d9184745a7c4f26555f17117ef5c560d 100644
+index 8f68a93f8eb8b75a8992a830323b9d10de7882b2..4ce4c02f5fc6acbfa56dc4610c4571c807b53ab7 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -159,6 +159,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -161,6 +161,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      public final com.tuinity.tuinity.config.TuinityConfig.WorldConfig tuinityConfig; // Tuinity - Server Config
      public final net.pl3x.purpur.PurpurWorldConfig purpurConfig; // Purpur
  
@@ -141,7 +141,7 @@ index e79f36975f8282269450698c203b304c81919482..c598ddc9d9184745a7c4f26555f17117
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPosition lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -248,6 +250,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -250,6 +252,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      protected World(WorldDataMutable worlddatamutable, ResourceKey<World> resourcekey, final DimensionManager dimensionmanager, Supplier<GameProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.WorldDataServer) worlddatamutable).getName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.WorldDataServer) worlddatamutable).getName(), this.spigotConfig); // Paper
@@ -150,10 +150,10 @@ index e79f36975f8282269450698c203b304c81919482..c598ddc9d9184745a7c4f26555f17117
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName()); // Tuinity - Server Config
          this.purpurConfig = new net.pl3x.purpur.PurpurWorldConfig((((net.minecraft.world.level.storage.WorldDataServer)worlddatamutable).getName())); // Purpur
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4d7d43284500e7631675c5c6eecc992a283d981f..8d088da7c5ff12833d612102cbb33a4bb6152c2c 100644
+index 87ef2aff1c81c4e094e94e0086f888bca0b6fb6f..d69054c7739d067041509abafb7add681f3e0ebb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -866,6 +866,7 @@ public final class CraftServer implements Server {
+@@ -883,6 +883,7 @@ public final class CraftServer implements Server {
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
          net.pl3x.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
@@ -161,7 +161,7 @@ index 4d7d43284500e7631675c5c6eecc992a283d981f..8d088da7c5ff12833d612102cbb33a4b
          for (WorldServer world : console.getWorlds()) {
              world.worldDataServer.setDifficulty(config.difficulty);
              world.setSpawnFlags(config.spawnMonsters, config.spawnAnimals);
-@@ -902,6 +903,7 @@ public final class CraftServer implements Server {
+@@ -919,6 +920,7 @@ public final class CraftServer implements Server {
              world.paperConfig.init(); // Paper
              world.tuinityConfig.init(); // Tuinity - Server Config
              world.purpurConfig.init(); // Purpur
@@ -170,7 +170,7 @@ index 4d7d43284500e7631675c5c6eecc992a283d981f..8d088da7c5ff12833d612102cbb33a4b
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 9ad2fe39dfd9f2b81c4aca4f56763443e514e433..42b1569a3786200d685463dfa130d2aaf3479ed8 100644
+index 51cdc7e87413302a73416a5da724d873efb29657..8b344d69b9076e1bf2a5ba310ecf3f8ddd375fdc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {
@@ -188,7 +188,7 @@ index 9ad2fe39dfd9f2b81c4aca4f56763443e514e433..42b1569a3786200d685463dfa130d2aa
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
-@@ -294,6 +302,7 @@ public class Main {
+@@ -300,6 +308,7 @@ public class Main {
                  }
                  // Paper end
                  System.setProperty( "library.jansi.version", "Paper" ); // Paper - set meaningless jansi version to prevent git builds from crashing on Windows

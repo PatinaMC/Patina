@@ -2632,7 +2632,7 @@ index 860f70789bc0dee73c83a9c925716fb7c32260fc..a6f570ec4369035dc5b72676c456ad10
      public static void a(CommandDispatcher<CommandListenerWrapper> commanddispatcher) {
          commanddispatcher.register((LiteralArgumentBuilder) ((LiteralArgumentBuilder) ((LiteralArgumentBuilder) net.minecraft.commands.CommandDispatcher.a("kill").requires((commandlistenerwrapper) -> {
 diff --git a/src/main/java/net/minecraft/server/commands/CommandList.java b/src/main/java/net/minecraft/server/commands/CommandList.java
-index 2644d5b79ccbb47aeb66c0daffc133b614d89cb1..c80777bbad146186fcadf9573b64c31c127bf775 100644
+index b4d8f6815bf1b61af88aff731f620dc22d138a4b..06ae5f2bfa72b0b373f6cdbde0563302762292f8 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandList.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandList.java
 @@ -13,7 +13,7 @@ import net.minecraft.server.level.EntityPlayer;
@@ -3217,7 +3217,7 @@ index d1d98c2f192514a3f511bebb00c088b03e6be84c..b4fa07584ae66707779d4567e0d2d299
      private static final Font a = new Font("Monospaced", 0, 12);
      private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index fd779a3638d4c5b1974ee744b8d041bf0e24daf4..061137e71909d5821dd450c2772822c9ec6022eb 100644
+index 0d0f71820fc26e272d4f0e1ff81a9fd1ebf7165a..6a1b32d1e9add7645a6329e1442d1800c5fd31c2 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
@@ -3854,7 +3854,7 @@ index 31f197ded3335cf6615a7e7d4e502323daad13e4..436061587dc90fbd4ccbbb5e90badd1d
      private final World world;
      private final net.minecraft.world.level.border.WorldBorder handle;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index bb42ca085f359d1da2d96acf471be8945344c53e..201cd6f73ebb5ea4d6fb3806209c1aec36d0a251 100644
+index 2726df053c4647f8ce2f02f1ae614009ffaba083..81ee4f577c38cb8376e6cf9b4c6c9004bc419f76 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -16,7 +16,7 @@ import net.minecraft.util.ExceptionSuppressor;

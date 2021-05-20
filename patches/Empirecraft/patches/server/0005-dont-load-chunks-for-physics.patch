@@ -5,10 +5,10 @@ Subject: [PATCH] dont load chunks for physics
 
 
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index f8261e21a84bf8c29d72116fc3166dc745a59c02..e79f36975f8282269450698c203b304c81919482 100644
+index 4a385a4b0fcb3af21dc6a7f9c8ccc957af369da5..8f68a93f8eb8b75a8992a830323b9d10de7882b2 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -824,7 +824,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -826,7 +826,8 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
      public void neighborChanged(BlockPosition pos, Block blockIn, BlockPosition fromPos) { a(pos, blockIn, fromPos); } // Paper - OBFHELPER
      public void a(BlockPosition blockposition, Block block, BlockPosition blockposition1) {
          if (!this.isClientSide) {
