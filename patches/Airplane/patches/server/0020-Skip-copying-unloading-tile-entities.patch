@@ -5,7 +5,7 @@ Subject: [PATCH] Skip copying unloading tile entities
 
 
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 827a0d436be843033e7bf1880e833a1e282c123c..51e6cd6119465f9fd6385072997971449afb5f42 100644
+index cd257ba5194ee74ad5853fdbd644e2cb9ad5257b..f1d38dd4c7e3bdac25ca0df0e5ab776295a3c34f 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
 @@ -106,7 +106,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
@@ -17,7 +17,7 @@ index 827a0d436be843033e7bf1880e833a1e282c123c..51e6cd6119465f9fd638507299797144
      public final Thread serverThread;
      private final boolean debugWorld;
      private int d;
-@@ -986,12 +986,17 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -995,12 +995,17 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
          gameprofilerfiller.enter("blockEntities");
          timings.tileEntityTick.startTiming(); // Spigot
          if (!this.tileEntityListUnload.isEmpty()) {

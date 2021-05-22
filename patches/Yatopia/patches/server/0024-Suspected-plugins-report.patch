@@ -75,10 +75,10 @@ index 71a000edfab27c9965d1929af78582821d5af97a..5c5ac70b4dae5d51303ab974261055aa
                              LOGGER.error("Error whilst processing packet {} for {}[{}]", packet, networkmanager.getPlayer().getName(), networkmanager.getSocketAddress(), e);
                          } else {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 244569cbbfa6ef9b5491ae511cdb991ec3634fe6..6c4fd7eda4cf057c6c369ae666c3c0b74708d6e6 100644
+index 17e22caed7b911654541261a983e280498a7d3cc..7f9771595083c75b275a19e5ffe1d033f7b009de 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1158,7 +1158,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1160,7 +1160,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  return;
              }
              // Paper end
@@ -108,10 +108,10 @@ index 92836f1200461ba7fff2f8bcb5e1755ec9a0c9ce..da1be1eaed33dde5c1af44ed97f4b469
                              ChatComponentText chatcomponenttext = new ChatComponentText("Internal server error");
  
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 4ce4c02f5fc6acbfa56dc4610c4571c807b53ab7..10f93ee00dcb3ef2a4fd62ca643e9caeedd7a452 100644
+index 77f9c0dd83348987527aeaf1d36df2c70a606fc5..67891d31342dfce8c2d1bf678730f8dc43913cd3 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -1045,6 +1045,10 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1053,6 +1053,10 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
                          // Paper start - Prevent tile entity and entity crashes
                          String msg = "TileEntity threw exception at " + tileentity.getWorld().getWorld().getName() + ":" + tileentity.getPosition().getX() + "," + tileentity.getPosition().getY() + "," + tileentity.getPosition().getZ();
                          System.err.println(msg);

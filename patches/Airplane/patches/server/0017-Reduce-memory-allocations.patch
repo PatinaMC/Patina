@@ -202,10 +202,10 @@ index 80c229c1852199fda85c03453d64cae33e413e89..7f70dda656ff9d802200f18139d2695e
          return (EntityTypes) IRegistry.a((IRegistry) IRegistry.ENTITY_TYPE, s, (Object) entitytypes_builder.a(s));
      }
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 3e08e56f67516333e7d880fdc595447a3ae4dc83..827a0d436be843033e7bf1880e833a1e282c123c 100644
+index 6ab528223682d57bec1cdbd383acd8ab06904e4a..cd257ba5194ee74ad5853fdbd644e2cb9ad5257b 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -1103,19 +1103,19 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1112,19 +1112,19 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
  
      public void a(Consumer<Entity> consumer, Entity entity) {
          try {

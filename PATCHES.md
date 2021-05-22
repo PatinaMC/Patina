@@ -24,6 +24,7 @@ This is an overview over all patches that are currently used.
 | server |  Attempt to recalculate regionfile header if it is corrupt      | Spottedleaf |  |
 | server |  Avoid double I/O operation on load player file      | ㄗㄠˋ ㄑㄧˊ |  |
 | server |  Be aware of entity teleports when chunk checking entities      | Spottedleaf |  |
+| server |  Better checking for useless move packets      | Paul Sauve |  |
 | server |  Brand changes      | Spottedleaf |  |
 | server |  Cache climbing check for activation      | Paul Sauve |  |
 | server |  Cache coordinate key for micro opt      | Paul Sauve |  |
@@ -74,7 +75,6 @@ This is an overview over all patches that are currently used.
 | server |  Fix chunks refusing to unload at low TPS      | Spottedleaf |  |
 | server |  Fix exp drop of zombie pigmen (MC-56653)      | Phoenix616 |  |
 | server |  Fix incorrect isRealPlayer init      | Spottedleaf |  |
-| server |  Fix incorrect status dataconverter for pre 1.13 chunks      | Spottedleaf |  |
 | server |  Fix swamp hut cat generation deadlock      | Spottedleaf |  |
 | server |  Fix the dead lagging the server      | William Blake Galbreath |  |
 | server |  Heavily optimize recipe lookups in CraftingManager      | Mykyta Komarn | Ivan Pekov, ishland |

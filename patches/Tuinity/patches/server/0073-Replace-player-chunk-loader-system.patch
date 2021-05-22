@@ -1648,10 +1648,10 @@ index f74685a7cdb905af8e9712ca8597e7ed3dc8b120..feedbd8c97c1b1c56eaff359e6a94069
                          double deltaZ = soundPos.getZ() - player.locZ();
                          double distanceSquared = deltaX * deltaX + deltaZ * deltaZ;
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index a802c45538943b570ca0daa3a40607dc80e696eb..af01f5d635eada7175b9d7fdb47a65530686a539 100644
+index dedcdba593d15b1e2f880ae9eaa00eb6edcd03cf..276b1f0c9c9af7db31fba9be0593ae9def540caf 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -606,7 +606,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -615,7 +615,7 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
                  this.notify(blockposition, iblockdata1, iblockdata, i);
                  // Paper start - per player view distance - allow block updates for non-ticking chunks in player view distance
                  // if copied from above

@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable TPS Catchup
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 0ddb8c3d11ffdd073d94586daa84ba64dd75580b..5aa1fc9f44fa49c4a97faaeb15f5842e47d41baf 100644
+index 8b8065e091214bdfe46b01a97a178033a61df3c4..9034b9cf14c92bc9ac45ecfe15c0094abeab5a57 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1133,7 +1133,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1135,7 +1135,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                      this.a(this::canSleepForTick);
                      this.methodProfiler.exitEnter("nextTickWait");
                      this.X = true;

@@ -2034,7 +2034,7 @@ index 1d72af9cace7aa8f1d20c7c1c5be621f533e2dad..006e7076932f6be576a64da09c4d84ca
      public static <T> void mergeSortedSets(final java.util.function.Consumer<T> consumer, final java.util.Comparator<? super T> comparator, final java.util.SortedSet<T>...sets) {
          final ObjectRBTreeSet<T> all = new ObjectRBTreeSet<>(comparator);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index aebd99ea445f058c9e6971d462abfb497be86086..ecc84ab13e93970574f3f0bbdab6bc8d5c1aa9c7 100644
+index 2f71aef1a4b21ec83e36c91eca687b1ade9e1343..0e23428360a1709c198845b1e58b1b54ccfcc48d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -268,6 +268,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -2045,7 +2045,7 @@ index aebd99ea445f058c9e6971d462abfb497be86086..ecc84ab13e93970574f3f0bbdab6bc8d
      public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
      public int autosavePeriod;
      public boolean serverAutoSave = false; // Paper
-@@ -1099,6 +1100,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1101,6 +1102,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                          this.lastOverloadTime = this.nextTick;
                      }
  
@@ -2053,7 +2053,7 @@ index aebd99ea445f058c9e6971d462abfb497be86086..ecc84ab13e93970574f3f0bbdab6bc8d
                      if ( ++MinecraftServer.currentTick % SAMPLE_INTERVAL == 0 )
                      {
                          final long diff = curTime - tickSection;
-@@ -1485,6 +1487,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1487,6 +1489,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  midTickLoadChunks(); // Paper
                  worldserver.timings.doTick.startTiming(); // Spigot
                  worldserver.doTick(booleansupplier);

@@ -1007,7 +1007,7 @@ index f6f10b569362bad6b8c59e016c86f323da8c294c..af0a240b9803fd4ac615f122af04521d
      private float a;
      private float b;
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
-index 2e19ac6b4e27c5d1bbefd5e99f8298650919d917..40a92444e4efa7d8b48fadbc2802d364456376d6 100644
+index de3c33ae24e38471ab34d905f07992cb75dc0789..8d3fcaa53c7b4edc84731a69cdc3ed783d60c16a 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInStruct.java
 @@ -10,7 +10,7 @@ import net.minecraft.world.level.block.EnumBlockRotation;
@@ -3295,7 +3295,7 @@ index e9e7fcf2b63febe2a7d055826fabb86bc13a5cf3..6f3b0571890d72ae5ae262c1a27a541c
      public static final float a = c(2.0F);
      private static final float[] b = (float[]) SystemUtils.a((new float[65536]), (afloat) -> { // Paper - decompile error
 diff --git a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
-index 6725b31a5183d5af7f8f7566ed21eb61797ef4c9..3f349f769b299e6fc6378018f796e923b6ad3bc3 100644
+index cb394ec310712cc97d65afe068284b277d7f0483..ce137b26f49fafe4221fff35270a58d47c1befa0 100644
 --- a/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 +++ b/src/main/java/net/minecraft/util/worldupdate/WorldUpgrader.java
 @@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
@@ -3945,7 +3945,7 @@ index 100b8566d9f16f20dfe1c5d1875ad7cdacb7b960..3e3b2e3ff5c029170e40c6c1f9c355b7
  
      private Logger getLogger(String name) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/LazyPlayerSet.java b/src/main/java/org/bukkit/craftbukkit/util/LazyPlayerSet.java
-index e7b9250ebdd0d9034ef18a96a6cacc83e6db69c2..be1aaa0805ec683ee1910b0c8c92cadc5c6807c3 100644
+index 20ee8468bcf305139a51da61f5f9026794da27f6..49d3efe3cb50d2e495f349db626bb4f55d58569b 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/LazyPlayerSet.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/LazyPlayerSet.java
 @@ -6,7 +6,7 @@ import net.minecraft.server.MinecraftServer;
