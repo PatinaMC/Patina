@@ -1,0 +1,43 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sun, 23 May 2021 05:01:53 +0000
+Subject: [PATCH] fixup
+ 0009-Attempt-to-recalculate-regionfile-header-if-it-is-co.patch
+
+
+diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
+index a4b5857a0e65d09bcb26a291b82cae97e2f7b76e..71db36d61a02a104449f8634b2737928874190f6 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
++++ b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
+@@ -35,31 +35,6 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
+         this.c = flag;
+     }
+ 
+-    // Tuinity start
+-    public static ChunkCoordIntPair getRegionFileCoordinates(File file) {
+-        String fileName = file.getName();
+-        if (!fileName.startsWith("r.") || !fileName.endsWith(".mca")) {
+-            return null;
+-        }
+-
+-        String[] split = fileName.split("\\.");
+-
+-        if (split.length != 4) {
+-            return null;
+-        }
+-
+-        try {
+-            int x = Integer.parseInt(split[1]);
+-            int z = Integer.parseInt(split[2]);
+-
+-            return new ChunkCoordIntPair(x << 5, z << 5);
+-        } catch (NumberFormatException ex) {
+-            return null;
+-        }
+-    }
+-    // Tuinity end
+-
+-
+     // Paper start
+     public static ChunkCoordIntPair getRegionFileCoordinates(File file) {
+         String fileName = file.getName();
