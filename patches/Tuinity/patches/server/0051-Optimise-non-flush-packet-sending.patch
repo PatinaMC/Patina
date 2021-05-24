@@ -51,7 +51,7 @@ index 01d3c52d8fbe3e3cb6cc92af3c354b8986d928e6..1d793654662e28ed780a0663b0fe94a9
          <dependency>
              <groupId>com.googlecode.json-simple</groupId>
 diff --git a/src/main/java/net/minecraft/network/NetworkManager.java b/src/main/java/net/minecraft/network/NetworkManager.java
-index 69bfe8d0a9cf745557c3e06141dec1ed3bb7d567..02ad0611836160a1d0ba6b26476e6bd336d55681 100644
+index 20cc362e23d8cb7f1df081d6251da76c5cf70ca8..29c64a80336e501857c9a92b0ce698563d1abc93 100644
 --- a/src/main/java/net/minecraft/network/NetworkManager.java
 +++ b/src/main/java/net/minecraft/network/NetworkManager.java
 @@ -45,6 +45,8 @@ import org.apache.logging.log4j.Logger;

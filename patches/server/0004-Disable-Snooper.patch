@@ -74,10 +74,10 @@ index 7f9771595083c75b275a19e5ffe1d033f7b009de..bfe9546aeb803ee3e9c64fc9911dfeed
      public abstract boolean j();
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 11c634162dd077f532e8f84a203bfbbd8dc77750..5e66a86da655c9f7b4a6079e2efdc83c8e0b79cb 100644
+index 6f7df1564d9219c7418e21fc50e3a784d81fd388..77b6f468512c08823ed2a8e8549a6fb7c2bec355 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -446,12 +446,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -463,12 +463,12 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          return this.getDedicatedServerProperties().allowNether;
      }
  

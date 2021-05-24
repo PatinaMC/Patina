@@ -2531,7 +2531,7 @@ index 6aace2155258d8257d53ebfcb20c37ea7497c02c..2143d6041527a84c0359c9c06ede5e77
      public WorldServer(MinecraftServer minecraftserver, Executor executor, Convertable.ConversionSession convertable_conversionsession, IWorldDataServer iworlddataserver, ResourceKey<World> resourcekey, DimensionManager dimensionmanager, WorldLoadListener worldloadlistener, ChunkGenerator chunkgenerator, boolean flag, long i, List<MobSpawner> list, boolean flag1, org.bukkit.World.Environment env, org.bukkit.generator.ChunkGenerator gen) {
          super(iworlddataserver, resourcekey, dimensionmanager, minecraftserver::getMethodProfiler, false, flag, i, gen, env, executor); // Paper pass executor
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 429f0591c6a55f6c5d08a0755f7d39da676468bc..6a3e859eef2878d9e203bba7930e52d7513d96e8 100644
+index 6fdcd96fd75cd63d769b012827519f554af4cf54..91fbda3edc0034ed356ad7559552e3acc5d4736d 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -299,6 +299,14 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne

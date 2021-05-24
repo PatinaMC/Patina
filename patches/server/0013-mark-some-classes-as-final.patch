@@ -3165,7 +3165,7 @@ index e3649d0fb08ae30a448d0e69c6f0c1066e99b9a4..e111c24ca9d1faaffef55db3c8ee84c2
      private static final SuggestionProvider<CommandListenerWrapper> b = (commandcontext, suggestionsbuilder) -> {
          return ICompletionProvider.a(b(commandcontext).a(), suggestionsbuilder);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 5e66a86da655c9f7b4a6079e2efdc83c8e0b79cb..93b89ab31c30a074566abd9ad76222c014cfe3e1 100644
+index 77b6f468512c08823ed2a8e8549a6fb7c2bec355..48c8a74affa2ba964f50c437054eca6bb9c137ad 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -71,7 +71,7 @@ import org.bukkit.craftbukkit.util.Waitable;

@@ -9,7 +9,7 @@ launcher can very easily fill a chunk.
 Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 4706a5914f82fce5f71d5b33891f2ac1085d28ab..01124c3e09d18c20f5a846991602327d1fb8cb3f 100644
+index 21fb365d5fc646bbb2daa32dc5eb695a5121f66d..eeb770ec08f43ae724016e37f35f2565a78b1a67 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -70,6 +70,7 @@ import net.minecraft.world.entity.animal.EntityFish;

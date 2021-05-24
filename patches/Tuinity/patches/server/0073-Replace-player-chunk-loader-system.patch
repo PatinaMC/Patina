@@ -1062,7 +1062,7 @@ index edb9b246bf327f67a8500f77f81b46eb9e04c9b0..e1dc7c1025e19f7393a45719af8fe7aa
  
          public final String worldName;
 diff --git a/src/main/java/net/minecraft/network/NetworkManager.java b/src/main/java/net/minecraft/network/NetworkManager.java
-index 02ad0611836160a1d0ba6b26476e6bd336d55681..0f8cbe1f656b46f71c6494bd2e0057be63017272 100644
+index 29c64a80336e501857c9a92b0ce698563d1abc93..b6c0ef0df93f0350fa70e857e06d79ae34d7d4b1 100644
 --- a/src/main/java/net/minecraft/network/NetworkManager.java
 +++ b/src/main/java/net/minecraft/network/NetworkManager.java
 @@ -123,6 +123,28 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {

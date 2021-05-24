@@ -19,7 +19,7 @@ index 35810f42d7a0cd50a4cbe90e8d698fe57914c889..f15a8ef9e589eadbfd92b4ad7a8b2db6
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index a76219e59c24862b9c1e09e4a2a29cf2a6260514..11c634162dd077f532e8f84a203bfbbd8dc77750 100644
+index 49216a0c711974eb0c5005dd38b4c42dde94f39b..6f7df1564d9219c7418e21fc50e3a784d81fd388 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,15 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer

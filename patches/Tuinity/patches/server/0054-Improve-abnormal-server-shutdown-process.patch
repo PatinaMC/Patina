@@ -28,10 +28,10 @@ index 2b9b5db565161884539175d975d9fd8253b8de7b..72d1c1202581abc284848000663ada55
              }
              // We've just obliterated the main thread, this will prevent stop from dying when removing players
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 327b5ee357a24ad5d47b5a06458e6fb517fea625..fa7a78549a9bb92b93c305dc16f43a9ace7f6f43 100644
+index d648ec232a3a201c3c59e8bf38946bdc16e4d216..392a707d7d71f2009134741529fb9539bd025619 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -400,7 +400,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
+@@ -417,7 +417,7 @@ public class DedicatedServer extends MinecraftServer implements IMinecraftServer
          }
  
          if (this.q != null) {
