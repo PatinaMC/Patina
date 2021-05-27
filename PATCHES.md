@@ -85,7 +85,6 @@ This is an overview over all patches that are currently used.
 | server |  Improve container checking with a bitset      | Paul Sauve |  |
 | server |  Improve fluid direction caching      | Paul Sauve |  |
 | server |  Improve paper prevent moving into unloaded chunk check      | Spottedleaf |  |
-| server |  Improved oversized chunk data packet handling      | Spottedleaf |  |
 | server |  Lag compensate block breaking      | Spottedleaf |  |
 | server |  Lagging threshold      | William Blake Galbreath |  |
 | api |  Lagging threshold      | William Blake Galbreath |  |

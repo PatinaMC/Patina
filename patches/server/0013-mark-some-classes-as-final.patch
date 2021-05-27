@@ -1592,7 +1592,7 @@ index 2a97386cd6892d755ac38dba4c08eabb388992f5..5686ee5bc5ad09c086d64c78a0b0a73d
      private int a;
      private byte b;
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutMapChunk.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutMapChunk.java
-index 1295c391ae48f0864c243ca9046f31480eb768fe..b72ce43ac740389a1408217b34c160978280273d 100644
+index 3047cf8c4ec1b664d6b790f18d2b1657e4b00435..71f8a0a71827bec33c71a0e7fee4620e492fa9c3 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutMapChunk.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayOutMapChunk.java
 @@ -23,7 +23,7 @@ import net.minecraft.world.level.chunk.Chunk;
