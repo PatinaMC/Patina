@@ -17,7 +17,7 @@ index b4c37287362907b8507d156b978ba5b9d961bb7b..9e6e6636539702507abb78515e002819
          return this.a;
      }
 diff --git a/src/main/java/net/minecraft/server/network/PlayerConnection.java b/src/main/java/net/minecraft/server/network/PlayerConnection.java
-index a4f7e57283950074005869e0098fe665e85286ca..69779c9525d2c1fe6e4a6bcc6c737ee76e0af6d1 100644
+index 8513795943497ca80232e7d47066a6944c2f45ec..c62ba4947112f532197a19e640321f55bc98d53f 100644
 --- a/src/main/java/net/minecraft/server/network/PlayerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/PlayerConnection.java
 @@ -233,6 +233,7 @@ public class PlayerConnection implements PacketListenerPlayIn {
@@ -50,7 +50,7 @@ index a4f7e57283950074005869e0098fe665e85286ca..69779c9525d2c1fe6e4a6bcc6c737ee7
          if (this.isPendingPing()) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  PlayerConnection.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getName()); // more info
-@@ -3073,6 +3089,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
+@@ -3082,6 +3098,16 @@ public class PlayerConnection implements PacketListenerPlayIn {
  
      @Override
      public void a(PacketPlayInKeepAlive packetplayinkeepalive) {

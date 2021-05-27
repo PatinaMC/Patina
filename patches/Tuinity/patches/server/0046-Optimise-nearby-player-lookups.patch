@@ -97,7 +97,7 @@ index b1f2841bed5b913cbfb8c18d7ee1c05a64d3e252..42907d6a9f48818d758b5518c70440cd
      // Paper start - Chunk Prioritization
      public void queueHolderUpdate(PlayerChunk playerchunk) {
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 551eb37e15aaedd4ebf9552e9ba029e9d488ac31..daa452d61ff31383f9b40c4f8a40ac4f980e87a8 100644
+index f9d957c373eafa5f29beeea04e417a3d2d244dc9..24661b4d02aa09d51610a8733657de67220ad5be 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -414,6 +414,107 @@ public class WorldServer extends World implements GeneratorAccessSeed {

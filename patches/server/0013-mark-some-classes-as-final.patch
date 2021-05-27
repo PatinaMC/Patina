@@ -84,7 +84,7 @@ index b6f4400df3d8ec7e06a996de54f8cabba57885e1..96f19e9bd90fd51df399de8ae4ca40dd
      private final int raw;
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 921253a06daa414aed7dc6824effc65db09ea7a5..6645777cf6f782850b3fd50313c2ea542d785d5f 100644
+index 37f866629b7eed39ced4352c94e56c8de8ccfeb9..989bffac5130a53daf270702e8b55221267ad1ee 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -21,7 +21,7 @@ import org.spigotmc.SpigotWorldConfig;
@@ -2359,7 +2359,7 @@ index 5e0147f5cc0e909ecbd54b66ba6f536158d6e1c2..3feb20dd3551d348addfc322794f4212
      private static final SuggestionProvider<CommandListenerWrapper> a = (commandcontext, suggestionsbuilder) -> {
          Collection<Advancement> collection = ((CommandListenerWrapper) commandcontext.getSource()).getServer().getAdvancementData().getAdvancements();
 diff --git a/src/main/java/net/minecraft/server/commands/CommandBan.java b/src/main/java/net/minecraft/server/commands/CommandBan.java
-index 7594927ef0df457f0c63d7fe98e65d1514fcc174..f0428605fd5f94bf1ddd078bac21b8990536086b 100644
+index 10262b6b46f56ff9acfea140dea2978bab74389a..8d1281c8d9f02adb5976c671420b2cc4fce73b2f 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandBan.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandBan.java
 @@ -21,7 +21,7 @@ import net.minecraft.server.level.EntityPlayer;
@@ -2372,7 +2372,7 @@ index 7594927ef0df457f0c63d7fe98e65d1514fcc174..f0428605fd5f94bf1ddd078bac21b899
      private static final SimpleCommandExceptionType a = new SimpleCommandExceptionType(new ChatMessage("commands.ban.failed"));
  
 diff --git a/src/main/java/net/minecraft/server/commands/CommandBanIp.java b/src/main/java/net/minecraft/server/commands/CommandBanIp.java
-index 9dbdad29c817480263496acb2432005a5805382e..cb89538dcd348afffa85dbf23ad333471ae1cd4f 100644
+index c699074fc6b62a00440c563bcf3f0e5442d1aa3d..4ed42d343c4ccd689d4667f369932729477e14e0 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandBanIp.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandBanIp.java
 @@ -22,7 +22,7 @@ import net.minecraft.server.level.EntityPlayer;
@@ -2606,7 +2606,7 @@ index 6f03ce1d1da25c8d6da94a137828e2c51c044d80..1376e92a9a571f7cb9bbb9bcbe623ad7
      public static void a(CommandDispatcher<CommandListenerWrapper> commanddispatcher) {
          commanddispatcher.register((LiteralArgumentBuilder) ((LiteralArgumentBuilder) net.minecraft.commands.CommandDispatcher.a("setidletimeout").requires((commandlistenerwrapper) -> {
 diff --git a/src/main/java/net/minecraft/server/commands/CommandKick.java b/src/main/java/net/minecraft/server/commands/CommandKick.java
-index bf508ef77f14eb0e450fc02f3904c4974a4ef594..bb5805135d32b8f4dd27be9a2cdba6e4866108b8 100644
+index b593ba3df56aa3bf4b143a6e5c36ddb90846a368..588d2474f2d9f3eedb3773e057c8605f06d881d0 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandKick.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandKick.java
 @@ -13,7 +13,7 @@ import net.minecraft.network.chat.ChatMessage;
@@ -3828,7 +3828,7 @@ index b6143d474b98304aa8ccc82dc390886fbe4efca3..a9e07151e7af739afebf0f7e3678d51e
  
      public CraftProfileBanList(GameProfileBanList list) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 0cd582818076f91cc328e6b0f843869336d6a256..e4a20af5f2e4bd4796d2673d805eaa0df87696d4 100644
+index 7039dd08c1449bb01af6db82aad51b8926bf6351..50923c39f66ba9ca3bcd862bea3e4304aef9a3c4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -269,7 +269,7 @@ import org.bukkit.util.Consumer;
@@ -4023,7 +4023,7 @@ index db8d07ea06458b1b453a7641aa53ae292c989143..e3c8798bbc1047fae91d6383cb3ccb07
  
      private final NBTReadLimiter limit;
 diff --git a/src/main/java/org/spigotmc/RestartCommand.java b/src/main/java/org/spigotmc/RestartCommand.java
-index 6a408dc9286a60c3ca7830f88171919fb0fe6363..410cb1406241093584faeeab2a56c75d41310bb1 100644
+index dc8da0448193a5fbf16cfe3b070923cfb8a23c6d..eb38a853b7bdf25f4c96fffacc29aff998864990 100644
 --- a/src/main/java/org/spigotmc/RestartCommand.java
 +++ b/src/main/java/org/spigotmc/RestartCommand.java
 @@ -7,7 +7,7 @@ import net.minecraft.server.level.EntityPlayer;

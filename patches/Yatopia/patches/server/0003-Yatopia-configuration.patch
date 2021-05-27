@@ -39,7 +39,7 @@ index 49216a0c711974eb0c5005dd38b4c42dde94f39b..6f7df1564d9219c7418e21fc50e3a784
          this.setAllowFlight(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.ba());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index d3cb32694708e6a6e43ed8c3bfbe3be5507d4418..8fe1228fbe92ce12a2070afe8ca24e07f89be345 100644
+index 19934cd912904760fb6f9d49d19c8ce82efe3df7..60f52298ad3fc7518432598e24bc3c5692bb6326 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -272,7 +272,7 @@ public abstract class PlayerList {
@@ -52,7 +52,7 @@ index d3cb32694708e6a6e43ed8c3bfbe3be5507d4418..8fe1228fbe92ce12a2070afe8ca24e07
          playerconnection.sendPacket(new PacketPlayOutAbilities(entityplayer.abilities));
          playerconnection.sendPacket(new PacketPlayOutHeldItemSlot(entityplayer.inventory.itemInHandIndex));
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index d22c17b40f51a6a173fd7665b877fe09c33adf45..f52094accbd65f973a0e4b0fc6bc3fb9c31121d1 100644
+index 66dc3a536ea5d66a96d01247e13d681630765176..33476234e84c280cd2507ae3f166d81f8d27cfc6 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -362,6 +362,7 @@ public abstract class EntityLiving extends Entity {

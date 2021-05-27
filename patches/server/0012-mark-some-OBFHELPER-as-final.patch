@@ -76,7 +76,7 @@ index c0d2b7fe726ea92e18871e3714ca9c249492ac93..0d0f71820fc26e272d4f0e1ff81a9fd1
          return this.m;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 250b7965cb3f109e536721e8a7cff23d5b144b5a..70ffd2e2c3fb68606fc7db7bbf448842bcccee07 100644
+index 73d5e6ee996fd8777a307e0c442e67e39c86ebf7..6776722330f8240db6d6c61fff51f839222e131a 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1584,7 +1584,7 @@ public abstract class EntityLiving extends Entity {

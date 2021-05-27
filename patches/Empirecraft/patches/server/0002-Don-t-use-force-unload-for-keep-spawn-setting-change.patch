@@ -5,7 +5,7 @@ Subject: [PATCH] Don't use force unload for keep spawn setting change
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 02807cc1fe14e747a7c18edf0fcdc38630cc4e9f..0cd582818076f91cc328e6b0f843869336d6a256 100644
+index 4f296f09562fb269db4137efd325e2c258f4b90b..7039dd08c1449bb01af6db82aad51b8926bf6351 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -496,7 +496,7 @@ public class CraftWorld implements World {

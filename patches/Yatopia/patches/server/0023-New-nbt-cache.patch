@@ -8,7 +8,7 @@ The goal of this patch is to reduce I/O operations from the main thread while sa
 Co-authored-by: ishland <ishlandmc@yeah.net>
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5b5f2ba7b0ef6d655f48789f454250bd724d4766..17e22caed7b911654541261a983e280498a7d3cc 100644
+index e1d2b9eb8baf8ff0b4e3fa42546bd686d01486c5..02c685caacd162bbccad333fbc7e9776931bd1eb 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -954,7 +954,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas

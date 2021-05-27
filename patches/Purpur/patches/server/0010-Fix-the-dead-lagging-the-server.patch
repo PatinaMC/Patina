@@ -17,7 +17,7 @@ index 2a779f1219de2eb1d2ba7d28110bed4824b1d5c5..21fb365d5fc646bbb2daa32dc5eb695a
  
      public void f(double d0, double d1, double d2) {
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 003e1f6dc8efbabcb2e0f7a6b379196f02203903..bd71a6a1d0e01f93d2b30041802a39c487e1c54c 100644
+index a49dbcffecc971f797651984cb72c455d40f9331..e3ffd599fcef942b57a93026fa043d3502d5e6c7 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -2604,7 +2604,7 @@ public abstract class EntityLiving extends Entity {
