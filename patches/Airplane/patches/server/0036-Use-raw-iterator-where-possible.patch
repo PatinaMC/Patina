@@ -5,7 +5,7 @@ Subject: [PATCH] Use raw iterator where possible
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 410bef5c298332e8808411283de8efe31124a337..c1bb2a3463654c578b2035ad94628a7bbce7e9dc 100644
+index 0718b80ac82a1cf00519c30c6d2ef78fe3914c71..e31766151450ffa44937feb728f6368e61acd2cd 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -1034,10 +1034,12 @@ public class ChunkProviderServer extends IChunkProvider {
@@ -24,7 +24,7 @@ index 410bef5c298332e8808411283de8efe31124a337..c1bb2a3463654c578b2035ad94628a7b
                  PlayerChunk playerchunk = chunk.playerChunk;
                  if (playerchunk != null) { // make sure load event has been called along with the load logic we put there
                      // Tuinity end - optimise chunk tick iteration
-@@ -1066,10 +1068,12 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -1065,10 +1067,12 @@ public class ChunkProviderServer extends IChunkProvider {
                          }
                      }
                  }

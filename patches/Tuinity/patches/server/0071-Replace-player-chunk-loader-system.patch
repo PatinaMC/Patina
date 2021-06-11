@@ -1203,7 +1203,7 @@ index c474ee61d98772a2852c44dec1c4a1037472ed2c..ad90735b5daa658cdd5467eadcb29183
      class b extends ChunkMap {
  
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 1cdf10ee52c583943b0ee9eff53653a170eedc5f..1867bbf70b506a83f98450a1628b16f35a71a633 100644
+index 3d2e6771cf5887ffa62259239fabf7934781271f..1b86c032fde3409cb89b849b9ba094af82cd9269 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -946,6 +946,7 @@ public class ChunkProviderServer extends IChunkProvider {
@@ -1214,7 +1214,7 @@ index 1cdf10ee52c583943b0ee9eff53653a170eedc5f..1867bbf70b506a83f98450a1628b16f3
          this.tickChunks();
          this.world.timings.chunks.stopTiming(); // Paper - timings
          this.world.timings.doChunkUnload.startTiming(); // Spigot
-@@ -1244,6 +1245,7 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -1243,6 +1244,7 @@ public class ChunkProviderServer extends IChunkProvider {
          @Override
          protected boolean executeNext() {
              com.tuinity.tuinity.util.TickThread.softEnsureTickThread("Cannot execute chunk tasks off-main thread");// Tuinity

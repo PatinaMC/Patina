@@ -34,7 +34,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 1867bbf70b506a83f98450a1628b16f35a71a633..410bef5c298332e8808411283de8efe31124a337 100644
+index 1b86c032fde3409cb89b849b9ba094af82cd9269..0718b80ac82a1cf00519c30c6d2ef78fe3914c71 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -1000,6 +1000,7 @@ public class ChunkProviderServer extends IChunkProvider {

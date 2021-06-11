@@ -6,7 +6,7 @@ Subject: [PATCH] Optimise chunk tick iteration
 Use a dedicated list of entity ticking chunks to reduce the cost
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 909b1f26511f672ce51ac1f5816f36e5abf60283..1b8a3e851f4404ef93a663264ff669526dc30873 100644
+index a691b60f5573701c17f8744d86f45dbf94c95de1..8d08bd4fb759218706f65c4620d26865d85b14d0 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -47,6 +47,12 @@ import net.minecraft.world.level.storage.WorldData;
@@ -54,7 +54,7 @@ index 909b1f26511f672ce51ac1f5816f36e5abf60283..1b8a3e851f4404ef93a663264ff66952
                          ChunkCoordIntPair chunkcoordintpair = playerchunk.i();
  
                          if (!this.playerChunkMap.isOutsideOfRange(playerchunk, chunkcoordintpair, false)) { // Paper - optimise isOutsideOfRange
-@@ -1037,7 +1047,11 @@ public class ChunkProviderServer extends IChunkProvider {
+@@ -1036,7 +1046,11 @@ public class ChunkProviderServer extends IChunkProvider {
                          }
                      }
                  }

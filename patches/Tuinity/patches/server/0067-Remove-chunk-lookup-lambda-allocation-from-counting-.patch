@@ -6,7 +6,7 @@ Subject: [PATCH] Remove chunk lookup & lambda allocation from counting mobs
 The chunk lookup doesn't look cheap.
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 1a7215b5baeebdd2b0b3e02c5af6568ccbc32efb..1cdf10ee52c583943b0ee9eff53653a170eedc5f 100644
+index 0bef938bc07d17a9fb0a550219be40ccf559aded..3d2e6771cf5887ffa62259239fabf7934781271f 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -1016,9 +1016,9 @@ public class ChunkProviderServer extends IChunkProvider {

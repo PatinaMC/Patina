@@ -19,7 +19,7 @@ This patch also reverts incorrect use(s) of the class by paper.
   any exception thrown from it.
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 78778531e2dbcfe41972f5c03b76a3da9c246e80..909b1f26511f672ce51ac1f5816f36e5abf60283 100644
+index 858d35283997afa8ef4afbe61c8bba8747f4effa..a691b60f5573701c17f8744d86f45dbf94c95de1 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -199,9 +199,9 @@ public class ChunkProviderServer extends IChunkProvider {
