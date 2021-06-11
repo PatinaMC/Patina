@@ -5,10 +5,10 @@ Subject: [PATCH] Configurable TPS Catchup
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a2d7b34aac1d9c7e381bf95bb6146f9a4efe141d..f62a2360460f24b1e415d7962fa8c1ed98284d37 100644
+index 6e82bbcf20adefd91bed71f3b01950ed75547fa7..e9a50793e27626599b0de8f8531b30697078c327 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1135,7 +1135,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1136,7 +1136,13 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                      this.a(this::canSleepForTick);
                      this.methodProfiler.exitEnter("nextTickWait");
                      this.X = true;
@@ -24,7 +24,7 @@ index a2d7b34aac1d9c7e381bf95bb6146f9a4efe141d..f62a2360460f24b1e415d7962fa8c1ed
                      this.methodProfiler.exit();
                      this.methodProfiler.b();
 diff --git a/src/main/java/net/pl3x/purpur/PurpurConfig.java b/src/main/java/net/pl3x/purpur/PurpurConfig.java
-index bf317a46eaaa88de3865625975ebf7d4e67e3c03..272efa22e6d989d016a5c97f866cdb2ddbf449c6 100644
+index 0e600e4fcc93a4871aeff3f95791eb64bbfd7a1f..7466fb2687e5cf40f9d307a374994e963d3ae1c5 100644
 --- a/src/main/java/net/pl3x/purpur/PurpurConfig.java
 +++ b/src/main/java/net/pl3x/purpur/PurpurConfig.java
 @@ -149,4 +149,9 @@ public class PurpurConfig {

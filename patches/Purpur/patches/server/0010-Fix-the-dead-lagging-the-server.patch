@@ -5,10 +5,10 @@ Subject: [PATCH] Fix the dead lagging the server
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 2a779f1219de2eb1d2ba7d28110bed4824b1d5c5..21fb365d5fc646bbb2daa32dc5eb695a5121f66d 100644
+index 7ddbc56eb2ea8491cd32987843801e9bee9dbe0b..0d153e3fb648c356c0092113b954263a81450e67 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1662,6 +1662,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1693,6 +1693,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
          this.pitch = MathHelper.a(f1, -90.0F, 90.0F) % 360.0F;
          this.lastYaw = this.yaw;
          this.lastPitch = this.pitch;
@@ -17,7 +17,7 @@ index 2a779f1219de2eb1d2ba7d28110bed4824b1d5c5..21fb365d5fc646bbb2daa32dc5eb695a
  
      public void f(double d0, double d1, double d2) {
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index a49dbcffecc971f797651984cb72c455d40f9331..e3ffd599fcef942b57a93026fa043d3502d5e6c7 100644
+index 88fc16e49076cf5589e27660a388909291447fac..103b192f18deb5f7a6ef7115d7c97bcb412d5cc4 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -2604,7 +2604,7 @@ public abstract class EntityLiving extends Entity {

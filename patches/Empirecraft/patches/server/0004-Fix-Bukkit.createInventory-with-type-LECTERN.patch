@@ -23,7 +23,7 @@ This patch is licensed under the MIT License.
 License: https://opensource.org/licenses/MIT
 
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/TileEntityLectern.java b/src/main/java/net/minecraft/world/level/block/entity/TileEntityLectern.java
-index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7ab6c5d897 100644
+index a9ae6ac672b16752feaff7193a5c044e4702e218..f09457ce1e871df6ea49c6bc08ea5c178301fdb6 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/TileEntityLectern.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/TileEntityLectern.java
 @@ -44,6 +44,11 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
@@ -38,7 +38,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
  
          public List<HumanEntity> transaction = new ArrayList<>();
          private int maxStack = 1;
-@@ -101,7 +106,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -105,7 +110,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
  
          @Override
          public ItemStack splitStack(int i, int j) {
@@ -47,7 +47,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
                  ItemStack itemstack = TileEntityLectern.this.book.cloneAndSubtract(j);
  
                  if (TileEntityLectern.this.book.isEmpty()) {
-@@ -116,7 +121,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -120,7 +125,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
  
          @Override
          public ItemStack splitWithoutUpdate(int i) {
@@ -56,7 +56,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
                  ItemStack itemstack = TileEntityLectern.this.book;
  
                  TileEntityLectern.this.book = ItemStack.b;
-@@ -151,7 +156,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -155,7 +160,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
  
          @Override
          public boolean a(EntityHuman entityhuman) {
@@ -65,7 +65,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
          }
  
          @Override
-@@ -184,6 +189,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -188,6 +193,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
      private ItemStack book;
      private int page;
      private int maxPage;
@@ -73,7 +73,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
  
      public TileEntityLectern() {
          super(TileEntityTypes.LECTERN);
-@@ -205,6 +211,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -209,6 +215,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
      }
  
      private void k() {
@@ -81,7 +81,7 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
          this.page = 0;
          this.maxPage = 0;
          BlockLectern.setHasBook(this.getWorld(), this.getPosition(), this.getBlock(), false);
-@@ -222,6 +229,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
+@@ -226,6 +233,7 @@ public class TileEntityLectern extends TileEntity implements Clearable, ITileInv
  
          if (j != this.page) {
              this.page = j;
@@ -90,18 +90,20 @@ index 89618f652b5eea4a380b0f00a5e4f8007495a0ef..94562f7b0f5cde9f8b4a163cc2b8cf7a
              if (this.world != null) BlockLectern.a(this.getWorld(), this.getPosition(), this.getBlock()); // CraftBukkit
          }
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
-index f2b2db663198037ba4b7942815bfcd5ddd0e2a8d..6d23ac5b8094330c20d8733795fcb3a699c50183 100644
+index 6e28e0247200fbbc470ba317575f0c714f74d5bf..c0fc63a0cb450da327990df90ffe758e7f737dae 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftHumanEntity.java
-@@ -31,6 +31,7 @@ import net.minecraft.world.level.block.BlockWorkbench;
+@@ -29,8 +29,7 @@ import net.minecraft.world.level.block.BlockBed;
+ import net.minecraft.world.level.block.BlockEnchantmentTable;
+ import net.minecraft.world.level.block.BlockWorkbench;
  import net.minecraft.world.level.block.Blocks;
- import net.minecraft.world.level.block.entity.TileEntity;
- import net.minecraft.world.level.block.entity.TileEntityContainer;
-+import net.minecraft.world.level.block.entity.TileEntityLectern; // EMC
- import net.minecraft.world.level.block.entity.TileEntitySign;
+-import net.minecraft.world.level.block.entity.TileEntity;
+-import net.minecraft.world.level.block.entity.TileEntitySign;
++import net.minecraft.world.level.block.entity.*; // Patina - * is simpler
  import net.minecraft.world.level.block.state.IBlockData;
  import org.bukkit.GameMode;
-@@ -308,6 +309,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
+ import org.bukkit.Location;
+@@ -310,6 +309,11 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
              if (craft.getInventory() instanceof ITileInventory) {
                  iinventory = (ITileInventory) craft.getInventory();
              }

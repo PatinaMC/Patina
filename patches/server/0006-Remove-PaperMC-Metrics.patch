@@ -6,7 +6,7 @@ Subject: [PATCH] Remove PaperMC Metrics
 
 diff --git a/src/main/java/com/destroystokyo/paper/Metrics.java b/src/main/java/com/destroystokyo/paper/Metrics.java
 deleted file mode 100644
-index 52c0ab1ce46e1f3233ef746d9bc699356fa9fae4..0000000000000000000000000000000000000000
+index 4d8740678049aa749b42618470e9cc838555528d..0000000000000000000000000000000000000000
 --- a/src/main/java/com/destroystokyo/paper/Metrics.java
 +++ /dev/null
 @@ -1,675 +0,0 @@
@@ -605,7 +605,7 @@ index 52c0ab1ce46e1f3233ef746d9bc699356fa9fae4..00000000000000000000000000000000
 -            boolean logFailedRequests = config.getBoolean("logFailedRequests", false);
 -            // Only start Metrics, if it's enabled in the config
 -            if (config.getBoolean("enabled", true)) {
--                Metrics metrics = new Metrics("Tuinity", serverUUID, logFailedRequests, Bukkit.getLogger()); // Tuinity - we have our own bstats page
+-                Metrics metrics = new Metrics("Purpur", serverUUID, logFailedRequests, Bukkit.getLogger()); // Purpur
 -
 -                metrics.addCustomChart(new Metrics.SimplePie("minecraft_version", () -> {
 -                    String minecraftVersion = Bukkit.getVersion();
@@ -614,8 +614,8 @@ index 52c0ab1ce46e1f3233ef746d9bc699356fa9fae4..00000000000000000000000000000000
 -                }));
 -
 -                metrics.addCustomChart(new Metrics.SingleLineChart("players", () -> Bukkit.getOnlinePlayers().size()));
--                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() || PaperConfig.isProxyOnlineMode() ? "online" : "offline"));
--                metrics.addCustomChart(new Metrics.SimplePie("tuinity_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Tuinity - we have our own bstats page
+-                metrics.addCustomChart(new Metrics.SimplePie("online_mode", () -> Bukkit.getOnlineMode() ? "online" : (PaperConfig.isProxyOnlineMode() ? "bungee" : "offline"))); // Purpur
+-                metrics.addCustomChart(new Metrics.SimplePie("purpur_version", () -> (Metrics.class.getPackage().getImplementationVersion() != null) ? Metrics.class.getPackage().getImplementationVersion() : "unknown")); // Purpur
 -
 -                metrics.addCustomChart(new Metrics.DrilldownPie("java_version", () -> {
 -                    Map<String, Map<String, Integer>> map = new HashMap<>();
@@ -686,7 +686,7 @@ index 52c0ab1ce46e1f3233ef746d9bc699356fa9fae4..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 4eb122cfd31902df9789d2e8ff2615207a65ab06..7495e0cbdce4884826011555746d7d4ab18c5e1a 100644
+index 65336e68a35b0c6d302efe4a51bb137919ec508a..d1422887f22f73a84144279a0b520776da662327 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -51,7 +51,7 @@ public class PaperConfig {

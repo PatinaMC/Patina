@@ -54,7 +54,7 @@ index b9e36a83837913cd3e5abe598f695ba7a9ffc417..e2f0ac82acb8463e7fe858d80e0c8f6d
              this.c = agameprofile;
          }
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index c0d2b7fe726ea92e18871e3714ca9c249492ac93..0d0f71820fc26e272d4f0e1ff81a9fd1ebf7165a 100644
+index fc687515fdfd47e90e11a2832de07d784edeef25..ca71e4e65ce2ccaa542861872ff01aff4d9773cf 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -1933,7 +1933,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
@@ -66,7 +66,7 @@ index c0d2b7fe726ea92e18871e3714ca9c249492ac93..0d0f71820fc26e272d4f0e1ff81a9fd1
      private boolean b(EntityPlayer entityplayer) {
          return entityplayer.isSpectator() && !this.world.getGameRules().getBoolean(GameRules.SPECTATORS_GENERATE_CHUNKS);
      }
-@@ -2433,7 +2433,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2424,7 +2424,7 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
  
      }
  
@@ -76,7 +76,7 @@ index c0d2b7fe726ea92e18871e3714ca9c249492ac93..0d0f71820fc26e272d4f0e1ff81a9fd1
          return this.m;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/EntityLiving.java b/src/main/java/net/minecraft/world/entity/EntityLiving.java
-index 73d5e6ee996fd8777a307e0c442e67e39c86ebf7..6776722330f8240db6d6c61fff51f839222e131a 100644
+index dde514f34ff3a9db82d9fbb715e4c28f90023003..dd6c3abe7c58b04827638fb4579e0e24a9c2e932 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityLiving.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityLiving.java
 @@ -1584,7 +1584,7 @@ public abstract class EntityLiving extends Entity {
@@ -97,7 +97,7 @@ index 73d5e6ee996fd8777a307e0c442e67e39c86ebf7..6776722330f8240db6d6c61fff51f839
      protected float dH() {
          return this.isBaby() ? (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.5F : (this.random.nextFloat() - this.random.nextFloat()) * 0.2F + 1.0F;
      }
-@@ -3425,12 +3425,12 @@ public abstract class EntityLiving extends Entity {
+@@ -3429,12 +3429,12 @@ public abstract class EntityLiving extends Entity {
          return this.activeItem;
      }
  
@@ -113,7 +113,7 @@ index 73d5e6ee996fd8777a307e0c442e67e39c86ebf7..6776722330f8240db6d6c61fff51f839
          return this.isHandRaised() ? this.activeItem.k() - this.dZ() : 0;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
-index 697e666a027d5e2ace7d0758909be5a658c480d2..7557541324675d87e23532cfe504c09dec79ac96 100644
+index 0c56094b962c7c6e6ab3bf49d2efdcec7faed1c6..816ff43f74eaf3ad07fd84114bc6a8e2187598d4 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/PathfinderGoalSelector.java
 @@ -39,7 +39,7 @@ public class PathfinderGoalSelector {
@@ -125,7 +125,7 @@ index 697e666a027d5e2ace7d0758909be5a658c480d2..7557541324675d87e23532cfe504c09d
          this.d.add(new PathfinderGoalWrapped(i, pathfindergoal));
      }
  
-@@ -63,7 +63,7 @@ public class PathfinderGoalSelector {
+@@ -64,7 +64,7 @@ public class PathfinderGoalSelector {
      }
      // Paper end
  

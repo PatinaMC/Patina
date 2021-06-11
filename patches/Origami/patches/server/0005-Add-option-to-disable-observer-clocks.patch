@@ -5,10 +5,10 @@ Subject: [PATCH] Add option to disable observer clocks
 
 
 diff --git a/src/main/java/de/minebench/origami/OrigamiConfig.java b/src/main/java/de/minebench/origami/OrigamiConfig.java
-index cb7a772d5c21471c2a28b976d9ee1b24420a019d..c0d6c1eb7ddec5ae118a1a9fc6c00c5b0b9b0a0c 100644
+index 6d146241e75cce4d245f360aec609c1e5846816b..20959c90ad248e75389351c212a87c16f2513bbf 100644
 --- a/src/main/java/de/minebench/origami/OrigamiConfig.java
 +++ b/src/main/java/de/minebench/origami/OrigamiConfig.java
-@@ -127,5 +127,10 @@ public final class OrigamiConfig {
+@@ -119,6 +119,11 @@ public final class OrigamiConfig {
              tickEmptyHoppers = getBoolean("tick-empty-hoppers", tickEmptyHoppers);
              fullHopperCooldown = getInt("ticks-per.full-hopper-cooldown", fullHopperCooldown);
          }
@@ -18,6 +18,7 @@ index cb7a772d5c21471c2a28b976d9ee1b24420a019d..c0d6c1eb7ddec5ae118a1a9fc6c00c5b
 +            disableObserverClocks = getBoolean("disable-observer-clocks", disableObserverClocks);
 +        }
      }
+ 
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/BlockObserver.java b/src/main/java/net/minecraft/world/level/block/BlockObserver.java
 index 291fd45f6f97c561edaaf8b659920d2c3b6aba46..039fd27455c0b56721caf9ce66975aef71d2caa6 100644

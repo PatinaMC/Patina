@@ -6,10 +6,10 @@ Subject: [PATCH] Remove VersionFetcher
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 deleted file mode 100644
-index 7063f1da3654b382e26b0093ad5d0ff04a2b38c2..0000000000000000000000000000000000000000
+index d50b61876f15d95b836b3dd81d9c3492c91a8448..0000000000000000000000000000000000000000
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ /dev/null
-@@ -1,134 +0,0 @@
+@@ -1,139 +0,0 @@
 -package com.destroystokyo.paper;
 -
 -import com.destroystokyo.paper.util.VersionFetcher;
@@ -26,6 +26,7 @@ index 7063f1da3654b382e26b0093ad5d0ff04a2b38c2..00000000000000000000000000000000
 -import java.io.*;
 -import java.net.HttpURLConnection;
 -import java.net.URL;
+-import java.util.stream.StreamSupport;
 -
 -public class PaperVersionFetcher implements VersionFetcher {
 -    private static final java.util.regex.Pattern VER_PATTERN = java.util.regex.Pattern.compile("^([0-9\\.]*)\\-.*R"); // R is an anchor, will always give '-R' at end
@@ -86,11 +87,15 @@ index 7063f1da3654b382e26b0093ad5d0ff04a2b38c2..00000000000000000000000000000000
 -        if (siteApiVersion == null) { return -1; }
 -        try {
 -            try (BufferedReader reader = Resources.asCharSource(
--                new URL("https://papermc.io/api/v1/paper/" + siteApiVersion + "/latest"),
+-                new URL("https://papermc.io/api/v2/projects/paper/versions/" + siteApiVersion),
 -                Charsets.UTF_8
 -            ).openBufferedStream()) {
 -                JsonObject json = new Gson().fromJson(reader, JsonObject.class);
--                int latest = json.get("build").getAsInt();
+-                JsonArray builds = json.getAsJsonArray("builds");
+-                int latest = StreamSupport.stream(builds.spliterator(), false)
+-                    .mapToInt(e -> e.getAsInt())
+-                    .max()
+-                    .getAsInt();
 -                return latest - jenkinsBuild;
 -            } catch (JsonSyntaxException ex) {
 -                ex.printStackTrace();

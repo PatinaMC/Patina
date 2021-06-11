@@ -54,7 +54,6 @@ This is an overview over all patches that are currently used.
 | server |  Do not update TE&#39;s in generating chunks      | Spottedleaf |  |
 | server |  Don&#39;t allow StructureLocateEvent to change worlds      | Spottedleaf |  |
 | server |  Don&#39;t get entity equipment if not needed      | Paul Sauve |  |
-| server |  Don&#39;t load chunk with seed based feature search      | Phoenix616 |  |
 | server |  Don&#39;t lookup fluid state when raytracing      | Spottedleaf |  |
 | server |  Don&#39;t read neighbour chunk data off disk when converting      | Spottedleaf |  |
 | server |  Don&#39;t save Fireworks      | Aikar |  |
@@ -109,6 +108,7 @@ This is an overview over all patches that are currently used.
 | server |  Nuke Bootstrap thread pool      | foss-mc |  |
 | server |  Only check for spooky season once an hour      | Paul Sauve |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
+| server |  Optimise BlockSoil nearby water lookup      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
 | server |  Optimise chunk tick iteration      | Spottedleaf |  |
 | server |  Optimise closest entity lookup      | Spottedleaf |  |
@@ -127,6 +127,7 @@ This is an overview over all patches that are currently used.
 | server |  Optimize whitelist command for multiple additions / removals      | Ivan Pekov |  |
 | server |  Option for simpler Villagers      | tr7zw |  |
 | server |  Origami Server Config      | Phoenix616 |  |
+| server |  Patch Paper to use fast item merge raytracing      | Paul Sauve |  |
 | server |  Per World Spawn Limits      | Chase Whipple |  |
 | api |  Per player viewdistances      | Spottedleaf |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
@@ -160,6 +161,7 @@ This is an overview over all patches that are currently used.
 | server |  Rewrite the light engine      | Spottedleaf |  |
 | server |  Send full pos packets for hard colliding entities      | Spottedleaf |  |
 | server |  Separate lookup locking from state access in UserCache      | Spottedleaf |  |
+| server |  Simple item block collision toggle      | Paul Sauve |  |
 | server |  Simpler ShapelessRecipes comparison for Vanilla      | Paul Sauve |  |
 | server |  Skip POI finding if stuck in vehicle      | Paul Sauve |  |
 | server |  Skip copying unloading tile entities      | Paul Sauve |  |
@@ -182,7 +184,6 @@ This is an overview over all patches that are currently used.
 | api |  Tuinity config      | Spottedleaf |  |
 | server |  Update version fetcher repo      | JRoy |  |
 | server |  Use array for gamerule storage      | Paul Sauve |  |
-| server |  Use entity ticking chunk map for entity tracker      | Spottedleaf |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
 | server |  Use list for fast iteration over pathfinder goals      | Paul Sauve |  |
 | server |  Use raw iterator where possible      | Paul Sauve |  |

@@ -9,7 +9,7 @@ launcher can very easily fill a chunk.
 Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 21fb365d5fc646bbb2daa32dc5eb695a5121f66d..eeb770ec08f43ae724016e37f35f2565a78b1a67 100644
+index 0d153e3fb648c356c0092113b954263a81450e67..1cc03dd8b111afb6725e20404afa7d02a47c46b5 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -70,6 +70,7 @@ import net.minecraft.world.entity.animal.EntityFish;
@@ -20,7 +20,7 @@ index 21fb365d5fc646bbb2daa32dc5eb695a5121f66d..eeb770ec08f43ae724016e37f35f2565
  import net.minecraft.world.entity.vehicle.EntityBoat;
  import net.minecraft.world.entity.vehicle.EntityMinecartAbstract;
  import net.minecraft.world.item.ItemStack;
-@@ -1892,6 +1893,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1923,6 +1924,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
      }
  
      public boolean d(NBTTagCompound nbttagcompound) {

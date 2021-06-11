@@ -5,7 +5,7 @@ Subject: [PATCH] Option for simpler Villagers
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/npc/EntityVillager.java b/src/main/java/net/minecraft/world/entity/npc/EntityVillager.java
-index 4c2b01774403211bf9af8b5c9f75bfa1b30e1746..357da1b7ec10bf96563a7e44d73d2d661af6ba8e 100644
+index 7a404996909454d1d6bc606609f0c19853cda91a..f0046a07e4f4914138aa52ece1f8381559cc7cf4 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/EntityVillager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/EntityVillager.java
 @@ -100,6 +100,7 @@ import org.bukkit.event.entity.VillagerReplenishTradeEvent;

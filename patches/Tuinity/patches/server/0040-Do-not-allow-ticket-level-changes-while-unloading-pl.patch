@@ -8,7 +8,7 @@ Sync loading the chunk at this stage would cause it to load
 older data, as well as screwing our region state.
 
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index 9d26ca0ed8a8ad33091ee5b649289f2fae6c6f74..d1fa4602f2f443c19ff69bfbd39cacdb4cbaf2a3 100644
+index fdf33020de130bfecbe9d385e8b48ba588391906..5673e42c46dbfeca3976ac43526ae8ab6a9b4fde 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -840,6 +840,7 @@ public class ChunkProviderServer extends IChunkProvider {
@@ -20,7 +20,7 @@ index 9d26ca0ed8a8ad33091ee5b649289f2fae6c6f74..d1fa4602f2f443c19ff69bfbd39cacdb
          boolean flag = this.chunkMapDistance.a(this.playerChunkMap);
          boolean flag1 = this.playerChunkMap.b();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index d839a0267bc23f444294966bf29bd71861ea1301..b1f2841bed5b913cbfb8c18d7ee1c05a64d3e252 100644
+index 82522a3bcad4aba15595fff63052c722a52110d0..aaf6668050e754cddb977f3bc0897a5df71ac696 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -846,6 +846,7 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {

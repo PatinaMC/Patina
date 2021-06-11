@@ -5,10 +5,10 @@ Subject: [PATCH] Fix exp drop of zombie pigmen (MC-56653)
 
 
 diff --git a/src/main/java/de/minebench/origami/OrigamiConfig.java b/src/main/java/de/minebench/origami/OrigamiConfig.java
-index c0d6c1eb7ddec5ae118a1a9fc6c00c5b0b9b0a0c..f96a045ab9902599c3c1e76bb6810807eab36602 100644
+index 20959c90ad248e75389351c212a87c16f2513bbf..cd828379e889d9c0cb7fafce43d7db48eec73b0c 100644
 --- a/src/main/java/de/minebench/origami/OrigamiConfig.java
 +++ b/src/main/java/de/minebench/origami/OrigamiConfig.java
-@@ -132,5 +132,9 @@ public final class OrigamiConfig {
+@@ -124,6 +124,10 @@ public final class OrigamiConfig {
          private void observerClock() {
              disableObserverClocks = getBoolean("disable-observer-clocks", disableObserverClocks);
          }
@@ -17,6 +17,7 @@ index c0d6c1eb7ddec5ae118a1a9fc6c00c5b0b9b0a0c..f96a045ab9902599c3c1e76bb6810807
 +            pigmenDontTargetUnlessHit = getBoolean("pigmen.dont-target-unless-hit", pigmenDontTargetUnlessHit);
 +        }
      }
+ 
  }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EntityPigZombie.java b/src/main/java/net/minecraft/world/entity/monster/EntityPigZombie.java
 index d10d1b768601236b9892461ee41d61c7239d1a07..1331b7525be64ecf5115dcafc6511837eff5b7ec 100644

@@ -5,10 +5,10 @@ Subject: [PATCH] Add MC-4 fix back
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/item/EntityItem.java b/src/main/java/net/minecraft/world/entity/item/EntityItem.java
-index 5dc3670f35b04d933e96c4b42aa9fbcf941e69c7..a5707dbf8981e547ec293f3f7c33ad9da22c0c09 100644
+index cb5c4379bfd16a74debaf23f840dbf1e5535ad7f..6b8623a4ff95be0b671fe3c98022330be2e5db7d 100644
 --- a/src/main/java/net/minecraft/world/entity/item/EntityItem.java
 +++ b/src/main/java/net/minecraft/world/entity/item/EntityItem.java
-@@ -553,7 +553,7 @@ public class EntityItem extends Entity {
+@@ -573,7 +573,7 @@ public class EntityItem extends Entity {
  
      // Paper start - fix MC-4
      public void setPositionRaw(double x, double y, double z) {

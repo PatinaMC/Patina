@@ -6,7 +6,7 @@ Subject: [PATCH] mark some classes as final
 They are not meant to be extended
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index f15a8ef9e589eadbfd92b4ad7a8b2db642a6634c..6fd81d7130814a5d7c2c4f8f8d3a3d1d9d3b6795 100644
+index 24aa5a387bdea9114e858c528fe9f958d232d092..7e330998d1865db5835a013fbe01a1a597beec41 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -61,7 +61,7 @@ import static co.aikar.util.JSONUtil.toArrayMapper;
@@ -58,7 +58,7 @@ index ec2b9995f1bf0f6cf029df7bfac526c2672acf3a..813c8f21b13eb80084db4330fd136828
      private static final ImmutableSet<String> SUBCOMMANDS = ImmutableSet.<String>builder().add("heap", "entity", "reload", "version", "debug", "chunkinfo", "dumpwaiting", "syncloadinfo", "fixlight", "dumpitem").build();
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 7495e0cbdce4884826011555746d7d4ab18c5e1a..03ed45ee62a526ab14b584d0c0531c4c83f30a08 100644
+index d1422887f22f73a84144279a0b520776da662327..0be180a83dbdf6665e55b82c64bafb5b96faf644 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -30,7 +30,7 @@ import co.aikar.timings.TimingsManager;
@@ -84,7 +84,7 @@ index b6f4400df3d8ec7e06a996de54f8cabba57885e1..96f19e9bd90fd51df399de8ae4ca40dd
      private final int raw;
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 37f866629b7eed39ced4352c94e56c8de8ccfeb9..989bffac5130a53daf270702e8b55221267ad1ee 100644
+index fcacc08db8f5a58ddd06be7f9f2cb2cf6b2231c3..863874ae4a2f80f5861d61b83f94de1ab85ce44c 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -21,7 +21,7 @@ import org.spigotmc.SpigotWorldConfig;
@@ -721,10 +721,10 @@ index 4d92a2da6f9f457ee14ce1571eae4f381d449d2d..b664aca6a51a0e80647978cc980c5f62
      private boolean a;
      private boolean b;
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInChat.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInChat.java
-index a76dd78cf01a76f3083966c88e6ddf2ec778bec2..aef58b71a2e9ceae5c6f8ccec0a26c5435bc9b2b 100644
+index 9da176c19fabd46cf552f1b05c223b49a06bd7c1..f1d9fd876d77caa6ea1d935151e29065c708cae2 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInChat.java
 +++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInChat.java
-@@ -5,7 +5,7 @@ import java.io.IOException;
+@@ -4,7 +4,7 @@ import java.io.IOException;
  import net.minecraft.network.PacketDataSerializer;
  import net.minecraft.network.protocol.Packet;
  
@@ -3165,7 +3165,7 @@ index e3649d0fb08ae30a448d0e69c6f0c1066e99b9a4..e111c24ca9d1faaffef55db3c8ee84c2
      private static final SuggestionProvider<CommandListenerWrapper> b = (commandcontext, suggestionsbuilder) -> {
          return ICompletionProvider.a(b(commandcontext).a(), suggestionsbuilder);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 77b6f468512c08823ed2a8e8549a6fb7c2bec355..48c8a74affa2ba964f50c437054eca6bb9c137ad 100644
+index e595c5951df416f7b8e02839b0a7d6fb0a096c67..2c06312dee2f71ce3e0368454f919804fff5e3fc 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -71,7 +71,7 @@ import org.bukkit.craftbukkit.util.Waitable;
@@ -3217,7 +3217,7 @@ index d1d98c2f192514a3f511bebb00c088b03e6be84c..b4fa07584ae66707779d4567e0d2d299
      private static final Font a = new Font("Monospaced", 0, 12);
      private static final Logger LOGGER = LogManager.getLogger();
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 0d0f71820fc26e272d4f0e1ff81a9fd1ebf7165a..6a1b32d1e9add7645a6329e1442d1800c5fd31c2 100644
+index ca71e4e65ce2ccaa542861872ff01aff4d9773cf..30be4ec41d9dddb0cd172ba7c289824939fdcc54 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -111,7 +111,7 @@ import org.apache.logging.log4j.Logger;
@@ -3828,7 +3828,7 @@ index b6143d474b98304aa8ccc82dc390886fbe4efca3..a9e07151e7af739afebf0f7e3678d51e
  
      public CraftProfileBanList(GameProfileBanList list) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 7039dd08c1449bb01af6db82aad51b8926bf6351..50923c39f66ba9ca3bcd862bea3e4304aef9a3c4 100644
+index 460aa284fa329dd4065444437446c793156a564b..eae4fd59bdc7b6685158057832412af914ee40d1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -269,7 +269,7 @@ import org.bukkit.util.Consumer;
@@ -3984,7 +3984,7 @@ index 7c0d90552eeb6de7dab174e2ba4acfc89a7b3db0..d56c82014664a2e716525a5338004083
  
      private transient Object[] data; public final Object[] getRawDataArray() { return this.data; } // Paper - expose for raw get
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 6cc482a2231e356e8b4ab4917d5bc2229582666b..2cbb97c70e44e728c598fe216557ddee01e41bbe 100644
+index ea91b7a7eac71f9deb6b4c141e10edaf1a1cbae9..686a9293a9e3e7fb3ce421be6c3aba7fed451e18 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -52,7 +52,7 @@ import net.minecraft.world.entity.projectile.EntityEnderSignal;
@@ -4138,7 +4138,7 @@ index 58a9534816c7b8a86cc6a620bbc1fcda86444d1a..4fd046d7040f8045e1ceafc0c3de8d1f
  
      public static String limit(String str, int limit)
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index b16b25fa7dfaea726986106f9e0acc68ff6fa0ae..069be57a78839b6a2b8d79cd2c6b5a347fb5171d 100644
+index 3ea16be17f5583d178b21721d540a7d131ce5c44..f5ed19550c9d3989a30e063045d20a93b6933e87 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -10,7 +10,7 @@ import com.destroystokyo.paper.io.chunk.ChunkTaskManager; // Paper

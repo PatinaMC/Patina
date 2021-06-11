@@ -75,10 +75,10 @@ index 71a000edfab27c9965d1929af78582821d5af97a..5c5ac70b4dae5d51303ab974261055aa
                              LOGGER.error("Error whilst processing packet {} for {}[{}]", packet, networkmanager.getPlayer().getName(), networkmanager.getSocketAddress(), e);
                          } else {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 02c685caacd162bbccad333fbc7e9776931bd1eb..6bf619e46229c74da4b246dee424e54196cd000e 100644
+index 5318d2e8fa6fcfa4a85afd604097fb7d7268ddc0..f704271de93a51b80321bf247abbed91844ea74c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1160,7 +1160,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1161,7 +1161,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  return;
              }
              // Paper end
@@ -108,10 +108,10 @@ index 69a982832489fc78fd46418341bdcba1e2be69e9..7bcaa5be42383cd1f1cfce6457c235a8
                              ChatComponentText chatcomponenttext = new ChatComponentText("Internal server error");
  
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index 77f9c0dd83348987527aeaf1d36df2c70a606fc5..67891d31342dfce8c2d1bf678730f8dc43913cd3 100644
+index 4bfb8a4cc899ac4d4eeb3b7e87c1a8b4cd8062a5..97aab6dcff740a53c9da1e3a53641933a1f27783 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -1053,6 +1053,10 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1051,6 +1051,10 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
                          // Paper start - Prevent tile entity and entity crashes
                          String msg = "TileEntity threw exception at " + tileentity.getWorld().getWorld().getName() + ":" + tileentity.getPosition().getX() + "," + tileentity.getPosition().getY() + "," + tileentity.getPosition().getZ();
                          System.err.println(msg);
@@ -175,7 +175,7 @@ index 0be39dac4b9dd69d7d73d86d64cf1e33e4086e81..c53531bc769ecd39c4f03b7a10c5bc6a
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/spigotmc/WatchdogThread.java b/src/main/java/org/spigotmc/WatchdogThread.java
-index 00c728704a1a7aa8b3a2e7679eaa0d2f604da087..b16b25fa7dfaea726986106f9e0acc68ff6fa0ae 100644
+index b650f9b6901f15b7fec7a426cd77660039eecd66..3ea16be17f5583d178b21721d540a7d131ce5c44 100644
 --- a/src/main/java/org/spigotmc/WatchdogThread.java
 +++ b/src/main/java/org/spigotmc/WatchdogThread.java
 @@ -134,6 +134,15 @@ public class WatchdogThread extends Thread
@@ -194,7 +194,7 @@ index 00c728704a1a7aa8b3a2e7679eaa0d2f604da087..b16b25fa7dfaea726986106f9e0acc68
      }
      // Tuinity end - log detailed tick information
  
-@@ -265,6 +274,10 @@ public class WatchdogThread extends Thread
+@@ -266,6 +275,10 @@ public class WatchdogThread extends Thread
                  log.log( Level.SEVERE, "\t\tLocked on:" + monitor.getLockedStackFrame() );
              }
          }
