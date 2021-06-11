@@ -937,10 +937,10 @@ index 0000000000000000000000000000000000000000..be408aebbccbda46e8aa82ef33757413
 +}
 diff --git a/src/main/java/com/tuinity/tuinity/util/misc/Delayed26WayDistancePropagator3D.java b/src/main/java/com/tuinity/tuinity/util/misc/Delayed26WayDistancePropagator3D.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..155d10994f2d7df9ac927d955d99016fe304360f
+index 0000000000000000000000000000000000000000..9cc49e8e4ad841df2b38dc37ec761bf360f5a357
 --- /dev/null
 +++ b/src/main/java/com/tuinity/tuinity/util/misc/Delayed26WayDistancePropagator3D.java
-@@ -0,0 +1,295 @@
+@@ -0,0 +1,300 @@
 +package com.tuinity.tuinity.util.misc;
 +
 +import it.unimi.dsi.fastutil.HashCommon;
@@ -1062,10 +1062,12 @@ index 0000000000000000000000000000000000000000..155d10994f2d7df9ac927d955d99016f
 +        this.levelRemoveWorkQueueBitset |= (1L << level);
 +    }
 +
-+    public void propagateUpdates() {
++    public boolean propagateUpdates() {
 +        if (this.updatedSources.isEmpty()) {
-+            return;
++            return false;
 +        }
++
++        boolean ret = false;
 +
 +        for (final LongIterator iterator = this.updatedSources.iterator(); iterator.hasNext();) {
 +            final long coordinate = iterator.nextLong();
@@ -1076,6 +1078,7 @@ index 0000000000000000000000000000000000000000..155d10994f2d7df9ac927d955d99016f
 +            if (currentLevel == updatedSource) {
 +                continue;
 +            }
++            ret = true;
 +
 +            if (updatedSource > currentLevel) {
 +                // level increase
@@ -1096,6 +1099,8 @@ index 0000000000000000000000000000000000000000..155d10994f2d7df9ac927d955d99016f
 +
 +        // now we propagate the decreases (which will then re-propagate clobbered sources)
 +        this.propagateDecreases();
++
++        return ret;
 +    }
 +
 +    protected void propagateIncreases() {
@@ -1238,10 +1243,10 @@ index 0000000000000000000000000000000000000000..155d10994f2d7df9ac927d955d99016f
 +}
 diff --git a/src/main/java/com/tuinity/tuinity/util/misc/Delayed8WayDistancePropagator2D.java b/src/main/java/com/tuinity/tuinity/util/misc/Delayed8WayDistancePropagator2D.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..606417a8aeaca2682595f417bba8e9d411999da9
+index 0000000000000000000000000000000000000000..cdd3c4032c1d6b34a10ba415bd4d0e377aa9af3c
 --- /dev/null
 +++ b/src/main/java/com/tuinity/tuinity/util/misc/Delayed8WayDistancePropagator2D.java
-@@ -0,0 +1,713 @@
+@@ -0,0 +1,718 @@
 +package com.tuinity.tuinity.util.misc;
 +
 +import it.unimi.dsi.fastutil.HashCommon;
@@ -1622,10 +1627,12 @@ index 0000000000000000000000000000000000000000..606417a8aeaca2682595f417bba8e9d4
 +        this.levelRemoveWorkQueueBitset |= (1L << level);
 +    }
 +
-+    public void propagateUpdates() {
++    public boolean propagateUpdates() {
 +        if (this.updatedSources.isEmpty()) {
-+            return;
++            return false;
 +        }
++
++        boolean ret = false;
 +
 +        for (final LongIterator iterator = this.updatedSources.iterator(); iterator.hasNext();) {
 +            final long coordinate = iterator.nextLong();
@@ -1636,6 +1643,7 @@ index 0000000000000000000000000000000000000000..606417a8aeaca2682595f417bba8e9d4
 +            if (currentLevel == updatedSource) {
 +                continue;
 +            }
++            ret = true;
 +
 +            if (updatedSource > currentLevel) {
 +                // level increase
@@ -1656,6 +1664,8 @@ index 0000000000000000000000000000000000000000..606417a8aeaca2682595f417bba8e9d4
 +
 +        // now we propagate the decreases (which will then re-propagate clobbered sources)
 +        this.propagateDecreases();
++
++        return ret;
 +    }
 +
 +    protected void propagateIncreases() {
@@ -2024,10 +2034,10 @@ index 1d72af9cace7aa8f1d20c7c1c5be621f533e2dad..006e7076932f6be576a64da09c4d84ca
      public static <T> void mergeSortedSets(final java.util.function.Consumer<T> consumer, final java.util.Comparator<? super T> comparator, final java.util.SortedSet<T>...sets) {
          final ObjectRBTreeSet<T> all = new ObjectRBTreeSet<>(comparator);
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bfd0d8e3e7b6409b8ef7620ef147120480878c51..dafd5c368036afa4516da7eac04ddb7c649e8b97 100644
+index da66369c63e60e6e0328392b2eb98579613be63e..200ec8ad168e5b5e3672a4284e851b06fcc706b0 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -267,6 +267,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -268,6 +268,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      public org.bukkit.command.RemoteConsoleCommandSender remoteConsole;
      //public ConsoleReader reader; // Paper
      public static int currentTick = 0; // Paper - Further improve tick loop
@@ -2035,7 +2045,7 @@ index bfd0d8e3e7b6409b8ef7620ef147120480878c51..dafd5c368036afa4516da7eac04ddb7c
      public java.util.Queue<Runnable> processQueue = new java.util.concurrent.ConcurrentLinkedQueue<Runnable>();
      public int autosavePeriod;
      public boolean serverAutoSave = false; // Paper
-@@ -1098,6 +1099,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1102,6 +1103,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                          this.lastOverloadTime = this.nextTick;
                      }
  
@@ -2043,7 +2053,7 @@ index bfd0d8e3e7b6409b8ef7620ef147120480878c51..dafd5c368036afa4516da7eac04ddb7c
                      if ( ++MinecraftServer.currentTick % SAMPLE_INTERVAL == 0 )
                      {
                          final long diff = curTime - tickSection;
-@@ -1484,6 +1486,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1488,6 +1490,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  midTickLoadChunks(); // Paper
                  worldserver.timings.doTick.startTiming(); // Spigot
                  worldserver.doTick(booleansupplier);
@@ -2056,7 +2066,7 @@ index bfd0d8e3e7b6409b8ef7620ef147120480878c51..dafd5c368036afa4516da7eac04ddb7c
                  midTickLoadChunks(); // Paper
              } catch (Throwable throwable) {
 diff --git a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
-index c5e54c519e1f686761faa53b5e9579c514a65332..e9b236bb95985ba0806a3d27d705ac61bce55ea5 100644
+index 4a71f9a8a57ed123b31c725a8bd5f94ab0e2174d..f660cc2bfd420fcdea6ded9ad1e34263ed6657d6 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkProviderServer.java
 @@ -137,7 +137,7 @@ public class ChunkProviderServer extends IChunkProvider {
@@ -2305,7 +2315,7 @@ index a323b76f68c273a73cb3f20167a668b2100f4944..f7deb4fe98ef9900acb276c7680d5a2d
  
          // Paper start - raise IO/load priority if priority changes, use our preferred priority
 diff --git a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
-index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..f3d6811156e68040106f1d027a10ea33b5646b05 100644
+index 6835401bd7863bbd655502547a9fd4ae0f298da1..e7f9df8a4bd56d0809af87ec5ecd453b56025519 100644
 --- a/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/PlayerChunkMap.java
 @@ -332,6 +332,36 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
@@ -2399,7 +2409,7 @@ index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..f3d6811156e68040106f1d027a10ea33
  
              }
          };
-@@ -1765,6 +1817,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
+@@ -1773,6 +1825,11 @@ public class PlayerChunkMap extends IChunkLoader implements PlayerChunk.d {
          return chunkHolder == null ? null : chunkHolder.getAvailableChunkNow();
      }
      // Paper end
@@ -2412,7 +2422,7 @@ index 300884804bf9ac3fba7c30a04d8adf52e3dd2e3e..f3d6811156e68040106f1d027a10ea33
  
      // Paper start - async io
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index ef9b08df58d9d28df6b8ade076d95bf7e5cb1b18..f88b80e4772ade4199564cf96ef94ce45e493311 100644
+index f68a252378a94c8fcab622d2d89d738aceab45a4..afee018d10d0dbc31f1201477084e315953c67a0 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -168,6 +168,7 @@ import org.bukkit.event.server.MapInitializeEvent;
@@ -2521,7 +2531,7 @@ index ef9b08df58d9d28df6b8ade076d95bf7e5cb1b18..f88b80e4772ade4199564cf96ef94ce4
      public WorldServer(MinecraftServer minecraftserver, Executor executor, Convertable.ConversionSession convertable_conversionsession, IWorldDataServer iworlddataserver, ResourceKey<World> resourcekey, DimensionManager dimensionmanager, WorldLoadListener worldloadlistener, ChunkGenerator chunkgenerator, boolean flag, long i, List<MobSpawner> list, boolean flag1, org.bukkit.World.Environment env, org.bukkit.generator.ChunkGenerator gen) {
          super(iworlddataserver, resourcekey, dimensionmanager, minecraftserver::getMethodProfiler, false, flag, i, gen, env, executor); // Paper pass executor
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 429f0591c6a55f6c5d08a0755f7d39da676468bc..6a3e859eef2878d9e203bba7930e52d7513d96e8 100644
+index 6e1304f7169c11f67c573b2c8dc11825bcc7da0d..7cb70daddfeb27949230fdd829232786a4748118 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -299,6 +299,14 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
@@ -2540,7 +2550,7 @@ index 429f0591c6a55f6c5d08a0755f7d39da676468bc..6a3e859eef2878d9e203bba7930e52d7
      final org.spigotmc.TrackingRange.TrackingRangeType trackingRangeType = org.spigotmc.TrackingRange.getTrackingRangeType(this);
  
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBase.java b/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
-index 3fdafc0ff0c4148ec844dbdc1455d17cdcb4a75a..1499dfb2f21294f91fb078d12e8e2e9e8b8b0382 100644
+index 0d26250887f80d0c250bcd6bc7de303362427d3e..7f191b78fabc7d354fb4361a1bd13ebe27e0bd4b 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBase.java
 @@ -348,14 +348,14 @@ public abstract class BlockBase {
