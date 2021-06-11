@@ -8,10 +8,10 @@ Add per player no-tick, tick, and send view distances.
 Also add send view distance to World.
 
 diff --git a/src/main/java/org/bukkit/World.java b/src/main/java/org/bukkit/World.java
-index 4c80a999fcc4d656c047b96cb549782c693b33cd..226c9a1fc49b11a9dd7653c695f7031bb51c3a41 100644
+index f66ec2dfdc64871f8b752bf44086954300804f08..8efc8e0db687e1506eee2b19466ec917ba4edcdc 100644
 --- a/src/main/java/org/bukkit/World.java
 +++ b/src/main/java/org/bukkit/World.java
-@@ -3517,6 +3517,26 @@ public interface World extends PluginMessageRecipient, Metadatable, net.kyori.ad
+@@ -3639,6 +3639,26 @@ public interface World extends PluginMessageRecipient, Metadatable, net.kyori.ad
       * @param viewDistance view distance in [2, 32]
       */
      void setNoTickViewDistance(int viewDistance);
@@ -39,10 +39,10 @@ index 4c80a999fcc4d656c047b96cb549782c693b33cd..226c9a1fc49b11a9dd7653c695f7031b
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 2ea531eaef8c455fdd503f0c0258813fe9136085..a84ea92d02d34cd48174152e0391f1af6c6b5def 100644
+index a4b236d75e77176a163094edd31f81725bbf4eca..27848ad0eee667e515685a5f1cef3e9bfc7a3f53 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1768,23 +1768,63 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1791,23 +1791,63 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * Gets the view distance for this player
       *
       * @return the player's view distance

@@ -9,10 +9,10 @@ chunk through it. This should also be OK from a leak prevention/
 state desync POV because the TE is getting unloaded anyways.
 
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 980063ada85d7e9660a625d67b2f6a82f80bf535..bffc0824151a6597d91cd854b343b2586f6b9322 100644
+index 2c97d8b8fcad6e955876c8953f918146cae234dd..5785397ffc9a041e3e09174cd718ed7f415bdc3f 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-@@ -1718,6 +1718,17 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -1743,6 +1743,17 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          this.playerConnection.sendPacket(new PacketPlayOutCloseWindow(this.activeContainer.windowId));
          this.o();
      }
@@ -31,7 +31,7 @@ index 980063ada85d7e9660a625d67b2f6a82f80bf535..bffc0824151a6597d91cd854b343b258
      public void broadcastCarriedItem() {
          if (!this.e) {
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index a278a5ba17a510f784c798ad7f7f47bf7ccc301e..2d207dbad7752526c9a0b212979043c009e66386 100644
+index 2d1e202a1a85149187fadc0c314d871191781198..a6c08e5b8f70a8a879a1055fc9e243d2f909b253 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -1908,10 +1908,14 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -51,10 +51,10 @@ index a278a5ba17a510f784c798ad7f7f47bf7ccc301e..2d207dbad7752526c9a0b212979043c0
          // Spigot End
          this.tileEntityListUnload.addAll(chunk.getTileEntities().values());
 diff --git a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-index ec0956a98c133bcd3d4f92f696c667eab6ff98f1..44038dd278b988508047023107683e5370af54ad 100644
+index c39c50e53549e9cb9d3520bc7e8b7e89cfa20163..5bce47fa8f191bc1d33c04c9865cb0efd492a9a2 100644
 --- a/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
 +++ b/src/main/java/net/minecraft/world/entity/player/EntityHuman.java
-@@ -453,6 +453,12 @@ public abstract class EntityHuman extends EntityLiving {
+@@ -458,6 +458,12 @@ public abstract class EntityHuman extends EntityLiving {
          this.activeContainer = this.defaultContainer;
      }
      // Paper end

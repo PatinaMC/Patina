@@ -248,10 +248,10 @@ index 006e7076932f6be576a64da09c4d84ca4a15f5dd..e832ea0497b2d6af7556bda7f6728e72
          0, 2, 60L, TimeUnit.SECONDS,
          new LinkedBlockingQueue<Runnable>(),
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index dae8824a6034cdaaecbedeba5e05c62f4565583f..29677908376e111abead33b42920e07aeb1d4b02 100644
+index 594d6683b4bf74b83d44675e58a7d036d7572f61..7317a64269b8ce2a30117ebb23acfe98e1eeb281 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1451,6 +1451,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1455,6 +1455,8 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
          // Paper end
  
@@ -261,10 +261,10 @@ index dae8824a6034cdaaecbedeba5e05c62f4565583f..29677908376e111abead33b42920e07a
          long endTime = System.nanoTime();
          long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
 diff --git a/src/main/java/net/minecraft/server/level/EntityPlayer.java b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..f7e9a151ffbbb64cb8f8bc1d37516d7979277b17 100644
+index 75bcfb3a2b4a104aeebb2fe3298714b2e5b569d2..f29cad4905d21190149b740e958768135e067a93 100644
 --- a/src/main/java/net/minecraft/server/level/EntityPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/EntityPlayer.java
-@@ -370,7 +370,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -371,7 +371,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
  
                  if (blockposition1 != null) {
                      this.setPositionRotation(blockposition1, 0.0F, 0.0F);
@@ -273,7 +273,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..f7e9a151ffbbb64cb8f8bc1d37516d79
                          break;
                      }
                  }
-@@ -378,7 +378,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+@@ -379,7 +379,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
          } else {
              this.setPositionRotation(blockposition, 0.0F, 0.0F);
  
@@ -283,7 +283,7 @@ index 37c9b5fd712e30a9a0faccc840f738f4b2cfc723..f7e9a151ffbbb64cb8f8bc1d37516d79
              }
          }
 diff --git a/src/main/java/net/minecraft/server/level/WorldServer.java b/src/main/java/net/minecraft/server/level/WorldServer.java
-index 1658c03b70b5984c87d069276efcc7b8c8878431..86d1ce955c88530c043128a043fe75534077c665 100644
+index b2aca1b062415a0b07d410840da43d419149b6f0..de7d6ad3a84b44eec2fc3b6f3412f79530656988 100644
 --- a/src/main/java/net/minecraft/server/level/WorldServer.java
 +++ b/src/main/java/net/minecraft/server/level/WorldServer.java
 @@ -474,6 +474,251 @@ public class WorldServer extends World implements GeneratorAccessSeed {
@@ -539,10 +539,10 @@ index 1658c03b70b5984c87d069276efcc7b8c8878431..86d1ce955c88530c043128a043fe7553
      @Override
      public TileEntity getTileEntity(BlockPosition pos, boolean validate) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 2df8e914f66176e22aeddf8b94a83af5ea921d88..306d5ab69f8c4ca1c69f081e17cf9a4a2bee0446 100644
+index 90776231b1faffb11e4394f555f336ca248e3004..db8f0d8b63cbefffcd010568cbfab1eaf7c89fa4 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -943,7 +943,7 @@ public abstract class PlayerList {
+@@ -951,7 +951,7 @@ public abstract class PlayerList {
  
          worldserver1.getChunkProvider().addTicket(TicketType.POST_TELEPORT, new ChunkCoordIntPair(location.getBlockX() >> 4, location.getBlockZ() >> 4), 1, entityplayer.getId()); // Paper
          entityplayer1.forceCheckHighPriority(); // Player
@@ -552,7 +552,7 @@ index 2df8e914f66176e22aeddf8b94a83af5ea921d88..306d5ab69f8c4ca1c69f081e17cf9a4a
          }
          // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f86e73fe3 100644
+index cb01757dc466452ac9d927009ca4b6190871328f..cdea6b2b39f316a4467216c115a610a56d8808a3 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -228,7 +228,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
@@ -564,7 +564,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
      public boolean noclip;
      public float I;
      protected final Random random;
-@@ -786,7 +786,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -817,7 +817,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
              // Paper end
  
              vec3d = this.a(vec3d, enummovetype);
@@ -573,7 +573,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
  
              if (vec3d1.g() > 1.0E-7D) {
                  this.a(this.getBoundingBox().c(vec3d1));
-@@ -877,7 +877,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -908,7 +908,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
              }
  
              try {
@@ -582,7 +582,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
              } catch (Throwable throwable) {
                  CrashReport crashreport = CrashReport.a(throwable, "Checking entity block collision");
                  CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Entity being checked for collision");
-@@ -889,11 +889,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -920,11 +920,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
              float f2 = this.getBlockSpeedFactor();
  
              this.setMot(this.getMot().d((double) f2, 1.0D, (double) f2));
@@ -595,7 +595,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
  
              if (this.aG() && this.isBurning()) {
                  this.playSound(SoundEffects.ENTITY_GENERIC_EXTINGUISH_FIRE, 0.7F, 1.6F + (this.random.nextFloat() - this.random.nextFloat()) * 0.4F);
-@@ -989,6 +985,137 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1020,6 +1016,137 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
          return d0;
      }
  
@@ -733,7 +733,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
      private Vec3D g(Vec3D vec3d) {
          AxisAlignedBB axisalignedbb = this.getBoundingBox();
          VoxelShapeCollision voxelshapecollision = VoxelShapeCollision.a(this);
-@@ -1024,6 +1151,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1055,6 +1182,7 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
          return vec3d1;
      }
  
@@ -741,7 +741,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
      public static double c(Vec3D vec3d) {
          return vec3d.x * vec3d.x + vec3d.z * vec3d.z;
      }
-@@ -1136,18 +1264,34 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1167,18 +1295,34 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
      }
  
      protected void checkBlockCollisions() {
@@ -779,7 +779,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
                          try {
                              iblockdata.a(this.world, blockposition_mutableblockposition, this);
                              this.a(iblockdata);
-@@ -1161,6 +1305,11 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -1192,6 +1336,11 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
                      }
                  }
              }
@@ -791,7 +791,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
          }
  
      }
-@@ -2119,9 +2268,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -2155,9 +2304,9 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
              float f1 = this.size.width * 0.8F;
              AxisAlignedBB axisalignedbb = AxisAlignedBB.g((double) f1, 0.10000000149011612D, (double) f1).d(this.locX(), this.getHeadY(), this.locZ());
  
@@ -803,7 +803,7 @@ index b32b0ebf283a8face528ded0b845270953f536f1..c5ce10a55de6f611ec65f32382b0082f
          }
      }
  
-@@ -2129,10 +2278,12 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
+@@ -2165,10 +2314,12 @@ public abstract class Entity implements INamableTileEntity, ICommandListener, ne
          return EnumInteractionResult.PASS;
      }
  
@@ -1043,10 +1043,10 @@ index 03584572fa5bf0d96fc4cecece573547f9c94cea..8bc965a3b3d0d4140c6b94636f0b33b2
                      }
  
 diff --git a/src/main/java/net/minecraft/world/level/World.java b/src/main/java/net/minecraft/world/level/World.java
-index bf7ca5c956a2a3a9cd2bfde7a0e4e8805d618797..a0ff1e87224f418a387656c8793151af7929454a 100644
+index 6d3dec7441d38ba2eec3117005cc29a5d068bac1..7d3fcf93574d64f120f3a241667e7c93b490cc29 100644
 --- a/src/main/java/net/minecraft/world/level/World.java
 +++ b/src/main/java/net/minecraft/world/level/World.java
-@@ -1175,8 +1175,13 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
+@@ -1184,8 +1184,13 @@ public abstract class World implements GeneratorAccess, AutoCloseable {
  
      @Override
      public List<Entity> getEntities(@Nullable Entity entity, AxisAlignedBB axisalignedbb, @Nullable Predicate<? super Entity> predicate) {

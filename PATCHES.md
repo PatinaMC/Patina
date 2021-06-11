@@ -20,12 +20,14 @@ This is an overview over all patches that are currently used.
 | server |  Change writes to use NORMAL priority rather than LOW      | Spottedleaf |  |
 | server |  Consolidate flush calls for entity tracker packets      | Spottedleaf |  |
 | server |  Copy passenger list in enderTeleportTo      | Spottedleaf |  |
+| server |  Correctly handle recursion for chunkholder updates      | Spottedleaf |  |
 | server |  Custom table implementation for blockstate state lookups      | Spottedleaf |  |
 | server |  Delay chunk unloads      | Spottedleaf |  |
 | server |  Detail more information in watchdog dumps      | Spottedleaf |  |
 | server |  Distance manager tick timings      | Spottedleaf |  |
 | server |  Do not allow the server to unload chunks at request of      | Spottedleaf |  |
 | server |  Do not allow ticket level changes while unloading      | Spottedleaf |  |
+| server |  Do not copy visible chunks      | Spottedleaf |  |
 | server |  Do not load chunks during a crash report      | Spottedleaf |  |
 | server |  Do not retain playerchunkmap instance in light thread factory      | Spottedleaf |  |
 | server |  Do not run close logic for inventories on chunk unload      | Spottedleaf |  |
@@ -56,6 +58,7 @@ This is an overview over all patches that are currently used.
 | server |  Multi-Threaded ticking CraftBukkit      | Spottedleaf |  |
 | server |  Name craft scheduler threads according to the plugin using      | Spottedleaf |  |
 | server |  Oprimise map impl for tracked players      | Spottedleaf |  |
+| server |  Optimise BlockSoil nearby water lookup      | Spottedleaf |  |
 | server |  Optimise WorldServer#notify      | Spottedleaf |  |
 | server |  Optimise chunk tick iteration      | Spottedleaf |  |
 | server |  Optimise closest entity lookup      | Spottedleaf |  |
@@ -70,7 +73,6 @@ This is an overview over all patches that are currently used.
 | api |  Per player viewdistances      | Spottedleaf |  |
 | server |  Prevent long map entry creation in light engine      | Spottedleaf |  |
 | server |  Prevent unload() calls removing tickets for sync loads      | Spottedleaf |  |
-| server |  Properly handle cancellation of projectile hit event      | Spottedleaf |  |
 | server |  Range check flag dirty calls in PlayerChunk      | Spottedleaf |  |
 | server |  Reduce allocation rate from crammed entities      | Spottedleaf |  |
 | server |  Reduce iterator allocation from chunk gen      | Spottedleaf |  |
@@ -78,6 +80,7 @@ This is an overview over all patches that are currently used.
 | server |  Remove chunk lookup &amp; lambda allocation from counting mobs      | Spottedleaf |  |
 | server |  Remove streams for villager AI      | Spottedleaf |  |
 | server |  Replace player chunk loader system      | Spottedleaf |  |
+| server |  Replace ticket level propagator      | Spottedleaf |  |
 | server |  Revert MC-4 fix      | Spottedleaf |  |
 | server |  Revert getChunkAt(Async) retaining chunks for long periods of      | Spottedleaf |  |
 | server |  Rework PlayerChunk main thread checks      | Spottedleaf |  |
@@ -89,7 +92,6 @@ This is an overview over all patches that are currently used.
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
 | server |  Update version fetcher repo      | JRoy |  |
-| server |  Use entity ticking chunk map for entity tracker      | Spottedleaf |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
 | server |  Util patch      | Spottedleaf |  |
 | server |  hardcode BukkitVersion - 1.16.5-R0.1-SNAPSHOT      | foss-mc |  |

@@ -5,7 +5,7 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index 19e0bde15c9a587894b806602daae06a267a4d74..cd14db21bd01a260621cc222d9ad981d838caef1 100644
+index 1d793654662e28ed780a0663b0fe94a980009bf4..e131ee58ed368264e63b37fa310089e3a6f46645 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -1,11 +1,11 @@
@@ -45,7 +45,7 @@ index 19e0bde15c9a587894b806602daae06a267a4d74..cd14db21bd01a260621cc222d9ad981d
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
-@@ -170,15 +170,15 @@
+@@ -197,15 +197,15 @@
  
      <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
      <build>

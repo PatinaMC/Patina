@@ -6,10 +6,10 @@ Subject: [PATCH] Tuinity config
 API to retrieve raw YamlConfiguration + timing exports
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index f3e27d2d02a9407bb1b091b8c1125ad5abf99e55..b3e7b2a8eaa3980e34bc74a846320b7871dc6e4b 100644
+index e88b47a838dc472ad64271a518ee1789f7be19fa..f55ae8275c297c4c86215fba8d7197ffe9715879 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1595,6 +1595,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1606,6 +1606,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  

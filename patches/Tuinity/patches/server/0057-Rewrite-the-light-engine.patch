@@ -3709,7 +3709,7 @@ index 0000000000000000000000000000000000000000..0e4442a94559346b19a536d35ce5def6
 +    }
 +}
 diff --git a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
-index f074a3bfed2477a8716ebfaef765d0b98e33cd55..6777d11391c4d3f76ee958f26f2a86240295a761 100644
+index 27d901c1d2e25ec5c70526cb99cc157ef19c9ba5..db1c938896fa6521c6cd279e10b91e5f94573088 100644
 --- a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 +++ b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 @@ -232,6 +232,12 @@ public final class TuinityConfig {

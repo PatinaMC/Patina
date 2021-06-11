@@ -6,10 +6,10 @@ Subject: [PATCH] Add Velocity natives for encryption and compression
 This patch is licensed under the MIT license. See /licenses/MIT.md.
 
 diff --git a/pom.xml b/pom.xml
-index ab57297272c2d6f3d21067081bcaf8775b8fff09..f1054514c9e284631e9d90bb7dfc111d0b541667 100644
+index 1a9204c869dd36e80932b1366352db15ebd70723..01d3c52d8fbe3e3cb6cc92af3c354b8986d928e6 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -156,6 +156,13 @@
+@@ -183,6 +183,13 @@
              <version>4.8.47</version>
              <scope>test</scope>
          </dependency>
@@ -24,7 +24,7 @@ index ab57297272c2d6f3d21067081bcaf8775b8fff09..f1054514c9e284631e9d90bb7dfc111d
  
      <!-- This builds a completely 'ready to start' jar with all dependencies inside -->
 diff --git a/src/main/java/net/minecraft/network/NetworkManager.java b/src/main/java/net/minecraft/network/NetworkManager.java
-index 2abf64fda6e504a89b2e443af48894023d446cef..69bfe8d0a9cf745557c3e06141dec1ed3bb7d567 100644
+index b0a573a5cc0d65cb7d8f3fd2aaabfc2efe169735..20cc362e23d8cb7f1df081d6251da76c5cf70ca8 100644
 --- a/src/main/java/net/minecraft/network/NetworkManager.java
 +++ b/src/main/java/net/minecraft/network/NetworkManager.java
 @@ -568,10 +568,16 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
@@ -291,10 +291,10 @@ index 5759f91d5e9dc52b16c8955b8d318da2b53c7af4..0960f415fd3c6c764cf3dd273bb9e9c5
  }
 +// Tuinity end
 diff --git a/src/main/java/net/minecraft/server/network/LoginListener.java b/src/main/java/net/minecraft/server/network/LoginListener.java
-index 185667110cd6f566b23546728d20fc79223f3c92..dc98ef48a664d9ee2a302fff8c611fd16dc704b6 100644
+index 5b69126142140c7fc96435a4d246752581f47c33..25437a993c02379fa43e5d46159cd9ba2aebf10f 100644
 --- a/src/main/java/net/minecraft/server/network/LoginListener.java
 +++ b/src/main/java/net/minecraft/server/network/LoginListener.java
-@@ -255,7 +255,7 @@ public class LoginListener implements PacketLoginInListener {
+@@ -256,7 +256,7 @@ public class LoginListener implements PacketLoginInListener {
  
              s = (new BigInteger(MinecraftEncryption.a("", this.server.getKeyPair().getPublic(), this.loginKey))).toString(16);
              this.g = LoginListener.EnumProtocolState.AUTHENTICATING;
@@ -304,10 +304,10 @@ index 185667110cd6f566b23546728d20fc79223f3c92..dc98ef48a664d9ee2a302fff8c611fd1
              throw new IllegalStateException("Protocol error", cryptographyexception);
          }
 diff --git a/src/main/java/net/minecraft/server/network/ServerConnection.java b/src/main/java/net/minecraft/server/network/ServerConnection.java
-index dc362724ea0cc1b2f9d9ceffff483217b4356c40..70fde7bad2e0a6d7432d8509fdb7c46d9f020d4c 100644
+index 06b0ed65905b9829564dfddd29012218af0f403d..69a982832489fc78fd46418341bdcba1e2be69e9 100644
 --- a/src/main/java/net/minecraft/server/network/ServerConnection.java
 +++ b/src/main/java/net/minecraft/server/network/ServerConnection.java
-@@ -87,6 +87,11 @@ public class ServerConnection {
+@@ -96,6 +96,11 @@ public class ServerConnection {
                  ServerConnection.LOGGER.info("Using default channel type");
              }
  
