@@ -108,7 +108,7 @@ index 3f5cfb6fa3b6f8f63e25e539395adcc5d209dcae..2abf72e3fb8fd62a007f5bac50a9c406
          public void broadcast(BaseComponent component) {
              for (Player player : getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 8b344d69b9076e1bf2a5ba310ecf3f8ddd375fdc..2726df053c4647f8ce2f02f1ae614009ffaba083 100644
+index cbdcc06c03ea1a206e035a41c13242b00b5062a5..704b11731b2272f7cf489316d28e6ba78804b601 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -170,6 +170,14 @@ public class Main {

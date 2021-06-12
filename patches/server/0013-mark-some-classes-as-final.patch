@@ -3854,7 +3854,7 @@ index 31f197ded3335cf6615a7e7d4e502323daad13e4..436061587dc90fbd4ccbbb5e90badd1d
      private final World world;
      private final net.minecraft.world.level.border.WorldBorder handle;
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 2726df053c4647f8ce2f02f1ae614009ffaba083..81ee4f577c38cb8376e6cf9b4c6c9004bc419f76 100644
+index 704b11731b2272f7cf489316d28e6ba78804b601..ebfc9a3495ef15da90e31969d7aaca4446426d92 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -16,7 +16,7 @@ import net.minecraft.util.ExceptionSuppressor;

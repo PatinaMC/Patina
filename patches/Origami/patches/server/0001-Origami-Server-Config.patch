@@ -170,7 +170,7 @@ index dbf3c298c58396dd9e757015e81d309c077ccf31..3f5cfb6fa3b6f8f63e25e539395adcc5
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 51cdc7e87413302a73416a5da724d873efb29657..8b344d69b9076e1bf2a5ba310ecf3f8ddd375fdc 100644
+index 73513638dd024cb1cdd49c705921f0bcf1935968..cbdcc06c03ea1a206e035a41c13242b00b5062a5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {
