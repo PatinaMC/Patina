@@ -63,9 +63,9 @@ paperweight {
         patchTasks {
             register("mojangApi") {
                 isBareDirectory.set(true)
-                upstreamDirPath.convention("Paper-MojangAPI")
-                patchDir.set(file("patches/mojangapi"))
-                outputDir.set(file("ForkTest-MojangAPI"))
+                upstreamDirPath.set("Paper-MojangAPI")
+                patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
+                outputDir.set(layout.projectDirectory.dir("ForkTest-MojangAPI"))
             }
         }
     }
