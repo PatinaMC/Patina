@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Kyle Wood <kyle@denwav.dev>
+Date: Wed, 16 Jun 2021 01:55:05 -0500
+Subject: [PATCH] Build changes
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 0fdb8a028b2473a62024be6b6406a85ea61f8db1..c1637d57c1deaf166c5c843906e2ed55fb37250f 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -14,7 +14,7 @@ repositories {
+ }
+ 
+ dependencies {
+-    implementation(project(":Paper-API"))
++    implementation(project(":ForkTest-API")) // ForkTest
+     api("com.mojang:brigadier:1.0.18")
+ 
+     compileOnly("it.unimi.dsi:fastutil:8.2.2")

@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f111042223f0d7974785c37245bb60b75388163e..043e5f4a0914fab856f98d39262a7c28c327460f 100644
+index f111042223f0d7974785c37245bb60b75388163e..d2ffd6f95e9c9dbf433acfed577ab6a733d5be56 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -19,8 +19,8 @@ repositories {
@@ -15,7 +15,7 @@ index f111042223f0d7974785c37245bb60b75388163e..043e5f4a0914fab856f98d39262a7c28
 -    implementation(project(":Paper-API"))
 -    implementation(project(":Paper-MojangAPI"))
 +    implementation(project(":ForkTest-API")) // ForkTest
-+    implementation("com.destroystokyo.paper:paper-mojangapi:1.16.5-R0.1-SNAPSHOT") // ForkTest
++    implementation(project(":ForkTest-MojangAPI")) // ForkTest
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")

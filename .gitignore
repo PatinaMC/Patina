@@ -48,5 +48,6 @@ run/
 
 ForkTest-Server
 ForkTest-API
+ForkTest-MojangAPI
 
 !gradle/wrapper/gradle-wrapper.jar
