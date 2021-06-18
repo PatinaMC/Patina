@@ -741,10 +741,10 @@ index c96eac4b0b519b2807153fa5a8ebf5a020a2b140..b5c8d9b17c2d5e229db5b48448709194
          int j = 0;
  
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
-index 74d826853389b8e01ffe2b076cf2b179d29da216..a4b5857a0e65d09bcb26a291b82cae97e2f7b76e 100644
+index 74d826853389b8e01ffe2b076cf2b179d29da216..6ef54d8929814172427cb0dba5dc7711f6be69d1 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/RegionFileCache.java
-@@ -22,12 +22,43 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
+@@ -22,8 +22,15 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
      public final Long2ObjectLinkedOpenHashMap<RegionFile> cache = new Long2ObjectLinkedOpenHashMap();
      private final File b;
      private final boolean c;
@@ -760,35 +760,7 @@ index 74d826853389b8e01ffe2b076cf2b179d29da216..a4b5857a0e65d09bcb26a291b82cae97
          this.b = file;
          this.c = flag;
      }
- 
-+    // Tuinity start
-+    public static ChunkCoordIntPair getRegionFileCoordinates(File file) {
-+        String fileName = file.getName();
-+        if (!fileName.startsWith("r.") || !fileName.endsWith(".mca")) {
-+            return null;
-+        }
-+
-+        String[] split = fileName.split("\\.");
-+
-+        if (split.length != 4) {
-+            return null;
-+        }
-+
-+        try {
-+            int x = Integer.parseInt(split[1]);
-+            int z = Integer.parseInt(split[2]);
-+
-+            return new ChunkCoordIntPair(x << 5, z << 5);
-+        } catch (NumberFormatException ex) {
-+            return null;
-+        }
-+    }
-+    // Tuinity end
-+
- 
-     // Paper start
-     public static ChunkCoordIntPair getRegionFileCoordinates(File file) {
-@@ -83,9 +114,9 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
+@@ -83,9 +90,9 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
                  this.b.mkdirs();
              }
  
@@ -800,7 +772,7 @@ index 74d826853389b8e01ffe2b076cf2b179d29da216..a4b5857a0e65d09bcb26a291b82cae97
  
              this.cache.putAndMoveToFirst(i, regionfile1);
              // Paper start
-@@ -174,6 +205,13 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
+@@ -174,6 +181,13 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
              return null;
          }
          // CraftBukkit end
@@ -814,7 +786,7 @@ index 74d826853389b8e01ffe2b076cf2b179d29da216..a4b5857a0e65d09bcb26a291b82cae97
          try { // Paper
          DataInputStream datainputstream = regionfile.a(chunkcoordintpair);
          // Paper start
-@@ -189,6 +227,17 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
+@@ -189,6 +203,17 @@ public class RegionFileCache implements AutoCloseable { // Paper - no final
          try {
              if (datainputstream != null) {
                  nbttagcompound = NBTCompressedStreamTools.a((DataInput) datainputstream);
