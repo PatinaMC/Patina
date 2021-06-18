@@ -19,7 +19,7 @@ affects player loaded chunks, when we want to target all
 loads.
 
 diff --git a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
-index 5d63a02200b0798a238d372e31f6c557c0b1fc83..85f6761b494e73a680cea1bd4e6142b471df283c 100644
+index 8b72d044e2d56c7933b48bdf5f6139d64f9660b7..7043d58211996628f0825169842d1e1739defb40 100644
 --- a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 +++ b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 @@ -1,6 +1,7 @@

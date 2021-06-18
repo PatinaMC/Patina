@@ -6,7 +6,7 @@ Subject: [PATCH] Lag compensate block breaking
 Use time instead of ticks if ticks fall behind
 
 diff --git a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
-index 85f6761b494e73a680cea1bd4e6142b471df283c..49f293d66852f0ce93eae498d536b2eda4718016 100644
+index 7043d58211996628f0825169842d1e1739defb40..4e21f6b4c02b97be4f15f5ba53fe280df2c48a46 100644
 --- a/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 +++ b/src/main/java/com/tuinity/tuinity/config/TuinityConfig.java
 @@ -133,6 +133,12 @@ public final class TuinityConfig {
