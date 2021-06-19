@@ -2,7 +2,7 @@
 
 [![Discord](https://img.shields.io/discord/833269599449382913?label=Discord)](https://discord.gg/4cVWCyBrDs)
 
-A distribution of performance-oriented Bukkit patches that aims to keep stability and vanilla behaviour.
+A distribution of performance-oriented Bukkit patches.
 
 ![logo](logo.png)
 
@@ -27,6 +27,3 @@ You can find explanation of configuration files on the [wiki](https://github.com
 [Paper](https://github.com/PaperMC/Paper) - [aikar](https://github.com/aikar) : [Paypal](https://donate.emc.gs/GitHub)
 
 [Tuinity](https://github.com/Spottedleaf/Tuinity) - [Spottedleaf](https://github.com/Spottedleaf) : I can't find it
-
-[Yatopia](https://github.com/YatopiaMC/Yatopia) - [Titaniumtown](https://github.com/Titaniumtown) : Etherium address `0x9D3F20059D16E77c6F70fCb0673846b0c4FC0C75`
-
