@@ -84,7 +84,7 @@ index b6f4400df3d8ec7e06a996de54f8cabba57885e1..96f19e9bd90fd51df399de8ae4ca40dd
      private final int raw;
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index fcacc08db8f5a58ddd06be7f9f2cb2cf6b2231c3..863874ae4a2f80f5861d61b83f94de1ab85ce44c 100644
+index 32ac923d41d89ae170924532245bde9975bcfbd3..99fe8179cbd8b23c7337635790fdbd83b082f9f1 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -21,7 +21,7 @@ import org.spigotmc.SpigotWorldConfig;

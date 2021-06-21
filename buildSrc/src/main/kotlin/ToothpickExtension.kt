@@ -22,7 +22,7 @@ open class ToothpickExtension(objects: ObjectFactory) {
     lateinit var upstream: String
     val upstreamLowercase
         get() = upstream.toLowerCase(Locale.ENGLISH)
-    var upstreamBranch: String = "origin/master"
+    var upstreamBranch: String = "origin/ver/1.16.5"
 
     var paperclipName: String? = null
     val calcPaperclipName
