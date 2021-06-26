@@ -5,14 +5,14 @@ Subject: [PATCH] Expose findClass for profiler
 
 
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index d2fa792e182736070a119e96b4ae79337de53d2a..e6195a242032172ceb10d5185a10d72cee7005aa 100644
+index d2fa792e182736070a119e96b4ae79337de53d2a..e614ef411f026f6af2e7039abb7dd9dd712ed572 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -155,6 +155,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
          throw new ClassNotFoundException(name);
      }
  
-+    public Class<?> _airplane_findClass(@NotNull String name) throws ClassNotFoundException { return this.classes.get(name); } // Airplane
++    public boolean _airplane_hasClass(@NotNull String name) { return this.classes.containsKey(name); } // Airplane
      @Override
      protected Class<?> findClass(String name) throws ClassNotFoundException {
          if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
