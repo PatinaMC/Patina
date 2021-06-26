@@ -3958,7 +3958,7 @@ index 20ee8468bcf305139a51da61f5f9026794da27f6..49d3efe3cb50d2e495f349db626bb4f5
      private final MinecraftServer server;
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
-index c7ed6e0f8a989cec97700df2b15198c9c481c549..a3f2f2fcf314b315c0f751dcc55daa6899ec3d9b 100644
+index 2dcb1a7ca5cef0a1715b6219bd47e0ff59565b09..ebab62bf9cf08b1056f10d52b5320893e8858581 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
 @@ -2,7 +2,7 @@ package org.bukkit.craftbukkit.util;

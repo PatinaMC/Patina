@@ -5,7 +5,7 @@ Subject: [PATCH] anti Fast Async WorldEdit Yatopia detection
 
 
 diff --git a/pom.xml b/pom.xml
-index 534042f03373b1d6008525227cd8b937fa82828b..ea932878c354ea2fb116acb325897f973cb64e59 100644
+index 91615686c954e5287ceda4ee9237cd694a193476..a42847215a44471dd0a17e82b8b0a15d83ab1a4a 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -351,6 +351,20 @@

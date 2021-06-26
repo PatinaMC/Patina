@@ -5,7 +5,7 @@ Subject: [PATCH] Modify POM
 
 
 diff --git a/pom.xml b/pom.xml
-index a382fc20eaed6a82c68d859f860feee072fd84a6..b23bbe726c4bef3fd5c56bddb27295fe2c20613d 100644
+index 7194cace2e4a04d41a2a367d66277a23284af0c1..8750594c53df1bfa9c81dff2036c005ecc72e9db 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -25,6 +25,15 @@
@@ -60,7 +60,7 @@ index a382fc20eaed6a82c68d859f860feee072fd84a6..b23bbe726c4bef3fd5c56bddb27295fe
          </dependency>
          <!-- for optimized protocol handling -->
 @@ -207,6 +216,12 @@
-             <version>master-SNAPSHOT</version>
+             <version>v3-SNAPSHOT</version>
              <scope>compile</scope>
          </dependency>
 +        <!-- Fast Math -->
