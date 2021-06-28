@@ -14,8 +14,8 @@ index f111042223f0d7974785c37245bb60b75388163e..d2ffd6f95e9c9dbf433acfed577ab6a7
  dependencies {
 -    implementation(project(":Paper-API"))
 -    implementation(project(":Paper-MojangAPI"))
-+    implementation(project(":ForkTest-API")) // ForkTest
-+    implementation(project(":ForkTest-MojangAPI")) // ForkTest
++    implementation(project(":Patina-API")) // Patina
++    implementation(project(":Patina-MojangAPI")) // Patina
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
@@ -37,7 +37,7 @@ index c6747f49ae8ddc9fc1bad82ab480f85d0883da5d..804eb17da12b816438a4d4c39fc330c4
      @DontObfuscate
      public String getServerModName() {
 -        return "Paper"; //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        return "ForkTest"; //ForkTest - ForkTest > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return "Patina"; //Patina - Patina > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
      public SystemReport fillSystemReport(SystemReport systemreport) {
@@ -50,7 +50,7 @@ index 8a98bd1018afd934696fedbed24e271ab6b75f51..84c456ef6a375d84ab52e11a58a4e6fe
  
  public final class CraftServer implements Server {
 -    private final String serverName = "Paper"; // Paper
-+    private final String serverName = "ForkTest"; // ForkTest // Paper
++    private final String serverName = "Patina"; // Patina // Paper
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");

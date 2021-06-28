@@ -46,8 +46,8 @@ out/
 # other stuff
 run/
 
-ForkTest-Server
-ForkTest-API
-ForkTest-MojangAPI
+Patina-Server
+Patina-API
+Patina-MojangAPI
 
 !gradle/wrapper/gradle-wrapper.jar

@@ -13,7 +13,7 @@ index 0fdb8a028b2473a62024be6b6406a85ea61f8db1..c1637d57c1deaf166c5c843906e2ed55
  
  dependencies {
 -    implementation(project(":Paper-API"))
-+    implementation(project(":ForkTest-API")) // ForkTest
++    implementation(project(":Patina-API")) // Patina
      api("com.mojang:brigadier:1.0.18")
  
      compileOnly("it.unimi.dsi:fastutil:8.2.2")

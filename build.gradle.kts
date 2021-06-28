@@ -49,15 +49,15 @@ subprojects {
 }
 
 paperweight {
-    serverProject.set(project(":ForkTest-Server"))
+    serverProject.set(project(":Patina-Server"))
 
     usePaperUpstream(providers.gradleProperty("paperRef")) {
         withPaperPatcher {
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-            apiOutputDir.set(layout.projectDirectory.dir("ForkTest-API"))
+            apiOutputDir.set(layout.projectDirectory.dir("Patina-API"))
 
             serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-            serverOutputDir.set(layout.projectDirectory.dir("ForkTest-Server"))
+            serverOutputDir.set(layout.projectDirectory.dir("Patina-Server"))
         }
 
         patchTasks {
@@ -65,7 +65,7 @@ paperweight {
                 isBareDirectory.set(true)
                 upstreamDirPath.set("Paper-MojangAPI")
                 patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
-                outputDir.set(layout.projectDirectory.dir("ForkTest-MojangAPI"))
+                outputDir.set(layout.projectDirectory.dir("Patina-MojangAPI"))
             }
         }
     }

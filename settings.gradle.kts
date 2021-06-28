@@ -5,6 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "ForkTest"
+rootProject.name = "Patina"
 
-include("ForkTest-API", "ForkTest-Server", "ForkTest-MojangAPI")
+include("Patina-API", "Patina-Server", "Patina-MojangAPI")
