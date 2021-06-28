@@ -1,0 +1,3128 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 28 Jun 2021 07:53:32 +0000
+Subject: [PATCH] Airplane Server Changes commit
+ 527a3cfda38a6f83473a5d6b254a665ecb673e6c
+
+Initial
+
+Disable Paper timings by default
+
+Airplane Configuration
+
+Co-developed-by: Ben Kerllenevich <me@notom3ga.me>
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Strip raytracing for EntityLiving#hasLineOfSight
+
+The IBlockAccess#rayTrace method is very wasteful in both allocations,
+and in logic. While EntityLiving#hasLineOfSight provides static
+parameters for collisions with blocks and fluids, the method still does
+a lot of dynamic checks for both of these, which result in extra work.
+As well, since the fluid collision option is set to NONE, the entire
+fluid collision system is completely unneeded, yet used anyways.
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Simpler ShapelessRecipes comparison for Vanilla
+
+Paper added a fancy sorting comparison due to Bukkit recipes breaking
+the vanilla one, however this is far more advanced than what you need
+for all the vanilla recipes.
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Reduce projectile chunk loading
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Only check for spooky season once an hour
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Optimize random calls in chunk ticking
+
+Especially at over 30,000 chunks these random calls are fairly heavy. We
+use a different method here for checking lightning, and for checking
+ice.
+
+Lightning: Each chunk now keeps an int of how many ticks until the
+lightning should strike. This int is a random number from 0 to 100000 * 2,
+the multiplication is required to keep the probability the same.
+
+Ice and snow: We just generate a single random number 0-16 and increment
+it, while checking if it's 0 for the current chunk.
+
+Depending on configuration for things that tick in a chunk, this is a
+5-10% improvement.
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Dynamic activation range
+
+This replaces the current method of ticking an inactive entity's
+pathfinder 1/4 times with a new method that's dynamic based off how far
+away it is from a player. If an entity is within 32 blocks, it gets
+ticked every tick. If it's within 45 blocks, it gets ticked every other
+tick. If it's within 55 blocks, it gets ticked once every three ticks.
+(these numbers have since been changed, but the idea is the same.)
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Cache palette array
+
+The reasoning for reusing it in ChunkRegionLoader is because ThreadLocal
+lookups are fairly expensive, and if we put it in DataPaletteBlock the
+ThreadLocal lookup would happen 18 times.
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Reduce chunk loading & lookups
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Skip POI finding if stuck in vehicle
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Airplane Profiler
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Remove iterators from inventory contains
+
+Early return optimization for target finding
+
+More debug for plugins not shutting down tasks
+
+Improve fluid direction caching
+
+Implements a custom cache that better fits the needs of fluids
+calculating whether a direction can be moved in or something. There's a
+big javadoc on the FluidDirectionCache with some more information.
+
+Cache climbing check for activation
+
+Reduce frequency of checking for entity despawn
+
+This isn't a great way to deal with this, but at a high number of
+entities this starts adding up more than it should, and it's already
+fairly optimized. Just starts being slow when you have 30k entities.
+
+Config to disable method profiler
+
+Use array for gamerule storage
+
+Make EntityCollisionContext a live representation
+
+While Context is in the name, it is not used as a context. Instead it is
+always created, use temporarily, then thrown away. This means having a
+lot of fields to initialize and make space for is useless. I cannot find
+anywhere in the codebase where this is used as a context which may be
+saved for later, so this should be safe assuming plugins don't use it
+for some strange reason.
+
+Improve container checking with a bitset
+
+Better checking for useless move packets
+
+Patch Paper to use fast item merge raytracing
+
+Use aging cache for biome temperatures
+
+Cache world height in the chunk, as it's final
+
+Use thread unsafe random for mob spawning
+
+Remove streams and iterators from range check
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 407035f8dd25b887c7b240534ee161827fd72499..07ae0e06d7cbaf6452bb5b98b4c06066c4ec3763 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -52,6 +52,9 @@ dependencies {
+ 
+     implementation("com.github.oshi:oshi-core:5.7.5") // Paper - fix startup delay and warning
+ 
++    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
++    implementation("com.github.technove:Flare:fd8e0c3d7e") // Airplane - flare
++
+     testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
+     testImplementation("junit:junit:4.13.1")
+     testImplementation("org.hamcrest:hamcrest-library:1.3")
+diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+index 7acf077bc131af718c7548cc29deef558c04e463..7a86357ea75db7263598b79d31d4ae9abe5e4b50 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+@@ -202,6 +202,15 @@ public class PaperConfig {
+     public static String timingsServerName;
+     private static void timings() {
+         boolean timings = getBoolean("timings.enabled", true);
++        // Airplane start
++        boolean reallyEnableTimings = getBoolean("timings.really-enabled", false);
++        if (timings && !reallyEnableTimings) {
++            Bukkit.getLogger().log(Level.WARNING, "[Airplane] To improve performance, timings have been disabled by default");
++            Bukkit.getLogger().log(Level.WARNING, "[Airplane] You can still use timings by using /timings on, but they will not start on server startup unless you set timings.really-enabled to true in paper.yml");
++            Bukkit.getLogger().log(Level.WARNING, "[Airplane] If you would like to disable this message, either set timings.really-enabled to true or timings.enabled to false.");
++        }
++        timings = reallyEnableTimings;
++        // Airplane end
+         boolean verboseTimings = getBoolean("timings.verbose", true);
+         TimingsManager.privacy = getBoolean("timings.server-name-privacy", false);
+         TimingsManager.hiddenConfigs = getList("timings.hidden-config-entries", Lists.newArrayList("database", "settings.bungeecord-addresses", "settings.velocity-support.secret"));
+diff --git a/src/main/java/gg/airplane/AirplaneCommand.java b/src/main/java/gg/airplane/AirplaneCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..89c89e633f14b5820147e734b1b7ad8cadfdce80
+--- /dev/null
++++ b/src/main/java/gg/airplane/AirplaneCommand.java
+@@ -0,0 +1,65 @@
++package gg.airplane;
++
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.text.format.NamedTextColor;
++import net.md_5.bungee.api.ChatColor;
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.Bukkit;
++import org.bukkit.Location;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++
++import java.io.IOException;
++import java.util.Collections;
++import java.util.List;
++import java.util.stream.Collectors;
++import java.util.stream.Stream;
++
++public class AirplaneCommand extends Command {
++
++    public AirplaneCommand() {
++        super("airplane");
++        this.description = "Airplane related commands";
++        this.usageMessage = "/airplane [reload | version]";
++        this.setPermission("bukkit.command.airplane");
++    }
++
++    @Override
++    public List<String> tabComplete(CommandSender sender, String alias, String[] args, Location location) throws IllegalArgumentException {
++        if (args.length == 1) {
++            return Stream.of("reload", "version")
++              .filter(arg -> arg.startsWith(args[0].toLowerCase()))
++              .collect(Collectors.toList());
++        }
++        return Collections.emptyList();
++    }
++
++    @Override
++    public boolean execute(CommandSender sender, String commandLabel, String[] args) {
++        if (!testPermission(sender)) return true;
++        String prefix = ChatColor.of("#6a7eda") + "" + ChatColor.BOLD + "Airplane ✈ " + ChatColor.of("#e8ebf9");
++
++        if (args.length != 1) {
++            sender.sendMessage(prefix + "Usage: " + usageMessage);
++            args = new String[]{"version"};
++        }
++
++        if (args[0].equalsIgnoreCase("reload")) {
++            MinecraftServer console = MinecraftServer.getServer();
++            try {
++                AirplaneConfig.load();
++            } catch (IOException e) {
++                sender.sendMessage(Component.text("Failed to reload.", NamedTextColor.RED));
++                e.printStackTrace();
++                return true;
++            }
++            console.server.reloadCount++;
++
++            Command.broadcastCommandMessage(sender, prefix + "Airplane configuration has been reloaded.");
++        } else if (args[0].equalsIgnoreCase("version")) {
++            Command.broadcastCommandMessage(sender, prefix + "This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")");
++        }
++
++        return true;
++    }
++}
+diff --git a/src/main/java/gg/airplane/AirplaneConfig.java b/src/main/java/gg/airplane/AirplaneConfig.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6fc23a85ddd66a69b83684cdb602b6a312e9d72b
+--- /dev/null
++++ b/src/main/java/gg/airplane/AirplaneConfig.java
+@@ -0,0 +1,124 @@
++package gg.airplane;
++
++import co.technove.air.AIR;
++import net.minecraft.server.MinecraftServer;
++import org.apache.logging.log4j.Level;
++
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.lang.reflect.Method;
++import java.lang.reflect.Modifier;
++
++public class AirplaneConfig {
++
++    private static AIR config;
++
++    public static void load() throws IOException {
++        File configFile = new File("airplane.air");
++        if (configFile.exists()) {
++            try (FileInputStream inputStream = new FileInputStream(configFile)) {
++                config = new AIR(inputStream);
++            }
++        } else {
++            config = new AIR();
++        }
++
++        config.setComment("info",
++          "Airplane Configuration",
++          "Read https://blog.airplane.gg/ to find out more about Airplane",
++          "Join our Discord to receive support & optimization help: https://discord.gg/3gtc45q");
++        config.getString("info.version", "1.0");
++
++        for (Method method : AirplaneConfig.class.getDeclaredMethods()) {
++            if (Modifier.isStatic(method.getModifiers()) && Modifier.isPrivate(method.getModifiers())) {
++                method.setAccessible(true);
++                try {
++                    method.invoke(null);
++                } catch (Throwable t) {
++                    MinecraftServer.LOGGER.log(Level.WARN, "Failed to load configuration option from " + method.getName(), t);
++                }
++            }
++        }
++
++        try (FileOutputStream outputStream = new FileOutputStream(configFile)) {
++            config.save(outputStream);
++        }
++    }
++
++    public static boolean dearEnabled;
++    public static int startDistance;
++    public static int startDistanceSquared;
++    public static int maximumActivationPrio;
++    public static int activationDistanceMod;
++    public static boolean dynamicVillagerBehavior;
++    public static boolean dynamicPiglinBehavior;
++    public static boolean dynamicHoglinBehavior;
++
++    private static void dynamicActivationRange() {
++        config.setComment("activation-range", "Optimizes how entities act when", "they're far away from the player");
++
++        dearEnabled = config.getBoolean("activation-range.enabled", true);
++        startDistance = config.getInt("activation-range.start-distance", 12,
++          "This value determines how far away an entity has to be",
++          "from the player to start being effected by DEAR.");
++        startDistanceSquared = startDistance * startDistance;
++        maximumActivationPrio = config.getInt("activation-range.max-tick-freq", 20,
++          "This value defines how often in ticks, the furthest entity",
++          "will get their pathfinders and behaviors ticked. 20 = 1s");
++        activationDistanceMod = config.getInt("activation-range.activation-dist-mod", 8,
++          "This value defines how much distance modifies an entity's",
++          "tick frequency. freq = (distanceToPlayer^2) / (2^value)",
++          "If you want further away entities to tick less often, use 7.",
++          "If you want further away entities to tick more often, try 9.");
++
++        config.setComment("behavior-activation", "A list of entities to use the dynamic activation range", "to modify how often their behaviors are ticked");
++
++        dynamicVillagerBehavior = config.getBoolean("behavior-activation.villager", true);
++        dynamicPiglinBehavior = config.getBoolean("behavior-activation.piglin", true);
++        dynamicHoglinBehavior = config.getBoolean("behavior-activation.hoglin", true);
++    }
++
++
++    public static String profileWebUrl;
++
++    private static void profilerOptions() {
++        config.setComment("flare", "Configures Flare, the built-in profiler");
++
++        profileWebUrl = config.getString("flare.url", "https://flare.airplane.gg", "Sets the server to use for profiles.");
++    }
++
++
++    public static String accessToken;
++
++    private static void airplaneWebServices() {
++        config.setComment("web-services", "Options for connecting to Airplane's online utilities");
++
++        accessToken = config.getString("web-services.token", "");
++        // todo lookup token (off-thread) and let users know if their token is valid
++        if (accessToken.length() > 0) {
++            gg.airplane.flare.FlareSetup.init(); // Airplane
++        }
++    }
++
++
++    public static byte entityDespawnCheckFrequency;
++
++    private static void entitySettings() {
++        config.setComment("entities", "Configures settings for generic entities");
++
++        entityDespawnCheckFrequency = (byte) Math.max(config.getInt("entities.despawn-check-freq", 8), Byte.MAX_VALUE);
++    }
++
++
++    public static boolean disableMethodProfiler;
++
++    private static void miscSettings() {
++        config.setComment("misc", "Settings for things that don't belong elsewhere");
++
++        disableMethodProfiler = config.getBoolean("misc.disable-method-profiler", true);
++    }
++
++
++}
+diff --git a/src/main/java/gg/airplane/AirplaneLogger.java b/src/main/java/gg/airplane/AirplaneLogger.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1a9d71739019d12772bec6076b195552ff6299f9
+--- /dev/null
++++ b/src/main/java/gg/airplane/AirplaneLogger.java
+@@ -0,0 +1,17 @@
++package gg.airplane;
++
++import org.bukkit.Bukkit;
++
++import java.util.logging.Level;
++import java.util.logging.Logger;
++
++public class AirplaneLogger extends Logger {
++    public static final AirplaneLogger LOGGER = new AirplaneLogger();
++
++    private AirplaneLogger() {
++        super("Airplane", null);
++
++        setParent(Bukkit.getLogger());
++        setLevel(Level.ALL);
++    }
++}
+diff --git a/src/main/java/gg/airplane/commands/AirplaneCommands.java b/src/main/java/gg/airplane/commands/AirplaneCommands.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..66b20250a26d005427601b1cdee43bdd9eba70cc
+--- /dev/null
++++ b/src/main/java/gg/airplane/commands/AirplaneCommands.java
+@@ -0,0 +1,12 @@
++package gg.airplane.commands;
++
++import gg.airplane.AirplaneCommand;
++import gg.airplane.flare.FlareCommand;
++import net.minecraft.server.MinecraftServer;
++
++public class AirplaneCommands {
++    public static void init() {
++        MinecraftServer.getServer().server.getCommandMap().register("airplane", "Airplane", new AirplaneCommand());
++        MinecraftServer.getServer().server.getCommandMap().register("flare", "Airplane", new FlareCommand());
++    }
++}
+diff --git a/src/main/java/gg/airplane/compat/ServerConfigurations.java b/src/main/java/gg/airplane/compat/ServerConfigurations.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f85a7d3fde1d22e2510327b2b7c9e965ba3fee8
+--- /dev/null
++++ b/src/main/java/gg/airplane/compat/ServerConfigurations.java
+@@ -0,0 +1,87 @@
++package gg.airplane.compat;
++
++import co.aikar.timings.TimingsManager;
++import com.google.common.io.Files;
++import org.bukkit.configuration.InvalidConfigurationException;
++import org.bukkit.configuration.file.YamlConfiguration;
++
++import java.io.ByteArrayOutputStream;
++import java.io.File;
++import java.io.FileInputStream;
++import java.io.IOException;
++import java.nio.charset.StandardCharsets;
++import java.util.Arrays;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++import java.util.Properties;
++import java.util.stream.Collectors;
++
++public class ServerConfigurations {
++
++    public static final String[] configurationFiles = new String[]{
++      "server.properties",
++      "bukkit.yml",
++      "spigot.yml",
++      "paper.yml",
++      "tuinity.yml",
++      "airplane.air"
++    };
++
++    public static Map<String, String> getCleanCopies() throws IOException {
++        Map<String, String> files = new HashMap<>(configurationFiles.length);
++        for (String file : configurationFiles) {
++            files.put(file, getCleanCopy(file));
++        }
++        return files;
++    }
++
++    public static String getCleanCopy(String configName) throws IOException {
++        File file = new File(configName);
++        List<String> hiddenConfigs = TimingsManager.hiddenConfigs;
++
++        if (configName.equals("airplane.air")) {
++            return Files.readLines(file, StandardCharsets.UTF_8)
++              .stream()
++              .filter(line -> !line.trim().startsWith("#"))
++              .map(line -> line.contains("token") ? "  token = **" : line)
++              .collect(Collectors.joining("\n"));
++        }
++
++        switch (Files.getFileExtension(configName)) {
++            case "properties": {
++                Properties properties = new Properties();
++                try (FileInputStream inputStream = new FileInputStream(file)) {
++                    properties.load(inputStream);
++                }
++                for (String hiddenConfig : hiddenConfigs) {
++                    properties.remove(hiddenConfig);
++                }
++                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
++                properties.store(outputStream, "");
++                return Arrays.stream(outputStream.toString()
++                  .split("\n"))
++                  .filter(line -> !line.startsWith("#"))
++                  .collect(Collectors.joining("\n"));
++            }
++            case "yml": {
++                YamlConfiguration configuration = new YamlConfiguration();
++                try {
++                    configuration.load(file);
++                } catch (InvalidConfigurationException e) {
++                    throw new IOException(e);
++                }
++                configuration.options().header(null);
++                for (String key : configuration.getKeys(true)) {
++                    if (hiddenConfigs.contains(key)) {
++                        configuration.set(key, null);
++                    }
++                }
++                return configuration.saveToString();
++            }
++            default:
++                throw new IllegalArgumentException("Bad file type " + configName);
++        }
++    }
++
++}
+diff --git a/src/main/java/gg/airplane/flare/CustomCategories.java b/src/main/java/gg/airplane/flare/CustomCategories.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..cf5b8da28dbae29f3050ba3c27a6012db604532a
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/CustomCategories.java
+@@ -0,0 +1,8 @@
++package gg.airplane.flare;
++
++import gg.airplane.flare.live.category.GraphCategory;
++
++public class CustomCategories {
++    public static final GraphCategory MC_PERF = new GraphCategory("MC Performance");
++    public static final GraphCategory ENTITIES_AND_CHUNKS = new GraphCategory("Entities & Chunks");
++}
+diff --git a/src/main/java/gg/airplane/flare/FlareCommand.java b/src/main/java/gg/airplane/flare/FlareCommand.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..295b10a936d616cacbf33064e8a384fc3ac1a423
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/FlareCommand.java
+@@ -0,0 +1,147 @@
++package gg.airplane.flare;
++
++import gg.airplane.AirplaneConfig;
++import gg.airplane.flare.exceptions.UserReportableException;
++import gg.airplane.flare.profiling.AsyncProfilerIntegration;
++import gg.airplane.flare.profiling.ProfileType;
++import net.kyori.adventure.text.Component;
++import net.kyori.adventure.text.event.ClickEvent;
++import net.kyori.adventure.text.format.NamedTextColor;
++import net.kyori.adventure.text.format.TextColor;
++import net.kyori.adventure.text.format.TextDecoration;
++import org.bukkit.Bukkit;
++import org.bukkit.command.Command;
++import org.bukkit.command.CommandSender;
++import org.bukkit.command.ConsoleCommandSender;
++import org.bukkit.craftbukkit.scheduler.MinecraftInternalPlugin;
++import org.bukkit.util.StringUtil;
++import org.jetbrains.annotations.NotNull;
++
++import java.time.Duration;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.List;
++
++public class FlareCommand extends Command {
++
++    private static final String BASE_URL = "https://blog.airplane.gg/flare-tutorial/#setting-the-access-token";
++    private static final TextColor HEX = TextColor.fromHexString("#e3eaea");
++    private static final Component PREFIX = Component.text()
++      .append(Component.text("Flare ✈")
++        .color(TextColor.fromHexString("#6a7eda"))
++        .decoration(TextDecoration.BOLD, true)
++        .append(Component.text(" ", HEX)
++          .decoration(TextDecoration.BOLD, false)))
++      .asComponent();
++
++    public FlareCommand() {
++        super("flare", "Profile your server with Flare", "/flare", Collections.singletonList("profile"));
++        this.setPermission("airplane.flare");
++    }
++
++    @Override
++    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, String @NotNull [] args) {
++        if (!testPermission(sender)) return true;
++        if (AirplaneConfig.accessToken.length() == 0) {
++            Component clickable = Component.text(BASE_URL, HEX, TextDecoration.UNDERLINED).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.OPEN_URL, BASE_URL));
++
++            sender.sendMessage(PREFIX.append(Component.text("Flare currently requires an access token to use. To learn more, visit ").color(HEX).append(clickable)));
++            return true;
++        }
++
++        if (!FlareSetup.isSupported()) {
++            sender.sendMessage(PREFIX.append(
++              Component.text("Profiling is not supported in this environment, check your startup logs for the error.", NamedTextColor.RED)));
++            return true;
++        }
++        if (ProfilingManager.isProfiling()) {
++            if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
++                sender.sendMessage(PREFIX.append(Component.text("Status: " + AsyncProfilerIntegration.status(), HEX)));
++                return true;
++            }
++            if (ProfilingManager.stop()) {
++                if (!(sender instanceof ConsoleCommandSender)) {
++                    sender.sendMessage(PREFIX.append(Component.text("Profiling has been stopped.", HEX)));
++                }
++            } else {
++                sender.sendMessage(PREFIX.append(Component.text("Profiling has already been stopped.", HEX)));
++            }
++        } else {
++            ProfileType profileType = ProfileType.ITIMER;
++            if (args.length > 0) {
++                try {
++                    profileType = ProfileType.valueOf(args[0].toUpperCase());
++                } catch (Exception e) {
++                    sender.sendMessage(PREFIX.append(Component
++                      .text("Invalid profile type ", HEX)
++                      .append(Component.text(args[0], HEX, TextDecoration.BOLD)
++                        .append(Component.text("!", HEX)))
++                    ));
++                }
++            }
++            int interval = 5;
++            if (args.length > 1) {
++                try {
++                    interval = Integer.parseInt(args[1]);
++                } catch (Exception e) {
++                    sender.sendMessage(PREFIX.append(Component
++                      .text("Invalid time in milliseconds ", HEX)
++                      .append(Component.text(args[1], HEX, TextDecoration.BOLD)
++                        .append(Component.text("!", HEX)))
++                    ));
++                    return true;
++                }
++            }
++            int finalInterval = interval;
++            ProfileType finalProfileType = profileType;
++            Bukkit.getScheduler().runTaskAsynchronously(new MinecraftInternalPlugin(), () -> {
++                try {
++                    if (ProfilingManager.start(new ProfilingSettings(finalProfileType, Duration.ofMillis(finalInterval)))) {
++                        if (!(sender instanceof ConsoleCommandSender)) {
++                            sender.sendMessage(PREFIX.append(Component
++                              .text("Flare has been started: " + ProfilingManager.getProfilingUrl(), HEX)
++                              .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUrl()))
++                            ));
++                            sender.sendMessage(PREFIX.append(Component.text("  Run /" + commandLabel + " to stop the Flare.", HEX)));
++                        }
++                    } else {
++                        sender.sendMessage(PREFIX.append(Component
++                          .text("Flare has already been started: " + ProfilingManager.getProfilingUrl(), HEX)
++                          .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUrl()))
++                        ));
++                    }
++                } catch (UserReportableException e) {
++                    sender.sendMessage(Component.text("Flare failed to start: " + e.getUserError(), NamedTextColor.RED));
++                    e.printStackTrace();
++                }
++            });
++        }
++        return true;
++    }
++
++    @Override
++    public @NotNull List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, String @NotNull [] args) throws IllegalArgumentException {
++        List<String> list = new ArrayList<>();
++        if (ProfilingManager.isProfiling()) {
++            if (args.length == 1) {
++                String lastWord = args[0];
++                if (StringUtil.startsWithIgnoreCase("status", lastWord)) {
++                    list.add("status");
++                }
++                if (StringUtil.startsWithIgnoreCase("stop", lastWord)) {
++                    list.add("stop");
++                }
++            }
++        } else {
++            if (args.length <= 1) {
++                String lastWord = args.length == 0 ? "" : args[0];
++                for (ProfileType value : ProfileType.values()) {
++                    if (StringUtil.startsWithIgnoreCase(value.getInternalName(), lastWord)) {
++                        list.add(value.name().toLowerCase());
++                    }
++                }
++            }
++        }
++        return list;
++    }
++}
+diff --git a/src/main/java/gg/airplane/flare/FlareSetup.java b/src/main/java/gg/airplane/flare/FlareSetup.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..cd1998569b702a67d5d15b033b6bdda6d9cdcfe6
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/FlareSetup.java
+@@ -0,0 +1,32 @@
++package gg.airplane.flare;
++
++import gg.airplane.flare.profiling.InitializationException;
++import net.minecraft.server.MinecraftServer;
++import org.apache.logging.log4j.Level;
++
++public class FlareSetup {
++
++    private static boolean initialized = false;
++    private static boolean supported = false;
++
++    public static void init() {
++        if (initialized) {
++            return;
++        }
++
++        initialized = true;
++        try {
++            for (String warning : Flare.initialize()) {
++                MinecraftServer.LOGGER.log(Level.WARN, "Flare warning: " + warning);
++            }
++            supported = true;
++        } catch (InitializationException e) {
++            MinecraftServer.LOGGER.log(Level.WARN, "Failed to enable Flare:", e);
++        }
++    }
++
++    public static boolean isSupported() {
++        return supported;
++    }
++
++}
+diff --git a/src/main/java/gg/airplane/flare/PluginLookup.java b/src/main/java/gg/airplane/flare/PluginLookup.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..22368976212ac6638a31e81d22c322a53c94d276
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/PluginLookup.java
+@@ -0,0 +1,44 @@
++package gg.airplane.flare;
++
++import com.google.common.cache.Cache;
++import com.google.common.cache.CacheBuilder;
++import org.bukkit.Bukkit;
++import org.bukkit.plugin.Plugin;
++import org.bukkit.plugin.java.PluginClassLoader;
++
++import java.util.Optional;
++import java.util.concurrent.TimeUnit;
++
++public class PluginLookup {
++    private static final Cache<String, String> pluginNameCache = CacheBuilder.newBuilder()
++      .expireAfterAccess(1, TimeUnit.MINUTES)
++      .maximumSize(1024)
++      .build();
++
++    public static Optional<String> getPluginForClass(String name) {
++        if (name.startsWith("net.minecraft") || name.startsWith("java.") || name.startsWith("com.mojang") ||
++          name.startsWith("com.google") || name.startsWith("it.unimi") || name.startsWith("sun")) {
++            return Optional.empty();
++        }
++
++        String existing = pluginNameCache.getIfPresent(name);
++        if (existing != null) {
++            return Optional.ofNullable(existing.isEmpty() ? null : existing);
++        }
++
++        String newValue = "";
++
++        for (Plugin plugin : Bukkit.getPluginManager().getPlugins()) {
++            ClassLoader classLoader = plugin.getClass().getClassLoader();
++            if (classLoader instanceof PluginClassLoader) {
++                if (((PluginClassLoader) classLoader)._airplane_hasClass(name)) {
++                    newValue = plugin.getName();
++                    break;
++                }
++            }
++        }
++
++        pluginNameCache.put(name, newValue);
++        return Optional.ofNullable(newValue.isEmpty() ? null : newValue);
++    }
++}
+diff --git a/src/main/java/gg/airplane/flare/ProfilingManager.java b/src/main/java/gg/airplane/flare/ProfilingManager.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6d5e442824de2d71160be49e36f0605a216f247d
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/ProfilingManager.java
+@@ -0,0 +1,100 @@
++package gg.airplane.flare;
++
++import com.google.common.collect.ImmutableList;
++import com.google.common.collect.ImmutableMap;
++import com.google.common.collect.ImmutableSet;
++import gg.airplane.AirplaneConfig;
++import gg.airplane.AirplaneLogger;
++import gg.airplane.compat.ServerConfigurations;
++import gg.airplane.flare.collectors.TPSCollector;
++import gg.airplane.flare.collectors.WorldCountCollector;
++import gg.airplane.flare.exceptions.UserReportableException;
++import org.bukkit.Bukkit;
++import org.bukkit.craftbukkit.scheduler.MinecraftInternalPlugin;
++import org.bukkit.scheduler.BukkitTask;
++
++import java.io.IOException;
++import java.util.Objects;
++import java.util.logging.Level;
++
++public class ProfilingManager {
++
++    private static Flare currentFlare;
++    private static BukkitTask currentTask = null;
++
++    public static synchronized boolean isProfiling() {
++        return currentFlare != null;
++    }
++
++    public static synchronized String getProfilingUrl() {
++        return Objects.requireNonNull(currentFlare).getURL().orElse("Flare is not running");
++    }
++
++    public static synchronized boolean start(ProfilingSettings settings) throws UserReportableException {
++        if (currentFlare != null && currentFlare.isRan()) {
++            currentFlare = null; // errored out
++        }
++        if (isProfiling()) {
++            return false;
++        }
++        if (Bukkit.isPrimaryThread()) {
++            throw new UserReportableException("Profiles should be started off-thread");
++        }
++
++        try {
++            currentFlare = new Flare(
++              settings,
++              new ServerData(ServerConfigurations.getCleanCopies(), ImmutableMap.of(
++                "Primary Version", Bukkit.getVersion(),
++                "Bukkit Version", Bukkit.getBukkitVersion(),
++                "Minecraft Version", Bukkit.getMinecraftVersion()
++              )),
++              new FlareAuth(AirplaneConfig.accessToken, AirplaneConfig.profileWebUrl),
++              ImmutableList.of(new TPSCollector(), new WorldCountCollector()),
++              PluginLookup::getPluginForClass,
++              ImmutableSet.of(CustomCategories.MC_PERF, CustomCategories.ENTITIES_AND_CHUNKS)
++            );
++        } catch (IOException e) {
++            AirplaneLogger.LOGGER.log(Level.WARNING, "Failed to read configuration files:", e);
++            throw new UserReportableException("Failed to load configuration files, check logs for further details.");
++        }
++
++        try {
++            currentFlare.start();
++        } catch (IllegalStateException e) {
++            AirplaneLogger.LOGGER.log(Level.WARNING, "Error starting Flare:", e);
++            throw new UserReportableException("Failed to start Flare, check logs for further details.");
++        }
++
++        currentTask = Bukkit.getScheduler().runTaskLater(new MinecraftInternalPlugin(), ProfilingManager::stop, 20 * 60 * 15);
++        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been started: " + getProfilingUrl());
++        return true;
++    }
++
++    public static synchronized boolean stop() {
++        if (!isProfiling()) {
++            return false;
++        }
++        if (currentFlare.isRan()) {
++            currentFlare = null;
++            return true;
++        }
++        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been stopped: " + getProfilingUrl());
++        try {
++            currentFlare.stop();
++        } catch (IllegalStateException e) {
++            AirplaneLogger.LOGGER.log(Level.WARNING, "Error occurred stopping Flare", e);
++        }
++        currentFlare = null;
++
++        try {
++            currentTask.cancel();
++        } catch (Throwable t) {
++            AirplaneLogger.LOGGER.log(Level.WARNING, "Error occurred stopping Flare", t);
++        }
++
++        currentTask = null;
++        return true;
++    }
++
++}
+diff --git a/src/main/java/gg/airplane/flare/collectors/TPSCollector.java b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c60ce5a53c05e28afae5f9fadbab0a3612d97cc3
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
+@@ -0,0 +1,31 @@
++package gg.airplane.flare.collectors;
++
++import gg.airplane.flare.CustomCategories;
++import gg.airplane.flare.live.CollectorData;
++import gg.airplane.flare.live.LiveCollector;
++import gg.airplane.flare.live.formatter.SuffixFormatter;
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.Bukkit;
++
++import java.time.Duration;
++import java.util.Arrays;
++
++public class TPSCollector extends LiveCollector {
++    private static final CollectorData TPS = new CollectorData("airplane:tps", "TPS", "Ticks per second, or how fast the server updates. For a smooth server this should be a constant 20TPS.", SuffixFormatter.of("TPS"), CustomCategories.MC_PERF);
++    private static final CollectorData MSPT = new CollectorData("airplane:mspt", "MSPT", "Milliseconds per tick, which can show how well your server is performing. This value should always be under 50mspt.", SuffixFormatter.of("mspt"), CustomCategories.MC_PERF);
++
++    public TPSCollector() {
++        super(TPS, MSPT);
++
++        this.interval = Duration.ofSeconds(3);
++    }
++
++    @Override
++    public void run() {
++        long[] times = MinecraftServer.getServer().tickTimes5s.getTimes();
++        double mspt = ((double) Arrays.stream(times).sum() / (double) times.length) * 1.0E-6D;
++
++        this.report(TPS, Math.min(20D, Math.round(Bukkit.getServer().getTPS()[0] * 100d) / 100d));
++        this.report(MSPT, (double) Math.round(mspt * 100d) / 100d);
++    }
++}
+diff --git a/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java b/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..bbc7fc110570310e2b72eae1dcdadbc3dcbf7b04
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java
+@@ -0,0 +1,44 @@
++package gg.airplane.flare.collectors;
++
++import gg.airplane.flare.CustomCategories;
++import gg.airplane.flare.live.CollectorData;
++import gg.airplane.flare.live.LiveCollector;
++import gg.airplane.flare.live.formatter.SuffixFormatter;
++import org.bukkit.Bukkit;
++import org.bukkit.World;
++
++import java.time.Duration;
++
++public class WorldCountCollector extends LiveCollector {
++
++    private static final CollectorData PLAYER_COUNT = new CollectorData("airplane:world:playercount", "Player Count", "The number of players currently on the server.", new SuffixFormatter(" Player", " Players"), CustomCategories.ENTITIES_AND_CHUNKS);
++    private static final CollectorData ENTITY_COUNT = new CollectorData("airplane:world:entitycount", "Entity Count", "The number of entities in all worlds", new SuffixFormatter(" Entity", " Entities"), CustomCategories.ENTITIES_AND_CHUNKS);
++    private static final CollectorData CHUNK_COUNT = new CollectorData("airplane:world:chunkcount", "Chunk Count", "The number of chunks currently loaded.", new SuffixFormatter(" Chunk", " Chunks"), CustomCategories.ENTITIES_AND_CHUNKS);
++    private static final CollectorData TILE_ENTITY_COUNT = new CollectorData("airplane:world:blockentitycount", "Block Entity Count", "The number of block entities currently loaded.", new SuffixFormatter(" Block Entity", " Block Entities"), CustomCategories.ENTITIES_AND_CHUNKS);
++
++    public WorldCountCollector() {
++        super(PLAYER_COUNT, ENTITY_COUNT, CHUNK_COUNT, TILE_ENTITY_COUNT);
++
++        this.interval = Duration.ofSeconds(5);
++    }
++
++    @Override
++    public void run() {
++        int entities = 0;
++        int chunkCount = 0;
++        int tileEntityCount = 0;
++
++        if (!Bukkit.isStopping()) {
++            for (World world : Bukkit.getWorlds()) {
++                entities += world.getEntityCount();
++                chunkCount += world.getChunkCount();
++                tileEntityCount += world.getTileEntityCount();
++            }
++        }
++
++        this.report(PLAYER_COUNT, Bukkit.getOnlinePlayers().size());
++        this.report(ENTITY_COUNT, entities);
++        this.report(CHUNK_COUNT, chunkCount);
++        this.report(TILE_ENTITY_COUNT, tileEntityCount);
++    }
++}
+diff --git a/src/main/java/gg/airplane/structs/FluidDirectionCache.java b/src/main/java/gg/airplane/structs/FluidDirectionCache.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa8467b9dda1f7707e41f50ac7b3e9d7343723ec
+--- /dev/null
++++ b/src/main/java/gg/airplane/structs/FluidDirectionCache.java
+@@ -0,0 +1,136 @@
++package gg.airplane.structs;
++
++import it.unimi.dsi.fastutil.HashCommon;
++
++/**
++ * This is a replacement for the cache used in FluidTypeFlowing.
++ * The requirements for the previous cache were:
++ *  - Store 200 entries
++ *  - Look for the flag in the cache
++ *  - If it exists, move to front of cache
++ *  - If it doesn't exist, remove last entry in cache and insert in front
++ *
++ * This class accomplishes something similar, however has a few different
++ * requirements put into place to make this more optimize:
++ *
++ *  - maxDistance is the most amount of entries to be checked, instead
++ *    of having to check the entire list.
++ *  - In combination with that, entries are all tracked by age and how
++ *    frequently they're used. This enables us to remove old entries,
++ *    without constantly shifting any around.
++ *
++ * Usage of the previous map would have to reset the head every single usage,
++ * shifting the entire map. Here, nothing happens except an increment when
++ * the cache is hit, and when it needs to replace an old element only a single
++ * element is modified.
++ */
++public class FluidDirectionCache<T> {
++
++    private static class FluidDirectionEntry<T> {
++        private final T data;
++        private final boolean flag;
++        private int uses = 0;
++        private int age = 0;
++
++        private FluidDirectionEntry(T data, boolean flag) {
++            this.data = data;
++            this.flag = flag;
++        }
++
++        public int getValue() {
++            return this.uses - (this.age >> 1); // age isn't as important as uses
++        }
++
++        public void incrementUses() {
++            this.uses = this.uses + 1 & Integer.MAX_VALUE;
++        }
++
++        public void incrementAge() {
++            this.age = this.age + 1 & Integer.MAX_VALUE;
++        }
++    }
++
++    private final FluidDirectionEntry[] entries;
++    private final int mask;
++    private final int maxDistance; // the most amount of entries to check for a value
++
++    public FluidDirectionCache(int size) {
++        int arraySize = HashCommon.nextPowerOfTwo(size);
++        this.entries = new FluidDirectionEntry[arraySize];
++        this.mask = arraySize - 1;
++        this.maxDistance = Math.min(arraySize, 4);
++    }
++
++    public Boolean getValue(T data) {
++        FluidDirectionEntry curr;
++        int pos;
++
++        if ((curr = this.entries[pos = HashCommon.mix(data.hashCode()) & this.mask]) == null) {
++            return null;
++        } else if (data.equals(curr.data)) {
++            curr.incrementUses();
++            return curr.flag;
++        }
++
++        int checked = 1; // start at 1 because we already checked the first spot above
++
++        while ((curr = this.entries[pos = (pos + 1) & this.mask]) != null) {
++            if (data.equals(curr.data)) {
++                curr.incrementUses();
++                return curr.flag;
++            } else if (++checked >= this.maxDistance) {
++                break;
++            }
++        }
++
++        return null;
++    }
++
++    public void putValue(T data, boolean flag) {
++        FluidDirectionEntry<T> curr;
++        int pos;
++
++        if ((curr = this.entries[pos = HashCommon.mix(data.hashCode()) & this.mask]) == null) {
++            this.entries[pos] = new FluidDirectionEntry<>(data, flag); // add
++            return;
++        } else if (data.equals(curr.data)) {
++            curr.incrementUses();
++            return;
++        }
++
++        int checked = 1; // start at 1 because we already checked the first spot above
++
++        while ((curr = this.entries[pos = (pos + 1) & this.mask]) != null) {
++            if (data.equals(curr.data)) {
++                curr.incrementUses();
++                return;
++            } else if (++checked >= this.maxDistance) {
++                this.forceAdd(data, flag);
++                return;
++            }
++        }
++
++        this.entries[pos] = new FluidDirectionEntry<>(data, flag); // add
++    }
++
++    private void forceAdd(T data, boolean flag) {
++        int expectedPos = HashCommon.mix(data.hashCode()) & this.mask;
++
++        int toRemovePos = expectedPos;
++        FluidDirectionEntry entryToRemove = this.entries[toRemovePos];
++
++        for (int i = expectedPos + 1; i < expectedPos + this.maxDistance; i++) {
++            int pos = i & this.mask;
++            FluidDirectionEntry entry = this.entries[pos];
++            if (entry.getValue() < entryToRemove.getValue()) {
++                toRemovePos = pos;
++                entryToRemove = entry;
++            }
++
++            entry.incrementAge(); // use this as a mechanism to age the other entries
++        }
++
++        // remove the least used/oldest entry
++        this.entries[toRemovePos] = new FluidDirectionEntry(data, flag);
++    }
++}
+diff --git a/src/main/java/gg/airplane/structs/ItemListWithBitset.java b/src/main/java/gg/airplane/structs/ItemListWithBitset.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..04565b596f7579eb22263ef844513aeba3437eb3
+--- /dev/null
++++ b/src/main/java/gg/airplane/structs/ItemListWithBitset.java
+@@ -0,0 +1,105 @@
++package gg.airplane.structs;
++
++import net.minecraft.core.NonNullList;
++import net.minecraft.world.item.ItemStack;
++import org.apache.commons.lang.Validate;
++import org.jetbrains.annotations.NotNull;
++
++import java.util.Arrays;
++
++public class ItemListWithBitset extends NonNullList<ItemStack> {
++    public static ItemListWithBitset fromNonNullList(NonNullList<ItemStack> list) {
++        if (list instanceof ItemListWithBitset) {
++            return (ItemListWithBitset) list;
++        }
++        return new ItemListWithBitset(list);
++    }
++
++    private static ItemStack[] createArray(int size) {
++        ItemStack[] array = new ItemStack[size];
++        Arrays.fill(array, ItemStack.EMPTY);
++        return array;
++    }
++
++    private final ItemStack[] items;
++
++    private long bitSet = 0;
++    private final long allBits;
++
++    private ItemListWithBitset(NonNullList<ItemStack> list) {
++        this(list.size());
++
++        for (int i = 0; i < list.size(); i++) {
++            this.set(i, list.get(i));
++        }
++    }
++
++    public ItemListWithBitset(int size) {
++        super(null, ItemStack.EMPTY);
++
++        Validate.isTrue(size < Long.BYTES * 8, "size is too large");
++
++        this.items = createArray(size);
++        this.allBits = ((1L << size) - 1);
++    }
++
++    public boolean isCompletelyEmpty() {
++        return this.bitSet == 0;
++    }
++
++    public boolean hasFullStacks() {
++        return (this.bitSet & this.allBits) == allBits;
++    }
++
++    @Override
++    public ItemStack set(int index, @NotNull ItemStack itemStack) {
++        ItemStack existing = this.items[index];
++
++        this.items[index] = itemStack;
++
++        if (itemStack == ItemStack.EMPTY) {
++            this.bitSet &= ~(1L << index);
++        } else {
++            this.bitSet |= 1L << index;
++        }
++
++        return existing;
++    }
++
++    @NotNull
++    @Override
++    public ItemStack get(int var0) {
++        return this.items[var0];
++    }
++
++    @Override
++    public int size() {
++        return this.items.length;
++    }
++
++    @Override
++    public void clear() {
++        Arrays.fill(this.items, ItemStack.EMPTY);
++    }
++
++    // these are unsupported for block inventories which have a static size
++    @Override
++    public void add(int var0, ItemStack var1) {
++        throw new UnsupportedOperationException();
++    }
++
++    @Override
++    public ItemStack remove(int var0) {
++        throw new UnsupportedOperationException();
++    }
++
++    @Override
++    public String toString() {
++        return "ItemListWithBitset{" +
++          "items=" + Arrays.toString(items) +
++          ", bitSet=" + Long.toString(bitSet, 2) +
++          ", allBits=" + Long.toString(allBits, 2) +
++          ", size=" + this.items.length +
++          '}';
++    }
++}
+diff --git a/src/main/java/gg/airplane/structs/Long2FloatAgingCache.java b/src/main/java/gg/airplane/structs/Long2FloatAgingCache.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be70013a714
+--- /dev/null
++++ b/src/main/java/gg/airplane/structs/Long2FloatAgingCache.java
+@@ -0,0 +1,119 @@
++package gg.airplane.structs;
++
++import it.unimi.dsi.fastutil.HashCommon;
++
++/**
++ * A replacement for the cache used in Biome.
++ */
++public class Long2FloatAgingCache {
++
++    private static class AgingEntry {
++        private long data;
++        private float value;
++        private int uses = 0;
++        private int age = 0;
++
++        private AgingEntry(long data, float value) {
++            this.data = data;
++            this.value = value;
++        }
++
++        public void replace(long data, float flag) {
++            this.data = data;
++            this.value = flag;
++        }
++
++        public int getValue() {
++            return this.uses - (this.age >> 1); // age isn't as important as uses
++        }
++
++        public void incrementUses() {
++            this.uses = this.uses + 1 & Integer.MAX_VALUE;
++        }
++
++        public void incrementAge() {
++            this.age = this.age + 1 & Integer.MAX_VALUE;
++        }
++    }
++
++    private final AgingEntry[] entries;
++    private final int mask;
++    private final int maxDistance; // the most amount of entries to check for a value
++
++    public Long2FloatAgingCache(int size) {
++        int arraySize = HashCommon.nextPowerOfTwo(size);
++        this.entries = new AgingEntry[arraySize];
++        this.mask = arraySize - 1;
++        this.maxDistance = Math.min(arraySize, 4);
++    }
++
++    public float getValue(long data) {
++        AgingEntry curr;
++        int pos;
++
++        if ((curr = this.entries[pos = HashCommon.mix(HashCommon.long2int(data)) & this.mask]) == null) {
++            return Float.NaN;
++        } else if (data == curr.data) {
++            curr.incrementUses();
++            return curr.value;
++        }
++
++        int checked = 1; // start at 1 because we already checked the first spot above
++
++        while ((curr = this.entries[pos = (pos + 1) & this.mask]) != null) {
++            if (data == curr.data) {
++                curr.incrementUses();
++                return curr.value;
++            } else if (++checked >= this.maxDistance) {
++                break;
++            }
++        }
++
++        return Float.NaN;
++    }
++
++    public void putValue(long data, float value) {
++        AgingEntry curr;
++        int pos;
++
++        if ((curr = this.entries[pos = HashCommon.mix(HashCommon.long2int(data)) & this.mask]) == null) {
++            this.entries[pos] = new AgingEntry(data, value); // add
++            return;
++        } else if (data == curr.data) {
++            curr.incrementUses();
++            return;
++        }
++
++        int checked = 1; // start at 1 because we already checked the first spot above
++
++        while ((curr = this.entries[pos = (pos + 1) & this.mask]) != null) {
++            if (data == curr.data) {
++                curr.incrementUses();
++                return;
++            } else if (++checked >= this.maxDistance) {
++                this.forceAdd(data, value);
++                return;
++            }
++        }
++
++        this.entries[pos] = new AgingEntry(data, value); // add
++    }
++
++    private void forceAdd(long data, float value) {
++        int expectedPos = HashCommon.mix(HashCommon.long2int(data)) & this.mask;
++        AgingEntry entryToRemove = this.entries[expectedPos];
++
++        for (int i = expectedPos + 1; i < expectedPos + this.maxDistance; i++) {
++            int pos = i & this.mask;
++            AgingEntry entry = this.entries[pos];
++            if (entry.getValue() < entryToRemove.getValue()) {
++                entryToRemove = entry;
++            }
++
++            entry.incrementAge(); // use this as a mechanism to age the other entries
++        }
++
++        // remove the least used/oldest entry
++        entryToRemove.replace(data, value);
++    }
++}
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 58bb821decd5305b6d68b12bb8eb28dfada7e113..721711aba2a57754b75a3430b6a91d2d4be806dd 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -2290,6 +2290,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     }
+ 
+     public ProfilerFiller getProfiler() {
++        if (gg.airplane.AirplaneConfig.disableMethodProfiler) return net.minecraft.util.profiling.InactiveProfiler.INSTANCE;
+         return this.profiler;
+     }
+ 
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 8202e161149132530597a8222bf035f53814ffcf..1ba335f85e918f22a8e594b5a59406655069e50f 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -222,6 +222,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
+         // Paper end
+         com.tuinity.tuinity.config.TuinityConfig.init((java.io.File) options.valueOf("tuinity-settings")); // Tuinity - Server Config
++        gg.airplane.AirplaneConfig.load(); // Airplane - config
++        gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
+ 
+         this.setPvpAllowed(dedicatedserverproperties.pvp);
+         this.setFlightAllowed(dedicatedserverproperties.allowFlight);
+diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
+index 1430411a6f7ef3730d87c022774d7d623f2f415f..83f0e51554c122dab125f19356712498ea7a790c 100644
+--- a/src/main/java/net/minecraft/server/level/ChunkMap.java
++++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
+@@ -2363,8 +2363,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+             return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
+         }
+ 
++        private static int getHighestRange(Entity parent, int highest) {
++            List<Entity> passengers = parent.getPassengers();
++
++            for (int i = 0, size = passengers.size(); i < size; i++) {
++                Entity entity = passengers.get(i);
++                int range = entity.getType().clientTrackingRange() * 16;
++                range = org.spigotmc.TrackingRange.getEntityTrackingRange(entity, range); // Paper
++
++                if (range > highest) { // Paper - we need the lowest range thanks to the fact that our tracker doesn't account for passenger logic // Tuinity - not anymore!
++                    highest = range;
++                }
++
++                highest = getHighestRange(entity, highest);
++            }
++
++            return highest;
++        }
++
+         private int getEffectiveRange() {
+             int i = this.range;
++            // Airplane start - remove iterators and streams
++            /*
+             Iterator iterator = this.entity.getIndirectPassengers().iterator();
+ 
+             while (iterator.hasNext()) {
+@@ -2376,6 +2396,9 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+                     i = j;
+                 }
+             }
++             */
++            i = getHighestRange(this.entity, i);
++            // Airplane end
+ 
+             return this.scaledRange(i);
+         }
+diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+index 958b7044c196ebd66f60391c33c64ad2ff82d4e8..5b8f23b7739580b8a08de0ed43c0fc01ab245e30 100644
+--- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
++++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
+@@ -982,6 +982,7 @@ public class ServerChunkCache extends ChunkSource {
+             }
+             // Paper end - optimize isOutisdeRange
+             this.level.getProfiler().push("pollingChunks");
++            this.level.resetIceAndSnowTick(); // Airplane - reset ice & snow tick random
+             int k = this.level.getGameRules().getInt(GameRules.RULE_RANDOMTICKING);
+             boolean flag2 = level.ticksPerAnimalSpawns != 0L && worlddata.getGameTime() % level.ticksPerAnimalSpawns == 0L; // CraftBukkit
+ 
+diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
+index a00627e0fa38632449042f59c053b4dac13e58bf..d77a10c6ae7e1515085ff7a18db9e3e14ebb8012 100644
+--- a/src/main/java/net/minecraft/server/level/ServerEntity.java
++++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
+@@ -174,6 +174,7 @@ public class ServerEntity {
+                     boolean flag4 = k < -32768L || k > 32767L || l < -32768L || l > 32767L || i1 < -32768L || i1 > 32767L;
+ 
+                     if (!flag4 && this.teleportDelay <= 400 && !this.wasRiding && this.wasOnGround == this.entity.isOnGround() && !(com.tuinity.tuinity.config.TuinityConfig.sendFullPosForHardCollidingEntities && this.entity.hardCollides())) { // Tuinity - send full pos for hard colliding entities to prevent collision problems due to desync
++                        if (flag2 || flag3 || this.entity instanceof AbstractArrow) { // Airplane
+                         if ((!flag2 || !flag3) && !(this.entity instanceof AbstractArrow)) {
+                             if (flag2) {
+                                 packet1 = new ClientboundMoveEntityPacket.Pos(this.entity.getId(), (short) ((int) k), (short) ((int) l), (short) ((int) i1), this.entity.isOnGround());
+@@ -183,6 +184,7 @@ public class ServerEntity {
+                         } else {
+                             packet1 = new ClientboundMoveEntityPacket.PosRot(this.entity.getId(), (short) ((int) k), (short) ((int) l), (short) ((int) i1), (byte) i, (byte) j, this.entity.isOnGround());
+                         }
++                        } // Airplane
+                     } else {
+                         this.wasOnGround = this.entity.isOnGround();
+                         this.teleportDelay = 0;
+diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
+index 8d6124710a6feb6c2fbfa0b5a291417870a6e24a..c388be088409a32bdaa37680c1fb2b911e91feae 100644
+--- a/src/main/java/net/minecraft/server/level/ServerLevel.java
++++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -579,6 +579,21 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+         return result;
+     }
+ 
++    // Airplane start - skip type lookup if already completed, but still run check
++    public BlockEntity getAndCheckTileEntity(BlockState data, BlockPos pos) {
++        BlockEntity result = super.getTileEntity(pos, false);
++
++        // copied from above
++        if (result != null && !data.isAir()) {
++            if (!result.getType().isValid(data)) {
++                result = fixTileEntity(pos, data, result);
++            }
++        }
++
++        return result;
++    }
++    // Airplane end
++
+     private BlockEntity fixTileEntity(BlockPos pos, BlockState type, BlockEntity found) {
+         this.getCraftServer().getLogger().log(Level.SEVERE, "Block at {0}, {1}, {2} is {3} but has {4}" + ". "
+                 + "Bukkit will attempt to fix this, but there may be additional damage that we cannot recover.", new Object[]{pos.getX(), pos.getY(), pos.getZ(), type, found});
+@@ -878,9 +893,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+     }
+     // Paper start - optimise random block ticking
+     private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
+-    private final com.tuinity.tuinity.util.math.ThreadUnsafeRandom randomTickRandom = new com.tuinity.tuinity.util.math.ThreadUnsafeRandom();
++    private final com.tuinity.tuinity.util.math.ThreadUnsafeRandom randomTickRandom = new com.tuinity.tuinity.util.math.ThreadUnsafeRandom(); public java.util.Random getThreadUnsafeRandom() { return this.randomTickRandom; } // Airplane - getter
+     // Paper end
+ 
++    private int currentIceAndSnowTick = 0; protected void resetIceAndSnowTick() { this.currentIceAndSnowTick = this.randomTickRandom.nextInt(16); } // Airplane
++
+     public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
+         ChunkPos chunkcoordintpair = chunk.getPos();
+         boolean flag = this.isRaining();
+@@ -891,7 +908,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+         gameprofilerfiller.push("thunder");
+         final BlockPos.MutableBlockPos blockposition = this.chunkTickMutablePosition; // Paper - use mutable to reduce allocation rate, final to force compile fail on change
+ 
+-        if (!this.paperConfig.disableThunder && flag && this.isThundering() && this.random.nextInt(100000) == 0) { // Paper - Disable thunder
++        if (!this.paperConfig.disableThunder && flag && this.isThundering() && chunk.shouldDoLightning(this.random)) { // Paper - Disable thunder // Airplane - replace random with shouldDoLightning
+             blockposition.set(this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15))); // Paper
+             if (this.isRainingAt(blockposition)) {
+                 DifficultyInstance difficultydamagescaler = this.getCurrentDifficultyAt(blockposition);
+@@ -915,7 +932,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+         }
+ 
+         gameprofilerfiller.popPush("iceandsnow");
+-         if (!this.paperConfig.disableIceAndSnow && this.randomTickRandom.nextInt(16) == 0) { // Paper - Disable ice and snow // Paper - optimise random ticking
++         if (!this.paperConfig.disableIceAndSnow && (this.currentIceAndSnowTick++ & 15) == 0) { // Paper - Disable ice and snow // Paper - optimise random ticking  // Airplane - optimize further random ticking
+             // Paper start - optimise chunk ticking
+             this.getRandomBlockPosition(j, 0, k, 15, blockposition);
+             int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15);
+diff --git a/src/main/java/net/minecraft/world/CompoundContainer.java b/src/main/java/net/minecraft/world/CompoundContainer.java
+index 087ae3a6b49872a3580eb1a572bdbc493711a77a..60cdeb82df78e6b0d743b6168058e9d632ba692c 100644
+--- a/src/main/java/net/minecraft/world/CompoundContainer.java
++++ b/src/main/java/net/minecraft/world/CompoundContainer.java
+@@ -1,5 +1,6 @@
+ package net.minecraft.world;
+ 
++import net.minecraft.core.Direction; // Airplane
+ import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.item.ItemStack;
+ 
+@@ -72,6 +73,30 @@ public class CompoundContainer implements Container {
+         this.container2 = second;
+     }
+ 
++    // Airplane start
++    @Override
++   public boolean hasEmptySlot(Direction enumdirection) {
++        return this.container1.hasEmptySlot(null) || this.container2.hasEmptySlot(null);
++    }
++
++    @Override
++   public boolean isCompletelyFull(Direction enumdirection) {
++        return this.container1.isCompletelyFull(null) && this.container2.isCompletelyFull(null);
++    }
++
++    @Override
++    public boolean isCompletelyEmpty(Direction enumdirection) {
++        return this.container1.isCompletelyEmpty(null) && this.container2.isCompletelyEmpty(null);
++    }
++    // Airplane end
++
++    // Airplane start
++    @Override
++    public ItemStack getHopperItem(int i) {
++        return i >= this.container1.getContainerSize() ? this.container2.getHopperItem(i - this.container1.getContainerSize()) : this.container1.getHopperItem(i);
++    }
++    // Airplane end
++
+     @Override
+     public int getContainerSize() {
+         return this.container1.getContainerSize() + this.container2.getContainerSize();
+diff --git a/src/main/java/net/minecraft/world/Container.java b/src/main/java/net/minecraft/world/Container.java
+index 7437f01ca8f416e2c9150250e324af4725a4efb6..c24df23d7696a26e625859c4d1718ba8971bebef 100644
+--- a/src/main/java/net/minecraft/world/Container.java
++++ b/src/main/java/net/minecraft/world/Container.java
+@@ -1,6 +1,8 @@
+ package net.minecraft.world;
+ 
+ import java.util.Set;
++
++import net.minecraft.core.Direction;
+ import net.minecraft.world.entity.player.Player;
+ import net.minecraft.world.item.Item;
+ import net.minecraft.world.item.ItemStack;
+@@ -9,6 +11,69 @@ import org.bukkit.craftbukkit.entity.CraftHumanEntity;
+ // CraftBukkit end
+ 
+ public interface Container extends Clearable {
++    // Airplane start - allow the inventory to override and optimize these frequent calls
++    default boolean hasEmptySlot(@org.jetbrains.annotations.Nullable Direction enumdirection) { // there is a slot with 0 items in it
++        if (this instanceof WorldlyContainer worldlyContainer) {
++            for (int i : worldlyContainer.getSlotsForFace(enumdirection)) {
++                if (this.getHopperItem(i).isEmpty()) {
++                    return true;
++                }
++            }
++        } else {
++            int size = this.getContainerSize();
++            for (int i = 0; i < size; i++) {
++                if (this.getHopperItem(i).isEmpty()) {
++                    return true;
++                }
++            }
++        }
++        return false;
++    }
++
++    default boolean isCompletelyFull(@org.jetbrains.annotations.Nullable Direction enumdirection) { // every stack is maxed
++        if (this instanceof WorldlyContainer worldlyContainer) {
++            for (int i : worldlyContainer.getSlotsForFace(enumdirection)) {
++                ItemStack itemStack = this.getHopperItem(i);
++                if (itemStack.getCount() < itemStack.getMaxStackSize()) {
++                    return false;
++                }
++            }
++        } else {
++            int size = this.getContainerSize();
++            for (int i = 0; i < size; i++) {
++                ItemStack itemStack = this.getHopperItem(i);
++                if (itemStack.getCount() < itemStack.getMaxStackSize()) {
++                    return false;
++                }
++            }
++        }
++        return true;
++    }
++
++    default boolean isCompletelyEmpty(@org.jetbrains.annotations.Nullable Direction enumdirection) {
++        if (this instanceof WorldlyContainer worldlyContainer) {
++            for (int i : worldlyContainer.getSlotsForFace(enumdirection)) {
++                if (!this.getHopperItem(i).isEmpty()) {
++                    return false;
++                }
++            }
++        } else {
++            int size = this.getContainerSize();
++            for (int i = 0; i < size; i++) {
++                if (!this.getHopperItem(i).isEmpty()) {
++                    return false;
++                }
++            }
++        }
++        return true;
++    }
++    // Airplane end
++
++    // Airplane start - way for inventories to know it's a hopper, skipping certain steps
++    default ItemStack getHopperItem(int index) {
++        return this.getItem(index);
++    }
++    // Airplane end
+ 
+     int LARGE_MAX_STACK_SIZE = 64;
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index b4ae6f1d0b89eb609fa26b850dd06fccaf2e4d90..f0cbca376e9893e71cd72034b031a01c74ebc11d 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -336,6 +336,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     protected int numCollisions = 0; // Paper
+     public void inactiveTick() { }
+     // Spigot end
++    // Airplane start
++    public int activatedPriority = gg.airplane.AirplaneConfig.maximumActivationPrio; // golf score
++    // Airplane end
+ 
+     public float getBukkitYaw() {
+         return this.yRot;
+diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+index 57c448ee93df76fc2a17c75fafc78408d720ced3..f59aabf306c3ffed4a5f34dcb434750abe7b461a 100644
+--- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
++++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
+@@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
+ import org.bukkit.event.player.PlayerItemConsumeEvent;
+ // CraftBukkit end
+ 
+-import co.aikar.timings.MinecraftTimings; // Paper
+ 
+ public abstract class LivingEntity extends Entity {
+ 
+@@ -1820,6 +1819,20 @@ public abstract class LivingEntity extends Entity {
+         return this.lastClimbablePos;
+     }
+ 
++
++    // Airplane start
++    private boolean cachedOnClimable = false;
++    private BlockPos lastClimbingPosition = null;
++
++    public boolean onClimableCached() {
++        if (!this.blockPosition().equals(this.lastClimbingPosition)) {
++            this.cachedOnClimable = this.onClimbable();
++            this.lastClimbingPosition = this.blockPosition();
++        }
++        return this.cachedOnClimable;
++    }
++    // Airplane end
++
+     public boolean onClimbable() {
+         if (this.isSpectator()) {
+             return false;
+@@ -3425,7 +3438,10 @@ public abstract class LivingEntity extends Entity {
+             Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
+ 
+             // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
+-            return vec3d1.distanceTo(vec3d) > 128.0D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
++            // Airplane start
++            //return vec3d1.distanceTo(vec3d) > 128.0D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
++            return this.level.rayTraceDirect(vec3d, vec3d1, net.minecraft.world.phys.shapes.CollisionContext.of(this)) == net.minecraft.world.phys.BlockHitResult.Type.MISS;
++            // Airplane end
+         }
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index 154b3c767d079f72643c826b962892c1029b0a1b..c4d1e8d1319b20abbaff1d0ddce5207dc654ad9f 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -202,10 +202,10 @@ public abstract class Mob extends LivingEntity {
+     @Override
+     public void inactiveTick() {
+         super.inactiveTick();
+-        if (this.goalSelector.inactiveTick()) {
++        if (this.goalSelector.inactiveTick(this.activatedPriority, true)) { // Airplane - pass activated priroity
+             this.goalSelector.tick();
+         }
+-        if (this.targetSelector.inactiveTick()) {
++        if (this.targetSelector.inactiveTick(this.activatedPriority, true)) { // Airplane - pass activated priority
+             this.targetSelector.tick();
+         }
+     }
+@@ -779,8 +779,15 @@ public abstract class Mob extends LivingEntity {
+         return false;
+     }
+ 
++    // Airplane start - just reduce frequency of checking for despawn
++    private byte despawnCheck = 0;
+     @Override
+     public void checkDespawn() {
++        if (++despawnCheck < gg.airplane.AirplaneConfig.entityDespawnCheckFrequency) {
++            return;
++        }
++        this.despawnCheck = 0;
++        // Airplane end
+         if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
+             this.discard();
+         } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
+@@ -833,9 +840,11 @@ public abstract class Mob extends LivingEntity {
+         this.sensing.tick();
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("targetSelector");
++        if (this.targetSelector.inactiveTick(this.activatedPriority, false)) // Airplane - use this to alternate ticking
+         this.targetSelector.tick();
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("goalSelector");
++        if (this.goalSelector.inactiveTick(this.activatedPriority, false)) // Airplane - use this to alternate ticking
+         this.goalSelector.tick();
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("navigation");
+diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+index 84a0ee595bebcc1947c602c4c06e7437706ce37c..e7c3673bf3b573f17fbf3b75b364eafa743254e0 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
++++ b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
+@@ -68,6 +68,7 @@ public class AcquirePoi extends Behavior<PathfinderMob> {
+     @Override
+     protected void start(ServerLevel world, PathfinderMob entity, long time) {
+         this.nextScheduledStart = time + 20L + (long)world.getRandom().nextInt(20);
++        if (entity.getNavigation().isStuck()) this.nextScheduledStart += 200L; // Airplane - wait an additional 10s to check again if they're stuck
+         PoiManager poiManager = world.getPoiManager();
+         this.batchCache.long2ObjectEntrySet().removeIf((entry) -> {
+             return !entry.getValue().isStillValid(time);
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
+index faa53d08a12cc7441c670cae6d301de3f498ffe7..b17f401d723b1466a3b7e05da3dfeebd5cf763c7 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
+@@ -49,9 +49,12 @@ public class GoalSelector {
+     }
+ 
+     // Paper start
+-    public boolean inactiveTick() {
++    public boolean inactiveTick(int tickRate, boolean inactive) { // Airplane start
++        if (inactive && !gg.airplane.AirplaneConfig.dearEnabled) tickRate = 4; // reset to Paper's
++        tickRate = Math.min(tickRate, this.newGoalRate);
+         this.curRate++;
+-        return this.curRate % this.newGoalRate == 0;
++        return this.curRate % tickRate == 0;
++        // Airplane end
+     }
+     public boolean hasTasks() {
+         for (WrappedGoal task : this.availableGoals) {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
+index 3ee691d4caccbc1b3e0f52decb41d436ac0d08ec..8a0aea6b28295e03aaac1768336b1bc36d9ad9e9 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
++++ b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
+@@ -74,9 +74,18 @@ public class TargetingConditions {
+                 }
+ 
+                 if (this.range > 0.0D) {
+-                    double d = this.testInvisible ? targetEntity.getVisibilityPercent(baseEntity) : 1.0D;
+-                    double e = Math.max((this.useFollowRange ? this.getFollowRange(baseEntity) : this.range) * d, 2.0D); // Paper
++                    // Airplane start - check range before getting visibility
++                    // d = invisibility percent, e = follow range adjusted for invisibility, f = distance
+                     double f = baseEntity.distanceToSqr(targetEntity.getX(), targetEntity.getY(), targetEntity.getZ());
++                    double followRangeRaw = this.useFollowRange ? this.getFollowRange(baseEntity) : this.range;
++
++                    if (f > followRangeRaw * followRangeRaw) { // the actual follow range will always be this value or smaller, so if the distance is larger then it never will return true after getting invis
++                        return false;
++                    }
++
++                    double d = this.testInvisible ? targetEntity.getVisibilityPercent(baseEntity) : 1.0D;
++                    double e = Math.max((followRangeRaw) * d, 2.0D); // Paper
++                    // Airplane end
+                     if (f > e * e) {
+                         return false;
+                     }
+diff --git a/src/main/java/net/minecraft/world/entity/ambient/Bat.java b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
+index 153194d937d210e2e4fd8864e4a3c000f85d7e2e..1d415a91b9c90603e8f738dbafe7a5ea57ef14cc 100644
+--- a/src/main/java/net/minecraft/world/entity/ambient/Bat.java
++++ b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
+@@ -254,13 +254,22 @@ public class Bat extends AmbientCreature {
+         }
+     }
+ 
++    // Airplane start - only check for spooky season once an hour
++    private static boolean isSpookySeason = false;
++    private static final int ONE_HOUR = 20 * 60 * 60;
++    private static int lastSpookyCheck = -ONE_HOUR;
+     private static boolean isHalloween() {
++        if (net.minecraft.server.MinecraftServer.currentTick - lastSpookyCheck > ONE_HOUR) {
+         LocalDate localdate = LocalDate.now();
+         int i = localdate.get(ChronoField.DAY_OF_MONTH);
+         int j = localdate.get(ChronoField.MONTH_OF_YEAR);
+ 
+-        return j == 10 && i >= 20 || j == 11 && i <= 3;
++        isSpookySeason = j == 10 && i >= 20 || j == 11 && i <= 3;
++        lastSpookyCheck = net.minecraft.server.MinecraftServer.currentTick;
++        }
++        return isSpookySeason;
+     }
++    // Airplane end
+ 
+     @Override
+     protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+index 158719d46c96bb733a00e08c8285f41a48406abf..2dac4bc346eb1dde1f8d92c3e5b9648b2c433617 100644
+--- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
++++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
+@@ -243,10 +243,16 @@ public class ItemEntity extends Entity {
+                 if (entityitem.isMergable()) {
+                     // Paper Start - Fix items merging through walls
+                         if (this.level.paperConfig.fixItemsMergingThroughWalls) {
++                            // Airplane start - skip the allocations
++                            /*
+                             net.minecraft.world.level.ClipContext rayTrace = new net.minecraft.world.level.ClipContext(this.position(), entityitem.position(),
+                                 net.minecraft.world.level.ClipContext.Block.COLLIDER, net.minecraft.world.level.ClipContext.Fluid.NONE, this);
+                             net.minecraft.world.phys.BlockHitResult rayTraceResult = level.clip(rayTrace);
+                             if (rayTraceResult.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) continue;
++                             */
++                            if (level.rayTraceDirect(this.position(), entityitem.position(), net.minecraft.world.phys.shapes.CollisionContext.of(this)) ==
++                                net.minecraft.world.phys.HitResult.Type.BLOCK) continue;
++                            // Airplane end
+                         }
+                     // Paper End
+                     this.tryToMerge(entityitem);
+diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+index e1e220b3e4967590a2a77370e2a6ab919ad50eaa..5d371a3e94720e24058d007474355af6aeb7cbdd 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
++++ b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
+@@ -312,11 +312,17 @@ public class EnderMan extends Monster implements NeutralMob {
+     private boolean teleport(double x, double y, double z) {
+         BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos(x, y, z);
+ 
+-        while (blockposition_mutableblockposition.getY() > this.level.getMinBuildHeight() && !this.level.getBlockState(blockposition_mutableblockposition).getMaterial().blocksMotion()) {
++        // Airplane start - single chunk lookup
++        net.minecraft.world.level.chunk.LevelChunk chunk = this.level.getChunkIfLoaded(blockposition_mutableblockposition);
++        if (chunk == null) {
++            return false;
++        }
++        // Airplane end
++        while (blockposition_mutableblockposition.getY() > this.level.getMinBuildHeight() && !chunk.getBlockState(blockposition_mutableblockposition).getMaterial().blocksMotion()) { // Airplane
+             blockposition_mutableblockposition.move(Direction.DOWN);
+         }
+ 
+-        BlockState iblockdata = this.level.getBlockState(blockposition_mutableblockposition);
++        BlockState iblockdata = chunk.getBlockState(blockposition_mutableblockposition); // Airplane
+         boolean flag = iblockdata.getMaterial().blocksMotion();
+         boolean flag1 = iblockdata.getFluidState().is((Tag) FluidTags.WATER);
+ 
+diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
+index c510da19883d1aa79b2fc25e2d9c8f5cd8dd7bfa..8e676f0c06dda35e4fdef55416019b3b5edbbf3a 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
++++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
+@@ -123,12 +123,14 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
+ 
+     @Override
+     public Brain<Hoglin> getBrain() {
+-        return super.getBrain();
++        return (Brain<Hoglin>) super.getBrain(); // Airplane - decompile fix
+     }
+ 
++    private int behaviorTick; // Airplane
+     @Override
+     protected void customServerAiStep() {
+         this.level.getProfiler().push("hoglinBrain");
++        if (!gg.airplane.AirplaneConfig.dynamicHoglinBehavior || this.behaviorTick++ % this.activatedPriority == 0) // Airplane
+         this.getBrain().tick((ServerLevel)this.level, this);
+         this.level.getProfiler().pop();
+         HoglinAi.updateActivity(this);
+diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
+index adc2feafd0c1a38d1b6b65b8aee59d21725b84fe..94f5c84b16865c5a8d77111274b1c3652a3d3b42 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
++++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
+@@ -289,10 +289,13 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
+         return !this.cannotHunt;
+     }
+ 
++    private int behaviorTick; // Airplane
+     @Override
+     protected void customServerAiStep() {
+         this.level.getProfiler().push("piglinBrain");
++        if (!gg.airplane.AirplaneConfig.dynamicPiglinBehavior || this.behaviorTick++ % this.activatedPriority == 0) { // Airplane
+         this.getBrain().tick((ServerLevel) this.level, (Piglin) this); // CraftBukkit - decompile error
++        } // Airplane
+         this.level.getProfiler().pop();
+         PiglinAi.updateActivity(this);
+         super.customServerAiStep();
+diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+index 43bb055f0f9ecb82c25e0f47258f45ce4182a75d..4a54e8026561a542eff810a731d66e0fcd35e84c 100644
+--- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
++++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
+@@ -245,11 +245,18 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     }
+     // Spigot End
+ 
++    private int behaviorTick = 0; // Airplane
+     @Override
+     protected void customServerAiStep() { mobTick(false); }
+     protected void mobTick(boolean inactive) {
+         this.level.getProfiler().push("villagerBrain");
+-        if (!inactive) this.getBrain().tick((ServerLevel) this.level, this); // CraftBukkit - decompile error // Paper
++        // Airplane start
++        if (!inactive) {
++            if (!gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0) {
++                this.getBrain().tick((ServerLevel) this.level, this);
++             }
++         }
++        // Airplane end
+         this.level.getProfiler().pop();
+         if (this.assignProfessionWhenSpawned) {
+             this.assignProfessionWhenSpawned = false;
+diff --git a/src/main/java/net/minecraft/world/entity/player/Inventory.java b/src/main/java/net/minecraft/world/entity/player/Inventory.java
+index dace7d13787f6fb44af90792599fa16caad68052..8d414822894fc41460bb9ccc53d7b0dfd1204115 100644
+--- a/src/main/java/net/minecraft/world/entity/player/Inventory.java
++++ b/src/main/java/net/minecraft/world/entity/player/Inventory.java
+@@ -688,6 +688,8 @@ public class Inventory implements Container, Nameable {
+     }
+ 
+     public boolean contains(ItemStack stack) {
++        // Airplane start - don't allocate iterators
++        /*
+         Iterator iterator = this.compartments.iterator();
+ 
+         while (iterator.hasNext()) {
+@@ -702,6 +704,18 @@ public class Inventory implements Container, Nameable {
+                 }
+             }
+         }
++         */
++        for (int i = 0; i < this.compartments.size(); i++) {
++            List<ItemStack> list = this.compartments.get(i);
++            for (int j = 0; j < list.size(); j++) {
++                ItemStack itemstack1 = list.get(j);
++
++                if (!itemstack1.isEmpty() && itemstack1.sameItem(stack)) {
++                    return true;
++                }
++            }
++        }
++        // Airplane end
+ 
+         return false;
+     }
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+index 69f439851fe1ff07d827eaed274940a5783d5f6c..3edd5ff6d854dd4fde0f509d91a9e020589edcda 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
+@@ -42,6 +42,37 @@ public abstract class Projectile extends Entity {
+         super(type, world);
+     }
+ 
++    // Airplane start
++    private static int loadedThisTick = 0;
++    private static int loadedTick;
++
++    private int buffered = 0;
++    @Override
++    public void setPos(double x, double y, double z) {
++        int currentTick = net.minecraft.server.MinecraftServer.currentTick;
++        if (loadedTick != currentTick) {
++            loadedTick = currentTick;
++            loadedThisTick = 0;
++        }
++        int previousX = Mth.floor(this.getX()) >> 4, previousZ = Mth.floor(this.getX()) >> 4;
++        int newX = Mth.floor(z) >> 4, newZ = Mth.floor(z) >> 4;
++        if (previousX != newX || previousZ != newZ) {
++            boolean isLoaded = this.level.getChunkIfLoaded(newX, newZ) != null;
++            if (!isLoaded) {
++                if (loadedThisTick > 10) { // Airplane 10 = max chunks to load from projectiles in a tick todo config
++                    if (++buffered > 20) { // Airplane 20 = max chunks  a single projectile loads overall todo config
++                        this.discard();
++                    }
++                    return;
++                }
++                loadedThisTick++;
++            }
++            buffered = 0;
++        }
++        super.setPos(x, y, z);
++    }
++    // Airplane start
++
+     public void setOwner(@Nullable Entity entity) {
+         if (entity != null) {
+             this.ownerUUID = entity.getUUID();
+diff --git a/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java b/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
+index 6b960f0a31175bcfd8d477ee5b3c4d783303cdd5..3a81d3a58b937c9800cd0be738439cff0ba28ce9 100644
+--- a/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
++++ b/src/main/java/net/minecraft/world/item/crafting/ShapelessRecipe.java
+@@ -25,8 +25,13 @@ public class ShapelessRecipe implements CraftingRecipe {
+     final String group;
+     final ItemStack result;
+     final NonNullList<Ingredient> ingredients;
++    private final boolean isBukkit; // Airplane
+ 
++    // Airplane start
+     public ShapelessRecipe(ResourceLocation id, String group, ItemStack output, NonNullList<Ingredient> input) {
++        this(id, group, output, input, false);
++    }
++    public ShapelessRecipe(ResourceLocation id, String group, ItemStack output, NonNullList<Ingredient> input, boolean isBukkit) { this.isBukkit = isBukkit; // Airplane end
+         this.id = id;
+         this.group = group;
+         this.result = output;
+@@ -73,6 +78,28 @@ public class ShapelessRecipe implements CraftingRecipe {
+     }
+ 
+     public boolean matches(CraftingContainer inventory, Level world) {
++        // Airplane start
++        if (!this.isBukkit) {
++            java.util.List<Ingredient> ingredients = com.google.common.collect.Lists.newArrayList(this.ingredients.toArray(new Ingredient[0]));
++
++            inventory: for (int index = 0; index < inventory.getContainerSize(); index++) {
++                ItemStack itemStack = inventory.getItem(index);
++
++                if (!itemStack.isEmpty()) {
++                    for (int i = 0; i < ingredients.size(); i++) {
++                        if (ingredients.get(i).test(itemStack)) {
++                            ingredients.remove(i);
++                            continue inventory;
++                        }
++                    }
++                    return false;
++                }
++            }
++
++            return ingredients.isEmpty();
++        }
++        // Airplane end
++
+         StackedContents autorecipestackmanager = new StackedContents();
+         int i = 0;
+ 
+diff --git a/src/main/java/net/minecraft/world/level/BlockGetter.java b/src/main/java/net/minecraft/world/level/BlockGetter.java
+index ec781ab232d12cedb5f0236860377c4917c576d7..ced4b354e83ad68f8f1aacdefe2f0ce0035bd4a7 100644
+--- a/src/main/java/net/minecraft/world/level/BlockGetter.java
++++ b/src/main/java/net/minecraft/world/level/BlockGetter.java
+@@ -73,6 +73,16 @@ public interface BlockGetter extends LevelHeightAccessor {
+         });
+     }
+ 
++    // Airplane start - broken down variant of below rayTraceBlock, used by World#rayTraceDirect
++    default net.minecraft.world.phys.BlockHitResult.Type rayTraceBlockDirect(Vec3 vec3d, Vec3 vec3d1, BlockPos blockposition, BlockState iblockdata, net.minecraft.world.phys.shapes.CollisionContext voxelshapecoll) {
++        if (iblockdata.isAir()) return null; // Tuinity - optimise air cases
++        VoxelShape voxelshape = ClipContext.Block.COLLIDER.get(iblockdata, this, blockposition, voxelshapecoll);
++        net.minecraft.world.phys.BlockHitResult movingobjectpositionblock = this.clipWithInteractionOverride(vec3d, vec3d1, blockposition, voxelshape, iblockdata);
++
++        return movingobjectpositionblock == null ? null : movingobjectpositionblock.getType();
++    }
++    // Airplane end
++
+     // CraftBukkit start - moved block handling into separate method for use by Block#rayTrace
+     default BlockHitResult rayTraceBlock(ClipContext raytrace1, BlockPos blockposition) {
+             // Paper start - Prevent raytrace from loading chunks
+diff --git a/src/main/java/net/minecraft/world/level/GameRules.java b/src/main/java/net/minecraft/world/level/GameRules.java
+index e7ca5d6fb8922e7e8065864f736b06056be080a0..833ad6fbedfc275b3fde640b0e873f23e61acc3b 100644
+--- a/src/main/java/net/minecraft/world/level/GameRules.java
++++ b/src/main/java/net/minecraft/world/level/GameRules.java
+@@ -90,6 +90,7 @@ public class GameRules {
+     public static final GameRules.Key<GameRules.BooleanValue> RULE_UNIVERSAL_ANGER = GameRules.register("universalAnger", GameRules.Category.MOBS, GameRules.BooleanValue.create(false));
+     public static final GameRules.Key<GameRules.IntegerValue> RULE_PLAYERS_SLEEPING_PERCENTAGE = GameRules.register("playersSleepingPercentage", GameRules.Category.PLAYER, GameRules.IntegerValue.create(100));
+     private final Map<GameRules.Key<?>, GameRules.Value<?>> rules;
++    private final GameRules.Value<?>[] gameruleArray;
+ 
+     private static <T extends GameRules.Value<T>> GameRules.Key<T> register(String name, GameRules.Category category, GameRules.Type<T> type) {
+         GameRules.Key<T> gamerules_gamerulekey = new GameRules.Key<>(name, category);
+@@ -108,17 +109,33 @@ public class GameRules {
+     }
+ 
+     public GameRules() {
+-        this.rules = (Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
++        // Airplane start - use this to ensure gameruleArray is initialized
++        this((Map) GameRules.GAME_RULE_TYPES.entrySet().stream().collect(ImmutableMap.toImmutableMap(Entry::getKey, (entry) -> {
+             return ((GameRules.Type) entry.getValue()).createRule();
+-        }));
++        })));
++        // Airplane end
+     }
+ 
+     private GameRules(Map<GameRules.Key<?>, GameRules.Value<?>> rules) {
+         this.rules = rules;
++
++        // Airplane start
++        int arraySize = rules.keySet().stream().mapToInt(key -> key.gameRuleIndex).max().orElse(-1) + 1;
++        GameRules.Value<?>[] values = new GameRules.Value[arraySize];
++
++        for (Entry<GameRules.Key<?>, GameRules.Value<?>> entry : rules.entrySet()) {
++            values[entry.getKey().gameRuleIndex] = entry.getValue();
++        }
++
++        this.gameruleArray = values;
++        // Airplane end
+     }
+ 
+     public <T extends GameRules.Value<T>> T getRule(GameRules.Key<T> key) {
+-        return (T) this.rules.get(key); // CraftBukkit - decompile error
++        // Airplane start
++        return key == null ? null : (T) this.gameruleArray[key.gameRuleIndex];
++        //return (T) this.rules.get(key); // CraftBukkit - decompile error
++        // Airplane end
+     }
+ 
+     public CompoundTag createTag() {
+@@ -177,6 +194,10 @@ public class GameRules {
+     }
+ 
+     public static final class Key<T extends GameRules.Value<T>> {
++        // Airplane start
++        private static int lastGameRuleIndex = 0;
++        public final int gameRuleIndex = lastGameRuleIndex++;
++        // Airplane end
+ 
+         final String id;
+         private final GameRules.Category category;
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index e0080327101f2182d148c69f7856461b9384d47c..4a8d4e3d95a393fe994b0253c2812cae68726a38 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -445,6 +445,91 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+         return null;
+     }
+ 
++    // Airplane start - broken down method of raytracing for EntityLiving#hasLineOfSight, replaces IBlockAccess#rayTrace(RayTrace)
++    public net.minecraft.world.phys.BlockHitResult.Type rayTraceDirect(net.minecraft.world.phys.Vec3 vec3d, net.minecraft.world.phys.Vec3 vec3d1, net.minecraft.world.phys.shapes.CollisionContext voxelshapecoll) {
++        // most of this code comes from IBlockAccess#a(RayTrace, BiFunction, Function), but removes the needless functions
++        if (vec3d.equals(vec3d1)) {
++            return net.minecraft.world.phys.BlockHitResult.Type.MISS;
++        }
++
++        double endX = Mth.lerp(-1.0E-7D, vec3d1.x, vec3d.x);
++        double endY = Mth.lerp(-1.0E-7D, vec3d1.y, vec3d.y);
++        double endZ = Mth.lerp(-1.0E-7D, vec3d1.z, vec3d.z);
++
++        double startX = Mth.lerp(-1.0E-7D, vec3d.x, vec3d1.x);
++        double startY = Mth.lerp(-1.0E-7D, vec3d.y, vec3d1.y);
++        double startZ = Mth.lerp(-1.0E-7D, vec3d.z, vec3d1.z);
++
++        int currentX = Mth.floor(startX);
++        int currentY = Mth.floor(startY);
++        int currentZ = Mth.floor(startZ);
++
++        BlockPos.MutableBlockPos currentBlock = new BlockPos.MutableBlockPos(currentX, currentY, currentZ);
++
++        LevelChunk chunk = this.getChunkIfLoaded(currentBlock);
++        if (chunk == null) {
++            return net.minecraft.world.phys.BlockHitResult.Type.MISS;
++        }
++
++        net.minecraft.world.phys.BlockHitResult.Type initialCheck = this.rayTraceBlockDirect(vec3d, vec3d1, currentBlock, chunk.getBlockState(currentBlock), voxelshapecoll);
++
++        if (initialCheck != null) {
++            return initialCheck;
++        }
++
++        double diffX = endX - startX;
++        double diffY = endY - startY;
++        double diffZ = endZ - startZ;
++
++        int xDirection = Mth.sign(diffX);
++        int yDirection = Mth.sign(diffY);
++        int zDirection = Mth.sign(diffZ);
++
++        double normalizedX = xDirection == 0 ? Double.MAX_VALUE : (double) xDirection / diffX;
++        double normalizedY = yDirection == 0 ? Double.MAX_VALUE : (double) yDirection / diffY;
++        double normalizedZ = zDirection == 0 ? Double.MAX_VALUE : (double) zDirection / diffZ;
++
++        double normalizedXDirection = normalizedX * (xDirection > 0 ? 1.0D - Mth.frac(startX) : Mth.frac(startX));
++        double normalizedYDirection = normalizedY * (yDirection > 0 ? 1.0D - Mth.frac(startY) : Mth.frac(startY));
++        double normalizedZDirection = normalizedZ * (zDirection > 0 ? 1.0D - Mth.frac(startZ) : Mth.frac(startZ));
++
++        net.minecraft.world.phys.BlockHitResult.Type result;
++
++        do {
++            if (normalizedXDirection > 1.0D && normalizedYDirection > 1.0D && normalizedZDirection > 1.0D) {
++                return net.minecraft.world.phys.BlockHitResult.Type.MISS;
++            }
++
++            if (normalizedXDirection < normalizedYDirection) {
++                if (normalizedXDirection < normalizedZDirection) {
++                    currentX += xDirection;
++                    normalizedXDirection += normalizedX;
++                } else {
++                    currentZ += zDirection;
++                    normalizedZDirection += normalizedZ;
++                }
++            } else if (normalizedYDirection < normalizedZDirection) {
++                currentY += yDirection;
++                normalizedYDirection += normalizedY;
++            } else {
++                currentZ += zDirection;
++                normalizedZDirection += normalizedZ;
++            }
++
++            currentBlock.set(currentX, currentY, currentZ);
++            if (chunk.getPos().x != currentBlock.getX() >> 4 || chunk.getPos().z != currentBlock.getZ() >> 4) {
++                chunk = this.getChunkIfLoaded(currentBlock);
++                if (chunk == null) {
++                    return net.minecraft.world.phys.BlockHitResult.Type.MISS;
++                }
++            }
++            result = this.rayTraceBlockDirect(vec3d, vec3d1, currentBlock, chunk.getBlockState(currentBlock), voxelshapecoll);
++        } while (result == null);
++
++        return result;
++    }
++    // Airplane end
++
+     public boolean isInWorldBounds(BlockPos pos) {
+         return pos.isValidLocation(this); // Paper - use better/optimized check
+     }
+@@ -1437,6 +1522,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     }
+ 
+     public ProfilerFiller getProfiler() {
++        if (gg.airplane.AirplaneConfig.disableMethodProfiler) return net.minecraft.util.profiling.InactiveProfiler.INSTANCE; // Airplane
+         return (ProfilerFiller) this.profiler.get();
+     }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+index b2329de658df71ce03a6fe0c41c02997afdf868f..d6350952e45b90aff81f303849251fd82136cca6 100644
+--- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
++++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
+@@ -407,12 +407,12 @@ public final class NaturalSpawner {
+         return spawnGroup == MobCategory.MONSTER && world.getBlockState(pos.below()).is(Blocks.NETHER_BRICKS) && structureAccessor.getStructureAt(pos, false, StructureFeature.NETHER_BRIDGE).isValid() ? StructureFeature.NETHER_BRIDGE.getSpecialEnemies() : chunkGenerator.getMobsAt(biome != null ? biome : world.getBiome(pos), structureAccessor, spawnGroup, pos);
+     }
+ 
+-    private static BlockPos getRandomPosWithin(Level world, LevelChunk chunk) {
++    private static BlockPos getRandomPosWithin(ServerLevel world, LevelChunk chunk) { // Airplane - accept serverlevel
+         ChunkPos chunkcoordintpair = chunk.getPos();
+-        int i = chunkcoordintpair.getMinBlockX() + world.random.nextInt(16);
+-        int j = chunkcoordintpair.getMinBlockZ() + world.random.nextInt(16);
++        int i = chunkcoordintpair.getMinBlockX() + world.getThreadUnsafeRandom().nextInt(16); // Airplane - use thread unsafe random
++        int j = chunkcoordintpair.getMinBlockZ() + world.getThreadUnsafeRandom().nextInt(16); // Airplane
+         int k = chunk.getHeight(Heightmap.Types.WORLD_SURFACE, i, j) + 1;
+-        int l = Mth.randomBetweenInclusive(world.random, world.getMinBuildHeight(), k);
++        int l = Mth.randomBetweenInclusive(world.getThreadUnsafeRandom(), world.getMinBuildHeight(), k); // Airplane
+ 
+         return new BlockPos(i, l, j);
+     }
+diff --git a/src/main/java/net/minecraft/world/level/biome/Biome.java b/src/main/java/net/minecraft/world/level/biome/Biome.java
+index a7a7e6cd87270e64a92448f03f8b0b0c7e375ec7..0ea6fedf6e660bc133fd5eb34d3d9bac3e581f32 100644
+--- a/src/main/java/net/minecraft/world/level/biome/Biome.java
++++ b/src/main/java/net/minecraft/world/level/biome/Biome.java
+@@ -104,8 +104,10 @@ public final class Biome {
+     private final float scale;
+     private final Biome.BiomeCategory biomeCategory;
+     private final BiomeSpecialEffects specialEffects;
+-    private final ThreadLocal<Long2FloatLinkedOpenHashMap> temperatureCache = ThreadLocal.withInitial(() -> {
++    // Airplane start - use our cache
++    private final ThreadLocal<gg.airplane.structs.Long2FloatAgingCache> temperatureCache = ThreadLocal.withInitial(() -> {
+         return Util.make(() -> {
++            /*
+             Long2FloatLinkedOpenHashMap long2FloatLinkedOpenHashMap = new Long2FloatLinkedOpenHashMap(1024, 0.25F) {
+                 @Override
+                 protected void rehash(int i) {
+@@ -113,6 +115,10 @@ public final class Biome {
+             };
+             long2FloatLinkedOpenHashMap.defaultReturnValue(Float.NaN);
+             return long2FloatLinkedOpenHashMap;
++
++             */
++            return new gg.airplane.structs.Long2FloatAgingCache(TEMPERATURE_CACHE_SIZE);
++            // Airplane end
+         });
+     });
+ 
+@@ -154,17 +160,15 @@ public final class Biome {
+ 
+     public final float getTemperature(BlockPos blockPos) {
+         long l = blockPos.asLong();
+-        Long2FloatLinkedOpenHashMap long2FloatLinkedOpenHashMap = this.temperatureCache.get();
+-        float f = long2FloatLinkedOpenHashMap.get(l);
++        // Airplane start
++        gg.airplane.structs.Long2FloatAgingCache cache = this.temperatureCache.get();
++        float f = cache.getValue(l);
+         if (!Float.isNaN(f)) {
+             return f;
+         } else {
+             float g = this.getHeightAdjustedTemperature(blockPos);
+-            if (long2FloatLinkedOpenHashMap.size() == 1024) {
+-                long2FloatLinkedOpenHashMap.removeFirstFloat();
+-            }
+-
+-            long2FloatLinkedOpenHashMap.put(l, g);
++            cache.putValue(l, g);
++            // Airplane end
+             return g;
+         }
+     }
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
+index 52de9852f87d346714a950b60a0004d386ac10f0..305a8f5ea917c7e242011fa98a3e161517afe9be 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
+@@ -32,7 +32,7 @@ import org.bukkit.entity.HumanEntity;
+ public class ChestBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
+ 
+     private static final int EVENT_SET_OPEN_COUNT = 1;
+-    private NonNullList<ItemStack> items;
++    private gg.airplane.structs.ItemListWithBitset items; // Airplane
+     public final ContainerOpenersCounter openersCounter;
+     private final ChestLidController chestLidController;
+ 
+@@ -66,9 +66,10 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+     }
+     // CraftBukkit end
+ 
++    private final boolean isNative = getClass().equals(ChestBlockEntity.class); // Airplane
+     protected ChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+         super(type, pos, state);
+-        this.items = NonNullList.withSize(27, ItemStack.EMPTY);
++        this.items = new gg.airplane.structs.ItemListWithBitset(27); // Airplane - use with bitset
+         this.openersCounter = new ContainerOpenersCounter() {
+             @Override
+             protected void onOpen(Level world, BlockPos pos, BlockState state) {
+@@ -99,6 +100,23 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+         this.chestLidController = new ChestLidController();
+     }
+ 
++    // Airplane start
++    @Override
++    public boolean hasEmptySlot(Direction enumdirection) {
++        return isNative ? !this.items.hasFullStacks() : super.hasEmptySlot(enumdirection);
++    }
++
++    @Override
++    public boolean isCompletelyFull(Direction enumdirection) {
++        return isNative ? this.items.hasFullStacks() && super.isCompletelyFull(enumdirection) : super.isCompletelyFull(enumdirection);
++    }
++
++    @Override
++    public boolean isCompletelyEmpty(Direction enumdirection) {
++        return isNative && this.items.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
++    }
++    // Airplane end
++
+     public ChestBlockEntity(BlockPos pos, BlockState state) {
+         this(BlockEntityType.CHEST, pos, state);
+     }
+@@ -116,7 +134,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+     @Override
+     public void load(CompoundTag nbt) {
+         super.load(nbt);
+-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
++        this.items = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // Airplane
+         if (!this.tryLoadLootTable(nbt)) {
+             ContainerHelper.loadAllItems(nbt, this.items);
+         }
+@@ -189,7 +207,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+ 
+     @Override
+     protected void setItems(NonNullList<ItemStack> list) {
+-        this.items = list;
++        this.items = gg.airplane.structs.ItemListWithBitset.fromNonNullList(list); // Airplane
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
+index 3b1442bf4c83650369e925d76f07dc67c6cbbc83..8a46c03b4d129c89d82a00ce725ddb129c668322 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
+@@ -44,7 +44,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+ 
+     public static final int MOVE_ITEM_SPEED = 8;
+     public static final int HOPPER_CONTAINER_SIZE = 5;
+-    private NonNullList<ItemStack> items;
++    private gg.airplane.structs.ItemListWithBitset items; // Airplane
+     private int cooldownTime;
+     private long tickedGameTime;
+ 
+@@ -80,14 +80,31 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+ 
+     public HopperBlockEntity(BlockPos pos, BlockState state) {
+         super(BlockEntityType.HOPPER, pos, state);
+-        this.items = NonNullList.withSize(5, ItemStack.EMPTY);
++        this.items = new gg.airplane.structs.ItemListWithBitset(5); // Airplane
+         this.cooldownTime = -1;
+     }
+ 
++    // Airplane start
++    @Override
++   public boolean hasEmptySlot(Direction enumdirection) {
++        return !this.items.hasFullStacks();
++    }
++
++    @Override
++    public boolean isCompletelyFull(Direction enumdirection) {
++        return this.items.hasFullStacks() && super.isCompletelyFull(enumdirection);
++    }
++
++    @Override
++    public boolean isCompletelyEmpty(Direction enumdirection) {
++        return this.items.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
++    }
++    // Airplane end
++
+     @Override
+     public void load(CompoundTag nbt) {
+         super.load(nbt);
+-        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
++        this.items = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // Airplane
+         if (!this.tryLoadLootTable(nbt)) {
+             ContainerHelper.loadAllItems(nbt, this.items);
+         }
+@@ -160,7 +177,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+                     flag = HopperBlockEntity.a(world, pos, state, (Container) blockEntity, blockEntity); // CraftBukkit
+                 }
+ 
+-                if (!blockEntity.inventoryFull()) {
++                if (!blockEntity.items.hasFullStacks() || !blockEntity.inventoryFull()) { // Airplane - use bitset first
+                     flag |= booleansupplier.getAsBoolean();
+                 }
+ 
+@@ -199,7 +216,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         skipPushModeEventFire = skipHopperEvents;
+         boolean foundItem = false;
+         for (int i = 0; i < hopper.getContainerSize(); ++i) {
+-            ItemStack item = hopper.getItem(i);
++            ItemStack item = hopper.getHopperItem(i); // Airplane
+             if (!item.isEmpty()) {
+                 foundItem = true;
+                 ItemStack origItemStack = item;
+@@ -403,24 +420,30 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+     }
+ 
+     private static boolean isFullContainer(Container inventory, Direction direction) {
+-        return allMatch(inventory, direction, STACK_SIZE_TEST); // Paper - no streams
++        // Airplane start - use bitsets
++        //return allMatch(inventory, direction, STACK_SIZE_TEST); // Paper - no streams
++        return inventory.isCompletelyFull(direction);
++        // Airplane end
+     }
+ 
+     private static boolean isEmptyContainer(Container inv, Direction facing) {
+         // Paper start
+-        return allMatch(inv, facing, IS_EMPTY_TEST);
++        // Airplane start - use bitsets
++        //return allMatch(inv, facing, IS_EMPTY_TEST);
++        return inv.isCompletelyEmpty(facing);
++        // Airplane end
+     }
+     private static boolean allMatch(Container iinventory, Direction enumdirection, java.util.function.BiPredicate<ItemStack, Integer> test) {
+         if (iinventory instanceof WorldlyContainer) {
+             for (int i : ((WorldlyContainer) iinventory).getSlotsForFace(enumdirection)) {
+-                if (!test.test(iinventory.getItem(i), i)) {
++                if (!test.test(iinventory.getHopperItem(i), i)) { // Airplane
+                     return false;
+                 }
+             }
+         } else {
+             int size = iinventory.getContainerSize();
+             for (int i = 0; i < size; i++) {
+-                if (!test.test(iinventory.getItem(i), i)) {
++                if (!test.test(iinventory.getHopperItem(i), i)) { // Airplane
+                     return false;
+                 }
+             }
+@@ -585,7 +608,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+ 
+         if (HopperBlockEntity.canPlaceItemInContainer(to, stack, slot, enumdirection)) {
+             boolean flag = false;
+-            boolean flag1 = to.isEmpty();
++            boolean flag1 = to.isCompletelyEmpty(enumdirection); // Airplane
+ 
+             if (itemstack1.isEmpty()) {
+                 IGNORE_TILE_UPDATES = true; // Paper
+@@ -667,7 +690,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+         if (block instanceof WorldlyContainerHolder) {
+             object = ((WorldlyContainerHolder) block).getContainer(iblockdata, world, blockposition);
+         } else if (iblockdata.hasBlockEntity()) {
+-            BlockEntity tileentity = world.getBlockEntity(blockposition);
++            BlockEntity tileentity = ((net.minecraft.server.level.ServerLevel) world).getAndCheckTileEntity(iblockdata, blockposition); // Airplane - skip validation step, which does 2nd type lookup
+ 
+             if (tileentity instanceof Container) {
+                 object = (Container) tileentity;
+@@ -726,7 +749,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+ 
+     @Override
+     protected void setItems(NonNullList<ItemStack> list) {
+-        this.items = list;
++        this.items = gg.airplane.structs.ItemListWithBitset.fromNonNullList(list); // Airplane
+     }
+ 
+     public static void entityInside(Level world, BlockPos pos, BlockState state, Entity entity, HopperBlockEntity blockEntity) {
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
+index ed3518fe7c841d9e1a9c97626acaa3d765a6d76f..37e32747586295f1eb8976bbff7a16de5f37da18 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
+@@ -96,8 +96,10 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
+     public boolean isEmpty() {
+         this.unpackLootTable((Player)null);
+         // Paper start
+-        for (ItemStack itemStack : this.getItems()) {
+-            if (!itemStack.isEmpty()) {
++        // Airplane start - don't use abstract iterator
++        java.util.List<ItemStack> items = this.getItems();
++        for (int i = 0; i < items.size(); i++) {
++            if (!items.get(i).isEmpty()) { // Airplane end
+                 return false;
+             }
+         }
+@@ -111,6 +113,13 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
+         return this.getItems().get(slot);
+     }
+ 
++    // Airplane start - skip loot system for hoppers
++    @Override
++    public ItemStack getHopperItem(int index) {
++        return this.getItems().get(index);
++    }
++    // Airplane end
++
+     @Override
+     public ItemStack removeItem(int slot, int amount) {
+         this.unpackLootTable((Player)null);
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index 5a99fca759694f06cfd02de1db6c13ae20391ab4..80d699652116aabe11f576d92f7731a2f1a41c52 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -172,11 +172,25 @@ public class LevelChunk implements ChunkAccess {
+     }
+     // Tuinity end - rewrite light engine
+ 
++    // Airplane start - instead of using a random every time the chunk is ticked, define when lightning strikes preemptively
++    private int lightningTick;
++   // shouldDoLightning compiles down to 29 bytes, which with the default of 35 byte inlining should guarantee an inline
++    public final boolean shouldDoLightning(java.util.Random random) {
++        if (this.lightningTick-- <= 0) {
++            this.lightningTick = random.nextInt(100000) << 1;
++            return true;
++        }
++        return false;
++    }
++    // Airplane end
++
++    private final int levelHeight; private final int minBuildHeight; // Airplane
+     public LevelChunk(Level world, ChunkPos pos, ChunkBiomeContainer biomes) {
+         this(world, pos, biomes, UpgradeData.EMPTY, EmptyTickList.empty(), EmptyTickList.empty(), 0L, (LevelChunkSection[]) null, (Consumer) null);
+     }
+ 
+     public LevelChunk(Level world, ChunkPos pos, ChunkBiomeContainer biomes, UpgradeData upgradeData, TickList<Block> blockTickScheduler, TickList<Fluid> fluidTickScheduler, long inhabitedTime, @Nullable LevelChunkSection[] sections, @Nullable Consumer<LevelChunk> loadToWorldConsumer) {
++        this.levelHeight = world.getHeight(); this.minBuildHeight = world.getMinBuildHeight(); // Airplane
+         // Tuinity start
+         this.blockNibbles = StarLightEngine.getFilledEmptyLight(world);
+         this.skyNibbles = StarLightEngine.getFilledEmptyLight(world);
+@@ -220,6 +234,7 @@ public class LevelChunk implements ChunkAccess {
+         this.postProcessing = new ShortList[world.getSectionsCount()];
+         // CraftBukkit start
+         this.bukkitChunk = new org.bukkit.craftbukkit.CraftChunk(this);
++        this.lightningTick = this.level.random.nextInt(100000) << 1; // Airplane - initialize lightning tick
+     }
+ 
+     public org.bukkit.Chunk bukkitChunk;
+@@ -1290,13 +1305,17 @@ public class LevelChunk implements ChunkAccess {
+     }
+ 
+     @Override
+-    public int getMinBuildHeight() {
+-        return this.level.getMinBuildHeight();
++    // Airplane start
++    public final int getMinBuildHeight() {
++        return this.minBuildHeight;
++        // Airplane end
+     }
+ 
+     @Override
+-    public int getHeight() {
+-        return this.level.getHeight();
++    // Airplane start
++    public final int getHeight() {
++        return this.levelHeight;
++        // Airplane end
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java b/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
+index 40471fffffb2767029f8b3ba7c63db60389a4797..71fff3b15c38a87ee6d2b2227324ff8dcf6adba8 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
++++ b/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
+@@ -261,13 +261,17 @@ public class PalettedContainer<T> implements PaletteResize<T> {
+ 
+     }
+ 
++    // Airplane start - allow reusing int array
+     public synchronized void write(CompoundTag nbt, String paletteKey, String dataKey) { // Paper - synchronize
++        this.write(nbt, paletteKey, dataKey, new int[4096]);
++    }
++    public synchronized void write(CompoundTag nbt, String paletteKey, String dataKey, int[] is) { // Paper - synchronize // Airplane end
+         try {
+             this.acquire();
+             HashMapPalette<T> hashMapPalette = new HashMapPalette<>(this.registry, this.bits, this.dummyPaletteResize, this.reader, this.writer);
+             T object = this.defaultValue;
+             int i = hashMapPalette.idFor(this.defaultValue);
+-            int[] is = new int[4096];
++            //int[] is = new int[4096]; // Airplane
+ 
+             for(int j = 0; j < 4096; ++j) {
+                 T object2 = this.get(j);
+diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
+index 7fe7d98dfdf63c52ffccf4400077d9a9099555b8..b3f01ff402f3e65592a48af786973cb3647bec88 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
++++ b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
+@@ -485,6 +485,7 @@ public class ChunkSerializer {
+         return new AsyncSaveData(blockLight, skyLight, blockTickListSerialized, fluidTickListSerialized, blockEntitiesSerialized, world.getGameTime());
+     }
+ 
++    private static final ThreadLocal<int[]> paletteArray = ThreadLocal.withInitial(() -> new int[4096]); // Airplane
+     public static CompoundTag write(ServerLevel world, ChunkAccess chunk) {
+         return saveChunk(world, chunk, null);
+     }
+@@ -518,6 +519,7 @@ public class ChunkSerializer {
+         ThreadedLevelLightEngine lightenginethreaded = world.getChunkSource().getLightEngine();
+         boolean flag = chunk.isLightCorrect();
+ 
++        int[] is = paletteArray.get(); // Airplane - use cached
+         for (int i = lightenginethreaded.getMinLightSection(); i < lightenginethreaded.getMaxLightSection(); ++i) {
+             int finalI = i; // CraftBukkit - decompile errors
+             LevelChunkSection chunksection = (LevelChunkSection) Arrays.stream(achunksection).filter((chunksection1) -> {
+@@ -532,7 +534,7 @@ public class ChunkSerializer {
+ 
+                 nbttagcompound2.putByte("Y", (byte) (i & 255));
+                 if (chunksection != LevelChunk.EMPTY_SECTION) {
+-                    chunksection.getStates().write(nbttagcompound2, "Palette", "BlockStates");
++                    chunksection.getStates().write(nbttagcompound2, "Palette", "BlockStates", is); // Airplane - reuse array
+                 }
+ 
+                 // Tuinity start - replace light engine
+diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+index 6e3e873efa1f50f53cb6503bde8a981f9cefd006..32d15354ceb46fb06b1c36049d3a8bfba718acaf 100644
+--- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
++++ b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
+@@ -45,6 +45,8 @@ public abstract class FlowingFluid extends Fluid {
+     public static final BooleanProperty FALLING = BlockStateProperties.FALLING;
+     public static final IntegerProperty LEVEL = BlockStateProperties.LEVEL_FLOWING;
+     private static final int CACHE_SIZE = 200;
++    // Airplane start - use our own cache
++    /*
+     private static final ThreadLocal<Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>> OCCLUSION_CACHE = ThreadLocal.withInitial(() -> {
+         Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey> object2bytelinkedopenhashmap = new Object2ByteLinkedOpenHashMap<Block.BlockStatePairKey>(200) {
+             protected void rehash(int i) {}
+@@ -53,6 +55,14 @@ public abstract class FlowingFluid extends Fluid {
+         object2bytelinkedopenhashmap.defaultReturnValue((byte) 127);
+         return object2bytelinkedopenhashmap;
+     });
++     */
++
++    private static final ThreadLocal<gg.airplane.structs.FluidDirectionCache<Block.BlockStatePairKey>> localFluidDirectionCache = ThreadLocal.withInitial(() -> {
++        // Airplane todo - mess with this number for performance
++        //  with 2048 it seems very infrequent on a small world that it has to remove old entries
++        return new gg.airplane.structs.FluidDirectionCache<>(2048);
++    });
++    // Airplane end
+     private final Map<FluidState, VoxelShape> shapes = Maps.newIdentityHashMap();
+ 
+     public FlowingFluid() {}
+@@ -240,6 +250,8 @@ public abstract class FlowingFluid extends Fluid {
+     }
+ 
+     private boolean canPassThroughWall(Direction face, BlockGetter world, BlockPos pos, BlockState state, BlockPos fromPos, BlockState fromState) {
++        // Airplane start - modify to use our cache
++        /*
+         Object2ByteLinkedOpenHashMap object2bytelinkedopenhashmap;
+ 
+         if (!state.getBlock().hasDynamicShape() && !fromState.getBlock().hasDynamicShape()) {
+@@ -247,9 +259,16 @@ public abstract class FlowingFluid extends Fluid {
+         } else {
+             object2bytelinkedopenhashmap = null;
+         }
++         */
++        gg.airplane.structs.FluidDirectionCache<Block.BlockStatePairKey> cache = null;
++
++        if (!state.getBlock().hasDynamicShape() && !fromState.getBlock().hasDynamicShape()) {
++            cache = localFluidDirectionCache.get();
++        }
+ 
+         Block.BlockStatePairKey block_a;
+ 
++        /*
+         if (object2bytelinkedopenhashmap != null) {
+             block_a = new Block.BlockStatePairKey(state, fromState, face);
+             byte b0 = object2bytelinkedopenhashmap.getAndMoveToFirst(block_a);
+@@ -260,11 +279,22 @@ public abstract class FlowingFluid extends Fluid {
+         } else {
+             block_a = null;
+         }
++         */
++        if (cache != null) {
++            block_a = new Block.BlockStatePairKey(state, fromState, face);
++            Boolean flag = cache.getValue(block_a);
++            if (flag != null) {
++                return flag;
++            }
++        } else {
++            block_a = null;
++        }
+ 
+         VoxelShape voxelshape = state.getCollisionShape(world, pos);
+         VoxelShape voxelshape1 = fromState.getCollisionShape(world, fromPos);
+         boolean flag = !Shapes.mergedFaceOccludes(voxelshape, voxelshape1, face);
+ 
++        /*
+         if (object2bytelinkedopenhashmap != null) {
+             if (object2bytelinkedopenhashmap.size() == 200) {
+                 object2bytelinkedopenhashmap.removeLastByte();
+@@ -272,6 +302,11 @@ public abstract class FlowingFluid extends Fluid {
+ 
+             object2bytelinkedopenhashmap.putAndMoveToFirst(block_a, (byte) (flag ? 1 : 0));
+         }
++         */
++        if (cache != null) {
++            cache.putValue(block_a, flag);
++        }
++        // Airplane end
+ 
+         return flag;
+     }
+diff --git a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java b/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
+index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d0d05e909 100644
+--- a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
++++ b/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
+@@ -22,55 +22,82 @@ public class EntityCollisionContext implements CollisionContext {
+             return defaultValue;
+         }
+     };
+-    private final boolean descending;
+-    private final double entityBottom;
+-    private final ItemStack heldItem;
+-    private final ItemStack footItem;
+-    private final Predicate<Fluid> canStandOnFluid;
+-    private final Optional<Entity> entity;
++    // Airplane start - remove these and pray no plugin uses them
++    //private final boolean descending;
++    //private final double entityBottom;
++    //private final ItemStack heldItem;
++    //private final ItemStack footItem;
++    //private final Predicate<Fluid> canStandOnFluid;
++    // Airplane end
++    private final @org.jetbrains.annotations.Nullable Entity entity; // Airplane
+ 
+     protected EntityCollisionContext(boolean descending, double minY, ItemStack boots, ItemStack heldItem, Predicate<Fluid> walkOnFluidPredicate, Optional<Entity> entity) {
+-        this.descending = descending;
+-        this.entityBottom = minY;
+-        this.footItem = boots;
+-        this.heldItem = heldItem;
+-        this.canStandOnFluid = walkOnFluidPredicate;
+-        this.entity = entity;
++        // Airplane start
++        //this.descending = descending;
++        //this.entityBottom = minY;
++        //this.footItem = boots;
++        //this.heldItem = heldItem;
++        ///this.canStandOnFluid = walkOnFluidPredicate;
++        this.entity = entity.orElse(null);
++        // Airplane end
+     }
+ 
+     @Deprecated
+     protected EntityCollisionContext(Entity entity) {
++        // Airplane start - remove unneeded things
++        /*
+         this(entity.isDescending(), entity.getY(), entity instanceof LivingEntity ? ((LivingEntity)entity).getItemBySlot(EquipmentSlot.FEET) : ItemStack.EMPTY, entity instanceof LivingEntity ? ((LivingEntity)entity).getMainHandItem() : ItemStack.EMPTY, entity instanceof LivingEntity ? ((LivingEntity)entity)::canStandOnFluid : (fluid) -> {
+             return false;
+         }, Optional.of(entity));
++         */
++        this.entity = entity;
++        // Airplane end
+     }
+ 
+     @Override
+     public boolean hasItemOnFeet(Item item) {
+-        return this.footItem.is(item);
++        // Airplane start
++        Entity entity = this.entity;
++        if (entity instanceof LivingEntity livingEntity) {
++            return livingEntity.getItemBySlot(EquipmentSlot.FEET).is(item);
++        }
++        return ItemStack.EMPTY.is(item);
++        // Airplane end
+     }
+ 
+     @Override
+     public boolean isHoldingItem(Item item) {
+-        return this.heldItem.is(item);
++        // Airplane start
++        Entity entity = this.entity;
++        if (entity instanceof LivingEntity livingEntity) {
++            return livingEntity.getMainHandItem().is(item);
++        }
++        return ItemStack.EMPTY.is(item);
++        // Airplane end
+     }
+ 
+     @Override
+     public boolean canStandOnFluid(FluidState state, FlowingFluid fluid) {
+-        return this.canStandOnFluid.test(fluid) && !state.getType().isSame(fluid);
++        // Airplane start
++        Entity entity = this.entity;
++        if (entity instanceof LivingEntity livingEntity) {
++            return livingEntity.canStandOnFluid(fluid) && !state.getType().isSame(fluid);
++        }
++        return false;
++        // Airplane end
+     }
+ 
+     @Override
+     public boolean isDescending() {
+-        return this.descending;
++        return this.entity != null && this.entity.isDescending(); // Airplane
+     }
+ 
+     @Override
+     public boolean isAbove(VoxelShape shape, BlockPos pos, boolean defaultValue) {
+-        return this.entityBottom > (double)pos.getY() + shape.max(Direction.Axis.Y) - (double)1.0E-5F;
++        return (this.entity == null ? -Double.MAX_VALUE : entity.getY()) > (double)pos.getY() + shape.max(Direction.Axis.Y) - (double)1.0E-5F; // Airplane
+     }
+ 
+     public Optional<Entity> getEntity() {
+-        return this.entity;
++        return Optional.ofNullable(this.entity); // Airplane
+     }
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 8d163d22b20c289558d86bcde43a2ebdde348bb8..533b8c42245540ef2f042bd63a88ed9290ee5755 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -990,6 +990,11 @@ public final class CraftServer implements Server {
+                 plugin.getDescription().getName(),
+                 "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
+             ));
++            getLogger().log(Level.SEVERE, String.format("%s Stacktrace", worker.getThread().getName()));
++            StackTraceElement[] stackTrace = worker.getThread().getStackTrace();
++            for (StackTraceElement element : stackTrace) {
++                getLogger().log(Level.SEVERE, "  " + element.toString());
++            }
+         }
+     }
+     // Paper end
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
+index 0b3b46348ac9195bff1492ffc11fcbff7d3f5c6f..4010052c53f3a2831b4d5aa1c041d85897856acb 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
+@@ -43,6 +43,6 @@ public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe
+             data.set(i, toNMS(ingred.get(i), true));
+         }
+ 
+-        MinecraftServer.getServer().getRecipeManager().addRecipe(new net.minecraft.world.item.crafting.ShapelessRecipe(CraftNamespacedKey.toMinecraft(this.getKey()), this.getGroup(), CraftItemStack.asNMSCopy(this.getResult()), data));
++        MinecraftServer.getServer().getRecipeManager().addRecipe(new net.minecraft.world.item.crafting.ShapelessRecipe(CraftNamespacedKey.toMinecraft(this.getKey()), this.getGroup(), CraftItemStack.asNMSCopy(this.getResult()), data, true));
+     }
+ }
+diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java b/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
+index 49dc0c441b9dd7e7745cf15ced67f383ebee1f99..b343d8ee7435312929558efdaf127334d8e2fff6 100644
+--- a/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
++++ b/src/main/java/org/bukkit/craftbukkit/scheduler/MinecraftInternalPlugin.java
+@@ -19,7 +19,8 @@ public class MinecraftInternalPlugin extends PluginBase {
+     private boolean enabled = true;
+ 
+     private final String pluginName;
+-    private PluginDescriptionFile pdf;
++    private org.bukkit.plugin.PluginLogger logger;
++    private PluginDescriptionFile pdf; // Airplane
+ 
+     public MinecraftInternalPlugin() {
+         this.pluginName = "Minecraft";
+@@ -72,7 +73,12 @@ public class MinecraftInternalPlugin extends PluginBase {
+ 
+     @Override
+     public PluginLogger getLogger() {
+-        throw new UnsupportedOperationException("Not supported.");
++        // Airplane start
++        if (this.logger == null) {
++            this.logger = new org.bukkit.plugin.PluginLogger(this); // Airplane
++        }
++        return this.logger;
++        // Airplane end
+     }
+ 
+     @Override
+@@ -82,7 +88,7 @@ public class MinecraftInternalPlugin extends PluginBase {
+ 
+     @Override
+     public Server getServer() {
+-        throw new UnsupportedOperationException("Not supported.");
++        return org.bukkit.Bukkit.getServer(); // Airplane - impl
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
+index d752720f2f234b9dbd2117333fee1bfad663ec02..9868b3a9a35cea9689c76ea9b62f2732ab61c94c 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
+@@ -11,6 +11,7 @@ public class ServerShutdownThread extends Thread {
+ 
+     @Override
+     public void run() {
++        try { gg.airplane.flare.ProfilingManager.stop(); } catch (Throwable t) {} // Airplane - shut down Flare if it's running
+         try {
+             // Paper start - try to shutdown on main
+             server.safeShutdown(false, false);
+diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
+index 7361bf04de16d0526dc4cdbd0f564713df041d90..036224efcff7999e13b9e322deffa986c1ddd115 100644
+--- a/src/main/java/org/spigotmc/ActivationRange.java
++++ b/src/main/java/org/spigotmc/ActivationRange.java
+@@ -37,6 +37,10 @@ import co.aikar.timings.MinecraftTimings;
+ import net.minecraft.world.entity.schedule.Activity;
+ import net.minecraft.world.level.Level;
+ import net.minecraft.world.phys.AABB;
++// Airplane start
++import net.minecraft.world.phys.Vec3;
++import java.util.List;
++// Airplane end
+ 
+ public class ActivationRange
+ {
+@@ -205,7 +209,37 @@ public class ActivationRange
+             ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, 256, waterActivationRange );
+             // Paper end
+ 
+-            world.getEntities(null, maxBB).forEach(ActivationRange::activateEntity); // Tuinity
++            // Airplane start - copied from activateEntity
++            List<Entity> entities = world.getEntities(null, maxBB);
++            for (int i = 0, length = entities.size(); i < length; i++) {
++                Entity entity = entities.get(i);
++
++                if (gg.airplane.AirplaneConfig.dearEnabled) {
++                    Vec3 playerVec = player.position();
++                    Vec3 entityVec = entity.position();
++                    double diffX = playerVec.x - entityVec.x, diffY = playerVec.y - entityVec.y, diffZ = playerVec.z - entityVec.z;
++                    int squaredDistance = (int) (diffX * diffX + diffY * diffY + diffZ * diffZ);
++                    entity.activatedPriority = squaredDistance > gg.airplane.AirplaneConfig.startDistanceSquared ?
++                      Math.max(1, Math.min(squaredDistance >> gg.airplane.AirplaneConfig.activationDistanceMod, gg.airplane.AirplaneConfig.maximumActivationPrio)) :
++                      1;
++                } else {
++                    entity.activatedPriority = 1;
++                }
++
++                if ( MinecraftServer.currentTick > entity.activatedTick )
++                {
++                    if ( entity.defaultActivationState )
++                    {
++                        entity.activatedTick = MinecraftServer.currentTick;
++                        continue;
++                    }
++                    if ( entity.activationType.boundingBox.intersects( entity.getBoundingBox() ) )
++                    {
++                        entity.activatedTick = MinecraftServer.currentTick;
++                    }
++                }
++            }
++            // Airplane end
+         }
+         MinecraftTimings.entityActivationCheckTimer.stopTiming();
+     }
+@@ -220,12 +254,12 @@ public class ActivationRange
+         if ( MinecraftServer.currentTick > entity.activatedTick )
+         {
+             if ( entity.defaultActivationState )
+-            {
++            { // Airplane - diff on change
+                 entity.activatedTick = MinecraftServer.currentTick;
+                 return;
+             }
+             if ( entity.activationType.boundingBox.intersects( entity.getBoundingBox() ) )
+-            {
++            {  // Airplane - diff on change
+                 entity.activatedTick = MinecraftServer.currentTick;
+             }
+         }
+@@ -270,7 +304,7 @@ public class ActivationRange
+         if ( entity instanceof LivingEntity )
+         {
+             LivingEntity living = (LivingEntity) entity;
+-            if ( living.onClimbable() || living.jumping || living.hurtTime > 0 || living.activeEffects.size() > 0 ) // Paper
++            if ( living.onClimableCached() || living.jumping || living.hurtTime > 0 || living.activeEffects.size() > 0 ) // Paper // Airplane - use cached
+             {
+                 return 1; // Paper
+             }

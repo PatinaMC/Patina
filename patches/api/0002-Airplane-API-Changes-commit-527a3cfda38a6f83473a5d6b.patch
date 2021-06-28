@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 28 Jun 2021 07:53:32 +0000
+Subject: [PATCH] Airplane API Changes commit
+ 527a3cfda38a6f83473a5d6b254a665ecb673e6c
+
+Expose findClass for profiler
+
+diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+index 81292899918c4dc880661ee628384cb840a6244f..aebb784f84ba6b29a1f2941cf252a0d62b95456e 100644
+--- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+@@ -146,6 +146,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+         throw new ClassNotFoundException(name);
+     }
+ 
++    public boolean _airplane_hasClass(@NotNull String name) { return this.classes.containsKey(name); } // Airplane
+     @Override
+     protected Class<?> findClass(String name) throws ClassNotFoundException {
+         if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
