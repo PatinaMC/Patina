@@ -1,0 +1,62 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 28 Jun 2021 10:10:19 +0000
+Subject: [PATCH] Purpur API Changes commit
+ 99346c5689c1bb25b6d0f503c72b91e8d06a20ad
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index e8414592b3afeb1e5db2b817b8fb7c13e073b9aa..da3288d13f8ecbec18e9eba15fd74106aaf0730f 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -1963,4 +1963,14 @@ public final class Bukkit {
+     public static Server.Spigot spigot() {
+         return server.spigot();
+     }
++
++    /**
++     * Check if server is lagging according to laggy threshold setting
++     *
++     * @return True if lagging
++     */
++    public static boolean isLagging() {
++        return server.isLagging();
++    }
++    // Purpur end
+ }
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index f55ae8275c297c4c86215fba8d7197ffe9715879..ffb86759803edcc66b5119640267b81be3cff91f 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -1614,6 +1614,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+         }
+         // Tuinity end - add config to timings report
+ 
++        // Purpur start
++        @NotNull
++        public org.bukkit.configuration.file.YamlConfiguration getPurpurConfig() {
++            throw new UnsupportedOperationException("Not supported yet.");
++        }
++
++        @NotNull
++        public java.util.Properties getServerProperties() {
++            throw new UnsupportedOperationException("Not supported yet.");
++        }
++        // Purpur end
++
+         /**
+          * Sends the component to the player
+          *
+@@ -1724,4 +1736,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     @NotNull
+     io.papermc.paper.datapack.DatapackManager getDatapackManager();
+     // Paper end
++
++    /**
++     * Check if server is lagging according to laggy threshold setting
++     *
++     * @return True if lagging
++     */
++    boolean isLagging();
++    // Purpur end
+ }
