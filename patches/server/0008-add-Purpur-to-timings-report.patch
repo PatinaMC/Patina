@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 28 Jun 2021 11:38:28 +0000
+Subject: [PATCH] add Purpur to timings report
+
+
+diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
+index 9d920565ff65a84b1b9a2a4777fd8bc8f07e0153..5c24a5a1ef1c3adea70637eb6c9c1bf5e440dbe3 100644
+--- a/src/main/java/co/aikar/timings/TimingsExport.java
++++ b/src/main/java/co/aikar/timings/TimingsExport.java
+@@ -230,6 +230,7 @@ public class TimingsExport extends Thread {
+             pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Tuinity - add config to timings report
+             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)) // Tuinity - add config to timings report
++            ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
+         ));
+ 
+         new TimingsExport(listeners, parent, history).start();
