@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 28 Jun 2021 11:31:31 +0000
+Subject: [PATCH] (Akarin) Swaps the predicate order of collision
+
+
+diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
+index c6d09ed7d464b26cd80b683ac98af78321b37e98..5aa03ce3a3c5d17a3ab07532d853f3703c88a38e 100644
+--- a/src/main/java/net/minecraft/world/entity/Entity.java
++++ b/src/main/java/net/minecraft/world/entity/Entity.java
+@@ -1825,8 +1825,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     public void playerTouch(Player player) {}
+ 
+     public void push(Entity entity) {
+-        if (!this.isPassengerOfSameVehicle(entity)) {
+-            if (!entity.noPhysics && !this.noPhysics) {
++        if (!entity.noPhysics && !this.noPhysics && !this.isPassengerOfSameVehicle(entity)) { // Patina - (Akarin) Swaps the predicate order of collision
+                 if (this.level.paperConfig.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper
+                 double d0 = entity.getX() - this.getX();
+                 double d1 = entity.getZ() - this.getZ();
+@@ -1855,7 +1854,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+                     }
+                 }
+ 
+-            }
+         }
+     }
+ 
