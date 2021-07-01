@@ -5,7 +5,7 @@ Subject: [PATCH] Add nspt command
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6e2ccaa4aafabe327169b71b71d7c39d023ca52f..3e53d5075167a6a99153b5af713697e0bff53ceb 100644
+index cc42f58a34780753a3772f6320bcc679462edc58..30154551889510ba4a1e12c8cad3a803bd4c239c 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -217,6 +217,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -17,10 +17,10 @@ index 6e2ccaa4aafabe327169b71b71d7c39d023ca52f..3e53d5075167a6a99153b5af713697e0
          // Purpur start
          try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 097dcd6bc1522ea94e6fd13d2044b8cf70a61820..2958ec78e7bb9e20970491c44282df8d68b3ad7c 100644
+index 7a0064d467c43e1b50749ae45979d510676afada..7e401d7f3ab4cc4608159432ddca71a444a4f6ec 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -934,6 +934,7 @@ public final class CraftServer implements Server {
+@@ -930,6 +930,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
          net.pl3x.purpur.PurpurConfig.registerCommands(); // Purpur

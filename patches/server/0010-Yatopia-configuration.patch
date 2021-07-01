@@ -18,10 +18,10 @@ index 5c24a5a1ef1c3adea70637eb6c9c1bf5e440dbe3..d9ed530dbb40e3c0fa8cff39bf9606d0
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 20e7955e979df79cdc02c23d91841b0ab0fda8f7..6e2ccaa4aafabe327169b71b71d7c39d023ca52f 100644
+index bdc5a85ffbc4c6887e55e7bce3a8bb436df54d4d..cc42f58a34780753a3772f6320bcc679462edc58 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -234,6 +234,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          gg.airplane.AirplaneConfig.load(); // Airplane - config
          gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
  
@@ -38,10 +38,10 @@ index 20e7955e979df79cdc02c23d91841b0ab0fda8f7..6e2ccaa4aafabe327169b71b71d7c39d
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e2b9b9446b25f932960d7db7c5163db08e5832f7..f2d44696013b921a2e8678cfa0054134483a4bb2 100644
+index 8bf0acca21bae4dc6a3aecbf055b2e1d752d2f51..9390a8156381ec18e52da644eaa667fdab845b05 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -266,7 +266,7 @@ public abstract class PlayerList {
+@@ -267,7 +267,7 @@ public abstract class PlayerList {
          // Spigot - view distance
          playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Tuinity - replace old player chunk management
          player.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
@@ -91,10 +91,10 @@ index 8e398bb8191a130ac7e9a5a07f9a2655880927f9..635d9d3493da8a4163f7c71eeda8a350
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6cfe146de0f06e3b69119dfbce83ec09ea0b75cf..097dcd6bc1522ea94e6fd13d2044b8cf70a61820 100644
+index e50f39c6ba217d134c24325954387bb281ca1796..7a0064d467c43e1b50749ae45979d510676afada 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -875,6 +875,7 @@ public final class CraftServer implements Server {
+@@ -871,6 +871,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +102,7 @@ index 6cfe146de0f06e3b69119dfbce83ec09ea0b75cf..097dcd6bc1522ea94e6fd13d2044b8cf
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2403,6 +2404,13 @@ public final class CraftServer implements Server {
+@@ -2409,6 +2410,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -117,7 +117,7 @@ index 6cfe146de0f06e3b69119dfbce83ec09ea0b75cf..097dcd6bc1522ea94e6fd13d2044b8cf
          public void broadcast(BaseComponent component) {
              for (Player player : CraftServer.this.getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index bc4ca57b4db109d341766f3f13d2b3742948b8b3..444e89f8833fc9a4a5bdf0c59e7d06dae6d8c7a8 100644
+index dc50d06bc56ab57e1be709f39e49bf2db30e2f69..8ef6fc0e2af3dfbff5137614e0a963a3131b62e1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {

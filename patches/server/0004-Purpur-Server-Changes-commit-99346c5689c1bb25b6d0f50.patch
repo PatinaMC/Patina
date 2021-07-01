@@ -6,7 +6,7 @@ Subject: [PATCH] Purpur Server Changes commit
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 7a86357ea75db7263598b79d31d4ae9abe5e4b50..65336e68a35b0c6d302efe4a51bb137919ec508a 100644
+index 14c91adcafc0dc937288ba57f0e41abd2e4114f5..b0a34df5b1114d2152e08197763551f5e9c03fe4 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -118,6 +118,11 @@ public class PaperConfig {
@@ -77,7 +77,7 @@ index ff4f48f6646060b398e8bf90a078e7fbf84beada..d478627dcd2b6e3d3d95b3fa224a25d4
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 721711aba2a57754b75a3430b6a91d2d4be806dd..63586c76ed3397055fdf072dfecc4b9052f268da 100644
+index 0b488bcb0e96060cefa1659cc8af8c48e0ae46b9..19e5cf1692332fd130c60aaf46b4747f84233228 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -309,6 +309,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -124,7 +124,7 @@ index 7d6dc0a8ee35274052b122bbc446bc54750de0a6..c46df052a5a39d92688f51377ee1f7b5
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 1ba335f85e918f22a8e594b5a59406655069e50f..20e7955e979df79cdc02c23d91841b0ab0fda8f7 100644
+index b737d50547c1b0e396facc6c2aa38201e208ed84..bdc5a85ffbc4c6887e55e7bce3a8bb436df54d4d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -218,6 +218,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -142,7 +142,7 @@ index 1ba335f85e918f22a8e594b5a59406655069e50f..20e7955e979df79cdc02c23d91841b0a
 +        // Purpur end
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
-         // Paper end
+         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
 index d77a10c6ae7e1515085ff7a18db9e3e14ebb8012..ba1850b4c70f7ebef53f8cf40fc50ec3eeb86550 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
@@ -179,7 +179,7 @@ index d77a10c6ae7e1515085ff7a18db9e3e14ebb8012..ba1850b4c70f7ebef53f8cf40fc50ec3
          this.entity.stopSeenByPlayer(player);
          player.connection.send(new ClientboundRemoveEntityPacket(this.entity.getId()));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 67d7da9a4d2144ab99bdb69c10bcb9910744602a..30e0388fdb060da677ed5c0bf261013321671617 100644
+index 9dc5c82ea1d497174d288000f9f1ccaabbcb4a18..79964543ea0f96a18ecf2bdecae0f4434842a8b2 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -229,6 +229,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -242,10 +242,10 @@ index d65191a50349ec86fe35df4ac1070f94fbb77b4c..9c57dfd72ef559d8052aac4e073cd36e
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 9b671cd52d67efffe6962c0bc60a2f51e51eb0b7..e2b9b9446b25f932960d7db7c5163db08e5832f7 100644
+index 570cea8ee6a442b2dc3c6ef849294ef0c02027ca..8bf0acca21bae4dc6a3aecbf055b2e1d752d2f51 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1148,6 +1148,7 @@ public abstract class PlayerList {
+@@ -1154,6 +1154,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + i);
              }
@@ -254,10 +254,10 @@ index 9b671cd52d67efffe6962c0bc60a2f51e51eb0b7..e2b9b9446b25f932960d7db7c5163db0
              entityplayer.connection.send(new ClientboundEntityEventPacket(entityplayer, b0));
          }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index f0cbca376e9893e71cd72034b031a01c74ebc11d..c6d09ed7d464b26cd80b683ac98af78321b37e98 100644
+index debbace72046d7f691cc5b7c6be5f5738b73ec9f..9c808bfe4ed3d7bab36b812c03b845e838b59c40 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1738,6 +1738,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -1760,6 +1760,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          this.setXRot(Mth.clamp(pitch, -90.0F, 90.0F) % 360.0F);
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();
@@ -265,7 +265,7 @@ index f0cbca376e9893e71cd72034b031a01c74ebc11d..c6d09ed7d464b26cd80b683ac98af783
      }
  
      public void absMoveTo(double x, double y, double z) {
-@@ -3563,6 +3564,37 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3590,6 +3591,37 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          return SlotAccess.NULL;
      }
  
@@ -303,7 +303,7 @@ index f0cbca376e9893e71cd72034b031a01c74ebc11d..c6d09ed7d464b26cd80b683ac98af783
      @Override
      public void sendMessage(Component message, UUID sender) {}
  
-@@ -3975,17 +4007,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -4002,17 +4034,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          return this.getZ((2.0D * this.random.nextDouble() - 1.0D) * widthScale);
      }
  
@@ -391,7 +391,7 @@ index 4a54e8026561a542eff810a731d66e0fcd35e84c..20f164909f189d0908620b8e7d32a7b2
          if (!inactive) {
              if (!gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 4a8d4e3d95a393fe994b0253c2812cae68726a38..9dd20e886e8d1e7c96e00f99ab1b1101777343ab 100644
+index 95c2b3705806414af7181f55a11acbf151b62cf0..1ec37941d8480b8c7f7400614ec9390967d14b78 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -168,6 +168,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -839,10 +839,10 @@ index 0000000000000000000000000000000000000000..6e7f56fe2b78d7a09d5d130f2c88338f
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09ea0b75cf 100644
+index 55ff0b03077b1f2ef46cf3067cc712ddb7dae798..e50f39c6ba217d134c24325954387bb281ca1796 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -880,6 +880,7 @@ public final class CraftServer implements Server {
+@@ -876,6 +876,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
@@ -850,7 +850,7 @@ index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -915,6 +916,7 @@ public final class CraftServer implements Server {
+@@ -911,6 +912,7 @@ public final class CraftServer implements Server {
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
              world.tuinityConfig.init(); // Tuinity - Server Config
@@ -858,7 +858,7 @@ index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -930,6 +932,7 @@ public final class CraftServer implements Server {
+@@ -926,6 +928,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -866,7 +866,7 @@ index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2383,6 +2386,18 @@ public final class CraftServer implements Server {
+@@ -2389,6 +2392,18 @@ public final class CraftServer implements Server {
          }
          // Tuinity end - add config to timings report
  
@@ -885,7 +885,7 @@ index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2537,4 +2552,10 @@ public final class CraftServer implements Server {
+@@ -2543,4 +2558,10 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -897,7 +897,7 @@ index 533b8c42245540ef2f042bd63a88ed9290ee5755..6cfe146de0f06e3b69119dfbce83ec09
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 7f7116a9cbb597a0fd93447e201ee47cb8226f3a..bc4ca57b4db109d341766f3f13d2b3742948b8b3 100644
+index e50ed9d287e298b8ab6dad8e24dbd45aeaefc4cb..dc50d06bc56ab57e1be709f39e49bf2db30e2f69 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -154,6 +154,14 @@ public class Main {

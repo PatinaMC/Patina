@@ -1,8 +1,12 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 28 Jun 2021 07:53:32 +0000
+Date: Thu, 1 Jul 2021 11:38:45 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 527a3cfda38a6f83473a5d6b254a665ecb673e6c
+ 3e8526494b42cbe06eaf151230ec416a10a05930
+
+Fix chicken jockey persistence
+
+idk
 
 Initial
 
@@ -291,13 +295,37 @@ Use thread unsafe random for mob spawning
 
 Remove streams and iterators from range check
 
+Remove streams from getting nearby players
+
+This results in a 3% improvement at 20,000 entities, but more
+importantly is the heaviest part of the entity tracker currently.
+
+Skip cloning loot parameters
+
+Small improvement in CPU, much larger improvement in allocations. As a
+new loot context is created every time a player moves (along with a lot
+of other times) the constant cloning churns out a lot of useless
+objects.
+
+Skip block update if no updating to be done
+
+The block form event can be called very frequently by liquids, however
+the event has the downside of passing a blockstate in it. This means
+plugins can modify the blockstate, and the block gets updated at the end
+of it automatically. This force update, regardless of if anything
+changed, basically does a double update any time a block is formed. This
+patch adds a tracker of how many times a blockstate is modified and only
+updates the block if it was actually modified.
+
+Temporary fix until PR is accepted
+
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 407035f8dd25b887c7b240534ee161827fd72499..07ae0e06d7cbaf6452bb5b98b4c06066c4ec3763 100644
+index 4123f9e7dab80ea2b366ca4cf49d8b874aa07386..bde9ca8fbabe4fe59545c6d4d05db93c5af58344 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -52,6 +52,9 @@ dependencies {
+@@ -66,6 +66,9 @@ dependencies {
  
-     implementation("com.github.oshi:oshi-core:5.7.5") // Paper - fix startup delay and warning
+     implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
  
 +    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
 +    implementation("com.github.technove:Flare:fd8e0c3d7e") // Airplane - flare
@@ -305,8 +333,26 @@ index 407035f8dd25b887c7b240534ee161827fd72499..07ae0e06d7cbaf6452bb5b98b4c06066
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
+@@ -133,6 +136,8 @@ tasks.shadowJar {
+     transform(ModifiedLog4j2PluginsCacheFileTransformer::class.java)
+ }
+ 
++// Airplane start - wait until we update paperweight
++/*
+ // Paper start - include reobf mappings in jar for stacktrace deobfuscation
+ abstract class IncludeMappings : BaseTask() {
+     @get:InputFile
+@@ -170,6 +175,8 @@ tasks.reobfJar {
+     inputJar.set(includeMappings.flatMap { it.outputJar })
+ }
+ // Paper end - include reobf mappings in jar for stacktrace deobfuscation
++ */
++// Airplane end
+ 
+ tasks.test {
+     exclude("org/bukkit/craftbukkit/inventory/ItemStack*Test.class")
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 7acf077bc131af718c7548cc29deef558c04e463..7a86357ea75db7263598b79d31d4ae9abe5e4b50 100644
+index 73652e403eaa419fb5b4b54bd506f246c0aa4e99..14c91adcafc0dc937288ba57f0e41abd2e4114f5 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,6 +202,15 @@ public class PaperConfig {
@@ -1487,7 +1533,7 @@ index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be7
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 58bb821decd5305b6d68b12bb8eb28dfada7e113..721711aba2a57754b75a3430b6a91d2d4be806dd 100644
+index 6820e7648972bf39be65c3b82c86eadb5c1ba1da..0b488bcb0e96060cefa1659cc8af8c48e0ae46b9 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2290,6 +2290,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -1499,11 +1545,11 @@ index 58bb821decd5305b6d68b12bb8eb28dfada7e113..721711aba2a57754b75a3430b6a91d2d
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 8202e161149132530597a8222bf035f53814ffcf..1ba335f85e918f22a8e594b5a59406655069e50f 100644
+index 9bb0ff063da162f2b5c91d367d9555c1cf1a3ab1..b737d50547c1b0e396facc6c2aa38201e208ed84 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -222,6 +222,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
+@@ -223,6 +223,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
          // Paper end
          com.tuinity.tuinity.config.TuinityConfig.init((java.io.File) options.valueOf("tuinity-settings")); // Tuinity - Server Config
 +        gg.airplane.AirplaneConfig.load(); // Airplane - config
@@ -1587,9 +1633,18 @@ index a00627e0fa38632449042f59c053b4dac13e58bf..d77a10c6ae7e1515085ff7a18db9e3e1
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8d6124710a6feb6c2fbfa0b5a291417870a6e24a..c388be088409a32bdaa37680c1fb2b911e91feae 100644
+index a4546a80b0d1fde8c4f92fea575745b1352d95b0..bf6327406a348ebf065c934bda4cf67789fc89b9 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
+@@ -210,7 +210,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+     }
+ 
+     @Override public LevelChunk getChunkIfLoaded(int x, int z) { // Paper - this was added in world too but keeping here for NMS ABI
+-        return this.chunkSource.getChunk(x, z, false);
++        return super.getChunkIfLoaded(x, z); // Airplane - use super
+     }
+ 
+     // Paper start - Asynchronous IO
 @@ -579,6 +579,21 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
          return result;
      }
@@ -1769,7 +1824,7 @@ index 7437f01ca8f416e2c9150250e324af4725a4efb6..c24df23d7696a26e625859c4d1718ba8
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b4ae6f1d0b89eb609fa26b850dd06fccaf2e4d90..f0cbca376e9893e71cd72034b031a01c74ebc11d 100644
+index ca7718053a6a2eb715ea3671bd4bc15304ede420..debbace72046d7f691cc5b7c6be5f5738b73ec9f 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -336,6 +336,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -1782,6 +1837,54 @@ index b4ae6f1d0b89eb609fa26b850dd06fccaf2e4d90..f0cbca376e9893e71cd72034b031a01c
  
      public float getBukkitYaw() {
          return this.yRot;
+@@ -355,17 +358,36 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+         this.isLegacyTrackingEntity = isLegacyTrackingEntity;
+     }
+ 
++    private org.spigotmc.TrackingRange.TrackingRangeType getFurthestEntity(Entity entity, net.minecraft.server.level.ChunkMap chunkMap, org.spigotmc.TrackingRange.TrackingRangeType type, int range) {
++        List<Entity> passengers = entity.getPassengers();
++        for (int i = 0, size = passengers.size(); i < size; i++) {
++            Entity passenger = passengers.get(i);
++            org.spigotmc.TrackingRange.TrackingRangeType passengerType = passenger.trackingRangeType;
++            int passengerRange = chunkMap.getEntityTrackerRange(passengerType.ordinal());
++            if (passengerRange > range) {
++                type = passengerType;
++                range = passengerRange;
++            }
++
++            type = this.getFurthestEntity(passenger, chunkMap, type, range);
++        }
++
++        return type;
++    }
++
+     public final com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer> getPlayersInTrackRange() {
+         // Tuinity start - determine highest range of passengers
+         if (this.passengers.isEmpty()) {
+             return ((ServerLevel)this.level).getChunkSource().chunkMap.playerEntityTrackerTrackMaps[this.trackingRangeType.ordinal()]
+                 .getObjectsInRange(MCUtil.getCoordinateKey(this));
+         }
+-        Iterable<Entity> passengers = this.getIndirectPassengers();
++        //Iterable<Entity> passengers = this.getIndirectPassengers(); // Airplane
+         net.minecraft.server.level.ChunkMap chunkMap = ((ServerLevel)this.level).getChunkSource().chunkMap;
+         org.spigotmc.TrackingRange.TrackingRangeType type = this.trackingRangeType;
+         int range = chunkMap.getEntityTrackerRange(type.ordinal());
+ 
++        // Airplane start - use getFurthestEntity to skip getIndirectPassengers
++        /*
+         for (Entity passenger : passengers) {
+             org.spigotmc.TrackingRange.TrackingRangeType passengerType = passenger.trackingRangeType;
+             int passengerRange = chunkMap.getEntityTrackerRange(passengerType.ordinal());
+@@ -374,6 +396,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+                 range = passengerRange;
+             }
+         }
++         */
++        type = this.getFurthestEntity(this, chunkMap, type, range);
++        // Airplane end
+ 
+         return chunkMap.playerEntityTrackerTrackMaps[type.ordinal()].getObjectsInRange(MCUtil.getCoordinateKey(this));
+         // Tuinity end - determine highest range of passengers
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index 57c448ee93df76fc2a17c75fafc78408d720ced3..f59aabf306c3ffed4a5f34dcb434750abe7b461a 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
@@ -1956,6 +2059,19 @@ index 153194d937d210e2e4fd8864e4a3c000f85d7e2e..1d415a91b9c90603e8f738dbafe7a5ea
  
      @Override
      protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
+diff --git a/src/main/java/net/minecraft/world/entity/animal/Chicken.java b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
+index 8460bed561c09a647f6e0209f7c5448e5a42b281..9a4b133e4ecbd04753f55d9c4a8bd1ed83943476 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/Chicken.java
++++ b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
+@@ -77,7 +77,7 @@ public class Chicken extends Animal {
+     public void aiStep() {
+         // CraftBukkit start
+         if (this.isChickenJockey()) {
+-            this.persistenceRequired = !this.removeWhenFarAway(0);
++            ((Mob) this).persistenceRequired = !this.removeWhenFarAway(0); // Paper - fix remap by explicitly casting to Mob
+         }
+         // CraftBukkit end
+         super.aiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 index 158719d46c96bb733a00e08c8285f41a48406abf..2dac4bc346eb1dde1f8d92c3e5b9648b2c433617 100644
 --- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
@@ -2096,7 +2212,7 @@ index dace7d13787f6fb44af90792599fa16caad68052..8d414822894fc41460bb9ccc53d7b0df
          return false;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 69f439851fe1ff07d827eaed274940a5783d5f6c..3edd5ff6d854dd4fde0f509d91a9e020589edcda 100644
+index 69f439851fe1ff07d827eaed274940a5783d5f6c..bfa2a1ad2bf8004d7545cd2175834fa00fcdb8bb 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -42,6 +42,37 @@ public abstract class Projectile extends Entity {
@@ -2118,7 +2234,7 @@ index 69f439851fe1ff07d827eaed274940a5783d5f6c..3edd5ff6d854dd4fde0f509d91a9e020
 +        int previousX = Mth.floor(this.getX()) >> 4, previousZ = Mth.floor(this.getX()) >> 4;
 +        int newX = Mth.floor(z) >> 4, newZ = Mth.floor(z) >> 4;
 +        if (previousX != newX || previousZ != newZ) {
-+            boolean isLoaded = this.level.getChunkIfLoaded(newX, newZ) != null;
++            boolean isLoaded = ((net.minecraft.server.level.ServerChunkCache) this.level.getChunkSource()).getChunkAtIfLoadedMainThreadNoCache(newX, newZ) != null;
 +            if (!isLoaded) {
 +                if (loadedThisTick > 10) { // Airplane 10 = max chunks to load from projectiles in a tick todo config
 +                    if (++buffered > 20) { // Airplane 20 = max chunks  a single projectile loads overall todo config
@@ -2266,7 +2382,7 @@ index e7ca5d6fb8922e7e8065864f736b06056be080a0..833ad6fbedfc275b3fde640b0e873f23
          final String id;
          private final GameRules.Category category;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e0080327101f2182d148c69f7856461b9384d47c..4a8d4e3d95a393fe994b0253c2812cae68726a38 100644
+index 862553e98a7237d39a26036c615b9cbd001bd3bf..95c2b3705806414af7181f55a11acbf151b62cf0 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -445,6 +445,91 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -2361,7 +2477,7 @@ index e0080327101f2182d148c69f7856461b9384d47c..4a8d4e3d95a393fe994b0253c2812cae
      public boolean isInWorldBounds(BlockPos pos) {
          return pos.isValidLocation(this); // Paper - use better/optimized check
      }
-@@ -1437,6 +1522,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1436,6 +1521,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      }
  
      public ProfilerFiller getProfiler() {
@@ -2666,7 +2782,7 @@ index ed3518fe7c841d9e1a9c97626acaa3d765a6d76f..37e32747586295f1eb8976bbff7a16de
      public ItemStack removeItem(int slot, int amount) {
          this.unpackLootTable((Player)null);
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 5a99fca759694f06cfd02de1db6c13ae20391ab4..80d699652116aabe11f576d92f7731a2f1a41c52 100644
+index 54e23d303aad286ab46c3e5f9b17a5f9922e2942..ee2d00ccbe2d11324bb97fc43a213ed7ba1f111a 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -172,11 +172,25 @@ public class LevelChunk implements ChunkAccess {
@@ -2726,10 +2842,10 @@ index 5a99fca759694f06cfd02de1db6c13ae20391ab4..80d699652116aabe11f576d92f7731a2
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java b/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
-index 40471fffffb2767029f8b3ba7c63db60389a4797..71fff3b15c38a87ee6d2b2227324ff8dcf6adba8 100644
+index ebeb3e3b0619b034a9681da999e9ac33cc241718..5b5ada474cff54b424946fc628d30f25a6774684 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
-@@ -261,13 +261,17 @@ public class PalettedContainer<T> implements PaletteResize<T> {
+@@ -263,13 +263,17 @@ public class PalettedContainer<T> implements PaletteResize<T> {
  
      }
  
@@ -2749,7 +2865,7 @@ index 40471fffffb2767029f8b3ba7c63db60389a4797..71fff3b15c38a87ee6d2b2227324ff8d
              for(int j = 0; j < 4096; ++j) {
                  T object2 = this.get(j);
 diff --git a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
-index 7fe7d98dfdf63c52ffccf4400077d9a9099555b8..b3f01ff402f3e65592a48af786973cb3647bec88 100644
+index 917fa5a3106259c01d6a01acf770890dbdf50f1a..b9d5785a5feccd905828e7f82264c3cb48c3c773 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/storage/ChunkSerializer.java
 @@ -485,6 +485,7 @@ public class ChunkSerializer {
@@ -2866,6 +2982,23 @@ index 6e3e873efa1f50f53cb6503bde8a981f9cefd006..32d15354ceb46fb06b1c36049d3a8bfb
  
          return flag;
      }
+diff --git a/src/main/java/net/minecraft/world/level/storage/loot/LootContext.java b/src/main/java/net/minecraft/world/level/storage/loot/LootContext.java
+index 05b64f2730bfe836bd1d72dcfccd9f536908a099..39e941a6a315e2a9fc0f47eb39ef9d2b58069f90 100644
+--- a/src/main/java/net/minecraft/world/level/storage/loot/LootContext.java
++++ b/src/main/java/net/minecraft/world/level/storage/loot/LootContext.java
+@@ -41,8 +41,10 @@ public class LootContext {
+         this.level = world;
+         this.lootTables = tableGetter;
+         this.conditions = conditionGetter;
+-        this.params = ImmutableMap.copyOf(parameters);
+-        this.dynamicDrops = ImmutableMap.copyOf(drops);
++        // Airplane start - use unmodifiable maps instead of immutable ones to skip the copy
++        this.params = java.util.Collections.unmodifiableMap(parameters);
++        this.dynamicDrops = java.util.Collections.unmodifiableMap(drops);
++        // Airplane end
+     }
+ 
+     public boolean hasParam(LootContextParam<?> parameter) {
 diff --git a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java b/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
 index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d0d05e909 100644
 --- a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
@@ -2972,10 +3105,10 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8d163d22b20c289558d86bcde43a2ebdde348bb8..533b8c42245540ef2f042bd63a88ed9290ee5755 100644
+index 8a443a350aafba2d5506d9df6b31dc0cf30400f5..55ff0b03077b1f2ef46cf3067cc712ddb7dae798 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -990,6 +990,11 @@ public final class CraftServer implements Server {
+@@ -986,6 +986,11 @@ public final class CraftServer implements Server {
                  plugin.getDescription().getName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));
@@ -2987,6 +3120,95 @@ index 8d163d22b20c289558d86bcde43a2ebdde348bb8..533b8c42245540ef2f042bd63a88ed92
          }
      }
      // Paper end
+diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftBlockState.java b/src/main/java/org/bukkit/craftbukkit/block/CraftBlockState.java
+index 3c41d80b0ffca929abfcb45cd1dedbc0bf3f5954..0da204bb138a647484576011d53b44eac21247b0 100644
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftBlockState.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftBlockState.java
+@@ -24,6 +24,7 @@ public class CraftBlockState implements BlockState {
+     private final BlockPos position;
+     protected net.minecraft.world.level.block.state.BlockState data;
+     protected int flag;
++    protected int modifications = 0; public int getModifications() { return this.modifications; } // Airplane - track whether its been modified
+ 
+     public CraftBlockState(final Block block) {
+         this.world = (CraftWorld) block.getWorld();
+@@ -80,6 +81,7 @@ public class CraftBlockState implements BlockState {
+ 
+     public void setData(net.minecraft.world.level.block.state.BlockState data) {
+         this.data = data;
++        this.modifications++; // Airplane
+     }
+ 
+     public BlockPos getPosition() {
+@@ -99,6 +101,7 @@ public class CraftBlockState implements BlockState {
+     public void setBlockData(BlockData data) {
+         Preconditions.checkArgument(data != null, "BlockData cannot be null");
+         this.data = ((CraftBlockData) data).getState();
++        this.modifications++; // Airplane
+     }
+ 
+     @Override
+@@ -115,6 +118,7 @@ public class CraftBlockState implements BlockState {
+                         + mat.getData().getName() + ", found " + data.getClass().getName());
+             }
+         }
++        this.modifications++; // Airplane
+     }
+ 
+     @Override
+@@ -129,6 +133,7 @@ public class CraftBlockState implements BlockState {
+ 
+         if (this.getType() != type) {
+             this.data = CraftMagicNumbers.getBlock(type).defaultBlockState();
++            this.modifications++; // Airplane
+         }
+     }
+ 
+@@ -223,6 +228,7 @@ public class CraftBlockState implements BlockState {
+     @Override
+     public void setRawData(byte data) {
+         this.data = CraftMagicNumbers.getBlock(this.getType(), data);
++        this.modifications++; // Airplane
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftFurnace.java b/src/main/java/org/bukkit/craftbukkit/block/CraftFurnace.java
+index 92c156b09cc46e5d70ed7d803683787248495a62..189b86761aeb43899fb83e198ccc1da705e5da83 100644
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftFurnace.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftFurnace.java
+@@ -42,6 +42,7 @@ public abstract class CraftFurnace<T extends AbstractFurnaceBlockEntity> extends
+         this.getSnapshot().litTime = burnTime;
+         // SPIGOT-844: Allow lighting and relighting using this API
+         this.data = this.data.setValue(AbstractFurnaceBlock.LIT, burnTime > 0);
++        this.modifications++; // Airplane
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/block/CraftJukebox.java b/src/main/java/org/bukkit/craftbukkit/block/CraftJukebox.java
+index c4a8920187317b0daa076a3d7d9dcdae239bdc68..cb8af6c5e654c11f706ec880893a6c9688039348 100644
+--- a/src/main/java/org/bukkit/craftbukkit/block/CraftJukebox.java
++++ b/src/main/java/org/bukkit/craftbukkit/block/CraftJukebox.java
+@@ -70,6 +70,7 @@ public class CraftJukebox extends CraftBlockEntityState<JukeboxBlockEntity> impl
+         } else {
+             this.data = this.data.setValue(JukeboxBlock.HAS_RECORD, true);
+         }
++        this.modifications++; // Airplane
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+index a59a449c0a7b76527f009031aee2d11d6b43cadf..8fa1362242160d9c85524cfc4f29005cbd6dd4f5 100644
+--- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
++++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
+@@ -1713,7 +1713,7 @@ public class CraftEventFactory {
+         BlockFormEvent event = (entity == null) ? new BlockFormEvent(blockState.getBlock(), blockState) : new EntityBlockFormEvent(entity.getBukkitEntity(), blockState.getBlock(), blockState);
+         world.getCraftServer().getPluginManager().callEvent(event);
+ 
+-        if (!event.isCancelled()) {
++        if (!event.isCancelled() && blockState.getModifications() > 0) { // Airplane - don't update if plugins didn't modify it
+             blockState.update(true);
+         }
+ 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
 index 0b3b46348ac9195bff1492ffc11fcbff7d3f5c6f..4010052c53f3a2831b4d5aa1c041d85897856acb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftShapelessRecipe.java
