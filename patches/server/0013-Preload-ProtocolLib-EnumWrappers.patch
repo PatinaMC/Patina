@@ -1,0 +1,94 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: ishland <ishlandmc@yeah.net>
+Date: Wed, 27 Jan 2021 20:16:47 +0800
+Subject: [PATCH] Preload ProtocolLib EnumWrappers
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 88891933e74275afb9ad521c2ae6fb98a94f3476..bce1c26db2d8a03514f51530d223f87d6aaa81d4 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -1206,6 +1206,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                 // Paper end
+ 
+                 com.tuinity.tuinity.config.TuinityConfig.createWorldSections = false; // Tuinity - don't let plugin created worlds fill our config
++
++                if (org.yatopiamc.yatopia.server.YatopiaConfig.fixProtocolLib) org.yatopiamc.yatopia.server.util.YatopiaPreloadProtocolLib.run(); // Yatopia - Preload ProtocolLib's Enum Wrappers
++
+                 org.spigotmc.WatchdogThread.tick(); // Paper
+                 org.spigotmc.WatchdogThread.hasStarted = true; // Paper
+                 Arrays.fill( recentTps, 20 );
+diff --git a/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java b/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
+index eb6786fa040ede035b649d3f9c2c117afe390406..538c98c0a237503eeadcf6c783e377249f0ba4a1 100644
+--- a/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
++++ b/src/main/java/org/yatopiamc/yatopia/server/YatopiaConfig.java
+@@ -108,18 +108,11 @@ public class YatopiaConfig {
+ 			num = 0D;
+ 		}
+ 		switch (unit) {
+-			case 'd':
+-				num *= (double) 60 * 60 * 24;
+-				break;
+-				case 'h':
+-				num *= (double) 60 * 60;
+-				break;
+-				case 'm':
+-				num *= 60;
+-				break;
+-				default:
+-				case 's':
+-					break;
++			case 'd':  num *= (double) 60 * 60 * 24;
++			case 'h':  num *= (double) 60 * 60;
++			case 'm':  num *= 60;
++			case 's':  break;
++			default: break;
+ 		}
+ 		return (int) num;
+ }
+@@ -177,6 +170,11 @@ public class YatopiaConfig {
+ 		return config.getString(path, config.getString(path));
+ }
+ 
++	public static boolean fixProtocolLib = true;
++	private static void protocolLib() {
++		fixProtocolLib = getBoolean("settings.fix-protocollib", fixProtocolLib);
++	}
++
+ 	public static boolean disableEntityStuckChecks = false;
+ private static void disableEntityStuckChecks() {
+ 	disableEntityStuckChecks = getBoolean("settings.disableEntityStuckChecks", false);
+diff --git a/src/main/java/org/yatopiamc/yatopia/server/util/YatopiaPreloadProtocolLib.java b/src/main/java/org/yatopiamc/yatopia/server/util/YatopiaPreloadProtocolLib.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..85906aa00163a4626b16190e2e48385bc5eba801
+--- /dev/null
++++ b/src/main/java/org/yatopiamc/yatopia/server/util/YatopiaPreloadProtocolLib.java
+@@ -0,0 +1,28 @@
++package org.yatopiamc.yatopia.server.util;
++
++import net.minecraft.server.MinecraftServer;
++import org.bukkit.Bukkit;
++import org.bukkit.plugin.Plugin;
++import org.bukkit.plugin.SimplePluginManager;
++
++import java.lang.reflect.Method;
++
++public class YatopiaPreloadProtocolLib {
++
++    public synchronized static void run() {
++        try {
++            final SimplePluginManager pluginManager = (SimplePluginManager) Bukkit.getPluginManager();
++            final Plugin protocolLib = pluginManager.getPlugin("ProtocolLib");
++            if(protocolLib != null && protocolLib.isEnabled()) {
++                MinecraftServer.LOGGER.info("Yatopia: Attempting to fix ProtocolLib");
++                final Method initialize = Class.forName("com.comphenix.protocol.wrappers.EnumWrappers", true, protocolLib.getClass().getClassLoader()).getDeclaredMethod("initialize");
++                initialize.setAccessible(true);
++                initialize.invoke(null);
++                synchronized (YatopiaPreloadProtocolLib.class) {
++                }
++            }
++        } catch (Throwable t) {
++            MinecraftServer.LOGGER.warn("Unable to fix ProtocolLib", t);
++        }
++    }
++}
