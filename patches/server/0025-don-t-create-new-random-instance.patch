@@ -1,0 +1,109 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 12:17:44 +0000
+Subject: [PATCH] don't create new random instance
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 59d3847db0c94afffeb03b7ca45552d969193ad0..71b8a821d48d73e10559408097a6e1f0c8c9e7b2 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -649,7 +649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+ 
+             if (worlddimension == null) {
+                 dimensionmanager = (DimensionType) this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
+-                chunkgenerator = WorldGenSettings.makeDefaultOverworld(this.registryHolder.registryOrThrow(Registry.BIOME_REGISTRY), this.registryHolder.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), (new Random()).nextLong());
++                chunkgenerator = WorldGenSettings.makeDefaultOverworld(this.registryHolder.registryOrThrow(Registry.BIOME_REGISTRY), this.registryHolder.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), java.util.concurrent.ThreadLocalRandom.current().nextLong()); // Patina - don't create new random instance
+             } else {
+                 dimensionmanager = worlddimension.type();
+                 chunkgenerator = worlddimension.generator();
+diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+index 217af30c81438836864312e125cf512b491a3ab4..4710e8f3e2233604153433294332f3daa3322604 100644
+--- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
++++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
+@@ -371,7 +371,7 @@ public class ServerPlayer extends Player {
+             long l = k * k;
+             int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
+             int j1 = this.getCoprime(i1);
+-            int k1 = (new Random()).nextInt(i1);
++            int k1 = worldserver.random.nextInt(i1); // Patina - don't create new random instance
+ 
+             for (int l1 = 0; l1 < i1; ++l1) {
+                 int i2 = (k1 + j1 * l1) % i1;
+@@ -408,7 +408,7 @@ public class ServerPlayer extends Player {
+             long l = k * k;
+             int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
+             int j1 = this.getCoprime(i1);
+-            int k1 = (new Random()).nextInt(i1);
++            int k1 = world.random.nextInt(i1); // Patina - don't create new random instance
+ 
+             for (int l1 = 0; l1 < i1; ++l1) {
+                 int i2 = (k1 + j1 * l1) % i1;
+diff --git a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
+index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfdeb152141 100644
+--- a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
++++ b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
+@@ -348,7 +348,7 @@ public class QueryThreadGs4 extends GenericThread {
+             this.identBytes[2] = bs[5];
+             this.identBytes[3] = bs[6];
+             this.ident = new String(this.identBytes, StandardCharsets.UTF_8);
+-            this.challenge = (new Random()).nextInt(16777216);
++            this.challenge = java.util.concurrent.ThreadLocalRandom.current().nextInt(16777216); // Patina - don't create new random instance
+             this.challengeBytes = String.format("\t%s%d\u0000", this.ident, this.challenge).getBytes(StandardCharsets.UTF_8);
+         }
+ 
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index c912e2068fee1023784d47386334129e56161dc3..8f42dfc8b59cc015effcc5a8ac300cce81675903 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -123,13 +123,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     public final Thread thread;
+     private final boolean isDebug;
+     private int skyDarken;
+-    protected int randValue = (new Random()).nextInt();
++    // Patina - moved down
+     protected final int addend = 1013904223;
+     protected float oRainLevel;
+     public float rainLevel;
+     protected float oThunderLevel;
+     public float thunderLevel;
+     public final Random random = new Random();
++    protected int randValue = random.nextInt(); // Patina - don't create new random instance
+     private final DimensionType dimensionType;
+     public final WritableLevelData levelData;
+     private final Supplier<ProfilerFiller> profiler;
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
+index 57b12ba5a24e68b0a0420d692946fe5e83974db4..75b00ee813da7447f33ba2a334e9689258931525 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
+@@ -89,7 +89,7 @@ public class WorldGenSettings {
+     }
+ 
+     public static WorldGenSettings makeDefault(Registry<DimensionType> iregistry, Registry<Biome> iregistry1, Registry<NoiseGeneratorSettings> iregistry2) {
+-        long i = (new Random()).nextLong();
++        long i = java.util.concurrent.ThreadLocalRandom.current().nextLong(); // Patina - don't create new random instance
+ 
+         return new WorldGenSettings(i, true, false, WorldGenSettings.withOverworld(iregistry, DimensionType.defaultDimensions(iregistry, iregistry1, iregistry2, i), (ChunkGenerator) WorldGenSettings.makeDefaultOverworld(iregistry1, iregistry2, i)));
+     }
+@@ -200,7 +200,7 @@ public class WorldGenSettings {
+         }).orElse("default");
+ 
+         properties.put("level-type", s4);
+-        long i = (new Random()).nextLong();
++        long i = java.util.concurrent.ThreadLocalRandom.current().nextLong(); // Patina - don't create new random instance
+ 
+         if (!s1.isEmpty()) {
+             try {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index 7e401d7f3ab4cc4608159432ddca71a444a4f6ec..bd0b5f4c6213a43bc67f594083c09d7ddd482f68 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -1161,7 +1161,7 @@ public final class CraftServer implements Server {
+ 
+         if (worlddimension == null) {
+             dimensionmanager = (DimensionType) console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
+-            chunkgenerator = WorldGenSettings.makeDefaultOverworld(console.registryHolder.registryOrThrow(Registry.BIOME_REGISTRY), console.registryHolder.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), (new Random()).nextLong());
++            chunkgenerator = WorldGenSettings.makeDefaultOverworld(console.registryHolder.registryOrThrow(Registry.BIOME_REGISTRY), console.registryHolder.registryOrThrow(Registry.NOISE_GENERATOR_SETTINGS_REGISTRY), java.util.concurrent.ThreadLocalRandom.current().nextLong());  // Patina - don't create new random instance
+         } else {
+             dimensionmanager = worlddimension.type();
+             chunkgenerator = worlddimension.generator();

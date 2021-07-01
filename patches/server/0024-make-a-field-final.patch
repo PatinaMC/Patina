@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 12:11:49 +0000
+Subject: [PATCH] make a field final
+
+
+diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
+index f1ebfd810fd06e62d796110345aa36ce4a94e2fd..2595e695c7cee5de483244d62e31335749749f5a 100644
+--- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
++++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
+@@ -54,7 +54,7 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
+     private final ResultConsumer<CommandSourceStack> consumer;
+     private final EntityAnchorArgument.Anchor anchor;
+     private final Vec2 rotation;
+-    public ThreadLocal<CommandNode> currentCommand = new ThreadLocal<>(); // CraftBukkit // Paper
++    public final ThreadLocal<CommandNode> currentCommand = new ThreadLocal<>(); // CraftBukkit // Paper // Patina - make a field final
+ 
+     public CommandSourceStack(CommandSource output, Vec3 pos, Vec2 rot, ServerLevel world, int level, String simpleName, Component name, MinecraftServer server, @Nullable Entity entity) {
+         this(output, pos, rot, world, level, simpleName, name, server, entity, false, (commandcontext, flag, j) -> {

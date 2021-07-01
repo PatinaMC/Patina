@@ -1,0 +1,163 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 11:54:44 +0000
+Subject: [PATCH] completely remove snooper
+
+
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcfa90d76b9 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -190,14 +190,14 @@ import org.bukkit.event.server.ServerLoadEvent;
+ import co.aikar.timings.MinecraftTimings; // Paper
+ import org.spigotmc.SlackActivityAccountant; // Spigot
+ 
+-public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements SnooperPopulator, CommandSource, AutoCloseable {
++public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements CommandSource, AutoCloseable { // SnooperPopulator, // Patina - completely remove snooper
+ 
+     private static MinecraftServer SERVER; // Paper
+     public static final Logger LOGGER = LogManager.getLogger();
+     private static final float AVERAGE_TICK_TIME_SMOOTHING = 0.8F;
+     private static final int TICK_STATS_SPAN = 100;
+     public static final int MS_PER_TICK = 50;
+-    private static final int SNOOPER_UPDATE_INTERVAL = 6000;
++    //private static final int SNOOPER_UPDATE_INTERVAL = 6000;// Patina - completely remove snooper
+     private static final int OVERLOADED_THRESHOLD = 2000;
+     private static final int OVERLOADED_WARNING_INTERVAL = 15000;
+     public static final String LEVEL_STORAGE_PROTOCOL = "level";
+@@ -215,7 +215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     private static final long DELAYED_TASKS_TICK_EXTENSION = 50L;
+     public LevelStorageSource.LevelStorageAccess storageSource;
+     public final PlayerDataStorage playerDataStorage;
+-    private final Snooper snooper = new Snooper("server", this, Util.getMillis());
++    //private final Snooper snooper = new Snooper("server", this, Util.getMillis()); // Patina - completely remove snooper
+     private final List<Runnable> tickables = Lists.newArrayList();
+     private MetricsRecorder metricsRecorder;
+     private ProfilerFiller profiler;
+@@ -1060,9 +1060,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             }
+         }
+ 
++        /* // Patina - completely remove snooper
+         if (this.snooper.isStarted()) {
+             this.snooper.interrupt();
+         }
++        */
+ 
+         this.resources.close();
+ 
+@@ -1510,6 +1512,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+             // MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
+         //} // Paper
+ 
++        /* // Patina - completely remove snooper
+         this.profiler.push("snooper");
+         if (((DedicatedServer) this).getProperties().snooperEnabled && !this.snooper.isStarted() && this.tickCount > 100) { // Spigot
+             this.snooper.start();
+@@ -1518,6 +1521,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         if (((DedicatedServer) this).getProperties().snooperEnabled && this.tickCount % 6000 == 0) { // Spigot
+             this.snooper.prepare();
+         }
++        */
+ 
+         this.profiler.pop();
+ 
+@@ -1873,6 +1877,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         this.resourcePackHash = hash;
+     }
+ 
++    /* // Patina - completely remove snooper
+     @Override
+     public void populateSnooper(Snooper snooper) {
+         snooper.setDynamicData("whitelist_enabled", (Object) false);
+@@ -1906,7 +1911,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+ 
+         snooper.setDynamicData("worlds", (Object) i);
+     }
++    */
+ 
++    /* // Patina - completely remove snooper
+     @Override
+     public void populateSnooperInitial(Snooper snooper) {
+         snooper.setFixedData("singleplayer", this.isSingleplayer());
+@@ -1914,11 +1921,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         snooper.setFixedData("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
+         snooper.setFixedData("dedicated", this.isDedicatedServer());
+     }
++    */
+ 
++    /* // Patina - completely remove snooper
+     @Override
+     public boolean isSnooperEnabled() {
+         return true;
+     }
++    */
+ 
+     public abstract boolean isDedicatedServer();
+ 
+@@ -2015,9 +2025,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         return this.tickCount;
+     }
+ 
++    /* // Patina - completely remove snooper
+     public Snooper getSnooper() {
+         return this.snooper;
+     }
++    */
+ 
+     public int getSpawnProtectionRadius() {
+         return 16;
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index 30154551889510ba4a1e12c8cad3a803bd4c239c..8a68b6969b86b8ee387d1f792115c7423da1b2b1 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -505,17 +505,21 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         return this.getProperties().allowNether;
+     }
+ 
++    /* // Patina - completely remove snooper
+     @Override
+     public void populateSnooper(Snooper snooper) {
+         snooper.setDynamicData("whitelist_enabled", (Object) this.getPlayerList().isUsingWhitelist());
+         snooper.setDynamicData("whitelist_count", (Object) this.getPlayerList().getWhiteListNames().length);
+         super.populateSnooper(snooper);
+     }
++    */
+ 
++    /* // Patina - completely remove snooper
+     @Override
+     public boolean isSnooperEnabled() {
+         return this.getProperties().snooperEnabled;
+     }
++    */
+ 
+     public void handleConsoleInput(String command, CommandSourceStack commandSource) {
+         this.serverCommandQueue.add(new ConsoleInput(command, commandSource));
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+index c9d80a5430cc66d6189bf337770af43121a5bfd5..19217ad5df06289a8e5cfa1df8de5a8f6e88b7e1 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
+@@ -43,7 +43,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+     public final boolean hardcore;
+     public final boolean allowNether;
+     public final boolean spawnMonsters;
+-    public final boolean snooperEnabled;
++    //public final boolean snooperEnabled; // Patina - completely remove snooper
+     public final boolean useNativeTransport;
+     public final boolean enableCommandBlock;
+     public final int spawnProtection;
+@@ -88,11 +88,13 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie
+         this.hardcore = this.get("hardcore", false);
+         this.allowNether = this.get("allow-nether", true);
+         this.spawnMonsters = this.get("spawn-monsters", true);
++        /* // Patina - completely remove snooper
+         if (this.get("snooper-enabled", true)) {
+             ;
+         }
++        */
+ 
+-        this.snooperEnabled = false;
++        //this.snooperEnabled = false; // Patina - completely remove snooper
+         this.useNativeTransport = this.get("use-native-transport", true);
+         this.enableCommandBlock = this.get("enable-command-block", false);
+         this.spawnProtection = this.get("spawn-protection", 16);
