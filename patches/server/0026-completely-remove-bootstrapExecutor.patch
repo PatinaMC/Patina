@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 12:26:15 +0000
+Subject: [PATCH] completely remove bootstrapExecutor
+
+
+diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
+index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..2433db9c833b12ce8d2fe9af5f649559438a0594 100644
+--- a/src/main/java/net/minecraft/Util.java
++++ b/src/main/java/net/minecraft/Util.java
+@@ -65,7 +65,7 @@ import org.apache.logging.log4j.Logger;
+ 
+ public class Util {
+     private static final AtomicInteger WORKER_COUNT = new AtomicInteger(1);
+-    private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority
++    //private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority // Patina
+     private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
+     private static final ExecutorService IO_POOL = makeIoExecutor();
+     public static LongSupplier timeSource = System::nanoTime;
+@@ -133,9 +133,11 @@ public class Util {
+         return executorService;
+     }
+ 
++    /* // Patina
+     public static Executor bootstrapExecutor() {
+         return BOOTSTRAP_EXECUTOR;
+     }
++    */
+ 
+     public static Executor backgroundExecutor() {
+         return BACKGROUND_EXECUTOR;
+diff --git a/src/main/java/net/minecraft/util/datafix/DataFixers.java b/src/main/java/net/minecraft/util/datafix/DataFixers.java
+index f7c100c975210ba3c3af68311ee53f845ebe8dd3..d56b5c5725aa1c07526fbbf5ccde016c9ad74d57 100644
+--- a/src/main/java/net/minecraft/util/datafix/DataFixers.java
++++ b/src/main/java/net/minecraft/util/datafix/DataFixers.java
+@@ -75,15 +75,15 @@ public class DataFixers {
+ 
+     private static final BiFunction<Integer, Schema, Schema> SAME = Schema::new;
+     private static final BiFunction<Integer, Schema, Schema> SAME_NAMESPACED = NamespacedSchema::new;
+-    private static final DataFixer DATA_FIXER = DataFixers.createFixerUpper();
++    private static final DataFixer DATA_FIXER; // Patina
+ 
+     public DataFixers() {}
+ 
+-    private static DataFixer createFixerUpper() {
++    static { // Patina
+         DataFixerBuilder datafixerbuilder = new DataFixerBuilder(SharedConstants.getCurrentVersion().getWorldVersion());
+ 
+         DataFixers.addFixers(datafixerbuilder);
+-        return datafixerbuilder.build(Util.bootstrapExecutor());
++        DATA_FIXER = datafixerbuilder.build(Util.backgroundExecutor()); // Patina
+     }
+ 
+     public static DataFixer getDataFixer() {
