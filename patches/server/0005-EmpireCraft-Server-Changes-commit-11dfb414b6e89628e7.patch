@@ -33,10 +33,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 9dd20e886e8d1e7c96e00f99ab1b1101777343ab..d15b9a2b200b032a447353dfc792cb1adf8945db 100644
+index d2163b6fd350b581cefb7458464531e8f7c16ddb..21443d9f3f9901c183a886d7eaa20aa4dd45b095 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -887,7 +887,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -896,7 +896,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -47,7 +47,7 @@ index 9dd20e886e8d1e7c96e00f99ab1b1101777343ab..d15b9a2b200b032a447353dfc792cb1a
              try {
                  // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index 37e32747586295f1eb8976bbff7a16de5f37da18..39a83e53abbc9273847f30099c09ecee10478931 100644
+index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490ad0612c4b 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -69,6 +69,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc

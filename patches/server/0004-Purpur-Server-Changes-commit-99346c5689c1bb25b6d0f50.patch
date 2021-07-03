@@ -179,7 +179,7 @@ index d77a10c6ae7e1515085ff7a18db9e3e14ebb8012..ba1850b4c70f7ebef53f8cf40fc50ec3
          this.entity.stopSeenByPlayer(player);
          player.connection.send(new ClientboundRemoveEntityPacket(this.entity.getId()));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9dc5c82ea1d497174d288000f9f1ccaabbcb4a18..79964543ea0f96a18ecf2bdecae0f4434842a8b2 100644
+index f78119970da27ef66a9d9093e2e42ce129d4cf31..184df006f2724f1e3316706e5081fb538b437458 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -229,6 +229,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -254,10 +254,10 @@ index 570cea8ee6a442b2dc3c6ef849294ef0c02027ca..8bf0acca21bae4dc6a3aecbf055b2e1d
              entityplayer.connection.send(new ClientboundEntityEventPacket(entityplayer, b0));
          }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index debbace72046d7f691cc5b7c6be5f5738b73ec9f..9c808bfe4ed3d7bab36b812c03b845e838b59c40 100644
+index d7a84b34d216dec8f66266e33bb7ac12780a3644..a95d42979024102e603cfd63afc81d2ac656210a 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1760,6 +1760,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -1761,6 +1761,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          this.setXRot(Mth.clamp(pitch, -90.0F, 90.0F) % 360.0F);
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();
@@ -265,7 +265,7 @@ index debbace72046d7f691cc5b7c6be5f5738b73ec9f..9c808bfe4ed3d7bab36b812c03b845e8
      }
  
      public void absMoveTo(double x, double y, double z) {
-@@ -3590,6 +3591,37 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3589,6 +3590,37 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          return SlotAccess.NULL;
      }
  
@@ -303,7 +303,7 @@ index debbace72046d7f691cc5b7c6be5f5738b73ec9f..9c808bfe4ed3d7bab36b812c03b845e8
      @Override
      public void sendMessage(Component message, UUID sender) {}
  
-@@ -4002,17 +4034,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -4001,17 +4033,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          return this.getZ((2.0D * this.random.nextDouble() - 1.0D) * widthScale);
      }
  
@@ -360,7 +360,7 @@ index 2dac4bc346eb1dde1f8d92c3e5b9648b2c433617..5ebfa2b7f460e26aa1d08841ae69c5d8
      public boolean occludesVibrations() {
          return ItemTags.OCCLUDES_VIBRATION_SIGNALS.contains(this.getItem().getItem());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 4a54e8026561a542eff810a731d66e0fcd35e84c..20f164909f189d0908620b8e7d32a7b296a94f44 100644
+index 9db53dddcc3c566b6ab638c3c2df3d6633596c0e..472b3d7f5c3d85837a152f13c345338fdd4b701e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -391,7 +391,7 @@ index 4a54e8026561a542eff810a731d66e0fcd35e84c..20f164909f189d0908620b8e7d32a7b2
          if (!inactive) {
              if (!gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 95c2b3705806414af7181f55a11acbf151b62cf0..1ec37941d8480b8c7f7400614ec9390967d14b78 100644
+index 7e20af593e1619127ddbe588a085f61f9d51e630..d2163b6fd350b581cefb7458464531e8f7c16ddb 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -168,6 +168,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -403,7 +403,7 @@ index 95c2b3705806414af7181f55a11acbf151b62cf0..1ec37941d8480b8c7f7400614ec93909
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -308,6 +310,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -317,6 +319,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
          this.tuinityConfig = new com.tuinity.tuinity.config.TuinityConfig.WorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData)worlddatamutable).getLevelName()); // Tuinity - Server Config
