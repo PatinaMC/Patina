@@ -240,7 +240,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 82b2783497947f336b0dd95db61f31f8f77f446c..d0673f4cea94ce833a08bc3395fe3cc0abb614cb 100644
+index dc881ffaa947eac4ba34a9ea0c089eaaf06278c5..9765c3a18e97ebdca15013e2f79a3ee60a318eea 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {

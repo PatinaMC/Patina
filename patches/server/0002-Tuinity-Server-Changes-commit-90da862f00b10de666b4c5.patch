@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 1 Jul 2021 11:18:29 +0000
+Date: Sun, 4 Jul 2021 09:30:09 +0000
 Subject: [PATCH] Tuinity Server Changes commit
- 05711635d69b64ee17dbbe9171887d1d45e54a4f
+ 90da862f00b10de666b4c589e45f669cf248118a
 
 MC-Dev fixes
 
@@ -462,6 +462,54 @@ This fixes two instances:
   only renames for one value and thankfully defaults could
   be provided for two new values (WITHOUT changing behavior).
 
+Apply paper's reobf mappings patch
+
+Workaround until paperweight implements reobf mappings patch support for forks
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 4123f9e7dab80ea2b366ca4cf49d8b874aa07386..33caab1b6f171c8b7ca9ecae6c6039954a88e905 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -1,10 +1,16 @@
+ import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
+ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+ import io.papermc.paperweight.tasks.BaseTask
++import io.papermc.paperweight.tasks.GenerateReobfMappings
++import io.papermc.paperweight.tasks.PatchMappings
++import io.papermc.paperweight.util.Constants
+ import io.papermc.paperweight.util.Git
++import io.papermc.paperweight.util.cache
+ import io.papermc.paperweight.util.defaultOutput
+ import io.papermc.paperweight.util.openZip
+ import io.papermc.paperweight.util.path
++import io.papermc.paperweight.util.registering
++import io.papermc.paperweight.util.set
+ import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor.PLUGIN_CACHE_FILE
+ import java.nio.file.Files
+ import java.text.SimpleDateFormat
+@@ -107,6 +113,22 @@ publishing {
+     }
+ }
+ 
++val generateReobfMappings = rootProject.tasks.named<GenerateReobfMappings>("generateReobfMappings")
++
++val patchReobfMappings by tasks.registering<PatchMappings> {
++    inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
++    patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
++
++    fromNamespace.set(Constants.DEOBF_NAMESPACE)
++    toNamespace.set(Constants.SPIGOT_NAMESPACE)
++
++    outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
++}
++
++tasks.reobfJar {
++    mappingsFile.set(patchReobfMappings.flatMap { it.outputMappings })
++}
++
+ val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
+ 
+ tasks.shadowJar {
 diff --git a/src/main/java/ca/spottedleaf/starlight/light/BlockStarLightEngine.java b/src/main/java/ca/spottedleaf/starlight/light/BlockStarLightEngine.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..9efbdba758aebcad3454a9a52c8a7eae4b7fc7eb
@@ -6225,7 +6273,7 @@ index 0000000000000000000000000000000000000000..01320aea07b51c97ae5f0654b81d2332
 +}
 diff --git a/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java b/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e883b2af853666c11a14a541aac331d97c6ad057
+index 0000000000000000000000000000000000000000..089d66ce4913e97c5fc79daee0f2fd932664f28f
 --- /dev/null
 +++ b/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
 @@ -0,0 +1,600 @@
@@ -6625,7 +6673,7 @@ index 0000000000000000000000000000000000000000..e883b2af853666c11a14a541aac331d9
 +                                                              final boolean checkBorder, final boolean checkOnly, final BiPredicate<BlockState, BlockPos> predicate) {
 +        boolean ret = false;
 +
-+        if (entity != null) {
++        if (checkBorder) {
 +            if (CollisionUtil.isAlmostCollidingOnBorder(getter.getWorldBorder(), aabb)) {
 +                if (checkOnly) {
 +                    return true;
@@ -6670,7 +6718,7 @@ index 0000000000000000000000000000000000000000..e883b2af853666c11a14a541aac331d9
 +
 +        ServerChunkCache chunkProvider;
 +        if (getter instanceof WorldGenRegion) {
-+            chunkProvider = (ServerChunkCache)((WorldGenRegion)getter).getChunkSource();
++            chunkProvider = null;
 +        } else if (getter instanceof ServerLevel) {
 +            chunkProvider = ((ServerLevel)getter).getChunkSource();
 +        } else {
@@ -6796,7 +6844,7 @@ index 0000000000000000000000000000000000000000..e883b2af853666c11a14a541aac331d9
 +            for (int i = 0, len = entities.size(); i < len; ++i) {
 +                final Entity otherEntity = entities.get(i);
 +
-+                if ((entity == null || otherEntity.canBeCollidedWith()) || entity.canCollideWith(otherEntity)) {
++                if ((entity == null && otherEntity.canBeCollidedWith()) || (entity != null && entity.canCollideWith(otherEntity))) {
 +                    if (checkOnly) {
 +                        return true;
 +                    } else {
@@ -14516,7 +14564,7 @@ index 325e244c46ec208a2e7e18d71ccbbfcc25fc1bce..6a4e44dd8935018d1b5283761dfb8e85
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 17281575ff83bbf1e720335619a78a6d0a0e5077..8196be52af4a5ea1bf280d646dc2db15d9ad6ea2 100644
+index 17281575ff83bbf1e720335619a78a6d0a0e5077..38753e10b1597a2f3bd2cde208c6e30b26a03b43 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -166,6 +166,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -14559,7 +14607,7 @@ index 17281575ff83bbf1e720335619a78a6d0a0e5077..8196be52af4a5ea1bf280d646dc2db15
 +
 +    @Override
 +    public void getHardCollidingEntities(Entity except, AABB box, Predicate<? super Entity> predicate, List<Entity> into) {
-+        this.entitySliceManager.getEntities(except, box, into, predicate);
++        this.entitySliceManager.getHardCollidingEntities(except, box, into, predicate);
 +    }
 +
 +    @Override
