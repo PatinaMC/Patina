@@ -5,10 +5,10 @@ Subject: [PATCH] Fix Javadoc generation
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 407bf7c09304c76ef1dbec43bb5d665f02ce4840..c675d536f6c55562ee8ab2a45fef170406cb9a0d 100644
+index 0bdcf8f63d41fde25384f4fb1e35fe979a1bb602..2b0bd46bcd6e352b4e0f305588a4fca7c7146946 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -70,6 +70,8 @@ tasks.jar {
+@@ -72,6 +72,8 @@ tasks.jar {
  }
  
  tasks.withType<Javadoc>().configureEach {

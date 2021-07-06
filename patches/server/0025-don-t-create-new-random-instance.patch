@@ -18,10 +18,10 @@ index 59d3847db0c94afffeb03b7ca45552d969193ad0..71b8a821d48d73e10559408097a6e1f0
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 217af30c81438836864312e125cf512b491a3ab4..4710e8f3e2233604153433294332f3daa3322604 100644
+index 0da2dbeba93d428a035872e05177ed3fc29acf9b..0a1f66c54be0954703a5f4aec73a0edad1937222 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -371,7 +371,7 @@ public class ServerPlayer extends Player {
+@@ -376,7 +376,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
@@ -30,7 +30,7 @@ index 217af30c81438836864312e125cf512b491a3ab4..4710e8f3e2233604153433294332f3da
  
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
-@@ -408,7 +408,7 @@ public class ServerPlayer extends Player {
+@@ -413,7 +413,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
@@ -53,7 +53,7 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfd
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index c912e2068fee1023784d47386334129e56161dc3..8f42dfc8b59cc015effcc5a8ac300cce81675903 100644
+index b81bb059526d0659def421a3aa2b8b14fe9e0e73..fc3efec5584c476607041295eee3ec63479a459a 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -123,13 +123,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {

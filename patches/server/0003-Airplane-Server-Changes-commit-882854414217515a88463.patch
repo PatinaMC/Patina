@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sun, 4 Jul 2021 09:30:18 +0000
+Date: Tue, 6 Jul 2021 11:41:42 +0000
 Subject: [PATCH] Airplane Server Changes commit
- bfc27e3d2a8adb1744515e6f984691722ab06364
+ 882854414217515a884634883c00e7a2e6c3f428
 
 Fix chicken jockey persistence
 
@@ -307,8 +307,6 @@ new loot context is created every time a player moves (along with a lot
 of other times) the constant cloning churns out a lot of useless
 objects.
 
-Temporary fix until PR is accepted
-
 Fix Paper#6045, block goal shouldn't load chunks
 
 Quicker sequencing of futures for chunk gen
@@ -317,13 +315,19 @@ Reduce entity allocations
 
 Remove lambda from ticking guard
 
-Regionized notify
-
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..2c1fb924b59cb6992c91bf3027d5fc8279245564 100644
+index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a0408a193 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -72,6 +72,9 @@ dependencies {
+@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
+ import io.papermc.paperweight.tasks.BaseTask
+ import io.papermc.paperweight.tasks.GenerateReobfMappings
+ import io.papermc.paperweight.tasks.PatchMappings
+-import io.papermc.paperweight.util.Constants
+ import io.papermc.paperweight.util.Git
+ import io.papermc.paperweight.util.cache
+ import io.papermc.paperweight.util.defaultOutput
+@@ -72,6 +71,9 @@ dependencies {
  
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
  
@@ -333,7 +337,30 @@ index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..2c1fb924b59cb6992c91bf3027d5fc82
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -184,7 +187,7 @@ abstract class IncludeMappings : BaseTask() {
+@@ -113,22 +115,6 @@ publishing {
+     }
+ }
+ 
+-val generateReobfMappings = rootProject.tasks.named<GenerateReobfMappings>("generateReobfMappings")
+-
+-val patchReobfMappings by tasks.registering<PatchMappings> {
+-    inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
+-    patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
+-
+-    fromNamespace.set(Constants.DEOBF_NAMESPACE)
+-    toNamespace.set(Constants.SPIGOT_NAMESPACE)
+-
+-    outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
+-}
+-
+-tasks.reobfJar {
+-    mappingsFile.set(patchReobfMappings.flatMap { it.outputMappings })
+-}
+-
+ val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
+ 
+ tasks.shadowJar {
+@@ -184,7 +170,7 @@ abstract class IncludeMappings : BaseTask() {
  }
  
  val includeMappings = tasks.register<IncludeMappings>("includeMappings") {
@@ -1560,25 +1587,6 @@ index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be7
 +        entryToRemove.replace(data, value);
 +    }
 +}
-diff --git a/src/main/java/gg/airplane/structs/NavigatingMobMap.java b/src/main/java/gg/airplane/structs/NavigatingMobMap.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..6dc9cba47950165eca2d362bc10cbfbb1b0a2ecb
---- /dev/null
-+++ b/src/main/java/gg/airplane/structs/NavigatingMobMap.java
-@@ -0,0 +1,13 @@
-+package gg.airplane.structs;
-+
-+import com.destroystokyo.paper.util.misc.AreaMap;
-+import com.destroystokyo.paper.util.misc.PooledLinkedHashSets;
-+import net.minecraft.world.entity.Mob;
-+
-+public class NavigatingMobMap extends AreaMap<Mob> {
-+
-+    @Override
-+    protected PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<Mob> getEmptySetFor(Mob object) {
-+        return object.cachedSingleHashSet;
-+    }
-+}
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
 index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56fa42e626a 100644
 --- a/src/main/java/net/minecraft/Util.java
@@ -1669,10 +1677,10 @@ index 9bb0ff063da162f2b5c91d367d9555c1cf1a3ab1..b737d50547c1b0e396facc6c2aa38201
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 1430411a6f7ef3730d87c022774d7d623f2f415f..83f0e51554c122dab125f19356712498ea7a790c 100644
+index a364abbb872ca8b0d64084e3b4918c8f70388863..8315d12e26e726b9bf98d6fb869e263706380ca3 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2363,8 +2363,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2449,8 +2449,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
              return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
          }
  
@@ -1701,7 +1709,7 @@ index 1430411a6f7ef3730d87c022774d7d623f2f415f..83f0e51554c122dab125f19356712498
              Iterator iterator = this.entity.getIndirectPassengers().iterator();
  
              while (iterator.hasNext()) {
-@@ -2376,6 +2396,9 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2462,6 +2482,9 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                      i = j;
                  }
              }
@@ -1712,7 +1720,7 @@ index 1430411a6f7ef3730d87c022774d7d623f2f415f..83f0e51554c122dab125f19356712498
              return this.scaledRange(i);
          }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 958b7044c196ebd66f60391c33c64ad2ff82d4e8..5b8f23b7739580b8a08de0ed43c0fc01ab245e30 100644
+index 6640cc43b043b79230c5b965cf5159b4a9ee894c..1aa350522637647a19588b7ca02bc13c194fa387 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -982,6 +982,7 @@ public class ServerChunkCache extends ChunkSource {
@@ -1744,18 +1752,9 @@ index a00627e0fa38632449042f59c053b4dac13e58bf..d77a10c6ae7e1515085ff7a18db9e3e1
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 07b0eae123e310809dc28506ebe2e0878dcaa224..0c3ef6246b0372679a1c0f2d0da23d2ca5dbbece 100644
+index 57163e3cb883ded5861e57c3ca03663c02ee7492..e182ec1031608d92e59a50ca241762e761dc9e2b 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -210,7 +210,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-     }
- 
-     @Override public LevelChunk getChunkIfLoaded(int x, int z) { // Paper - this was added in world too but keeping here for NMS ABI
--        return this.chunkSource.getChunkAtIfLoadedImmediately(x, z); // Paper
-+        return super.getChunkIfLoaded(x, z); // Airplane - use super
-     }
- 
-     // Paper start - Asynchronous IO
 @@ -579,6 +579,21 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
          return result;
      }
@@ -1830,65 +1829,7 @@ index 07b0eae123e310809dc28506ebe2e0878dcaa224..0c3ef6246b0372679a1c0f2d0da23d2c
 +         if (!this.paperConfig.disableIceAndSnow && (this.currentIceAndSnowTick++ & 15) == 0) { // Paper - Disable ice and snow // Paper - optimise random ticking  // Airplane - optimize further random ticking
              // Paper start - optimise chunk ticking
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
-             int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15);
-@@ -1571,11 +1601,20 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-         VoxelShape voxelshape1 = newState.getCollisionShape(this, pos);
- 
-         if (Shapes.joinIsNotEmpty(voxelshape, voxelshape1, BooleanOp.NOT_SAME)) {
--            Iterator iterator = this.navigatingMobs.iterator();
-+            // Airplane start - use area map for notifying
-+            com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<Mob> mobs =
-+                    this.entityManager.navigatingMobMap.getObjectsInRange(ChunkPos.asLong(pos));
-+            if (mobs == null) return;
- 
--            while (iterator.hasNext()) {
-+            Object[] mobSet = mobs.getBackingSet();
-+
-+            for (int i = 0; i < mobSet.length; i++) {
-+                Object raw = mobSet[i];
-+                if (raw == null) continue;
-                 // CraftBukkit start - fix SPIGOT-6362
--                Mob entityinsentient;
-+                Mob entityinsentient = (Mob) raw;
-+                // Airplane - remove the try/catch as it's unnecessary with the array
-+                /*
-                 try {
-                     entityinsentient = (Mob) iterator.next();
-                 } catch (java.util.ConcurrentModificationException ex) {
-@@ -1585,6 +1624,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-                     this.sendBlockUpdated(pos, oldState, newState, flags);
-                     return;
-                 }
-+                 */
-                 // CraftBukkit end
-                 PathNavigation navigationabstract = entityinsentient.getNavigation();
- 
-@@ -1592,6 +1632,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-                     navigationabstract.recomputePath(pos);
-                 }
-             }
-+            // Airplane end
- 
-         }
-         } // Paper
-@@ -2388,7 +2429,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-             }
- 
-             if (entity instanceof Mob) {
--                ServerLevel.this.navigatingMobs.add((Mob) entity);
-+                //ServerLevel.this.navigatingMobs.add((Mob) entity); // Airplane - this is now unused
-             }
- 
-             if (entity instanceof EnderDragon) {
-@@ -2458,7 +2499,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-             }
- 
-             if (entity instanceof Mob) {
--                ServerLevel.this.navigatingMobs.remove(entity);
-+                //ServerLevel.this.navigatingMobs.remove(entity); // Airplane - this is now unused
-             }
- 
-             if (entity instanceof EnderDragon) {
+             int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/world/CompoundContainer.java b/src/main/java/net/minecraft/world/CompoundContainer.java
 index 087ae3a6b49872a3580eb1a572bdbc493711a77a..5ef8657197beea06c1dcad6a32968c56a823b182 100644
 --- a/src/main/java/net/minecraft/world/CompoundContainer.java
@@ -2121,28 +2062,10 @@ index 57c448ee93df76fc2a17c75fafc78408d720ced3..f59aabf306c3ffed4a5f34dcb434750a
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 154b3c767d079f72643c826b962892c1029b0a1b..6474d1aa7824d7449f34c881c7926d34909abd07 100644
+index 154b3c767d079f72643c826b962892c1029b0a1b..c4d1e8d1319b20abbaff1d0ddce5207dc654ad9f 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -124,6 +124,8 @@ public abstract class Mob extends LivingEntity {
-     private BlockPos restrictCenter;
-     private float restrictRadius;
- 
-+    public final com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<Mob> cachedSingleHashSet; // Airplane
-+
-     public boolean aware = true; // CraftBukkit
- 
-     protected Mob(EntityType<? extends Mob> type, Level world) {
-@@ -152,6 +154,8 @@ public abstract class Mob extends LivingEntity {
-         // CraftBukkit start - default persistance to type's persistance value
-         this.persistenceRequired = !this.removeWhenFarAway(0);
-         // CraftBukkit end
-+
-+        this.cachedSingleHashSet = new com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<>(this); // Airplane
-     }
- 
-     protected void registerGoals() {}
-@@ -202,10 +206,10 @@ public abstract class Mob extends LivingEntity {
+@@ -202,10 +202,10 @@ public abstract class Mob extends LivingEntity {
      @Override
      public void inactiveTick() {
          super.inactiveTick();
@@ -2155,7 +2078,7 @@ index 154b3c767d079f72643c826b962892c1029b0a1b..6474d1aa7824d7449f34c881c7926d34
              this.targetSelector.tick();
          }
      }
-@@ -779,8 +783,15 @@ public abstract class Mob extends LivingEntity {
+@@ -779,8 +779,15 @@ public abstract class Mob extends LivingEntity {
          return false;
      }
  
@@ -2171,7 +2094,7 @@ index 154b3c767d079f72643c826b962892c1029b0a1b..6474d1aa7824d7449f34c881c7926d34
          if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
              this.discard();
          } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
-@@ -833,9 +844,11 @@ public abstract class Mob extends LivingEntity {
+@@ -833,9 +840,11 @@ public abstract class Mob extends LivingEntity {
          this.sensing.tick();
          this.level.getProfiler().pop();
          this.level.getProfiler().push("targetSelector");
@@ -2214,7 +2137,7 @@ index 9cbfda029782385d1a7987f5be46d450bd8a758e..d3e97858dacc850012e5585ac44a1aea
  
      public boolean hasAttribute(Attribute attribute) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
-index 84a0ee595bebcc1947c602c4c06e7437706ce37c..e7c3673bf3b573f17fbf3b75b364eafa743254e0 100644
+index efe66264ad5717bf3aac0fbda07275fb5571acc1..68188f3322a9af8eac423afc5f87bc4f88f4a5bb 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
 @@ -68,6 +68,7 @@ public class AcquirePoi extends Behavior<PathfinderMob> {
@@ -2830,7 +2753,7 @@ index 38753e10b1597a2f3bd2cde208c6e30b26a03b43..b79ce8ce7ee79d0f94414c003a1c0b95
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index b2329de658df71ce03a6fe0c41c02997afdf868f..d6350952e45b90aff81f303849251fd82136cca6 100644
+index 0059f0488acc22ebddc2faf4c5879f9f0c24fd14..074e25789152b8194797d6a3bae242e08f6be577 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -407,12 +407,12 @@ public final class NaturalSpawner {
@@ -3237,74 +3160,6 @@ index 3b13f6ea36a3bfecabe09221eb5c48dddab119db..c02b9104c0cc1a7319cca29d5e32a5c2
      @Nullable
      @Override
      public T get(int id) {
-diff --git a/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java b/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
-index a99d0a00bbdb90588b87a3f85c62bdc1468b5e5a..2685325a465f700d3df4b16ae0b141e83966c95f 100644
---- a/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
-+++ b/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
-@@ -25,6 +25,7 @@ import net.minecraft.server.level.ChunkHolder;
- import net.minecraft.util.CsvOutput;
- import net.minecraft.util.VisibleForDebug;
- import net.minecraft.world.entity.Entity;
-+import net.minecraft.world.entity.Mob;
- import net.minecraft.world.level.ChunkPos;
- import org.apache.logging.log4j.LogManager;
- import org.apache.logging.log4j.Logger;
-@@ -42,6 +43,7 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
-     private final LongSet chunksToUnload = new LongOpenHashSet();
-     private final Queue<ChunkEntities<T>> loadingInbox = Queues.newConcurrentLinkedQueue();
-     public final com.tuinity.tuinity.world.EntitySliceManager entitySliceManager; // Tuinity
-+    public final gg.airplane.structs.NavigatingMobMap navigatingMobMap = new gg.airplane.structs.NavigatingMobMap(); // Airplane
- 
-     public PersistentEntitySectionManager(Class<T> entityClass, LevelCallback<T> handler, EntityPersistentStorage<T> dataAccess, com.tuinity.tuinity.world.EntitySliceManager entitySliceManager) { // Tuinity
-         this.entitySliceManager = entitySliceManager; // Tuinity
-@@ -96,6 +98,12 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
-             EntitySection<T> entitySection = this.sectionStorage.getOrCreateSection(l);
-             entitySection.add(entity);
-             this.entitySliceManager.addEntity((Entity)entity); // Tuinity
-+            // Airplane start
-+            if (entity instanceof net.minecraft.world.entity.Mob mob) {
-+                net.minecraft.world.level.ChunkPos chunkPos = mob.chunkPosition();
-+                this.navigatingMobMap.add(mob, chunkPos.x, chunkPos.z, (int) mob.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE) + 1);
-+            }
-+            // Airplane end
-             entity.setLevelCallback(new PersistentEntitySectionManager.Callback(entity, l, entitySection));
-             if (!existing) {
-                 this.callbacks.onCreated(entity);
-@@ -375,11 +383,13 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
-         private final T entity;
-         private long currentSectionKey;
-         private EntitySection<T> currentSection;
-+        private final int viewDistance; // Airplane
- 
-         Callback(T entityAccess, long l, EntitySection<T> entitySection) {
-             this.entity = entityAccess;
-             this.currentSectionKey = l;
-             this.currentSection = entitySection;
-+            this.viewDistance = (entityAccess instanceof net.minecraft.world.entity.Mob mob) ? (int) mob.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.FOLLOW_RANGE) + 1 : 0; // Airplane
-         }
- 
-         @Override
-@@ -388,6 +398,12 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
-             long l = SectionPos.asLong(blockPos);
-             if (l != this.currentSectionKey) {
-                 PersistentEntitySectionManager.this.entitySliceManager.moveEntity((Entity)this.entity); // Tuinity
-+                // Airplane start
-+                if (this.entity instanceof net.minecraft.world.entity.Mob mob) {
-+                    net.minecraft.world.level.ChunkPos chunkPos = mob.chunkPosition();
-+                    PersistentEntitySectionManager.this.navigatingMobMap.update(mob, chunkPos.x, chunkPos.z, this.viewDistance);
-+                }
-+                // Airplane end
-                 Visibility visibility = this.currentSection.getStatus();
-                 if (!this.currentSection.remove(this.entity)) {
-                     PersistentEntitySectionManager.LOGGER.warn("Entity {} wasn't found in section {} (moving to {})", this.entity, SectionPos.of(this.currentSectionKey), l);
-@@ -432,6 +448,7 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
-                 PersistentEntitySectionManager.LOGGER.warn("Entity {} wasn't found in section {} (destroying due to {})", this.entity, SectionPos.of(this.currentSectionKey), reason);
-             }
-             PersistentEntitySectionManager.this.entitySliceManager.removeEntity((Entity)this.entity); // Tuinity
-+            if (this.entity instanceof net.minecraft.world.entity.Mob mob) PersistentEntitySectionManager.this.navigatingMobMap.remove(mob); // Airplane
- 
-             Visibility visibility = PersistentEntitySectionManager.getEffectiveStatus(this.entity, this.currentSection.getStatus());
-             if (visibility.isTicking()) {
 diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
 index 6e3e873efa1f50f53cb6503bde8a981f9cefd006..32d15354ceb46fb06b1c36049d3a8bfba718acaf 100644
 --- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java

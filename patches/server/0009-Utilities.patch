@@ -9,10 +9,10 @@ Co-authored-by: Mykyta Komarnytskyy <nkomarn@hotmail.com>
 Co-authored-by: Ivan Pekov <ivan@mrivanplays.com>
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 2c1fb924b59cb6992c91bf3027d5fc8279245564..92b24ae62933e0c82972fa941b9b4d75ccdcefbd 100644
+index d9653b98cbbf7b18b4e707cc4372f46a0408a193..b111f99024ff3c23e3b84a1dba12172f30a2ce76 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -53,6 +53,7 @@ dependencies {
+@@ -52,6 +52,7 @@ dependencies {
      implementation("org.apache.logging.log4j:log4j-iostreams:2.14.1") // Paper
      implementation("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
      implementation("org.ow2.asm:asm:9.1")

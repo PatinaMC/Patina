@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sun, 4 Jul 2021 09:30:09 +0000
+Date: Tue, 6 Jul 2021 11:41:51 +0000
 Subject: [PATCH] Tuinity API Changes commit
- 90da862f00b10de666b4c589e45f669cf248118a
+ d3a0c9bdacb75e9e87cf70adb3bfac492f037f2d
 
 Tuinity config
 
@@ -65,7 +65,7 @@ index 8ae9198ba7fdb006dc420504a984627add20dbb5..4017cc64532a9a8e42c3a6492878cd96
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index da83b4cbed0be6f693c7cbb1cc032356f12d7883..51c334f68052f58fbb9c10fb9ed31ab42780ceac 100644
+index 37ad0c478b83ecf63edfe62b5b2dcd81d6fe1e77..252f6220f7cb8dd4bf9c19ec4079819e5b052f44 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
 @@ -1818,23 +1818,63 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
