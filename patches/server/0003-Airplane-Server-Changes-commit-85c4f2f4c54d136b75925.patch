@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 6 Jul 2021 11:41:42 +0000
+Date: Wed, 7 Jul 2021 06:48:37 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 882854414217515a884634883c00e7a2e6c3f428
+ 85c4f2f4c54d136b759252fc14ef146de2bd4c10
 
 Fix chicken jockey persistence
 
@@ -390,10 +390,10 @@ index 73652e403eaa419fb5b4b54bd506f246c0aa4e99..14c91adcafc0dc937288ba57f0e41abd
          TimingsManager.privacy = getBoolean("timings.server-name-privacy", false);
          TimingsManager.hiddenConfigs = getList("timings.hidden-config-entries", Lists.newArrayList("database", "settings.bungeecord-addresses", "settings.velocity-support.secret"));
 diff --git a/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java b/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
-index 089d66ce4913e97c5fc79daee0f2fd932664f28f..f3d0aa9eb56c871c12a318ce26b955833d7d1848 100644
+index a2f52a68420a2d23d8f54f61f7aeede41567dc0f..4da3e83b61b89978aed968d4aaec3308f3f00995 100644
 --- a/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
 +++ b/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
-@@ -393,6 +393,8 @@ public final class CollisionUtil {
+@@ -398,6 +398,8 @@ public final class CollisionUtil {
                                                                final List<AABB> into, final boolean loadChunks, final boolean collidesWithUnloaded,
                                                                final boolean checkBorder, final boolean checkOnly, final BiPredicate<BlockState, BlockPos> predicate) {
          boolean ret = false;
@@ -402,7 +402,7 @@ index 089d66ce4913e97c5fc79daee0f2fd932664f28f..f3d0aa9eb56c871c12a318ce26b95583
  
          if (checkBorder) {
              if (CollisionUtil.isAlmostCollidingOnBorder(getter.getWorldBorder(), aabb)) {
-@@ -403,7 +405,8 @@ public final class CollisionUtil {
+@@ -408,7 +410,8 @@ public final class CollisionUtil {
                      ret = true;
                  }
              }
@@ -412,7 +412,7 @@ index 089d66ce4913e97c5fc79daee0f2fd932664f28f..f3d0aa9eb56c871c12a318ce26b95583
  
          int minBlockX = Mth.floor(aabb.minX - COLLISION_EPSILON) - 1;
          int maxBlockX = Mth.floor(aabb.maxX + COLLISION_EPSILON) + 1;
-@@ -419,7 +422,7 @@ public final class CollisionUtil {
+@@ -424,7 +427,7 @@ public final class CollisionUtil {
          final int minBlock = minSection << 4;
          final int maxBlock = (maxSection << 4) | 15;
  
@@ -1677,10 +1677,10 @@ index 9bb0ff063da162f2b5c91d367d9555c1cf1a3ab1..b737d50547c1b0e396facc6c2aa38201
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index a364abbb872ca8b0d64084e3b4918c8f70388863..8315d12e26e726b9bf98d6fb869e263706380ca3 100644
+index 509a4239dbda8d8d7edebfdc92bed84a13def369..3ffae739c4bf7f7f6f0ae13c0d716ae6a292ebfd 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
-@@ -2449,8 +2449,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2438,8 +2438,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
              return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
          }
  
@@ -1709,7 +1709,7 @@ index a364abbb872ca8b0d64084e3b4918c8f70388863..8315d12e26e726b9bf98d6fb869e2637
              Iterator iterator = this.entity.getIndirectPassengers().iterator();
  
              while (iterator.hasNext()) {
-@@ -2462,6 +2482,9 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
+@@ -2451,6 +2471,9 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
                      i = j;
                  }
              }
@@ -1720,7 +1720,7 @@ index a364abbb872ca8b0d64084e3b4918c8f70388863..8315d12e26e726b9bf98d6fb869e2637
              return this.scaledRange(i);
          }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 6640cc43b043b79230c5b965cf5159b4a9ee894c..1aa350522637647a19588b7ca02bc13c194fa387 100644
+index 958b7044c196ebd66f60391c33c64ad2ff82d4e8..5b8f23b7739580b8a08de0ed43c0fc01ab245e30 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -982,6 +982,7 @@ public class ServerChunkCache extends ChunkSource {
@@ -3449,7 +3449,7 @@ index d752720f2f234b9dbd2117333fee1bfad663ec02..9868b3a9a35cea9689c76ea9b62f2732
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 7361bf04de16d0526dc4cdbd0f564713df041d90..036224efcff7999e13b9e322deffa986c1ddd115 100644
+index 966639cc6ba6684bfb52e91ac047808cf4d003e4..4897e69ef40c4583d272e94ad4a804885a4e3cf9 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -37,6 +37,10 @@ import co.aikar.timings.MinecraftTimings;
@@ -3463,16 +3463,12 @@ index 7361bf04de16d0526dc4cdbd0f564713df041d90..036224efcff7999e13b9e322deffa986
  
  public class ActivationRange
  {
-@@ -205,7 +209,37 @@ public class ActivationRange
-             ActivationType.VILLAGER.boundingBox = player.getBoundingBox().inflate( villagerActivationRange, 256, waterActivationRange );
-             // Paper end
- 
--            world.getEntities(null, maxBB).forEach(ActivationRange::activateEntity); // Tuinity
-+            // Airplane start - copied from activateEntity
-+            List<Entity> entities = world.getEntities(null, maxBB);
-+            for (int i = 0, length = entities.size(); i < length; i++) {
-+                Entity entity = entities.get(i);
+@@ -210,6 +214,21 @@ public class ActivationRange
+             for (int i = 0; i < entities.size(); i++) {
+                 Entity entity = entities.get(i);
+                 ActivationRange.activateEntity(entity);
 +
++                // Airplane start
 +                if (gg.airplane.AirplaneConfig.dearEnabled) {
 +                    Vec3 playerVec = player.position();
 +                    Vec3 entityVec = entity.position();
@@ -3484,25 +3480,12 @@ index 7361bf04de16d0526dc4cdbd0f564713df041d90..036224efcff7999e13b9e322deffa986
 +                } else {
 +                    entity.activatedPriority = 1;
 +                }
++                // Airplane end
 +
-+                if ( MinecraftServer.currentTick > entity.activatedTick )
-+                {
-+                    if ( entity.defaultActivationState )
-+                    {
-+                        entity.activatedTick = MinecraftServer.currentTick;
-+                        continue;
-+                    }
-+                    if ( entity.activationType.boundingBox.intersects( entity.getBoundingBox() ) )
-+                    {
-+                        entity.activatedTick = MinecraftServer.currentTick;
-+                    }
-+                }
-+            }
-+            // Airplane end
+             }
+             // Tuinity end
          }
-         MinecraftTimings.entityActivationCheckTimer.stopTiming();
-     }
-@@ -220,12 +254,12 @@ public class ActivationRange
+@@ -226,12 +245,12 @@ public class ActivationRange
          if ( MinecraftServer.currentTick > entity.activatedTick )
          {
              if ( entity.defaultActivationState )
@@ -3517,7 +3500,7 @@ index 7361bf04de16d0526dc4cdbd0f564713df041d90..036224efcff7999e13b9e322deffa986
                  entity.activatedTick = MinecraftServer.currentTick;
              }
          }
-@@ -270,7 +304,7 @@ public class ActivationRange
+@@ -276,7 +295,7 @@ public class ActivationRange
          if ( entity instanceof LivingEntity )
          {
              LivingEntity living = (LivingEntity) entity;

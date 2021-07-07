@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 7 Jul 2021 06:48:37 +0000
+Subject: [PATCH] Airplane API Changes commit
+ 85c4f2f4c54d136b759252fc14ef146de2bd4c10
+
+Expose findClass for profiler
+
+Ignore lookups if closed
+
+diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+index 81292899918c4dc880661ee628384cb840a6244f..9101e0f454f0b4de18e24f7c32baa586bd4a8827 100644
+--- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
++++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
+@@ -46,6 +46,8 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+     private final Set<String> seenIllegalAccess = Collections.newSetFromMap(new ConcurrentHashMap<>());
+     private java.util.logging.Logger logger; // Paper - add field
+ 
++    private boolean closed = false; // Airplane
++
+     static {
+         ClassLoader.registerAsParallelCapable();
+     }
+@@ -146,6 +148,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+         throw new ClassNotFoundException(name);
+     }
+ 
++    public boolean _airplane_hasClass(@NotNull String name) { return this.classes.containsKey(name); } // Airplane
+     @Override
+     protected Class<?> findClass(String name) throws ClassNotFoundException {
+         if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
+@@ -153,7 +156,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+         }
+         Class<?> result = classes.get(name);
+ 
+-        if (result == null) {
++        if (result == null && !this.closed) { // Airplane
+             String path = name.replace('.', '/').concat(".class");
+             JarEntry entry = jar.getJarEntry(path);
+ 
+@@ -208,6 +211,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+         try {
+             super.close();
+         } finally {
++            this.closed = true; // Airplane
+             jar.close();
+         }
+     }

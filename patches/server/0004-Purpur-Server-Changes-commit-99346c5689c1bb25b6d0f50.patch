@@ -391,7 +391,7 @@ index 9db53dddcc3c566b6ab638c3c2df3d6633596c0e..472b3d7f5c3d85837a152f13c345338f
          if (!inactive) {
              if (!gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 7e20af593e1619127ddbe588a085f61f9d51e630..d2163b6fd350b581cefb7458464531e8f7c16ddb 100644
+index b79ce8ce7ee79d0f94414c003a1c0b95b41cf268..3ea57b89b1bde301d000a93ea3028878e2b532ab 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -168,6 +168,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -937,7 +937,7 @@ index b2a15c986c7500a0ce227a54cb61ec3f5378f6f3..6d5f030b678dbc86dceddcbb050b4aae
          if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDebugging()) {
              new Exception().printStackTrace();
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 036224efcff7999e13b9e322deffa986c1ddd115..e067a0f599e01cfce1531be7a273a541cac0fa6b 100644
+index 4897e69ef40c4583d272e94ad4a804885a4e3cf9..2ce15d8ef52b371bd2f589cdf8a9f18805c003ce 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -14,6 +14,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
@@ -948,7 +948,7 @@ index 036224efcff7999e13b9e322deffa986c1ddd115..e067a0f599e01cfce1531be7a273a541
  import net.minecraft.world.entity.animal.WaterAnimal;
  import net.minecraft.world.entity.animal.horse.Llama;
  import net.minecraft.world.entity.boss.EnderDragonPart;
-@@ -381,6 +382,7 @@ public class ActivationRange
+@@ -372,6 +373,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
