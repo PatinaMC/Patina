@@ -5,10 +5,10 @@ Subject: [PATCH] Optimised hallowen checker
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 63586c76ed3397055fdf072dfecc4b9052f268da..88891933e74275afb9ad521c2ae6fb98a94f3476 100644
+index 46f96efaeadac149d313cfd535843dc0dd53c04e..6a5a755cbf9862f1795aa69f1b1346b9df4689a3 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1525,6 +1525,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1527,6 +1527,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          // Paper end
  
          com.tuinity.tuinity.util.CachedLists.reset(); // Tuinity
@@ -51,7 +51,7 @@ index 1d415a91b9c90603e8f738dbafe7a5ea57ef14cc..bcfdbd77b572d48b17aa5dbb5a8ea078
      // Airplane end
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
-index c54a37516ef1d8a76f7161917bf448127cd98603..65aa3d2bb10c9cf09f3d3a01b0088c6caaa569bd 100644
+index cd75f895b6818fbb7ed4b0ef3df873f264bb2d1b..99c0510890ec8dd7d9830ef074840533c5faa5fe 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/AbstractSkeleton.java
 @@ -156,11 +156,16 @@ public abstract class AbstractSkeleton extends Monster implements RangedAttackMo
@@ -72,10 +72,10 @@ index c54a37516ef1d8a76f7161917bf448127cd98603..65aa3d2bb10c9cf09f3d3a01b0088c6c
                  this.armorDropChances[EquipmentSlot.HEAD.getIndex()] = 0.0F;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index bb3b932c57fd1e5b1517940c7602c7f4aeeaf17e..e57d06b6eb605de1d40edb6459f651203b8c8a06 100644
+index ddda5d1e85864030db0cfecbf7a5fe134d7013a1..4f2eb8e6daf79ebe1fc739daa01703c34da735ff 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-@@ -534,11 +534,16 @@ public class Zombie extends Monster {
+@@ -539,11 +539,16 @@ public class Zombie extends Monster {
          }
  
          if (this.getItemBySlot(EquipmentSlot.HEAD).isEmpty()) {

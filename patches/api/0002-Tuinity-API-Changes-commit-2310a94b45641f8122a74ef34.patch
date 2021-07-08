@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 7 Jul 2021 06:48:28 +0000
+Date: Thu, 8 Jul 2021 06:14:03 +0000
 Subject: [PATCH] Tuinity API Changes commit
- 388bdf556d181d8f42ef7428c465a7dcc3642440
+ 2310a94b45641f8122a74ef341a70c69529f1687
 
 Tuinity config
 
@@ -15,7 +15,7 @@ Add per player no-tick, tick, and send view distances.
 Also add send view distance to World.
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 07c9635ea2e09e823ed7fa164ed854af41fab7dc..8482c4a664a02614fd59f74a4f9dd6d2e32003f5 100644
+index f05edac8cdd33daaf1d15a526be4d2ac2b08846d..8776b8368d2046dee02e927de8249030bdddf2ee 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -1626,6 +1626,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi

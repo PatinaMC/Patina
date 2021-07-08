@@ -29,10 +29,10 @@ index 5540da58e66f83b283863d3158a9b4ab5ba636db..4123f9e7dab80ea2b366ca4cf49d8b87
      workingDir = rootProject.layout.projectDirectory.dir(
          providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7682bd72c3932a9b20f14e552711d74f70b969b1..6c5061a1914f22b3b2f33da63c282b61f1c48893 100644
+index 3dded5c491ace6b073a7bc3178976bd70f0b9393..39da2ef8652c26265979d9f85bf969d5018ca911 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1649,7 +1649,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1651,7 +1651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -40,9 +40,9 @@ index 7682bd72c3932a9b20f14e552711d74f70b969b1..6c5061a1914f22b3b2f33da63c282b61
 +        return "Patina"; //Patina - Patina > //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
-     public SystemReport fillSystemReport(SystemReport systemreport) {
+     public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2ba3b01092cef23bcc958244992ef44103bc7e74..4b68a684090c1f0d78b93560725e029a1f86e7f7 100644
+index c79b193ad822b8c246f24a87cd418892bc18ff5a..31e4e4c7d43680b7c0ae7d845cfea1bf2cc4670c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper

@@ -5,10 +5,10 @@ Subject: [PATCH] Preload ProtocolLib EnumWrappers
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 88891933e74275afb9ad521c2ae6fb98a94f3476..bce1c26db2d8a03514f51530d223f87d6aaa81d4 100644
+index 6a5a755cbf9862f1795aa69f1b1346b9df4689a3..0e7da23b006a12edf495b1022b4c214bf3faa6dd 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1206,6 +1206,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1214,6 +1214,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  // Paper end
  
                  com.tuinity.tuinity.config.TuinityConfig.createWorldSections = false; // Tuinity - don't let plugin created worlds fill our config

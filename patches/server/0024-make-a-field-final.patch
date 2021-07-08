@@ -5,7 +5,7 @@ Subject: [PATCH] make a field final
 
 
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index f1ebfd810fd06e62d796110345aa36ce4a94e2fd..2595e695c7cee5de483244d62e31335749749f5a 100644
+index d9e868b6c70da18b4ce23c80e2aaf347f2dc6d50..97e65091eb77cd3922a848d1f4bfa3f4eb4b5a7c 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
 @@ -54,7 +54,7 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
@@ -15,5 +15,5 @@ index f1ebfd810fd06e62d796110345aa36ce4a94e2fd..2595e695c7cee5de483244d62e313357
 -    public ThreadLocal<CommandNode> currentCommand = new ThreadLocal<>(); // CraftBukkit // Paper
 +    public final ThreadLocal<CommandNode> currentCommand = new ThreadLocal<>(); // CraftBukkit // Paper // Patina - make a field final
  
-     public CommandSourceStack(CommandSource output, Vec3 pos, Vec2 rot, ServerLevel world, int level, String simpleName, Component name, MinecraftServer server, @Nullable Entity entity) {
-         this(output, pos, rot, world, level, simpleName, name, server, entity, false, (commandcontext, flag, j) -> {
+     public CommandSourceStack(CommandSource output, Vec3 pos, Vec2 rot, ServerLevel world, int level, String name, Component displayName, MinecraftServer server, @Nullable Entity entity) {
+         this(output, pos, rot, world, level, name, displayName, server, entity, false, (commandcontext, flag, j) -> {

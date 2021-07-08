@@ -5,10 +5,10 @@ Subject: [PATCH] completely remove snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcfa90d76b9 100644
+index 0e7da23b006a12edf495b1022b4c214bf3faa6dd..0759c357389c49a55ee7273457d87bf827205ca3 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -190,14 +190,14 @@ import org.bukkit.event.server.ServerLoadEvent;
+@@ -187,14 +187,14 @@ import org.bukkit.event.server.ServerLoadEvent;
  import co.aikar.timings.MinecraftTimings; // Paper
  import org.spigotmc.SlackActivityAccountant; // Spigot
  
@@ -25,7 +25,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
      private static final int OVERLOADED_THRESHOLD = 2000;
      private static final int OVERLOADED_WARNING_INTERVAL = 15000;
      public static final String LEVEL_STORAGE_PROTOCOL = "level";
-@@ -215,7 +215,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -212,7 +212,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      private static final long DELAYED_TASKS_TICK_EXTENSION = 50L;
      public LevelStorageSource.LevelStorageAccess storageSource;
      public final PlayerDataStorage playerDataStorage;
@@ -34,7 +34,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
      private final List<Runnable> tickables = Lists.newArrayList();
      private MetricsRecorder metricsRecorder;
      private ProfilerFiller profiler;
-@@ -1060,9 +1060,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1068,9 +1068,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              }
          }
  
@@ -46,7 +46,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
  
          this.resources.close();
  
-@@ -1510,6 +1512,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1512,6 +1514,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -54,7 +54,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
          this.profiler.push("snooper");
          if (((DedicatedServer) this).getProperties().snooperEnabled && !this.snooper.isStarted() && this.tickCount > 100) { // Spigot
              this.snooper.start();
-@@ -1518,6 +1521,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1520,6 +1523,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          if (((DedicatedServer) this).getProperties().snooperEnabled && this.tickCount % 6000 == 0) { // Spigot
              this.snooper.prepare();
          }
@@ -62,7 +62,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
  
          this.profiler.pop();
  
-@@ -1873,6 +1877,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1875,6 +1879,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.resourcePackHash = hash;
      }
  
@@ -70,7 +70,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
      @Override
      public void populateSnooper(Snooper snooper) {
          snooper.setDynamicData("whitelist_enabled", (Object) false);
-@@ -1906,7 +1911,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1908,7 +1913,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          snooper.setDynamicData("worlds", (Object) i);
      }
@@ -80,7 +80,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
      @Override
      public void populateSnooperInitial(Snooper snooper) {
          snooper.setFixedData("singleplayer", this.isSingleplayer());
-@@ -1914,11 +1921,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1916,11 +1923,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          snooper.setFixedData("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
          snooper.setFixedData("dedicated", this.isDedicatedServer());
      }
@@ -95,7 +95,7 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
  
      public abstract boolean isDedicatedServer();
  
-@@ -2015,9 +2025,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2017,9 +2027,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          return this.tickCount;
      }
  
@@ -108,10 +108,10 @@ index 8c8717051aa292ffae5595818be19cd94f626ef5..c219d44ba4522385ab77e0e8e10fdbcf
      public int getSpawnProtectionRadius() {
          return 16;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 30154551889510ba4a1e12c8cad3a803bd4c239c..8a68b6969b86b8ee387d1f792115c7423da1b2b1 100644
+index c658d8504a73e108437faca4a8d4792a12b4033e..f00c01d911d2b7185b73a73a08471d9cd4213d06 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -505,17 +505,21 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -507,17 +507,21 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          return this.getProperties().allowNether;
      }
  
@@ -134,7 +134,7 @@ index 30154551889510ba4a1e12c8cad3a803bd4c239c..8a68b6969b86b8ee387d1f792115c742
      public void handleConsoleInput(String command, CommandSourceStack commandSource) {
          this.serverCommandQueue.add(new ConsoleInput(command, commandSource));
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
-index c9d80a5430cc66d6189bf337770af43121a5bfd5..19217ad5df06289a8e5cfa1df8de5a8f6e88b7e1 100644
+index 0544ac93513d3a274bfb53bb6120bd598f4d603b..47d692a58d3797d4d0ace5668aaf01fa07f23fba 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServerProperties.java
 @@ -43,7 +43,7 @@ public class DedicatedServerProperties extends Settings<DedicatedServerPropertie

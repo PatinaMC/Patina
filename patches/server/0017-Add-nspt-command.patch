@@ -5,10 +5,10 @@ Subject: [PATCH] Add nspt command
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index cc42f58a34780753a3772f6320bcc679462edc58..30154551889510ba4a1e12c8cad3a803bd4c239c 100644
+index 925cb44528b4313677c5312d91e6dae528d08037..c658d8504a73e108437faca4a8d4792a12b4033e 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -217,6 +217,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -218,6 +218,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              DedicatedServer.LOGGER.error("Unable to load server configuration", e);
              return false;
          }
@@ -17,7 +17,7 @@ index cc42f58a34780753a3772f6320bcc679462edc58..30154551889510ba4a1e12c8cad3a803
          // Purpur start
          try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7a0064d467c43e1b50749ae45979d510676afada..7e401d7f3ab4cc4608159432ddca71a444a4f6ec 100644
+index 0f1415df0ddba61c30326ff15818b356539301f8..ab2e73d63ca81957441274888fd9caa16b9f9ba0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -930,6 +930,7 @@ public final class CraftServer implements Server {
