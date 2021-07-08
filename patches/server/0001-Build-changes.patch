@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 5540da58e66f83b283863d3158a9b4ab5ba636db..4123f9e7dab80ea2b366ca4cf49d8b874aa07386 100644
+index 4605634d1e0d2c6592d4152e697680e078380868..10d78847f53098b6c5dbbfe530997a6abc61ba05 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -30,8 +30,8 @@ repositories {
@@ -19,7 +19,7 @@ index 5540da58e66f83b283863d3158a9b4ab5ba636db..4123f9e7dab80ea2b366ca4cf49d8b87
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.12.1")
      implementation("net.minecrell:terminalconsoleappender:1.2.0")
-@@ -178,7 +178,7 @@ tasks.test {
+@@ -176,7 +176,7 @@ tasks.test {
  fun TaskContainer.registerRunTask(
      name: String, block: JavaExec.() -> Unit
  ): TaskProvider<JavaExec> = register<JavaExec>(name) {

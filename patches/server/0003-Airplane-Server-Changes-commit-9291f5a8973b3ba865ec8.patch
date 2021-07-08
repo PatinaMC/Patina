@@ -316,7 +316,7 @@ Reduce entity allocations
 Remove lambda from ticking guard
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a0408a193 100644
+index 0113374822019463bd302d6d436951e3c174d3c3..ff8e8535df011c1a53182cd19584b0b9db7ddadd 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
@@ -327,7 +327,7 @@ index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a
  import io.papermc.paperweight.util.Git
  import io.papermc.paperweight.util.cache
  import io.papermc.paperweight.util.defaultOutput
-@@ -72,6 +71,9 @@ dependencies {
+@@ -70,6 +69,9 @@ dependencies {
  
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
  
@@ -337,7 +337,7 @@ index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -113,22 +115,6 @@ publishing {
+@@ -111,22 +113,6 @@ publishing {
      }
  }
  
@@ -360,7 +360,7 @@ index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a
  val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
  
  tasks.shadowJar {
-@@ -184,7 +170,7 @@ abstract class IncludeMappings : BaseTask() {
+@@ -182,7 +168,7 @@ abstract class IncludeMappings : BaseTask() {
  }
  
  val includeMappings = tasks.register<IncludeMappings>("includeMappings") {
@@ -370,7 +370,7 @@ index 33caab1b6f171c8b7ca9ecae6c6039954a88e905..d9653b98cbbf7b18b4e707cc4372f46a
  }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 98b71384508447adc80c2175f8e35e5d86b0c378..6636b250d2406bbae26b868da87f7f8bda80ad8c 100644
+index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..56d42e7bd4265a684df3bbc2bd229e720acd70fd 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,6 +202,15 @@ public class PaperConfig {
@@ -2017,7 +2017,7 @@ index e75efd67acb063e3ce7506839e4a888241bda703..65f4100e1749402e42431932330ba50c
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768bcc9065d 100644
+index 92fd98540e8d5ada4eaaf83bee8cdd276c4458a7..3d134bb144b8bff0a0b61e88bd7c49f093b3889c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2028,7 +2028,7 @@ index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768
  
  public abstract class LivingEntity extends Entity {
  
-@@ -1824,6 +1823,20 @@ public abstract class LivingEntity extends Entity {
+@@ -1827,6 +1826,20 @@ public abstract class LivingEntity extends Entity {
          return this.lastClimbablePos;
      }
  
@@ -2049,7 +2049,7 @@ index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3428,7 +3441,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3431,7 +3444,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
@@ -2361,7 +2361,7 @@ index adc2feafd0c1a38d1b6b65b8aee59d21725b84fe..94f5c84b16865c5a8d77111274b1c365
          PiglinAi.updateActivity(this);
          super.customServerAiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index dce94c04d20af637860559c1f27412d151e1b5af..9db53dddcc3c566b6ab638c3c2df3d6633596c0e 100644
+index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -245,11 +245,18 @@ public class Villager extends AbstractVillager implements ReputationEventHandler

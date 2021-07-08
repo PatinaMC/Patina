@@ -6,7 +6,7 @@ Subject: [PATCH] Purpur Server Changes commit
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 6636b250d2406bbae26b868da87f7f8bda80ad8c..06fbfe810ac7080b8babe12241da0a6d56d091dd 100644
+index 56d42e7bd4265a684df3bbc2bd229e720acd70fd..6a79f329a99539d0413c207e4beaac13dabd6bd3 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -118,6 +118,11 @@ public class PaperConfig {
@@ -323,10 +323,10 @@ index 65f4100e1749402e42431932330ba50cde2d4749..169e5894fc1f76d395f52c7e5e6c19fa
          // hanging has its own special logic
          if (!(this instanceof net.minecraft.world.entity.decoration.HangingEntity) && (this.position.x != x || this.position.y != y || this.position.z != z)) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index c22bf8f7df311ae3f2973667764e9768bcc9065d..1682f7dfea1ae7f6d7cf039990e7cb0b148f721f 100644
+index 3d134bb144b8bff0a0b61e88bd7c49f093b3889c..32fc778e88a484f1f7df49a6cfcffc68991d0566 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -2887,7 +2887,7 @@ public abstract class LivingEntity extends Entity {
+@@ -2890,7 +2890,7 @@ public abstract class LivingEntity extends Entity {
              }
          }
  
@@ -360,7 +360,7 @@ index 2dac4bc346eb1dde1f8d92c3e5b9648b2c433617..5ebfa2b7f460e26aa1d08841ae69c5d8
      public boolean occludesVibrations() {
          return ItemTags.OCCLUDES_VIBRATION_SIGNALS.contains(this.getItem().getItem());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 9db53dddcc3c566b6ab638c3c2df3d6633596c0e..472b3d7f5c3d85837a152f13c345338fdd4b701e 100644
+index 90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd..f9d6dce1c3666da0265f4dcf75bd937484d3031c 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
