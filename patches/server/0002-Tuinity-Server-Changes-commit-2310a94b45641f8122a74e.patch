@@ -14968,7 +14968,7 @@ index 020a19cd683dd3779c5116d12b3cdcd3b3ca69b4..17d209c347b07acef451180c97835f41
      public static final Codec<IntProvider> POSITIVE_CODEC = codec(1, Integer.MAX_VALUE);
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 5ffc9d02ee10e9efe653e124b1eb9cbd0adc3df9..e75efd67acb063e3ce7506839e4a888241bda703 100644
+index a11507c630248b98153275f78c15ebee59a6b0a3..d9265426ddb91a6cff634b8fcc3ed26072379f43 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -356,8 +356,27 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -15311,8 +15311,8 @@ index 5ffc9d02ee10e9efe653e124b1eb9cbd0adc3df9..e75efd67acb063e3ce7506839e4a8882
      }
  
      public void setDeltaMovement(double x, double y, double z) {
-@@ -3789,7 +3980,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
-     public final void setPosRaw(double x, double y, double z) {
+@@ -3794,7 +3985,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+         // Paper end
          // Paper start - fix MC-4
          if (this instanceof ItemEntity) {
 -            if (com.destroystokyo.paper.PaperConfig.fixEntityPositionDesync) {
@@ -15320,9 +15320,9 @@ index 5ffc9d02ee10e9efe653e124b1eb9cbd0adc3df9..e75efd67acb063e3ce7506839e4a8882
                  // encode/decode from PacketPlayOutEntity
                  x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
                  y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
-@@ -3804,7 +3995,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3803,7 +3994,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          }
-         // Paper end
+         // Paper end - fix MC-4
          if (this.position.x != x || this.position.y != y || this.position.z != z) {
 +            synchronized (this.posLock) { // Tuinity
              this.position = new Vec3(x, y, z);
@@ -16315,7 +16315,7 @@ index 474078b68f1bf22037495f42bae59b790fd8cb46..61a4dea715689b0ce9247040db5dd208
  
      public boolean noSave() {
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 31fbcf6a35b902ce80c0a5a23dabb8ec3d8cbdfc..0059f0488acc22ebddc2faf4c5879f9f0c24fd14 100644
+index 88145f04989c71a686aae1b486087ecdf55e268c..c6821bfb28b582733cd977864c28ca5cf0c69872 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -262,7 +262,7 @@ public final class NaturalSpawner {

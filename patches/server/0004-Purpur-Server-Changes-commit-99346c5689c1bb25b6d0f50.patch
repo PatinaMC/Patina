@@ -254,7 +254,7 @@ index 2fd0a432ed52ca137622a1f631e886aaf77f33d3..a99291afda33a9b6216c8e84f89e25e7
              entityplayer.connection.send(new ClientboundEntityEventPacket(entityplayer, b0));
          }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 65f4100e1749402e42431932330ba50cde2d4749..169e5894fc1f76d395f52c7e5e6c19fa0cd86030 100644
+index 4489dcf9a860faefca482440c18e1f8eb6143208..ad1f4ad53e054a10b2bae10e1dea8abdd5960352 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1761,6 +1761,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -303,27 +303,17 @@ index 65f4100e1749402e42431932330ba50cde2d4749..169e5894fc1f76d395f52c7e5e6c19fa
      @Override
      public void sendMessage(Component message, UUID sender) {}
  
-@@ -4001,17 +4033,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
-         return this.getZ((2.0D * this.random.nextDouble() - 1.0D) * widthScale);
-     }
- 
--    public final void setPosRaw(double x, double y, double z) {
--        // Paper start - fix MC-4
--        if (this instanceof ItemEntity) {
+@@ -4009,7 +4041,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+         // Paper end
+         // Paper start - fix MC-4
+         if (this instanceof ItemEntity) {
 -            if (false && com.destroystokyo.paper.PaperConfig.fixEntityPositionDesync) { // Tuinity - revert
--                // encode/decode from PacketPlayOutEntity
--                x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
--                y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
--                z = Mth.lfloor(z * 4096.0D) * (1 / 4096.0D);
--            }
--        }
--        // Paper end - fix MC-4
-+    public void setPosRaw(double x, double y, double z) { // Purpur - remove final for ItemEntity
-         // Paper start - never allow AABB to become desynced from position
-         // hanging has its own special logic
-         if (!(this instanceof net.minecraft.world.entity.decoration.HangingEntity) && (this.position.x != x || this.position.y != y || this.position.z != z)) {
++            if (com.destroystokyo.paper.PaperConfig.fixEntityPositionDesync) { // Tuinity - revert // Purpur - No.
+                 // encode/decode from PacketPlayOutEntity
+                 x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
+                 y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 3d134bb144b8bff0a0b61e88bd7c49f093b3889c..32fc778e88a484f1f7df49a6cfcffc68991d0566 100644
+index c3dd14f1bda728891c95eccb1edbfa1ec0d79689..c72ae9b2a8faaff7c9ee1fe36eae7974ac68407f 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2890,7 +2890,7 @@ public abstract class LivingEntity extends Entity {
@@ -335,30 +325,6 @@ index 3d134bb144b8bff0a0b61e88bd7c49f093b3889c..32fc778e88a484f1f7df49a6cfcffc68
          double d0 = this.getX() - this.xo;
          double d1 = this.getZ() - this.zo;
          float f = (float) (d0 * d0 + d1 * d1);
-diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index 2dac4bc346eb1dde1f8d92c3e5b9648b2c433617..5ebfa2b7f460e26aa1d08841ae69c5d833f29882 100644
---- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-+++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-@@ -81,6 +81,19 @@ public class ItemEntity extends Entity {
-         this.bobOffs = entity.bobOffs;
-     }
- 
-+    // Purpur start - fix MC-4
-+    @Override
-+    public void setPosRaw(double x, double y, double z) {
-+        if (com.destroystokyo.paper.PaperConfig.fixEntityPositionDesync) { // Tuinity - revert // Purpur - No.
-+            // encode/decode from PacketPlayOutEntity
-+            x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
-+            y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
-+            z = Mth.lfloor(z * 4096.0D) * (1 / 4096.0D);
-+        }
-+        super.setPosRaw(x, y, z);
-+    }
-+    // Purpur end - fix MC-4
-+
-     @Override
-     public boolean occludesVibrations() {
-         return ItemTags.OCCLUDES_VIBRATION_SIGNALS.contains(this.getItem().getItem());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 index 90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd..f9d6dce1c3666da0265f4dcf75bd937484d3031c 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
