@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 8 Jul 2021 06:14:11 +0000
+Date: Fri, 9 Jul 2021 03:46:53 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 9291f5a8973b3ba865ec80a5124ddf6e13da693c
+ 4e166c36f9b8b1264ad7496ae77be21e72d685fa
 
 Fix chicken jockey persistence
 
@@ -316,7 +316,7 @@ Reduce entity allocations
 Remove lambda from ticking guard
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0113374822019463bd302d6d436951e3c174d3c3..ff8e8535df011c1a53182cd19584b0b9db7ddadd 100644
+index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..308bf15f2eafdd5e144c58293bb3a60fcca40f62 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
@@ -327,17 +327,17 @@ index 0113374822019463bd302d6d436951e3c174d3c3..ff8e8535df011c1a53182cd19584b0b9
  import io.papermc.paperweight.util.Git
  import io.papermc.paperweight.util.cache
  import io.papermc.paperweight.util.defaultOutput
-@@ -70,6 +69,9 @@ dependencies {
+@@ -72,6 +71,9 @@ dependencies {
  
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
  
 +    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
-+    implementation("com.github.technove:Flare:fd8e0c3d7e") // Airplane - flare
++    implementation("com.github.technove:Flare:b4fb21937c") // Airplane - flare
 +
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -111,22 +113,6 @@ publishing {
+@@ -113,22 +115,6 @@ publishing {
      }
  }
  
@@ -360,7 +360,7 @@ index 0113374822019463bd302d6d436951e3c174d3c3..ff8e8535df011c1a53182cd19584b0b9
  val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
  
  tasks.shadowJar {
-@@ -182,7 +168,7 @@ abstract class IncludeMappings : BaseTask() {
+@@ -184,7 +170,7 @@ abstract class IncludeMappings : BaseTask() {
  }
  
  val includeMappings = tasks.register<IncludeMappings>("includeMappings") {
@@ -370,7 +370,7 @@ index 0113374822019463bd302d6d436951e3c174d3c3..ff8e8535df011c1a53182cd19584b0b9
  }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..56d42e7bd4265a684df3bbc2bd229e720acd70fd 100644
+index 98b71384508447adc80c2175f8e35e5d86b0c378..6636b250d2406bbae26b868da87f7f8bda80ad8c 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,6 +202,15 @@ public class PaperConfig {
@@ -1017,10 +1017,10 @@ index 0000000000000000000000000000000000000000..22368976212ac6638a31e81d22c322a5
 +}
 diff --git a/src/main/java/gg/airplane/flare/ProfilingManager.java b/src/main/java/gg/airplane/flare/ProfilingManager.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..6d5e442824de2d71160be49e36f0605a216f247d
+index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec3ff0888c
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/ProfilingManager.java
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,147 @@
 +package gg.airplane.flare;
 +
 +import com.google.common.collect.ImmutableList;
@@ -1029,12 +1029,21 @@ index 0000000000000000000000000000000000000000..6d5e442824de2d71160be49e36f0605a
 +import gg.airplane.AirplaneConfig;
 +import gg.airplane.AirplaneLogger;
 +import gg.airplane.compat.ServerConfigurations;
++import gg.airplane.flare.collectors.GCEventCollector;
++import gg.airplane.flare.collectors.StatCollector;
 +import gg.airplane.flare.collectors.TPSCollector;
 +import gg.airplane.flare.collectors.WorldCountCollector;
 +import gg.airplane.flare.exceptions.UserReportableException;
++import gg.airplane.flare.proto.ProfilerFileProto;
 +import org.bukkit.Bukkit;
 +import org.bukkit.craftbukkit.scheduler.MinecraftInternalPlugin;
 +import org.bukkit.scheduler.BukkitTask;
++import oshi.SystemInfo;
++import oshi.hardware.CentralProcessor;
++import oshi.hardware.GlobalMemory;
++import oshi.hardware.HardwareAbstractionLayer;
++import oshi.hardware.VirtualMemory;
++import oshi.software.os.OperatingSystem;
 +
 +import java.io.IOException;
 +import java.util.Objects;
@@ -1073,10 +1082,48 @@ index 0000000000000000000000000000000000000000..6d5e442824de2d71160be49e36f0605a
 +                "Minecraft Version", Bukkit.getMinecraftVersion()
 +              )),
 +              new FlareAuth(AirplaneConfig.accessToken, AirplaneConfig.profileWebUrl),
-+              ImmutableList.of(new TPSCollector(), new WorldCountCollector()),
++              ImmutableList.of(new TPSCollector(), new WorldCountCollector(), new GCEventCollector(), new StatCollector()),
 +              PluginLookup::getPluginForClass,
 +              ImmutableSet.of(CustomCategories.MC_PERF, CustomCategories.ENTITIES_AND_CHUNKS)
-+            );
++            ) {
++                @Override
++                public ProfilerFileProto.CreateProfile.HardwareInfo getHardwareInfo() {
++                    SystemInfo systemInfo = new SystemInfo();
++                    HardwareAbstractionLayer hardware = systemInfo.getHardware();
++
++                    CentralProcessor processor = hardware.getProcessor();
++                    CentralProcessor.ProcessorIdentifier processorIdentifier = processor.getProcessorIdentifier();
++
++                    GlobalMemory memory = hardware.getMemory();
++                    VirtualMemory virtualMemory = memory.getVirtualMemory();
++
++                    return ProfilerFileProto.CreateProfile.HardwareInfo.newBuilder()
++                            .setCpu(ProfilerFileProto.CreateProfile.HardwareInfo.CPU.newBuilder()
++                                    .setModel(processorIdentifier.getName())
++                                    .setCoreCount(processor.getPhysicalProcessorCount())
++                                    .setThreadCount(processor.getLogicalProcessorCount())
++                                    .setFrequency(processor.getMaxFreq())
++                                    .build())
++                            .setMemory(ProfilerFileProto.CreateProfile.HardwareInfo.Memory.newBuilder()
++                                    .setTotal(memory.getTotal())
++                                    .setSwapTotal(virtualMemory.getSwapTotal())
++                                    .setVirtualMax(virtualMemory.getVirtualMax())
++                                    .build())
++                            .build();
++                }
++
++                @Override
++                public ProfilerFileProto.CreateProfile.OperatingSystem getOperatingSystem() {
++                    OperatingSystem os = new SystemInfo().getOperatingSystem();
++
++                    return ProfilerFileProto.CreateProfile.OperatingSystem.newBuilder()
++                            .setManufacturer(os.getManufacturer())
++                            .setFamily(os.getFamily())
++                            .setVersion(os.getVersionInfo().toString())
++                            .setBitness(os.getBitness())
++                            .build();
++                }
++            };
 +        } catch (IOException e) {
 +            AirplaneLogger.LOGGER.log(Level.WARNING, "Failed to read configuration files:", e);
 +            throw new UserReportableException("Failed to load configuration files, check logs for further details.");
@@ -1121,9 +1168,127 @@ index 0000000000000000000000000000000000000000..6d5e442824de2d71160be49e36f0605a
 +    }
 +
 +}
+diff --git a/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java b/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1be0e40a117322e029bb75897578f105989cbb4a
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java
+@@ -0,0 +1,65 @@
++package gg.airplane.flare.collectors;
++
++import com.google.common.collect.ImmutableMap;
++import com.sun.management.GarbageCollectionNotificationInfo;
++import gg.airplane.flare.Flare;
++import gg.airplane.flare.live.CollectorData;
++import gg.airplane.flare.live.EventCollector;
++import gg.airplane.flare.live.LiveEvent;
++import gg.airplane.flare.live.category.GraphCategory;
++import gg.airplane.flare.live.formatter.DataFormatter;
++
++import javax.management.ListenerNotFoundException;
++import javax.management.Notification;
++import javax.management.NotificationEmitter;
++import javax.management.NotificationListener;
++import javax.management.openmbean.CompositeData;
++import java.lang.management.GarbageCollectorMXBean;
++import java.lang.management.ManagementFactory;
++
++public class GCEventCollector extends EventCollector implements NotificationListener {
++
++    private static final CollectorData MINOR_GC = new CollectorData("builtin:gc:minor", "Minor GC", "A small pause in the program to allow Garbage Collection to run.", DataFormatter.MILLISECONDS, GraphCategory.SYSTEM);
++    private static final CollectorData MAJOR_GC = new CollectorData("builtin:gc:major", "Major GC", "A large pause in the program to allow Garbage Collection to run.", DataFormatter.MILLISECONDS, GraphCategory.SYSTEM);
++    private static final CollectorData UNKNOWN_GC = new CollectorData("builtin:gc:generic", "Major GC", "A run of the Garbage Collection.", DataFormatter.MILLISECONDS, GraphCategory.SYSTEM);
++
++    public GCEventCollector() {
++        super(MINOR_GC, MAJOR_GC, UNKNOWN_GC);
++    }
++
++    private static CollectorData fromString(String string) {
++        if (string.endsWith("minor GC")) {
++            return MINOR_GC;
++        } else if (string.endsWith("major GC")) {
++            return MAJOR_GC;
++        }
++        return UNKNOWN_GC;
++    }
++
++    @Override
++    public void start(Flare flare) {
++        for (GarbageCollectorMXBean garbageCollectorBean : ManagementFactory.getGarbageCollectorMXBeans()) {
++            NotificationEmitter notificationEmitter = (NotificationEmitter) garbageCollectorBean;
++            notificationEmitter.addNotificationListener(this, null, null);
++        }
++    }
++
++    @Override
++    public void stop(Flare flare) {
++        for (GarbageCollectorMXBean garbageCollectorBean : ManagementFactory.getGarbageCollectorMXBeans()) {
++            NotificationEmitter notificationEmitter = (NotificationEmitter) garbageCollectorBean;
++            try {
++                notificationEmitter.removeNotificationListener(this);
++            } catch (ListenerNotFoundException e) {
++            }
++        }
++    }
++
++    @Override
++    public void handleNotification(Notification notification, Object o) {
++        if (notification.getType().equals(GarbageCollectionNotificationInfo.GARBAGE_COLLECTION_NOTIFICATION)) {
++            GarbageCollectionNotificationInfo gcInfo = GarbageCollectionNotificationInfo.from((CompositeData) notification.getUserData());
++            reportEvent(new LiveEvent(fromString(gcInfo.getGcAction()), System.currentTimeMillis(), (int) gcInfo.getGcInfo().getDuration(), ImmutableMap.of()));
++        }
++    }
++}
+diff --git a/src/main/java/gg/airplane/flare/collectors/StatCollector.java b/src/main/java/gg/airplane/flare/collectors/StatCollector.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..e36290f881a9a406e0864107954c62e6ea86f6c9
+--- /dev/null
++++ b/src/main/java/gg/airplane/flare/collectors/StatCollector.java
+@@ -0,0 +1,41 @@
++package gg.airplane.flare.collectors;
++
++import com.sun.management.OperatingSystemMXBean;
++import gg.airplane.flare.live.CollectorData;
++import gg.airplane.flare.live.LiveCollector;
++import gg.airplane.flare.live.category.GraphCategory;
++import gg.airplane.flare.live.formatter.DataFormatter;
++import oshi.SystemInfo;
++import oshi.hardware.CentralProcessor;
++
++import java.lang.management.ManagementFactory;
++import java.time.Duration;
++
++public class StatCollector extends LiveCollector {
++
++    private static final CollectorData CPU = new CollectorData("builtin:stat:cpu", "CPU Load", "The total amount of CPU usage across all cores.", DataFormatter.PERCENT, GraphCategory.SYSTEM);
++    private static final CollectorData CPU_PROCESS = new CollectorData("builtin:stat:cpu_process", "Process CPU", "The amount of CPU being used by this process.", DataFormatter.PERCENT, GraphCategory.SYSTEM);
++    private static final CollectorData MEMORY = new CollectorData("builtin:stat:memory_used", "Memory", "The amount of memory being used currently.", DataFormatter.BYTES, GraphCategory.SYSTEM);
++    private static final CollectorData MEMORY_TOTAL = new CollectorData("builtin:stat:memory_total", "Memory Total", "The total amount of memory allocated.", DataFormatter.BYTES, GraphCategory.SYSTEM);
++
++    private final OperatingSystemMXBean bean;
++    private final CentralProcessor processor;
++
++    public StatCollector() {
++        super(CPU, CPU_PROCESS, MEMORY, MEMORY_TOTAL);
++        this.interval = Duration.ofSeconds(5);
++
++        this.bean = (OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
++        this.processor = new SystemInfo().getHardware().getProcessor();
++    }
++
++    @Override
++    public void run() {
++        Runtime runtime = Runtime.getRuntime();
++
++        this.report(CPU, this.processor.getSystemLoadAverage(1)[0] / 100); // percentage
++        this.report(CPU_PROCESS, this.bean.getProcessCpuLoad());
++        this.report(MEMORY, runtime.totalMemory() - runtime.freeMemory());
++        this.report(MEMORY_TOTAL, runtime.totalMemory());
++    }
++}
 diff --git a/src/main/java/gg/airplane/flare/collectors/TPSCollector.java b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..c60ce5a53c05e28afae5f9fadbab0a3612d97cc3
+index 0000000000000000000000000000000000000000..066c9b50d812242a2e9f5734bb680f997ea59541
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
 @@ -0,0 +1,31 @@
@@ -1146,7 +1311,7 @@ index 0000000000000000000000000000000000000000..c60ce5a53c05e28afae5f9fadbab0a36
 +    public TPSCollector() {
 +        super(TPS, MSPT);
 +
-+        this.interval = Duration.ofSeconds(3);
++        this.interval = Duration.ofSeconds(5);
 +    }
 +
 +    @Override
@@ -1652,7 +1817,7 @@ index b01d7da333bac7820e42b6f645634a15ef88ae4f..43e5c3fde5d45ef975a8ddbe4a2758ea
          }
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9cf8c52e8eb6afcfe75018a759b60f1b41c31a1f..f2046efadaba809d1b1195b087f88915b6eea5d8 100644
+index f25bb4214cffd0050241ea229b6acb0c16b2b0a5..1d7671a22dafec51facb74b65c9fe0a15464bcfb 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2292,6 +2292,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -2017,7 +2182,7 @@ index e75efd67acb063e3ce7506839e4a888241bda703..65f4100e1749402e42431932330ba50c
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 92fd98540e8d5ada4eaaf83bee8cdd276c4458a7..3d134bb144b8bff0a0b61e88bd7c49f093b3889c 100644
+index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768bcc9065d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2028,7 +2193,7 @@ index 92fd98540e8d5ada4eaaf83bee8cdd276c4458a7..3d134bb144b8bff0a0b61e88bd7c49f0
  
  public abstract class LivingEntity extends Entity {
  
-@@ -1827,6 +1826,20 @@ public abstract class LivingEntity extends Entity {
+@@ -1824,6 +1823,20 @@ public abstract class LivingEntity extends Entity {
          return this.lastClimbablePos;
      }
  
@@ -2049,7 +2214,7 @@ index 92fd98540e8d5ada4eaaf83bee8cdd276c4458a7..3d134bb144b8bff0a0b61e88bd7c49f0
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3431,7 +3444,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3428,7 +3441,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
@@ -2361,7 +2526,7 @@ index adc2feafd0c1a38d1b6b65b8aee59d21725b84fe..94f5c84b16865c5a8d77111274b1c365
          PiglinAi.updateActivity(this);
          super.customServerAiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd 100644
+index dce94c04d20af637860559c1f27412d151e1b5af..9db53dddcc3c566b6ab638c3c2df3d6633596c0e 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -245,11 +245,18 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -3372,7 +3537,7 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9c7c272061d3be21d523cfb43d52c85725fd40bc..9dfbd685b9c63f3b26aaf8e47e0aeaa4c21588cc 100644
+index 4342bc5aad49fe372d561296a6b63818a443d089..0511e123207a12217bb666d5aa6e8881e44bef11 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -986,6 +986,11 @@ public final class CraftServer implements Server {
