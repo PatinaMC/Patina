@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 9 Jul 2021 03:46:53 +0000
+Date: Fri, 16 Jul 2021 21:07:54 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 4e166c36f9b8b1264ad7496ae77be21e72d685fa
+ 15822af839bf051a69fea86172d7939e90b05522
 
 Fix chicken jockey persistence
 
@@ -316,7 +316,7 @@ Reduce entity allocations
 Remove lambda from ticking guard
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..308bf15f2eafdd5e144c58293bb3a60fcca40f62 100644
+index f8f162ef196a8a8de913762681750e55aa11e6fe..d077d36b6704edbcb62039a4d50b49acffa6d066 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
@@ -327,7 +327,7 @@ index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..308bf15f2eafdd5e144c58293bb3a60f
  import io.papermc.paperweight.util.Git
  import io.papermc.paperweight.util.cache
  import io.papermc.paperweight.util.defaultOutput
-@@ -72,6 +71,9 @@ dependencies {
+@@ -70,6 +69,9 @@ dependencies {
  
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
  
@@ -337,30 +337,25 @@ index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..308bf15f2eafdd5e144c58293bb3a60f
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -113,22 +115,6 @@ publishing {
+@@ -112,14 +114,15 @@ publishing {
      }
  }
  
--val generateReobfMappings = rootProject.tasks.named<GenerateReobfMappings>("generateReobfMappings")
--
--val patchReobfMappings by tasks.registering<PatchMappings> {
--    inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
--    patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
--
++
+ val generateReobfMappings = rootProject.tasks.named<GenerateReobfMappings>("generateReobfMappings")
+ 
+ val patchReobfMappings by tasks.registering<PatchMappings> {
+     inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
+     patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
+ 
 -    fromNamespace.set(Constants.DEOBF_NAMESPACE)
 -    toNamespace.set(Constants.SPIGOT_NAMESPACE)
--
--    outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
--}
--
--tasks.reobfJar {
--    mappingsFile.set(patchReobfMappings.flatMap { it.outputMappings })
--}
--
- val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
++    fromNamespace.set(io.papermc.paperweight.util.Constants.DEOBF_NAMESPACE)
++    toNamespace.set(io.papermc.paperweight.util.Constants.SPIGOT_NAMESPACE)
  
- tasks.shadowJar {
-@@ -184,7 +170,7 @@ abstract class IncludeMappings : BaseTask() {
+     outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
+ }
+@@ -183,7 +186,7 @@ abstract class IncludeMappings : BaseTask() {
  }
  
  val includeMappings = tasks.register<IncludeMappings>("includeMappings") {
@@ -370,7 +365,7 @@ index ab8de6c4e3c0bea2b9f498da00adf88e987d2364..308bf15f2eafdd5e144c58293bb3a60f
  }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 98b71384508447adc80c2175f8e35e5d86b0c378..6636b250d2406bbae26b868da87f7f8bda80ad8c 100644
+index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..56d42e7bd4265a684df3bbc2bd229e720acd70fd 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,6 +202,15 @@ public class PaperConfig {
@@ -1817,7 +1812,7 @@ index b01d7da333bac7820e42b6f645634a15ef88ae4f..43e5c3fde5d45ef975a8ddbe4a2758ea
          }
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f25bb4214cffd0050241ea229b6acb0c16b2b0a5..1d7671a22dafec51facb74b65c9fe0a15464bcfb 100644
+index 9cf8c52e8eb6afcfe75018a759b60f1b41c31a1f..f2046efadaba809d1b1195b087f88915b6eea5d8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2292,6 +2292,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -1917,32 +1912,10 @@ index 0fcd6a9162f5bddb3c4fc42b3a64efde7c7d9a9b..c398f0c78a8513a7e86fe7085a5fce29
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 7642170bf5a0eaa11110238fa5cf1a7e1ff20a20..6a1d9793d39eca96241bfd216745841a52b91e29 100644
+index 631bc406d9bb193ac2d1d433519c2c3a7f4589e4..e4e7a951b88a94d3b5c0741dc375e042bdb8b3aa 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -579,6 +579,21 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
-         return result;
-     }
- 
-+    // Airplane start - skip type lookup if already completed, but still run check
-+    public BlockEntity getAndCheckTileEntity(BlockState data, BlockPos pos) {
-+        BlockEntity result = super.getTileEntity(pos, false);
-+
-+        // copied from above
-+        if (result != null && !data.isAir()) {
-+            if (!result.getType().isValid(data)) {
-+                result = fixTileEntity(pos, data, result);
-+            }
-+        }
-+
-+        return result;
-+    }
-+    // Airplane end
-+
-     private BlockEntity fixTileEntity(BlockPos pos, BlockState type, BlockEntity found) {
-         this.getCraftServer().getLogger().log(Level.SEVERE, "Block at {0}, {1}, {2} is {3} but has {4}" + ". "
-                 + "Bukkit will attempt to fix this, but there may be additional damage that we cannot recover.", new Object[]{pos.getX(), pos.getY(), pos.getZ(), type, found});
-@@ -818,7 +833,20 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -775,7 +775,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
                          }
  
                          gameprofilerfiller.push("tick");
@@ -1964,7 +1937,7 @@ index 7642170bf5a0eaa11110238fa5cf1a7e1ff20a20..6a1d9793d39eca96241bfd216745841a
                          gameprofilerfiller.pop();
                      }
                  }
-@@ -878,9 +906,11 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -835,9 +848,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
      // Paper start - optimise random block ticking
      private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
@@ -1977,7 +1950,7 @@ index 7642170bf5a0eaa11110238fa5cf1a7e1ff20a20..6a1d9793d39eca96241bfd216745841a
      public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
          ChunkPos chunkcoordintpair = chunk.getPos();
          boolean flag = this.isRaining();
-@@ -891,7 +921,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -848,7 +863,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          gameprofilerfiller.push("thunder");
          final BlockPos.MutableBlockPos blockposition = this.chunkTickMutablePosition; // Paper - use mutable to reduce allocation rate, final to force compile fail on change
  
@@ -1986,7 +1959,7 @@ index 7642170bf5a0eaa11110238fa5cf1a7e1ff20a20..6a1d9793d39eca96241bfd216745841a
              blockposition.set(this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15))); // Paper
              if (this.isRainingAt(blockposition)) {
                  DifficultyInstance difficultydamagescaler = this.getCurrentDifficultyAt(blockposition);
-@@ -915,7 +945,7 @@ public class ServerLevel extends net.minecraft.world.level.Level implements Worl
+@@ -872,7 +887,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
  
          gameprofilerfiller.popPush("iceandsnow");
@@ -2108,7 +2081,7 @@ index 7437f01ca8f416e2c9150250e324af4725a4efb6..bdcd0e38a3ba904811112f41d8bfbfc0
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index e75efd67acb063e3ce7506839e4a888241bda703..65f4100e1749402e42431932330ba50cde2d4749 100644
+index d9265426ddb91a6cff634b8fcc3ed26072379f43..4489dcf9a860faefca482440c18e1f8eb6143208 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -336,6 +336,10 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -2182,7 +2155,7 @@ index e75efd67acb063e3ce7506839e4a888241bda703..65f4100e1749402e42431932330ba50c
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768bcc9065d 100644
+index 24c629d5f26bc5aadebcf39a63930b3448525242..49cd42464e62db1e6e64545c7b41fb6d1eac69b6 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2193,7 +2166,7 @@ index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768
  
  public abstract class LivingEntity extends Entity {
  
-@@ -1824,6 +1823,20 @@ public abstract class LivingEntity extends Entity {
+@@ -1827,6 +1826,20 @@ public abstract class LivingEntity extends Entity {
          return this.lastClimbablePos;
      }
  
@@ -2214,14 +2187,14 @@ index ed745776316c5346ee1b44c8f022c40359b7e642..c22bf8f7df311ae3f2973667764e9768
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3428,7 +3441,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3431,7 +3444,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
--            return vec3d1.distanceTo(vec3d) > 128.0D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+-            return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS; // Paper - use distanceToSqr
 +            // Airplane start
-+            //return vec3d1.distanceTo(vec3d) > 128.0D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
-+            return this.level.rayTraceDirect(vec3d, vec3d1, net.minecraft.world.phys.shapes.CollisionContext.of(this)) == net.minecraft.world.phys.BlockHitResult.Type.MISS;
++            //return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level.clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS; // Paper - use distanceToSqr
++            return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level.rayTraceDirect(vec3d, vec3d1, net.minecraft.world.phys.shapes.CollisionContext.of(this)) == net.minecraft.world.phys.BlockHitResult.Type.MISS;
 +            // Airplane end
          }
      }
@@ -2526,7 +2499,7 @@ index adc2feafd0c1a38d1b6b65b8aee59d21725b84fe..94f5c84b16865c5a8d77111274b1c365
          PiglinAi.updateActivity(this);
          super.customServerAiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index dce94c04d20af637860559c1f27412d151e1b5af..9db53dddcc3c566b6ab638c3c2df3d6633596c0e 100644
+index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -245,11 +245,18 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -2918,7 +2891,7 @@ index 61a4dea715689b0ce9247040db5dd2080ee2e167..496000e65ffd5df5ea23783341dac5e2
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 0059f0488acc22ebddc2faf4c5879f9f0c24fd14..074e25789152b8194797d6a3bae242e08f6be577 100644
+index c6821bfb28b582733cd977864c28ca5cf0c69872..ea77694307e5972b6c9ecf5f23515885974ed493 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -407,12 +407,12 @@ public final class NaturalSpawner {
@@ -3056,7 +3029,7 @@ index 52de9852f87d346714a950b60a0004d386ac10f0..305a8f5ea917c7e242011fa98a3e1615
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index 3b1442bf4c83650369e925d76f07dc67c6cbbc83..80ae677938ad0ed79bc63974a1fec62e49506713 100644
+index 3b1442bf4c83650369e925d76f07dc67c6cbbc83..a1f483f87f560f79910d6b2ac8384aa95a085254 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 @@ -44,7 +44,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
@@ -3150,15 +3123,6 @@ index 3b1442bf4c83650369e925d76f07dc67c6cbbc83..80ae677938ad0ed79bc63974a1fec62e
  
              if (itemstack1.isEmpty()) {
                  IGNORE_TILE_UPDATES = true; // Paper
-@@ -667,7 +690,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
-         if (block instanceof WorldlyContainerHolder) {
-             object = ((WorldlyContainerHolder) block).getContainer(iblockdata, world, blockposition);
-         } else if (iblockdata.hasBlockEntity()) {
--            BlockEntity tileentity = world.getBlockEntity(blockposition);
-+            BlockEntity tileentity = ((net.minecraft.server.level.ServerLevel) world).getAndCheckTileEntity(iblockdata, blockposition); // Airplane - skip validation step, which does 2nd type lookup
- 
-             if (tileentity instanceof Container) {
-                 object = (Container) tileentity;
 @@ -726,7 +749,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
      @Override
@@ -3537,7 +3501,7 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4342bc5aad49fe372d561296a6b63818a443d089..0511e123207a12217bb666d5aa6e8881e44bef11 100644
+index 5bb145caa74895536d22f7fd534576c27b0470a8..3b9b09d7fe90f5f49203fc82dac4a9c3a8a6b71f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -986,6 +986,11 @@ public final class CraftServer implements Server {

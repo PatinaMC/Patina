@@ -57,7 +57,7 @@ index 134bb2a4826419110c10a483834747b942576e58..d9e868b6c70da18b4ce23c80e2aaf347
          if (this.source.acceptsSuccess() && !this.silent) {
              this.source.sendMessage(message, Util.NIL_UUID);
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index ff4f48f6646060b398e8bf90a078e7fbf84beada..d478627dcd2b6e3d3d95b3fa224a25d44e6bbafb 100644
+index a6f10d47bc4e2cadcc3e06cffa011ed7fb97c68d..59881c845cc88508736cc3d2a61860512d28964d 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -375,6 +375,7 @@ public class Commands {
@@ -179,7 +179,7 @@ index c398f0c78a8513a7e86fe7085a5fce29444e3eee..cc79eb41061590a3cfa6ed01b6b30017
          this.entity.stopSeenByPlayer(player);
          player.connection.send(new ClientboundRemoveEntitiesPacket(new int[]{this.entity.getId()}));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 53e9ba24338690b1c5f12250748273758c68f4d1..0703c2efbf0ebf43517ae1381a6d94ba05334746 100644
+index de56756afcd90eff9a1f7fbfa0feb33e4284c3d7..3e85e96827d9ea2fe13fc45cf66eb5884c9266b4 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -228,6 +228,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -212,7 +212,7 @@ index 53e9ba24338690b1c5f12250748273758c68f4d1..0703c2efbf0ebf43517ae1381a6d94ba
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3056,6 +3072,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3071,6 +3087,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -242,10 +242,10 @@ index d65191a50349ec86fe35df4ac1070f94fbb77b4c..9c57dfd72ef559d8052aac4e073cd36e
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 2fd0a432ed52ca137622a1f631e886aaf77f33d3..a99291afda33a9b6216c8e84f89e25e7e359b3f8 100644
+index 936ae5576902e6593bd21af4d3cf3998109347b5..04ae356c17f430443bc2b05c69c4dced78f406b7 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1156,6 +1156,7 @@ public abstract class PlayerList {
+@@ -1161,6 +1161,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + i);
              }
@@ -313,7 +313,7 @@ index 4489dcf9a860faefca482440c18e1f8eb6143208..ad1f4ad53e054a10b2bae10e1dea8abd
                  x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
                  y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index c3dd14f1bda728891c95eccb1edbfa1ec0d79689..c72ae9b2a8faaff7c9ee1fe36eae7974ac68407f 100644
+index 49cd42464e62db1e6e64545c7b41fb6d1eac69b6..ded8c748403a1fb9f8e38ce1491c122f2e0b2712 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2890,7 +2890,7 @@ public abstract class LivingEntity extends Entity {
@@ -805,7 +805,7 @@ index 0000000000000000000000000000000000000000..6e7f56fe2b78d7a09d5d130f2c88338f
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 9dfbd685b9c63f3b26aaf8e47e0aeaa4c21588cc..7966bb94161c2eb56b22af269047a34c0db30f32 100644
+index 3b9b09d7fe90f5f49203fc82dac4a9c3a8a6b71f..d760565f826466ad1d16f0d71575a302fb38abe7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -876,6 +876,7 @@ public final class CraftServer implements Server {
@@ -863,7 +863,7 @@ index 9dfbd685b9c63f3b26aaf8e47e0aeaa4c21588cc..7966bb94161c2eb56b22af269047a34c
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index e50ed9d287e298b8ab6dad8e24dbd45aeaefc4cb..dc50d06bc56ab57e1be709f39e49bf2db30e2f69 100644
+index 25e37d67b0ea20ab8cb196e46762194cf7afbfef..7062e22bdf4c0060f0eeb6d53af7ee337a3772f8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -154,6 +154,14 @@ public class Main {
@@ -887,7 +887,7 @@ index e50ed9d287e298b8ab6dad8e24dbd45aeaefc4cb..dc50d06bc56ab57e1be709f39e49bf2d
  
 -                if (Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
 +                if (false && Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {  // Purpur
-                     Date buildDate = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(Main.class.getPackage().getImplementationVendor()); // Paper
+                     Date buildDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z").parse(Main.class.getPackage().getImplementationVendor()); // Paper
  
                      Calendar deadline = Calendar.getInstance();
 diff --git a/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java b/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java
