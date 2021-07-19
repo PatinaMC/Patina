@@ -55,10 +55,10 @@ index 0759c357389c49a55ee7273457d87bf827205ca3..01c4ab5451c9d8c70785d741aa84e5dc
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 5309e9060766c6f16bce6156c6d84e26b1dbb6b1..3391b2c763548c723faf70fd5d865bafa984dbf6 100644
+index e557651034e948cec7a2e9695e452756cf262ceb..229319df09946c1ef7345f5d2681dad1c063e892 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1199,10 +1199,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1200,10 +1200,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  

@@ -179,7 +179,7 @@ index c398f0c78a8513a7e86fe7085a5fce29444e3eee..cc79eb41061590a3cfa6ed01b6b30017
          this.entity.stopSeenByPlayer(player);
          player.connection.send(new ClientboundRemoveEntitiesPacket(new int[]{this.entity.getId()}));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index de56756afcd90eff9a1f7fbfa0feb33e4284c3d7..3e85e96827d9ea2fe13fc45cf66eb5884c9266b4 100644
+index b5b1aab39f881c334aa7f5f0d713f78f7265f41b..7f6bace730b9beeaa6a324390b3d63adc8ea3838 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -228,6 +228,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -212,7 +212,7 @@ index de56756afcd90eff9a1f7fbfa0feb33e4284c3d7..3e85e96827d9ea2fe13fc45cf66eb588
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3071,6 +3087,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3061,6 +3077,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -326,7 +326,7 @@ index 49cd42464e62db1e6e64545c7b41fb6d1eac69b6..ded8c748403a1fb9f8e38ce1491c122f
          double d1 = this.getZ() - this.zo;
          float f = (float) (d0 * d0 + d1 * d1);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd..f9d6dce1c3666da0265f4dcf75bd937484d3031c 100644
+index 4b8d7ba45c35a6e69a65fc47a1d2597e3b64c1bb..9b9e13ce07d9bcc302e5390fd86e3b7875fd55cc 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -355,7 +355,7 @@ index 90bdf185e7f6e2a738a91f1f337b7cd7a4d81cbd..f9d6dce1c3666da0265f4dcf75bd9374
 +        // Purpur end
          // Airplane start
          if (!inactive) {
-             if (!gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0) {
+             this.getBrain().needsFullTick = !gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 496000e65ffd5df5ea23783341dac5e2b9b63d0c..e3a41a1a0e9e4936b1a4bd74c9379cb0f38ab74c 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
