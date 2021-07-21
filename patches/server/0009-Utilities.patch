@@ -9,13 +9,13 @@ Co-authored-by: Mykyta Komarnytskyy <nkomarn@hotmail.com>
 Co-authored-by: Ivan Pekov <ivan@mrivanplays.com>
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d9653b98cbbf7b18b4e707cc4372f46a0408a193..b111f99024ff3c23e3b84a1dba12172f30a2ce76 100644
+index ca085ea8f79145ba73f52ad6010d1044857a9e2d..568dc3d0eb41712a5d8e9bfd26cacd10991b6a25 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -52,6 +52,7 @@ dependencies {
-     implementation("org.apache.logging.log4j:log4j-iostreams:2.14.1") // Paper
+@@ -51,6 +51,7 @@ dependencies {
      implementation("org.apache.logging.log4j:log4j-api:2.14.1") // Paper
      implementation("org.ow2.asm:asm:9.1")
+     implementation("org.ow2.asm:asm-commons:9.1") // Paper - ASM event executor generation
 +    implementation("org.apache.commons:commons-rng-core:1.3")
      implementation("com.googlecode.json-simple:json-simple:1.1.1") {
          // This includes junit transitively for whatever reason

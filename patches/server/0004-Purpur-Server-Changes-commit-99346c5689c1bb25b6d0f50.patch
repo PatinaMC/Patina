@@ -124,7 +124,7 @@ index 7d6dc0a8ee35274052b122bbc446bc54750de0a6..c46df052a5a39d92688f51377ee1f7b5
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6c982f1227fdeb3d8d44e7c535175630c7dbbdce..647c85ea6ebb8d0aa1e43246de8036b93f268634 100644
+index aa9ddbec584129694e975ff1083c1ff651a5d7c8..aeffcf139cf12c05c2c27e1d00d3aaf217b66ac0 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -219,6 +219,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -142,7 +142,7 @@ index 6c982f1227fdeb3d8d44e7c535175630c7dbbdce..647c85ea6ebb8d0aa1e43246de8036b9
 +        // Purpur end
          com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
-         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
+         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
 index c398f0c78a8513a7e86fe7085a5fce29444e3eee..cc79eb41061590a3cfa6ed01b6b3001780229a9c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java

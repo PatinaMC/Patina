@@ -506,7 +506,7 @@ eligible for repathing.
 Remove streams for villager AI
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index da76a0255ba4d97d44276dc69e02abbf2b8093a2..f8f162ef196a8a8de913762681750e55aa11e6fe 100644
+index 523a83ffbfefc43d80062c3f33ebc81981cc35ce..0687e85e8ae4a84ecd7c512ea4d3dd10c28cfd02 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,10 +1,16 @@
@@ -525,8 +525,8 @@ index da76a0255ba4d97d44276dc69e02abbf2b8093a2..f8f162ef196a8a8de913762681750e55
 +import io.papermc.paperweight.util.set
  import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor.PLUGIN_CACHE_FILE
  import java.nio.file.Files
- import java.text.SimpleDateFormat
-@@ -106,6 +112,22 @@ publishing {
+ import java.util.Locale
+@@ -105,6 +111,22 @@ publishing {
      }
  }
  
@@ -4225,7 +4225,7 @@ index 0000000000000000000000000000000000000000..300364f693583be802a71d94cda5d96c
 +    }
 +}
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index b9cdbf8acccfd6b207a0116f068168f3b8c8e17d..7404989c37ee1b7aa4e6999a063180d099532f7e 100644
+index fe225310e4b62e7bded3521d3ddf4092c25a3645..76699e10923c72d5ab9884eb89c47a7c209f9817 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -45,6 +45,8 @@ public final class MinecraftTimings {
@@ -11737,12 +11737,12 @@ index 39da2ef8652c26265979d9f85bf969d5018ca911..9cf8c52e8eb6afcfe75018a759b60f1b
                  // Spigot Start
                  CrashReport crashreport;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6d7eef79de7a899ccdbc3194d925bb4caa0a4b03..9667a74c9b77ea6acd9d2ebce30c685ed4b53e59 100644
+index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..1b324839e37d510552f5f5497de009add69ecda5 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
-         io.papermc.paper.util.StacktraceDeobfuscator.INSTANCE.getClass(); // load mappings for stacktrace deobf
+         io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          // Paper end
 +        com.tuinity.tuinity.config.TuinityConfig.init((java.io.File) options.valueOf("tuinity-settings")); // Tuinity - Server Config
  
@@ -13996,7 +13996,7 @@ index c2e0417ee15018ec31c4aa8eec3dff7a0d16aa9e..631bc406d9bb193ac2d1d433519c2c3a
  
          public void onTrackingStart(Entity entity) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 8e2bccc3a9ddb17a4978596056189eb776976338..dcba69c0ad3288ddc64dacc58b6fb857eed3109c 100644
+index e32da100eabf0d3de12375402e9378c726811358..1c9aec21aa22d0d202a023e9252d1412685ed4b0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -261,7 +261,7 @@ public class ServerPlayer extends Player {
