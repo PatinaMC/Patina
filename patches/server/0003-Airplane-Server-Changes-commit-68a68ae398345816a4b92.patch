@@ -1932,10 +1932,10 @@ index b9b985268f5627a238c302f81400a05bfd7c592d..c82ae84190273609b0f5f533eb41a0e5
              return this.scaledRange(i);
          }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index e87203a01937967f348297a8c924f0313b96fae9..e557651034e948cec7a2e9695e452756cf262ceb 100644
+index 3f0168a9edfa67f99e6fe9ce161878034e57c3f4..59b5d658c6dee34c819101a507ba4e7ecb5b80e0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -982,6 +982,7 @@ public class ServerChunkCache extends ChunkSource {
+@@ -987,6 +987,7 @@ public class ServerChunkCache extends ChunkSource {
              }
              // Paper end - optimize isOutisdeRange
              this.level.getProfiler().push("pollingChunks");
@@ -1964,7 +1964,7 @@ index 0fcd6a9162f5bddb3c4fc42b3a64efde7c7d9a9b..c398f0c78a8513a7e86fe7085a5fce29
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 631bc406d9bb193ac2d1d433519c2c3a7f4589e4..e4e7a951b88a94d3b5c0741dc375e042bdb8b3aa 100644
+index f9ed48f5bbde84fd1804e482f2777b516cc3a1ef..29ce41330bd291a050441fc5aecd7eef65ff471c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -775,7 +775,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -2252,7 +2252,7 @@ index 24c629d5f26bc5aadebcf39a63930b3448525242..49cd42464e62db1e6e64545c7b41fb6d
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index f8c6d88d6bf71e7bc46b5f44e688229da5fd3da2..8c79aae87cfaad6aa69f1eb3d5af83f91d00efde 100644
+index d0eb27b9fb3b1f0bc352ca246ed20c064f8ec65c..c24285f18b196b2b5f7753c351c0324c36d77000 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -203,10 +203,10 @@ public abstract class Mob extends LivingEntity {
@@ -2637,7 +2637,7 @@ index c510da19883d1aa79b2fc25e2d9c8f5cd8dd7bfa..f563ca40b2c413b3b03a03fd0e85d286
          this.level.getProfiler().pop();
          HoglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index adc2feafd0c1a38d1b6b65b8aee59d21725b84fe..575c8ba7a405e3526730e5cd3ba139e25930d71e 100644
+index c7ad0e317c0c74e5ad3e08278c5e7b31c894413e..1f6c420a79435451d9c6acf7c7e216ef71ee0d0d 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -289,9 +289,11 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
