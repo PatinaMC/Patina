@@ -2133,7 +2133,7 @@ index 7437f01ca8f416e2c9150250e324af4725a4efb6..bdcd0e38a3ba904811112f41d8bfbfc0
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d9265426ddb91a6cff634b8fcc3ed26072379f43..4489dcf9a860faefca482440c18e1f8eb6143208 100644
+index 2453492429a743677db07e31d575c1473fedf4ad..8b88311545c56c28de41317911daf5903e3e5e14 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -336,6 +336,10 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -2252,10 +2252,10 @@ index 24c629d5f26bc5aadebcf39a63930b3448525242..49cd42464e62db1e6e64545c7b41fb6d
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index d0eb27b9fb3b1f0bc352ca246ed20c064f8ec65c..c24285f18b196b2b5f7753c351c0324c36d77000 100644
+index 5eb93bacd303ebed0a702221f8ae31631d42f45d..8bc9cb5930e826ec4297c9c3f7cac993d103c59a 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -203,10 +203,10 @@ public abstract class Mob extends LivingEntity {
+@@ -207,10 +207,10 @@ public abstract class Mob extends LivingEntity {
      @Override
      public void inactiveTick() {
          super.inactiveTick();
@@ -2268,7 +2268,7 @@ index d0eb27b9fb3b1f0bc352ca246ed20c064f8ec65c..c24285f18b196b2b5f7753c351c0324c
              this.targetSelector.tick();
          }
      }
-@@ -834,9 +834,11 @@ public abstract class Mob extends LivingEntity {
+@@ -838,9 +838,11 @@ public abstract class Mob extends LivingEntity {
          this.sensing.tick();
          this.level.getProfiler().pop();
          this.level.getProfiler().push("targetSelector");
@@ -2526,21 +2526,8 @@ index 153194d937d210e2e4fd8864e4a3c000f85d7e2e..1d415a91b9c90603e8f738dbafe7a5ea
  
      @Override
      protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
-diff --git a/src/main/java/net/minecraft/world/entity/animal/Chicken.java b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-index 8460bed561c09a647f6e0209f7c5448e5a42b281..9a4b133e4ecbd04753f55d9c4a8bd1ed83943476 100644
---- a/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-+++ b/src/main/java/net/minecraft/world/entity/animal/Chicken.java
-@@ -77,7 +77,7 @@ public class Chicken extends Animal {
-     public void aiStep() {
-         // CraftBukkit start
-         if (this.isChickenJockey()) {
--            this.persistenceRequired = !this.removeWhenFarAway(0);
-+            ((Mob) this).persistenceRequired = !this.removeWhenFarAway(0); // Paper - fix remap by explicitly casting to Mob
-         }
-         // CraftBukkit end
-         super.aiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index c72819b03f9339dadd691155f196f6744f14da75..8e379fa88e167fb18b0ba08a5984205be98678e3 100644
+index fa365420a4593bc7d652b0d92f4750602fcb334b..4de980d0948369f0040e154e98dd4db02e17ce72 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 @@ -275,9 +275,11 @@ public class Axolotl extends Animal implements LerpingModel, Bucketable {
@@ -3653,10 +3640,10 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5bb145caa74895536d22f7fd534576c27b0470a8..3b9b09d7fe90f5f49203fc82dac4a9c3a8a6b71f 100644
+index 2337b1f0e0bd7cfb9ed27911cff6c426606169f4..126d68e09e9d49b65fe129d27ff4d947025201a1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -986,6 +986,11 @@ public final class CraftServer implements Server {
+@@ -995,6 +995,11 @@ public final class CraftServer implements Server {
                  plugin.getDescription().getName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));

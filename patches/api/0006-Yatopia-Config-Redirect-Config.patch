@@ -5,10 +5,10 @@ Subject: [PATCH] Yatopia Config & Redirect Config
 
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 2ee548d0197de7919105ab6f12f6a75e3a870950..36caa2f614cd9e662af43e0db0f6bd18e97e6f09 100644
+index a07cf790c21b8fe17d43e631aec514f19dba3e08..99760f5529cd6bc15371b5def8b742798a2cb220 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1646,6 +1646,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1697,6 +1697,22 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Purpur end
  

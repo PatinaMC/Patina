@@ -18,7 +18,7 @@ index 5c24a5a1ef1c3adea70637eb6c9c1bf5e440dbe3..d9ed530dbb40e3c0fa8cff39bf9606d0
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 647c85ea6ebb8d0aa1e43246de8036b93f268634..925cb44528b4313677c5312d91e6dae528d08037 100644
+index aeffcf139cf12c05c2c27e1d00d3aaf217b66ac0..1b070da1b7ea3aaa14819a93830f68024ef67028 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -236,6 +236,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -38,7 +38,7 @@ index 647c85ea6ebb8d0aa1e43246de8036b93f268634..925cb44528b4313677c5312d91e6dae5
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index a99291afda33a9b6216c8e84f89e25e7e359b3f8..a8861b88e65ab3cf1211339435ae242e7f23e07b 100644
+index 04ae356c17f430443bc2b05c69c4dced78f406b7..21da70a24bae3ec832a658b74e2d554b7f6b6ba8 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
@@ -51,7 +51,7 @@ index a99291afda33a9b6216c8e84f89e25e7e359b3f8..a8861b88e65ab3cf1211339435ae242e
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1682f7dfea1ae7f6d7cf039990e7cb0b148f721f..36a14da053fa950592eb4b3b9a81cec6e69b9f03 100644
+index ded8c748403a1fb9f8e38ce1491c122f2e0b2712..dd0fdf650badbfa52b585983fc36fbeef3f5824b 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
@@ -91,10 +91,10 @@ index 1682f7dfea1ae7f6d7cf039990e7cb0b148f721f..36a14da053fa950592eb4b3b9a81cec6
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7966bb94161c2eb56b22af269047a34c0db30f32..0f1415df0ddba61c30326ff15818b356539301f8 100644
+index c3e8fad014f4ec869e36e8999cddf928cc47ee74..2a7075fb39e88037d8769e9cbaf9966f63168948 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -871,6 +871,7 @@ public final class CraftServer implements Server {
+@@ -880,6 +880,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +102,7 @@ index 7966bb94161c2eb56b22af269047a34c0db30f32..0f1415df0ddba61c30326ff15818b356
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2409,6 +2410,13 @@ public final class CraftServer implements Server {
+@@ -2486,6 +2487,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -117,7 +117,7 @@ index 7966bb94161c2eb56b22af269047a34c0db30f32..0f1415df0ddba61c30326ff15818b356
          public void broadcast(BaseComponent component) {
              for (Player player : CraftServer.this.getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index dc50d06bc56ab57e1be709f39e49bf2db30e2f69..8ef6fc0e2af3dfbff5137614e0a963a3131b62e1 100644
+index 7062e22bdf4c0060f0eeb6d53af7ee337a3772f8..a43962f95eb791a395eb6a93641f3666e67780ea 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -162,6 +162,14 @@ public class Main {

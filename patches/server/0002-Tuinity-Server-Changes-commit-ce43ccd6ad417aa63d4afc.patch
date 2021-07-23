@@ -14959,7 +14959,7 @@ index 020a19cd683dd3779c5116d12b3cdcd3b3ca69b4..17d209c347b07acef451180c97835f41
      public static final Codec<IntProvider> POSITIVE_CODEC = codec(1, Integer.MAX_VALUE);
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index a11507c630248b98153275f78c15ebee59a6b0a3..d9265426ddb91a6cff634b8fcc3ed26072379f43 100644
+index 896d892237b29eb404398db07264eb6f04786754..2453492429a743677db07e31d575c1473fedf4ad 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -356,8 +356,27 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -15322,10 +15322,10 @@ index a11507c630248b98153275f78c15ebee59a6b0a3..d9265426ddb91a6cff634b8fcc3ed260
              int j = Mth.floor(y);
              int k = Mth.floor(z);
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index ed5ea221cb273c77848b773924193e06dc30f66f..d0eb27b9fb3b1f0bc352ca246ed20c064f8ec65c 100644
+index a8e5be1c941755b3e5b335d8211ca70a6c6fc32f..5eb93bacd303ebed0a702221f8ae31631d42f45d 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -785,7 +785,12 @@ public abstract class Mob extends LivingEntity {
+@@ -789,7 +789,12 @@ public abstract class Mob extends LivingEntity {
          if (this.level.getDifficulty() == Difficulty.PEACEFUL && this.shouldDespawnInPeaceful()) {
              this.discard();
          } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
@@ -18980,10 +18980,10 @@ index 40d6dfe30e8f388fb2014ba81f9ea4a986354b88..9de4b1c9402e78c661b4d2dc7d70439e
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 141ed67b8f00d41c427c321299fe98b2d634ca3d..5bb145caa74895536d22f7fd534576c27b0470a8 100644
+index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426606169f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -875,6 +875,7 @@ public final class CraftServer implements Server {
+@@ -884,6 +884,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -18991,7 +18991,7 @@ index 141ed67b8f00d41c427c321299fe98b2d634ca3d..5bb145caa74895536d22f7fd534576c2
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -909,6 +910,7 @@ public final class CraftServer implements Server {
+@@ -918,6 +919,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -18999,7 +18999,7 @@ index 141ed67b8f00d41c427c321299fe98b2d634ca3d..5bb145caa74895536d22f7fd534576c2
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -2374,6 +2376,14 @@ public final class CraftServer implements Server {
+@@ -2451,6 +2453,14 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -19168,7 +19168,7 @@ index ea7df53656766a8dc4ab5fe66de894301db634e1..25e37d67b0ea20ab8cb196e46762194c
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
-index 3acb5f8a1f863b5ba47eac4190be8228324fc8e7..68cacecde84a592839b738723fb0b73fcb958080 100644
+index 85ca30aef0703db6859e66c62781ecfd334426e7..8ce49478441e77cedf5148ecb81d78b32660329e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftEntity.java
 @@ -519,27 +519,36 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
@@ -19227,7 +19227,7 @@ index 3acb5f8a1f863b5ba47eac4190be8228324fc8e7..68cacecde84a592839b738723fb0b73f
      @Override
      public boolean teleport(Location location) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 9f8f3ad5fd2c9e43a5b99804e404f11e5056897f..538beaedac3f8fe85fe5125cce1043706a295f89 100644
+index 9e8918d03b8213e5f6689fc93030138fd704aca9..5038bd2d0920ffc37a33d0c971cf28c330e58e06 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -517,15 +517,70 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
