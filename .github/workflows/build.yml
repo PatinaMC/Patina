@@ -31,23 +31,20 @@ jobs:
           git config --global user.name "Github Actions"
       - name: Patch
         run: |
-          ./gradlew applyPatches --stacktrace --no-daemon
-      - name: Get MC Version
-        run: echo "::set-output name=mcver::$(grep mcVersion gradle.properties | awk '{print $3;}')"
-        id: mcver
+          ./gradlew applyPatches --stacktrace
       - name: Build
         run: |
-          ./gradlew build --stacktrace --no-daemon
-          ./gradlew paperclipJar --stacktrace --no-daemon
+          ./gradlew build --stacktrace
+          ./gradlew paperclipJar --stacktrace
       - name: Archive Paperclip
         uses: actions/upload-artifact@v2
         with:
           name: Patina
-          path: build/libs/Patina-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT.jar
+          path: patina-paperclip.jar
       - name: Prepare Github Page Files
         run: |
           mkdir -p public
-          cp build/libs/Patina-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT.jar public/
+          cp patina-paperclip.jar public/
       - name: Deploy to Github Pages
         if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v3
