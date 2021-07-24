@@ -1,7 +1,7 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.0.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.1.8"
+    id("io.papermc.paperweight.patcher") version "1.1.9-SNAPSHOT"
 }
 
 repositories {
@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     remapper("org.quiltmc:tiny-remapper:0.4.1")
-    paperclip("io.papermc:paperclip:2.0.0-SNAPSHOT@jar")
+    paperclip("io.papermc:paperclip:2.0.1@jar")
 }
 
 subprojects {
@@ -33,8 +33,17 @@ subprojects {
     }
 
     tasks.withType<JavaCompile>().configureEach {
-        options.encoding = "UTF-8"
+        options.isIncremental = true
+        options.encoding = Charsets.UTF_8.name()
         options.release.set(16)
+    }
+
+    tasks.withType<Javadoc>().configureEach {
+        options.encoding = Charsets.UTF_8.name()
+    }
+
+    tasks.withType<ProcessResources>().configureEach {
+        filteringCharset = Charsets.UTF_8.name()
     }
 
     repositories {
@@ -70,4 +79,8 @@ paperweight {
             }
         }
     }
+}
+tasks.paperclipJar {
+    destinationDirectory.set(rootProject.layout.projectDirectory)
+    archiveFileName.set("patina-paperclip.jar")
 }
