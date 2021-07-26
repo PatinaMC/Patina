@@ -359,7 +359,7 @@ index 0687e85e8ae4a84ecd7c512ea4d3dd10c28cfd02..ca085ea8f79145ba73f52ad6010d1044
  }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..56d42e7bd4265a684df3bbc2bd229e720acd70fd 100644
+index 95d8cf449bf0439fddaf319246fef51e1570b68e..f83d1825aa6df6841d35d8e03e5895c6b0bab051 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,6 +202,15 @@ public class PaperConfig {
@@ -376,8 +376,8 @@ index f101302892a7f95ffa0e6d63cb69d8a3ddbd67a7..56d42e7bd4265a684df3bbc2bd229e72
 +        timings = reallyEnableTimings;
 +        // Airplane end
          boolean verboseTimings = getBoolean("timings.verbose", true);
-         TimingsManager.privacy = getBoolean("timings.server-name-privacy", false);
-         TimingsManager.hiddenConfigs = getList("timings.hidden-config-entries", Lists.newArrayList("database", "settings.bungeecord-addresses", "settings.velocity-support.secret"));
+         TimingsManager.url = getString("timings.url", "https://timings.aikar.co/");
+         if (!TimingsManager.url.endsWith("/")) {
 diff --git a/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java b/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
 index a2f52a68420a2d23d8f54f61f7aeede41567dc0f..4da3e83b61b89978aed968d4aaec3308f3f00995 100644
 --- a/src/main/java/com/tuinity/tuinity/util/CollisionUtil.java
@@ -2449,7 +2449,7 @@ index c28ade67f6a59146064a57bf016a646197f47ac4..419e6275a400f587f57e81684520072a
                              this.blockPos = mutableBlockPos;
                              setTargetPosition(mutableBlockPos.immutable()); // Paper
 diff --git a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-index ef0677e8a09800a5eeb30ae6575fbd5acf181a7c..9a07f77831417926fb306f41226b17b288ffe0f1 100644
+index 8f99a78a55ab8f0ddfa1dd790a9a4a8c23a7f841..f2882d17dbbb59944c8ed831e85ecb7ba17700fb 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
 @@ -49,6 +49,18 @@ public abstract class Sensor<E extends LivingEntity> {
