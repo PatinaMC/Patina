@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 28 Jun 2021 11:18:26 +0000
+Date: Tue, 27 Jul 2021 02:02:32 +0000
 Subject: [PATCH] EmpireCraft Server Changes commit
- 11dfb414b6e89628e73a75f5724a6a7bb84e2614
+ 82606df395f469190a4b0f36394f4195c1286e8d
 
 Don't save Fireworks
 
@@ -11,12 +11,26 @@ launcher can very easily fill a chunk.
 
 Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
 
+Fix Give command
+
 Don't use force unload for keep spawn setting change
 
 Don't trigger Lootable Refresh for non player interaction
 
 dont load chunks for physics
 
+diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
+index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a2760c093 100644
+--- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
++++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
+@@ -45,6 +45,7 @@ public class GiveCommand {
+                     k -= l;
+                     ItemStack itemStack = item.createItemStack(l, false);
+                     boolean bl = serverPlayer.getInventory().add(itemStack);
++                    if (true) { continue; } // EMC - never drop items
+                     if (bl && itemStack.isEmpty()) {
+                         itemStack.setCount(1);
+                         ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa92a0db4d 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
