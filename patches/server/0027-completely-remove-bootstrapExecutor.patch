@@ -5,7 +5,7 @@ Subject: [PATCH] completely remove bootstrapExecutor
 
 
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..2433db9c833b12ce8d2fe9af5f649559438a0594 100644
+index 621c4b42185b3c65903408b6285ba56fa42e626a..7fe39c67e4b1d2086a86053d8280ec3e0e45451a 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
 @@ -65,7 +65,7 @@ import org.apache.logging.log4j.Logger;

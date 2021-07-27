@@ -18,7 +18,7 @@ index 01c4ab5451c9d8c70785d741aa84e5dc8e66e753..4945d0ac9e792f4af19c8a6fb7ed1631
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 1c9aec21aa22d0d202a023e9252d1412685ed4b0..b815c3bad7552269ad93f2d0f04fbc17fbf128a5 100644
+index ab911d320bf14898a4cff6efddc71a0a810b5974..bbb3ba37d249ab723a4ec384368a9967254ad34e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -372,7 +372,7 @@ public class ServerPlayer extends Player {

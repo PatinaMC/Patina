@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Tue, 27 Jul 2021 03:47:54 +0000
+Subject: [PATCH] Purpur Silk-touch-spawners.patch
+
+
+diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
+index f63b80a1120b2bf5f77f1c1edb928309a1272f79..363f94e86e3349d9ed03b692e136307fe9fa5e28 100644
+--- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
++++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
+@@ -80,6 +80,7 @@ public final class PaperAdventure {
+         })
+         .build();
+     public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
++    public static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.builder().character(LegacyComponentSerializer.AMPERSAND_CHAR).hexColors().build(); // Purpur
+     public static final PlainComponentSerializer PLAIN = PlainComponentSerializer.builder().flattener(FLATTENER).build();
+     public static final GsonComponentSerializer GSON = GsonComponentSerializer.builder()
+         .legacyHoverEventSerializer(NBTLegacyHoverEventSerializer.INSTANCE)

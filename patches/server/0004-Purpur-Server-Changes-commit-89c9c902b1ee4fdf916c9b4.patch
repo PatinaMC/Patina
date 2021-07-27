@@ -689,10 +689,10 @@ index 0000000000000000000000000000000000000000..4f1fc066cf7cd8ea884e05cbe990b2b9
 +}
 diff --git a/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java b/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..05e0b484a44131f8ac494c1fa5d0296fc2c4b9b6
+index 0000000000000000000000000000000000000000..639c312458498db9284df1773f387d383e838919
 --- /dev/null
 +++ b/src/main/java/net/pl3x/purpur/PurpurWorldConfig.java
-@@ -0,0 +1,123 @@
+@@ -0,0 +1,119 @@
 +package net.pl3x.purpur;
 +
 +import com.tuinity.tuinity.config.TuinityConfig;
@@ -706,10 +706,6 @@ index 0000000000000000000000000000000000000000..05e0b484a44131f8ac494c1fa5d0296f
 +import net.minecraft.world.level.Explosion;
 +import net.minecraft.world.level.block.Block;
 +import net.minecraft.world.level.block.Blocks;
-+import net.pl3x.purpur.tool.Strippable;
-+import net.pl3x.purpur.tool.Tillable;
-+import net.pl3x.purpur.tool.Waxable;
-+import net.pl3x.purpur.tool.Weatherable;
 +import org.apache.commons.lang.BooleanUtils;
 +import org.bukkit.World;
 +import org.bukkit.configuration.ConfigurationSection;

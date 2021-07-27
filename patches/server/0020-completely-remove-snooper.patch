@@ -108,7 +108,7 @@ index 0e7da23b006a12edf495b1022b4c214bf3faa6dd..0759c357389c49a55ee7273457d87bf8
      public int getSpawnProtectionRadius() {
          return 16;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index c658d8504a73e108437faca4a8d4792a12b4033e..f00c01d911d2b7185b73a73a08471d9cd4213d06 100644
+index 83ac443c8c1969abf0f3ece38e46d0278253ba3b..fb47fa3428d62453cdc31bf4b6c9f85d43de8046 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -507,17 +507,21 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface

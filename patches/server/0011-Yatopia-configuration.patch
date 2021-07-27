@@ -6,7 +6,7 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 5c24a5a1ef1c3adea70637eb6c9c1bf5e440dbe3..d9ed530dbb40e3c0fa8cff39bf9606d0ee2c04a7 100644
+index 34e18c39c6a91609df8f11287c323a18b618685f..04506ae06b4e9593fde557d8cb217f650d6eae82 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
