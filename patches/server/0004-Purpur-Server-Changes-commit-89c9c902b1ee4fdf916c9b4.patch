@@ -222,7 +222,7 @@ index 1c9aec21aa22d0d202a023e9252d1412685ed4b0..ab911d320bf14898a4cff6efddc71a0a
          this.connection.send(new ClientboundBlockUpdatePacket(this.level, sign.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos()));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c4cea533f619624976c4d1290312ed1a6b250855..16eca1b7881232b114f4b77906b7801cd7bb3d65 100644
+index 162a4b3b3312867a64425caa0d6ec6af157b20e1..b504e7e7fede4c083a26743da8322485d15ade09 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -228,6 +228,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -331,10 +331,10 @@ index 8b88311545c56c28de41317911daf5903e3e5e14..e79bbe0c01a092764b067b097cba8769
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 49cd42464e62db1e6e64545c7b41fb6d1eac69b6..ded8c748403a1fb9f8e38ce1491c122f2e0b2712 100644
+index dfb45a8a938760e7179796bde639eea8d50b1df4..18859a2dd2d5d90716ee2036b3b80b9d35fa6e65 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -2890,7 +2890,7 @@ public abstract class LivingEntity extends Entity {
+@@ -2891,7 +2891,7 @@ public abstract class LivingEntity extends Entity {
              }
          }
  
@@ -884,10 +884,10 @@ index 0000000000000000000000000000000000000000..6e7f56fe2b78d7a09d5d130f2c88338f
 +    }
 +}
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 126d68e09e9d49b65fe129d27ff4d947025201a1..c3e8fad014f4ec869e36e8999cddf928cc47ee74 100644
+index 0511b524e31a827bf767a6ed4bc52ab478f714e9..beb11601a203a8c70ee466b7a4208f39f88332f4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -885,6 +885,7 @@ public final class CraftServer implements Server {
+@@ -887,6 +887,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          com.tuinity.tuinity.config.TuinityConfig.init((File) console.options.valueOf("tuinity-settings")); // Tuinity - Server Config
@@ -895,7 +895,7 @@ index 126d68e09e9d49b65fe129d27ff4d947025201a1..c3e8fad014f4ec869e36e8999cddf928
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -920,6 +921,7 @@ public final class CraftServer implements Server {
+@@ -922,6 +923,7 @@ public final class CraftServer implements Server {
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
              world.tuinityConfig.init(); // Tuinity - Server Config
@@ -903,7 +903,7 @@ index 126d68e09e9d49b65fe129d27ff4d947025201a1..c3e8fad014f4ec869e36e8999cddf928
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -935,6 +937,7 @@ public final class CraftServer implements Server {
+@@ -937,6 +939,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -911,7 +911,7 @@ index 126d68e09e9d49b65fe129d27ff4d947025201a1..c3e8fad014f4ec869e36e8999cddf928
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2466,6 +2469,18 @@ public final class CraftServer implements Server {
+@@ -2468,6 +2471,18 @@ public final class CraftServer implements Server {
          }
          // Tuinity end - add config to timings report
  
@@ -930,7 +930,7 @@ index 126d68e09e9d49b65fe129d27ff4d947025201a1..c3e8fad014f4ec869e36e8999cddf928
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2620,4 +2635,10 @@ public final class CraftServer implements Server {
+@@ -2622,4 +2637,10 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

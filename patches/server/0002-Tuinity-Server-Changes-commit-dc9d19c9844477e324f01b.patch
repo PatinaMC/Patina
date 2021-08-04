@@ -23585,7 +23585,7 @@ index 0000000000000000000000000000000000000000..300364f693583be802a71d94cda5d96c
 +    }
 +}
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index e873b23527cc4e56580c3c7dc5b52ecc3f2a9e31..6317988df19da315c057a9cbc55ff77006f45912 100644
+index 8c883d2f88acc731734a121ebb76821e66658cc9..c2e8380590d83ce20ee02c90d825b0ad5e883ba9 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -45,6 +45,8 @@ public final class MinecraftTimings {
@@ -32722,7 +32722,7 @@ index 1cc4e0a1f3d8235ef88b48e01ca8b78a263d2676..428d94c60b826ddf3797d6713661dff1
 +     */ // Tuinity - replace old loader system
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce161878034e57c3f4 100644
+index 0d143d073fa7cdfa14f12e9c795350dca8ac5e80..6f45ea628a0d4ee44c453a736349b7c3d3328c6d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -47,6 +47,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
@@ -33011,11 +33011,12 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
          this.level.timings.doChunkUnload.stopTiming(); // Spigot
          this.level.getProfiler().pop();
          this.clearCache();
-@@ -838,18 +1017,26 @@ public class ServerChunkCache extends ChunkSource {
-             //Collections.shuffle(list); // Paper
-             // Paper - moved up
+@@ -839,19 +1018,26 @@ public class ServerChunkCache extends ChunkSource {
+             Collections.shuffle(list);
+             // Paper - moved natural spawn event up
              this.level.timings.chunkTicks.startTiming(); // Paper
--            final int[] chunksTicked = {0}; this.chunkMap.forEachVisibleChunk((playerchunk) -> { // Paper - safe iterator incase chunk loads, also no wrapping
+-            final int[] chunksTicked = {0}; // Paper
+-            list.forEach((playerchunk) -> {
 -                Optional<LevelChunk> optional = ((Either) playerchunk.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK)).left();
 -
 -                if (optional.isPresent()) {
@@ -33045,7 +33046,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
                          }
  
                          // this.level.timings.doTickTiles.startTiming(); // Spigot // Paper
-@@ -857,7 +1044,11 @@ public class ServerChunkCache extends ChunkSource {
+@@ -859,7 +1045,11 @@ public class ServerChunkCache extends ChunkSource {
                          // this.level.timings.doTickTiles.stopTiming(); // Spigot // Paper
                      }
                  }
@@ -33058,7 +33059,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
              this.level.timings.chunkTicks.stopTiming(); // Paper
              this.level.getProfiler().push("customSpawners");
              if (flag1) {
-@@ -866,25 +1057,28 @@ public class ServerChunkCache extends ChunkSource {
+@@ -868,25 +1058,28 @@ public class ServerChunkCache extends ChunkSource {
                  } // Paper - timings
              }
  
@@ -33102,7 +33103,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
      }
  
      private void getFullChunk(long pos, Consumer<LevelChunk> chunkConsumer) {
-@@ -1031,46 +1225,14 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1033,46 +1226,14 @@ public class ServerChunkCache extends ChunkSource {
              super.doRunTask(task);
          }
  
@@ -34221,7 +34222,7 @@ index 961660f6f9e00b93252519e38b74c66c53388ed2..c80280150897064dc9d814edfbbcc1ce
                  protected void initChannel(Channel channel) {
                      try {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 064aecb28f05fcf572ee7d29f611a31cc7b6e49a..c4cea533f619624976c4d1290312ed1a6b250855 100644
+index ad1a9c6c354d40d5fa589666b1b00792d9cd6161..162a4b3b3312867a64425caa0d6ec6af157b20e1 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -536,6 +536,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -35578,7 +35579,7 @@ index 925f16d5eb092518ef774f69a8d99689feb0f5d7..01d8af06f19427354cac95d691e65d31
  
      public BlockPos getHomePos() { // Paper - public
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..e7a7de5ad9b64876df77e20465631ca8e5b19a4a 100644
+index d8780f06efc261a42389e466573a0bcf10c333f6..9e0eec259fdae57e235bfe00ece4df9957edc642 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -498,6 +498,11 @@ public abstract class Player extends LivingEntity {
@@ -38758,10 +38759,10 @@ index 0a76032b48af4327580b99730e534f628924fe35..c9c668aa5b2ddf21ffcce8b395e3d88b
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426606169f4 100644
+index fd82aed789324cf09472f1742ff78a89196ac979..8d1ef8323f2d59ea1fe3a084e1146bdf5e90e2c1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -884,6 +884,7 @@ public final class CraftServer implements Server {
+@@ -886,6 +886,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -38769,7 +38770,7 @@ index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -918,6 +919,7 @@ public final class CraftServer implements Server {
+@@ -920,6 +921,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -38777,7 +38778,7 @@ index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -2451,6 +2453,14 @@ public final class CraftServer implements Server {
+@@ -2453,6 +2455,14 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

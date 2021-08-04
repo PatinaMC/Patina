@@ -51,7 +51,7 @@ index 04ae356c17f430443bc2b05c69c4dced78f406b7..21da70a24bae3ec832a658b74e2d554b
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ded8c748403a1fb9f8e38ce1491c122f2e0b2712..dd0fdf650badbfa52b585983fc36fbeef3f5824b 100644
+index 18859a2dd2d5d90716ee2036b3b80b9d35fa6e65..b793db1ddf740f4fd098f63a6723bf6dbda6ddd1 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
@@ -91,10 +91,10 @@ index ded8c748403a1fb9f8e38ce1491c122f2e0b2712..dd0fdf650badbfa52b585983fc36fbee
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c3e8fad014f4ec869e36e8999cddf928cc47ee74..2a7075fb39e88037d8769e9cbaf9966f63168948 100644
+index beb11601a203a8c70ee466b7a4208f39f88332f4..9c1e7c8892adf2d7fc8d9f70a4810da8a60baaf1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -880,6 +880,7 @@ public final class CraftServer implements Server {
+@@ -882,6 +882,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +102,7 @@ index c3e8fad014f4ec869e36e8999cddf928cc47ee74..2a7075fb39e88037d8769e9cbaf9966f
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2486,6 +2487,13 @@ public final class CraftServer implements Server {
+@@ -2488,6 +2489,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

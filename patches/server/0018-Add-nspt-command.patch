@@ -17,10 +17,10 @@ index 1b070da1b7ea3aaa14819a93830f68024ef67028..83ac443c8c1969abf0f3ece38e46d027
          // Purpur start
          try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2a7075fb39e88037d8769e9cbaf9966f63168948..64bc81b30204bda6dcab5a7861017771a8ac0f47 100644
+index 9c1e7c8892adf2d7fc8d9f70a4810da8a60baaf1..70c73b84b7f98000d1e58ef039d971616be6db7f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -939,6 +939,7 @@ public final class CraftServer implements Server {
+@@ -941,6 +941,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
          net.pl3x.purpur.PurpurConfig.registerCommands(); // Purpur
