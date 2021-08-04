@@ -1,14 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 26 Jul 2021 04:29:15 +0000
+Date: Wed, 4 Aug 2021 12:24:47 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 2ec86caf9e3bbf32b729c181d0d928669639205f
+ 6ddf4be20d92f584e3032888f47e1a9d3f984617
 
 MC-Dev Fixes
-
-idk
-
-Initial
 
 Disable Paper timings by default
 
@@ -310,20 +306,12 @@ Reduce entity allocations
 Remove lambda from ticking guard
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0687e85e8ae4a84ecd7c512ea4d3dd10c28cfd02..ca085ea8f79145ba73f52ad6010d1044857a9e2d 100644
+index e73fd1d5aa36c5eda7710cdefca6daf4345e788c..0b0d7f41a5416f598e1f1df17ae6ba5d63f56c0b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
- import io.papermc.paperweight.tasks.BaseTask
- import io.papermc.paperweight.tasks.GenerateReobfMappings
- import io.papermc.paperweight.tasks.PatchMappings
--import io.papermc.paperweight.util.Constants
- import io.papermc.paperweight.util.Git
- import io.papermc.paperweight.util.cache
- import io.papermc.paperweight.util.defaultOutput
-@@ -69,6 +68,9 @@ dependencies {
- 
+@@ -71,6 +71,9 @@ dependencies {
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
+     implementation("com.velocitypowered:velocity-native:1.1.0-SNAPSHOT") // Tuinity
  
 +    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
 +    implementation("com.github.technove:Flare:21f20392b3") // Airplane - flare
@@ -331,33 +319,6 @@ index 0687e85e8ae4a84ecd7c512ea4d3dd10c28cfd02..ca085ea8f79145ba73f52ad6010d1044
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -111,14 +113,15 @@ publishing {
-     }
- }
- 
-+
- val generateReobfMappings = rootProject.tasks.named<GenerateReobfMappings>("generateReobfMappings")
- 
- val patchReobfMappings by tasks.registering<PatchMappings> {
-     inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
-     patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
- 
--    fromNamespace.set(Constants.DEOBF_NAMESPACE)
--    toNamespace.set(Constants.SPIGOT_NAMESPACE)
-+    fromNamespace.set(io.papermc.paperweight.util.Constants.DEOBF_NAMESPACE)
-+    toNamespace.set(io.papermc.paperweight.util.Constants.SPIGOT_NAMESPACE)
- 
-     outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
- }
-@@ -182,7 +185,7 @@ abstract class IncludeMappings : BaseTask() {
- }
- 
- val includeMappings = tasks.register<IncludeMappings>("includeMappings") {
--    inputJar.set(tasks.fixJarForReobf.flatMap { it.outputJar })
-+    inputJar.set(tasks.shadowJar.flatMap { it.archiveFile }) // Airplane
-     mappings.set(tasks.reobfJar.flatMap { it.mappingsFile })
- }
- 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 index 95d8cf449bf0439fddaf319246fef51e1570b68e..f83d1825aa6df6841d35d8e03e5895c6b0bab051 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
@@ -483,19 +444,22 @@ index 0000000000000000000000000000000000000000..89c89e633f14b5820147e734b1b7ad8c
 +}
 diff --git a/src/main/java/gg/airplane/AirplaneConfig.java b/src/main/java/gg/airplane/AirplaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..4207f8e3a9ac04da2dd8c255c3c69e203e5f876b
+index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c34041d3545c8
 --- /dev/null
 +++ b/src/main/java/gg/airplane/AirplaneConfig.java
-@@ -0,0 +1,186 @@
+@@ -0,0 +1,200 @@
 +package gg.airplane;
 +
 +import co.technove.air.AIR;
 +import co.technove.air.ValueType;
 +import com.google.common.collect.ImmutableList;
++import io.papermc.paper.util.ObfHelper;
 +import gg.airplane.flare.FlareCommand;
 +import net.minecraft.server.MinecraftServer;
 +import net.minecraft.world.entity.ai.behavior.VillagerPanicTrigger;
++import net.minecraft.world.entity.ai.sensing.GolemSensor;
 +import net.minecraft.world.entity.ai.sensing.HurtBySensor;
++import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
 +import net.minecraft.world.entity.ai.sensing.VillagerHostilesSensor;
 +import org.apache.logging.log4j.Level;
 +import org.bukkit.command.SimpleCommandMap;
@@ -507,6 +471,7 @@ index 0000000000000000000000000000000000000000..4207f8e3a9ac04da2dd8c255c3c69e20
 +import java.lang.reflect.Method;
 +import java.lang.reflect.Modifier;
 +import java.util.HashSet;
++import java.util.Map;
 +import java.util.Optional;
 +import java.util.Set;
 +import java.util.stream.Collectors;
@@ -537,7 +502,7 @@ index 0000000000000000000000000000000000000000..4207f8e3a9ac04da2dd8c255c3c69e20
 +        config.getString("info.version", "1.0");
 +
 +        for (Method method : AirplaneConfig.class.getDeclaredMethods()) {
-+            if (Modifier.isStatic(method.getModifiers()) && Modifier.isPrivate(method.getModifiers()) && !method.getName().startsWith("lambda")) {
++            if (Modifier.isStatic(method.getModifiers()) && Modifier.isPrivate(method.getModifiers()) && method.getReturnType() == Void.TYPE && !method.getName().startsWith("lambda")) {
 +                method.setAccessible(true);
 +                try {
 +                    method.invoke(null);
@@ -577,22 +542,43 @@ index 0000000000000000000000000000000000000000..4207f8e3a9ac04da2dd8c255c3c69e20
 +    public static Set<Class<?>> fullyTickBehaviors = new HashSet<>();
 +    public static Set<Class<?>> fullyTickSensors = new HashSet<>();
 +
++    private static Optional<Class<?>> tryFindClass(String name, String packagePath) {
++        Map<String, ObfHelper.ClassMapping> mappings = ObfHelper.INSTANCE.getMojangToSpigot();
++        ObfHelper.ClassMapping classMapping = mappings == null ? null : mappings.get(packagePath + name);
++
++        try {
++            return Optional.of(Class.forName(packagePath + name));
++        } catch (ClassNotFoundException e) {
++            if (classMapping == null) {
++                MinecraftServer.LOGGER.warn("Failed to find '" + packagePath + name + "'");
++                return Optional.empty();
++            }
++        }
++
++        try {
++            return Optional.of(Class.forName(classMapping.obfName()));
++        } catch (ClassNotFoundException e) {
++            MinecraftServer.LOGGER.warn("Failed to find '" + classMapping.obfName() + "'");
++            return Optional.empty();
++        }
++    }
++
 +    private static void dynamicActivationRange() {
 +        config.setComment("activation-range", "Optimizes how entities act when", "they're far away from the player");
 +
 +        dearEnabled = config.getBoolean("activation-range.enabled", true);
 +        startDistance = config.getInt("activation-range.start-distance", 12,
-+          "This value determines how far away an entity has to be",
-+          "from the player to start being effected by DEAR.");
++                "This value determines how far away an entity has to be",
++                "from the player to start being effected by DEAR.");
 +        startDistanceSquared = startDistance * startDistance;
 +        maximumActivationPrio = config.getInt("activation-range.max-tick-freq", 20,
-+          "This value defines how often in ticks, the furthest entity",
-+          "will get their pathfinders and behaviors ticked. 20 = 1s");
++                "This value defines how often in ticks, the furthest entity",
++                "will get their pathfinders and behaviors ticked. 20 = 1s");
 +        activationDistanceMod = config.getInt("activation-range.activation-dist-mod", 8,
-+          "This value defines how much distance modifies an entity's",
-+          "tick frequency. freq = (distanceToPlayer^2) / (2^value)",
-+          "If you want further away entities to tick less often, use 7.",
-+          "If you want further away entities to tick more often, try 9.");
++                "This value defines how much distance modifies an entity's",
++                "tick frequency. freq = (distanceToPlayer^2) / (2^value)",
++                "If you want further away entities to tick less often, use 7.",
++                "If you want further away entities to tick more often, try 9.");
 +
 +        config.setComment("behavior-activation", "A list of entities to use the dynamic activation range", "to modify how often their behaviors are ticked");
 +
@@ -600,34 +586,23 @@ index 0000000000000000000000000000000000000000..4207f8e3a9ac04da2dd8c255c3c69e20
 +        dynamicPiglinBehavior = config.getBoolean("behavior-activation.piglin", true);
 +        dynamicHoglinBehavior = config.getBoolean("behavior-activation.hoglin", true);
 +
++
 +        try {
 +            fullyTickBehaviors = config.getList("behavior-activation.fully-tick-behaviors", ValueType.STRING, ImmutableList.of(VillagerPanicTrigger.class.getSimpleName()))
 +                    .stream()
-+                    .map(str -> {
-+                        try {
-+                            return Optional.of(Class.forName("net.minecraft.world.entity.ai.behavior." + str));
-+                        } catch (ClassNotFoundException e) {
-+                            MinecraftServer.LOGGER.warn("Failed to find behavior '" + str + "'");
-+                            return Optional.<Class<?>>empty();
-+                        }
-+                    })
++                    .map(str -> tryFindClass(str, "net.minecraft.world.entity.ai.behavior."))
 +                    .filter(Optional::isPresent)
 +                    .map(Optional::get)
 +                    .collect(Collectors.toUnmodifiableSet());
 +
 +            fullyTickSensors = config.getList("behavior-activation.fully-tick-sensors", ValueType.STRING, ImmutableList.of(
-+                    VillagerHostilesSensor.class.getSimpleName(),
-+                    HurtBySensor.class.getSimpleName()
-+            ))
++                            VillagerHostilesSensor.class.getSimpleName(),
++                            HurtBySensor.class.getSimpleName(),
++                            GolemSensor.class.getSimpleName(),
++                            NearestLivingEntitySensor.class.getSimpleName()
++                    ))
 +                    .stream()
-+                    .map(str -> {
-+                        try {
-+                            return Optional.of(Class.forName("net.minecraft.world.entity.ai.sensing." + str));
-+                        } catch (ClassNotFoundException e) {
-+                            MinecraftServer.LOGGER.warn("Failed to find sensor '" + str + "'");
-+                            return Optional.<Class<?>>empty();
-+                        }
-+                    })
++                    .map(str -> tryFindClass(str, "net.minecraft.world.entity.ai.sensing."))
 +                    .filter(Optional::isPresent)
 +                    .map(Optional::get)
 +                    .collect(Collectors.toUnmodifiableSet());
@@ -1797,6 +1772,66 @@ index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be7
 +        entryToRemove.replace(data, value);
 +    }
 +}
+diff --git a/src/main/java/io/papermc/paper/util/ObfHelper.java b/src/main/java/io/papermc/paper/util/ObfHelper.java
+index 271e0a2ec549836a32565bb9100d432cd68d6046..bad3df1eaf4efbb3b3e4b7e89c36b421cafb8746 100644
+--- a/src/main/java/io/papermc/paper/util/ObfHelper.java
++++ b/src/main/java/io/papermc/paper/util/ObfHelper.java
+@@ -24,26 +24,29 @@ public enum ObfHelper {
+     public static final String SPIGOT_NAMESPACE = "spigot";
+ 
+     private final @Nullable Map<String, ClassMapping> mappings;
++    private @Nullable Map<String, ClassMapping> mojangToSpigot; public @Nullable Map<String, ClassMapping> getMojangToSpigot() { return this.mojangToSpigot; } // Airplane
+ 
+     ObfHelper() {
+-        this.mappings = loadMappingsIfPresent();
++        this.mappings = loadMappingsIfPresent(this); // Airplane
+     }
+ 
+     public @Nullable Map<String, ClassMapping> mappings() {
+         return this.mappings;
+     }
+ 
+-    private static @Nullable Map<String, ClassMapping> loadMappingsIfPresent() {
++    private static @Nullable Map<String, ClassMapping> loadMappingsIfPresent(ObfHelper helper) { // Airplane
+         try (final @Nullable InputStream mappingsInputStream = StacktraceDeobfuscator.class.getClassLoader().getResourceAsStream("META-INF/mappings/reobf.tiny")) {
+             if (mappingsInputStream == null) {
+                 return null;
+             }
+             final TinyTree tree = TinyMappingFactory.loadWithDetection(new BufferedReader(new InputStreamReader(mappingsInputStream, Charsets.UTF_8)));
+             final var builder = ImmutableMap.<String, ClassMapping>builder();
++            final var mojangToSpigotBuilder = ImmutableMap.<String, ClassMapping>builder(); // Airplane
+ 
+             for (final ClassDef classDef : tree.getClasses()) {
+                 final String obfClassName = classDef.getName(SPIGOT_NAMESPACE).replace('/', '.');
+                 final var methodMappings = ImmutableMap.<Pair<String, String>, MethodMapping>builder();
++                final var mojangToSpigotMethodMappings = ImmutableMap.<Pair<String, String>, MethodMapping>builder(); // Airplane
+ 
+                 for (final MethodDef methodDef : classDef.getMethods()) {
+                     final MethodMapping method = new MethodMapping(
+@@ -55,6 +58,12 @@ public enum ObfHelper {
+                         new Pair<>(method.obfName(), method.descriptor()),
+                         method
+                     );
++                    // Airplane start
++                    mojangToSpigotMethodMappings.put(
++                        new Pair<>(method.mojangName(), method.descriptor),
++                        method
++                    );
++                    // Airplane end
+                 }
+ 
+                 final ClassMapping map = new ClassMapping(
+@@ -63,8 +72,10 @@ public enum ObfHelper {
+                     methodMappings.build()
+                 );
+                 builder.put(map.obfName(), map);
++                mojangToSpigotBuilder.put(map.mojangName(), map); // Airplane
+             }
+ 
++            helper.mojangToSpigot = mojangToSpigotBuilder.build(); // Airplane
+             return builder.build();
+         } catch (final IOException ex) {
+             System.err.println("Failed to load mappings for stacktrace deobfuscation.");
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
 index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56fa42e626a 100644
 --- a/src/main/java/net/minecraft/Util.java
@@ -1821,46 +1856,6 @@ index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56f
      }
  
      public static <V> CompletableFuture<List<V>> sequenceFailFast(List<? extends CompletableFuture<? extends V>> futures) {
-diff --git a/src/main/java/net/minecraft/core/BlockPos.java b/src/main/java/net/minecraft/core/BlockPos.java
-index b01d7da333bac7820e42b6f645634a15ef88ae4f..43e5c3fde5d45ef975a8ddbe4a2758ea230dddd4 100644
---- a/src/main/java/net/minecraft/core/BlockPos.java
-+++ b/src/main/java/net/minecraft/core/BlockPos.java
-@@ -478,9 +478,9 @@ public class BlockPos extends Vec3i {
-         }
- 
-         public BlockPos.MutableBlockPos set(int x, int y, int z) {
--            this.x = x; // Tuinity - force inline
--            this.y = y; // Tuinity - force inline
--            this.z = z; // Tuinity - force inline
-+            ((Vec3i) this).x = x; // Tuinity - force inline
-+            ((Vec3i) this).y = y; // Tuinity - force inline
-+            ((Vec3i) this).z = z; // Tuinity - force inline
-             return this;
-         }
- 
-@@ -544,19 +544,19 @@ public class BlockPos extends Vec3i {
-         // Paper start - comment out useless overrides @Override - TODO figure out why this is suddenly important to keep
-         @Override
-         public BlockPos.MutableBlockPos setX(int i) {
--            this.x = i; // Tuinity
-+            ((Vec3i) this).x = i; // Tuinity
-             return this;
-         }
- 
-         @Override
-         public BlockPos.MutableBlockPos setY(int i) {
--            this.y = i; // Tuinity
-+            ((Vec3i) this).y = i; // Tuinity
-             return this;
-         }
- 
-         @Override
-         public BlockPos.MutableBlockPos setZ(int i) {
--            this.z = i; // Tuinity
-+            ((Vec3i) this).z = i; // Tuinity
-             return this;
-         }
-         // Paper end
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
 index 9cf8c52e8eb6afcfe75018a759b60f1b41c31a1f..f2046efadaba809d1b1195b087f88915b6eea5d8 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
@@ -2417,6 +2412,22 @@ index b1928807851a4fca53e117573b25c62a6deeb8e1..3f97773ae584d52541a44f61f6951788
      public Behavior.Status getStatus() {
          return this.status;
      }
+diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
+index 42d466f7f162943886078eba3db18f2dfc2d7bee..73509aa6ed66188b9ed3d3611392525c1099e363 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
++++ b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
+@@ -37,7 +37,10 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
+ 
+     @Override
+     protected void tick(ServerLevel serverLevel, Villager villager, long l) {
+-        if (l % 100L == 0L) {
++        // Airplane start
++        if (villager.nextGolemPanic < 0) villager.nextGolemPanic = l + 100;
++        if (--villager.nextGolemPanic <= l) {
++            // Airplane end
+             villager.spawnGolemIfNeeded(serverLevel, l, 3);
+         }
+ 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
 index faa53d08a12cc7441c670cae6d301de3f498ffe7..b17f401d723b1466a3b7e05da3dfeebd5cf763c7 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
@@ -2638,10 +2649,19 @@ index c7ad0e317c0c74e5ad3e08278c5e7b31c894413e..1f6c420a79435451d9c6acf7c7e216ef
          this.level.getProfiler().pop();
          PiglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..4b8d7ba45c35a6e69a65fc47a1d2597e3b64c1bb 100644
+index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..7d72bdbe4bd8999d5e89ada3604b0b639d7d1dd2 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-@@ -245,11 +245,17 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -142,6 +142,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+         return villageplacetype == PoiType.MEETING;
+     });
+ 
++    public long nextGolemPanic = -1; // Airplane
++
+     public Villager(EntityType<? extends Villager> entityType, Level world) {
+         this(entityType, world, VillagerType.PLAINS);
+     }
+@@ -245,11 +247,17 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      }
      // Spigot End
  

@@ -222,7 +222,7 @@ index 1c9aec21aa22d0d202a023e9252d1412685ed4b0..ab911d320bf14898a4cff6efddc71a0a
          this.connection.send(new ClientboundBlockUpdatePacket(this.level, sign.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos()));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b5b1aab39f881c334aa7f5f0d713f78f7265f41b..bdb38106d073f4af971f131b1f861fcc09a76db3 100644
+index c4cea533f619624976c4d1290312ed1a6b250855..16eca1b7881232b114f4b77906b7801cd7bb3d65 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -228,6 +228,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -344,7 +344,7 @@ index 49cd42464e62db1e6e64545c7b41fb6d1eac69b6..ded8c748403a1fb9f8e38ce1491c122f
          double d1 = this.getZ() - this.zo;
          float f = (float) (d0 * d0 + d1 * d1);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 4b8d7ba45c35a6e69a65fc47a1d2597e3b64c1bb..9b9e13ce07d9bcc302e5390fd86e3b7875fd55cc 100644
+index 7d72bdbe4bd8999d5e89ada3604b0b639d7d1dd2..8d786909fc3df25d3021715e858a6a362a0840cf 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -353,9 +353,9 @@ index 4b8d7ba45c35a6e69a65fc47a1d2597e3b64c1bb..9b9e13ce07d9bcc302e5390fd86e3b78
      });
 +    private final int brainTickOffset; // Purpur
  
-     public Villager(EntityType<? extends Villager> entityType, Level world) {
-         this(entityType, world, VillagerType.PLAINS);
-@@ -153,6 +154,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+     public long nextGolemPanic = -1; // Airplane
+ 
+@@ -155,6 +156,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
          this.getNavigation().setCanFloat(true);
          this.setCanPickUpLoot(true);
          this.setVillagerData(this.getVillagerData().setType(type).setProfession(VillagerProfession.NONE));
@@ -363,7 +363,7 @@ index 4b8d7ba45c35a6e69a65fc47a1d2597e3b64c1bb..9b9e13ce07d9bcc302e5390fd86e3b78
      }
  
      @Override
-@@ -250,6 +252,10 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -252,6 +254,10 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      protected void customServerAiStep() { mobTick(false); }
      protected void mobTick(boolean inactive) {
          this.level.getProfiler().push("villagerBrain");
