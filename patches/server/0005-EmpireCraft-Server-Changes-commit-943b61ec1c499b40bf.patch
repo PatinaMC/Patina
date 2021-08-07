@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 27 Jul 2021 02:02:32 +0000
+Date: Sat, 7 Aug 2021 13:38:20 +0000
 Subject: [PATCH] EmpireCraft Server Changes commit
- 82606df395f469190a4b0f36394f4195c1286e8d
+ 943b61ec1c499b40bf7e560b6e241dad00f9c108
 
 Don't save Fireworks
 
@@ -19,6 +19,8 @@ Don't trigger Lootable Refresh for non player interaction
 
 dont load chunks for physics
 
+Do not process chat/commands before player has joined
+
 diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
 index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a2760c093 100644
 --- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
@@ -31,6 +33,18 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                      if (bl && itemStack.isEmpty()) {
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index 16eca1b7881232b114f4b77906b7801cd7bb3d65..6b327f332a7e2b4b7e81973eed7373f45a009724 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -2063,6 +2063,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+     private void handleChat(TextFilter.FilteredText message) {
+         if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
+             this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
++        } else if (!player.didPlayerJoinEvent) { return; // EMC - do not handle chat messages before they joined
+         } else {
+             this.player.resetLastActionTime();
+             String s = message.getRaw();
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa92a0db4d 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
