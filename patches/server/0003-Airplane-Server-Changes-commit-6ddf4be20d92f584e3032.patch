@@ -1833,10 +1833,10 @@ index 271e0a2ec549836a32565bb9100d432cd68d6046..bad3df1eaf4efbb3b3e4b7e89c36b421
          } catch (final IOException ex) {
              System.err.println("Failed to load mappings for stacktrace deobfuscation.");
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 59437f04911662f06596ef61b91017caa6427eec..b763805b1e731b87793a8dafec478bd36f80b4a7 100644
+index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56fa42e626a 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
-@@ -316,6 +316,10 @@ public class Util {
+@@ -315,6 +315,10 @@ public class Util {
      }
  
      public static <V> CompletableFuture<List<V>> sequence(List<? extends CompletableFuture<? extends V>> futures) {
@@ -1847,7 +1847,7 @@ index 59437f04911662f06596ef61b91017caa6427eec..b763805b1e731b87793a8dafec478bd3
          return futures.stream().reduce(CompletableFuture.completedFuture(Lists.newArrayList()), (completableFuture, completableFuture2) -> {
              return completableFuture2.thenCombine(completableFuture, (object, list) -> {
                  List<V> list2 = Lists.newArrayListWithCapacity(list.size() + 1);
-@@ -331,6 +335,8 @@ public class Util {
+@@ -330,6 +334,8 @@ public class Util {
                  return list3;
              });
          });
@@ -1925,7 +1925,7 @@ index b9b985268f5627a238c302f81400a05bfd7c592d..c82ae84190273609b0f5f533eb41a0e5
              return this.scaledRange(i);
          }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 6f45ea628a0d4ee44c453a736349b7c3d3328c6d..e01c256738512b456f20960c96806721d875c827 100644
+index 3f0168a9edfa67f99e6fe9ce161878034e57c3f4..59b5d658c6dee34c819101a507ba4e7ecb5b80e0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -987,6 +987,7 @@ public class ServerChunkCache extends ChunkSource {
@@ -2200,7 +2200,7 @@ index 2453492429a743677db07e31d575c1473fedf4ad..8b88311545c56c28de41317911daf590
          }
      }
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 2b7eeb5659b1083ef550eb9feb0b7ba8a92a92e3..dfb45a8a938760e7179796bde639eea8d50b1df4 100644
+index 24c629d5f26bc5aadebcf39a63930b3448525242..49cd42464e62db1e6e64545c7b41fb6d1eac69b6 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2211,7 +2211,7 @@ index 2b7eeb5659b1083ef550eb9feb0b7ba8a92a92e3..dfb45a8a938760e7179796bde639eea8
  
  public abstract class LivingEntity extends Entity {
  
-@@ -1828,6 +1827,20 @@ public abstract class LivingEntity extends Entity {
+@@ -1827,6 +1826,20 @@ public abstract class LivingEntity extends Entity {
          return this.lastClimbablePos;
      }
  
@@ -2232,7 +2232,7 @@ index 2b7eeb5659b1083ef550eb9feb0b7ba8a92a92e3..dfb45a8a938760e7179796bde639eea8
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3432,7 +3445,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3431,7 +3444,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
@@ -3658,10 +3658,10 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8d1ef8323f2d59ea1fe3a084e1146bdf5e90e2c1..0511b524e31a827bf767a6ed4bc52ab478f714e9 100644
+index 2337b1f0e0bd7cfb9ed27911cff6c426606169f4..126d68e09e9d49b65fe129d27ff4d947025201a1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -997,6 +997,11 @@ public final class CraftServer implements Server {
+@@ -995,6 +995,11 @@ public final class CraftServer implements Server {
                  plugin.getDescription().getName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));

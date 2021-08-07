@@ -42,10 +42,10 @@ index 3dded5c491ace6b073a7bc3178976bd70f0b9393..39da2ef8652c26265979d9f85bf969d5
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 6d7f16fede01c19f638e1dcdae8b07b79cd86dc0..fd82aed789324cf09472f1742ff78a89196ac979 100644
+index 9954e45c32a4b6d80fe912ed9d55cd4fc8c4e98b..7f57b992ea10f47cd0d692424f31bf38782a7898 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -240,7 +240,7 @@ import javax.annotation.Nullable; // Paper
+@@ -239,7 +239,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
