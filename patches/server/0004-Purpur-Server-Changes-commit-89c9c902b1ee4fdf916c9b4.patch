@@ -344,7 +344,7 @@ index 49cd42464e62db1e6e64545c7b41fb6d1eac69b6..ded8c748403a1fb9f8e38ce1491c122f
          double d1 = this.getZ() - this.zo;
          float f = (float) (d0 * d0 + d1 * d1);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 7d72bdbe4bd8999d5e89ada3604b0b639d7d1dd2..8d786909fc3df25d3021715e858a6a362a0840cf 100644
+index 0f7f7aef78a1f34fe113eeb00a88fd2610351344..4666b3911439f83fa1e485e361963c2e70cc8d65 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -141,6 +141,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -373,7 +373,7 @@ index 7d72bdbe4bd8999d5e89ada3604b0b639d7d1dd2..8d786909fc3df25d3021715e858a6a36
 +        // Purpur end
          // Airplane start
          if (!inactive) {
-             this.getBrain().needsFullTick = !gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0;
+             if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 496000e65ffd5df5ea23783341dac5e2b9b63d0c..e3a41a1a0e9e4936b1a4bd74c9379cb0f38ab74c 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
@@ -982,7 +982,7 @@ index b2a15c986c7500a0ce227a54cb61ec3f5378f6f3..6d5f030b678dbc86dceddcbb050b4aae
          if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDebugging()) {
              new Exception().printStackTrace();
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 4897e69ef40c4583d272e94ad4a804885a4e3cf9..2ce15d8ef52b371bd2f589cdf8a9f18805c003ce 100644
+index 0d56df555b8d2de12447cc2e869c9eba20c5ea6d..8bae2b5f9b489a863b933c158b396b59b8a31c30 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -14,6 +14,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;

@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 4 Aug 2021 12:42:13 +0000
+Date: Mon, 9 Aug 2021 10:24:23 +0000
 Subject: [PATCH] Tuinity Server Changes commit
- dc9d19c9844477e324f01b803843c9b9b4016dbe
+ 8e7cc4dc969bf044ab472342538d519a824f358c
 
 MC-Dev fixes
 
@@ -511,6 +511,14 @@ Please see https://github.com/Tuinity/DataConverter
 for details.
 
 Use Velocity compression and cipher natives
+
+Do not submit profile lookups to worldgen threads
+
+They block. On network I/O.
+
+If enough tasks are submitted the server will eventually stall
+out due to a sync load, as the worldgen threads will be
+stalling on profile lookups.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
 index 523a83ffbfefc43d80062c3f33ebc81981cc35ce..e73fd1d5aa36c5eda7710cdefca6daf4345e788c 100644
@@ -30349,6 +30357,33 @@ index 0000000000000000000000000000000000000000..f188ff6b08abddd06a3120fb15825e0f
 +        }
 +    }
 +}
+diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
+index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..ef1dd7866708fed95a59028f1089bffee2c9b3b0 100644
+--- a/src/main/java/net/minecraft/Util.java
++++ b/src/main/java/net/minecraft/Util.java
+@@ -67,6 +67,22 @@ public class Util {
+     private static final AtomicInteger WORKER_COUNT = new AtomicInteger(1);
+     private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority
+     private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
++    // Tuinity start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
++    public static final ExecutorService PROFILE_EXECUTOR = Executors.newFixedThreadPool(2, new java.util.concurrent.ThreadFactory() {
++
++        private final AtomicInteger count = new AtomicInteger();
++
++        @Override
++        public Thread newThread(Runnable run) {
++            Thread ret = new Thread(run);
++            ret.setName("Profile Lookup Executor #" + this.count.getAndIncrement());
++            ret.setUncaughtExceptionHandler((Thread thread, Throwable throwable) -> {
++                LOGGER.fatal("Uncaught exception in thread " + thread.getName(), throwable);
++            });
++            return ret;
++        }
++    });
++    // Tuinity end - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
+     private static final ExecutorService IO_POOL = makeIoExecutor();
+     public static LongSupplier timeSource = System::nanoTime;
+     public static final UUID NIL_UUID = new UUID(0L, 0L);
 diff --git a/src/main/java/net/minecraft/core/BlockPos.java b/src/main/java/net/minecraft/core/BlockPos.java
 index b70aa66732fb5e957aed0901f4c76358b2c56f8e..b01d7da333bac7820e42b6f645634a15ef88ae4f 100644
 --- a/src/main/java/net/minecraft/core/BlockPos.java
@@ -34440,7 +34475,7 @@ index 45e77d96f673ce68cf15ce3d45fd1eeffed4d8d8..9ab220ef0d20151d4e205f3edc213fd9
              throw new IllegalStateException("Protocol error", cryptographyexception);
          }
 diff --git a/src/main/java/net/minecraft/server/players/GameProfileCache.java b/src/main/java/net/minecraft/server/players/GameProfileCache.java
-index 61405c2b53e03a4b83e2c70c6e4d3739ca9676cb..1f307f8e3f0f484dad33e9af085dabd93a3509fd 100644
+index 61405c2b53e03a4b83e2c70c6e4d3739ca9676cb..357efb989362e0be8cb08533ad677634f0b390f7 100644
 --- a/src/main/java/net/minecraft/server/players/GameProfileCache.java
 +++ b/src/main/java/net/minecraft/server/players/GameProfileCache.java
 @@ -62,6 +62,11 @@ public class GameProfileCache {
@@ -34514,6 +34549,15 @@ index 61405c2b53e03a4b83e2c70c6e4d3739ca9676cb..1f307f8e3f0f484dad33e9af085dabd9
      }
  
      public void getAsync(String username, Consumer<Optional<GameProfile>> consumer) {
+@@ -187,7 +200,7 @@ public class GameProfileCache {
+             } else {
+                 this.requests.put(username, CompletableFuture.supplyAsync(() -> {
+                     return this.get(username);
+-                }, Util.backgroundExecutor()).whenCompleteAsync((optional, throwable) -> {
++                }, Util.PROFILE_EXECUTOR).whenCompleteAsync((optional, throwable) -> { // Tuinity - not a good idea to use BLOCKING OPERATIONS on the worldgen executor
+                     this.requests.remove(username);
+                 }, this.executor).whenCompleteAsync((optional, throwable) -> {
+                     consumer.accept(optional);
 @@ -322,7 +335,9 @@ public class GameProfileCache {
      }
  
@@ -36079,6 +36123,19 @@ index aa1ba8b74ab70b6cede99e4853ac0203f388ab06..a242a80b16c7d074d52a52728646224b
      }
  
      @Override
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/SkullBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/SkullBlockEntity.java
+index 6381544b0038de9a09c01238638e4e127e4eddc6..5bdec9531f2f2b1f50ed3b71ab79f2b058647a07 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/SkullBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/SkullBlockEntity.java
+@@ -150,7 +150,7 @@ public class SkullBlockEntity extends BlockEntity {
+     public static void updateGameprofile(@Nullable GameProfile owner, Consumer<GameProfile> callback) {
+         if (owner != null && !StringUtil.isNullOrEmpty(owner.getName()) && (!owner.isComplete() || !owner.getProperties().containsKey("textures")) && profileCache != null && sessionService != null) {
+             profileCache.getAsync(owner.getName(), (profile) -> {
+-                Util.backgroundExecutor().execute(() -> {
++                Util.PROFILE_EXECUTOR.execute(() -> { // Tuinity - not a good idea to use BLOCKING OPERATIONS on the worldgen executor
+                     Util.ifElse(profile, (profilex) -> {
+                         Property property = Iterables.getFirst(profilex.getProperties().get("textures"), (Property)null);
+                         if (property == null) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 index 1179c62695da4dcf02590c97d8da3c6fcdbee9ef..04d5ef90cd4171f9360017ac0c01ce48ae6ec983 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java

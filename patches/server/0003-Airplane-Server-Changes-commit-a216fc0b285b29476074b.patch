@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 4 Aug 2021 12:24:47 +0000
+Date: Mon, 9 Aug 2021 10:24:51 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 6ddf4be20d92f584e3032888f47e1a9d3f984617
+ a216fc0b285b29476074bb44c309964606048b5b
 
 MC-Dev Fixes
 
@@ -143,7 +143,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Dynamic activation range
+Dynamic Activation of Brain
 
 This replaces the current method of ticking an inactive entity's
 pathfinder 1/4 times with a new method that's dynamic based off how far
@@ -306,7 +306,7 @@ Reduce entity allocations
 Remove lambda from ticking guard
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e73fd1d5aa36c5eda7710cdefca6daf4345e788c..0b0d7f41a5416f598e1f1df17ae6ba5d63f56c0b 100644
+index e73fd1d5aa36c5eda7710cdefca6daf4345e788c..0dcadf7e28d4862fc3805470f83db8e6eb50c5bb 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -71,6 +71,9 @@ dependencies {
@@ -314,7 +314,7 @@ index e73fd1d5aa36c5eda7710cdefca6daf4345e788c..0b0d7f41a5416f598e1f1df17ae6ba5d
      implementation("com.velocitypowered:velocity-native:1.1.0-SNAPSHOT") // Tuinity
  
 +    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
-+    implementation("com.github.technove:Flare:21f20392b3") // Airplane - flare
++    implementation("com.github.technove:Flare:2c4a2114a0") // Airplane - flare
 +
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
@@ -444,23 +444,18 @@ index 0000000000000000000000000000000000000000..89c89e633f14b5820147e734b1b7ad8c
 +}
 diff --git a/src/main/java/gg/airplane/AirplaneConfig.java b/src/main/java/gg/airplane/AirplaneConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c34041d3545c8
+index 0000000000000000000000000000000000000000..28ace406b030e3ba9f879e32147a35ff24283eab
 --- /dev/null
 +++ b/src/main/java/gg/airplane/AirplaneConfig.java
-@@ -0,0 +1,200 @@
+@@ -0,0 +1,144 @@
 +package gg.airplane;
 +
 +import co.technove.air.AIR;
 +import co.technove.air.ValueType;
-+import com.google.common.collect.ImmutableList;
-+import io.papermc.paper.util.ObfHelper;
++import net.minecraft.core.Registry;
 +import gg.airplane.flare.FlareCommand;
 +import net.minecraft.server.MinecraftServer;
-+import net.minecraft.world.entity.ai.behavior.VillagerPanicTrigger;
-+import net.minecraft.world.entity.ai.sensing.GolemSensor;
-+import net.minecraft.world.entity.ai.sensing.HurtBySensor;
-+import net.minecraft.world.entity.ai.sensing.NearestLivingEntitySensor;
-+import net.minecraft.world.entity.ai.sensing.VillagerHostilesSensor;
++import net.minecraft.world.entity.EntityType;
 +import org.apache.logging.log4j.Level;
 +import org.bukkit.command.SimpleCommandMap;
 +
@@ -470,11 +465,8 @@ index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c3404
 +import java.io.IOException;
 +import java.lang.reflect.Method;
 +import java.lang.reflect.Modifier;
-+import java.util.HashSet;
-+import java.util.Map;
-+import java.util.Optional;
-+import java.util.Set;
-+import java.util.stream.Collectors;
++import java.net.URI;
++import java.util.Collections;
 +
 +public class AirplaneConfig {
 +
@@ -496,9 +488,9 @@ index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c3404
 +        }
 +
 +        config.setComment("info",
-+          "Airplane Configuration",
-+          "Read https://blog.airplane.gg/ to find out more about Airplane",
-+          "Join our Discord to receive support & optimization help: https://discord.gg/3gtc45q");
++                "Airplane Configuration",
++                "Read https://blog.airplane.gg/ to find out more about Airplane",
++                "Join our Discord to receive support & optimization help: https://discord.gg/3gtc45q");
 +        config.getString("info.version", "1.0");
 +
 +        for (Method method : AirplaneConfig.class.getDeclaredMethods()) {
@@ -536,34 +528,8 @@ index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c3404
 +    public static int startDistanceSquared;
 +    public static int maximumActivationPrio;
 +    public static int activationDistanceMod;
-+    public static boolean dynamicVillagerBehavior;
-+    public static boolean dynamicPiglinBehavior;
-+    public static boolean dynamicHoglinBehavior;
-+    public static Set<Class<?>> fullyTickBehaviors = new HashSet<>();
-+    public static Set<Class<?>> fullyTickSensors = new HashSet<>();
 +
-+    private static Optional<Class<?>> tryFindClass(String name, String packagePath) {
-+        Map<String, ObfHelper.ClassMapping> mappings = ObfHelper.INSTANCE.getMojangToSpigot();
-+        ObfHelper.ClassMapping classMapping = mappings == null ? null : mappings.get(packagePath + name);
-+
-+        try {
-+            return Optional.of(Class.forName(packagePath + name));
-+        } catch (ClassNotFoundException e) {
-+            if (classMapping == null) {
-+                MinecraftServer.LOGGER.warn("Failed to find '" + packagePath + name + "'");
-+                return Optional.empty();
-+            }
-+        }
-+
-+        try {
-+            return Optional.of(Class.forName(classMapping.obfName()));
-+        } catch (ClassNotFoundException e) {
-+            MinecraftServer.LOGGER.warn("Failed to find '" + classMapping.obfName() + "'");
-+            return Optional.empty();
-+        }
-+    }
-+
-+    private static void dynamicActivationRange() {
++    private static void dynamicActivationRange() throws IOException {
 +        config.setComment("activation-range", "Optimizes how entities act when", "they're far away from the player");
 +
 +        dearEnabled = config.getBoolean("activation-range.enabled", true);
@@ -580,44 +546,22 @@ index 0000000000000000000000000000000000000000..8cba5c293c7e018edad4fb4acb5c3404
 +                "If you want further away entities to tick less often, use 7.",
 +                "If you want further away entities to tick more often, try 9.");
 +
-+        config.setComment("behavior-activation", "A list of entities to use the dynamic activation range", "to modify how often their behaviors are ticked");
-+
-+        dynamicVillagerBehavior = config.getBoolean("behavior-activation.villager", true);
-+        dynamicPiglinBehavior = config.getBoolean("behavior-activation.piglin", true);
-+        dynamicHoglinBehavior = config.getBoolean("behavior-activation.hoglin", true);
-+
-+
-+        try {
-+            fullyTickBehaviors = config.getList("behavior-activation.fully-tick-behaviors", ValueType.STRING, ImmutableList.of(VillagerPanicTrigger.class.getSimpleName()))
-+                    .stream()
-+                    .map(str -> tryFindClass(str, "net.minecraft.world.entity.ai.behavior."))
-+                    .filter(Optional::isPresent)
-+                    .map(Optional::get)
-+                    .collect(Collectors.toUnmodifiableSet());
-+
-+            fullyTickSensors = config.getList("behavior-activation.fully-tick-sensors", ValueType.STRING, ImmutableList.of(
-+                            VillagerHostilesSensor.class.getSimpleName(),
-+                            HurtBySensor.class.getSimpleName(),
-+                            GolemSensor.class.getSimpleName(),
-+                            NearestLivingEntitySensor.class.getSimpleName()
-+                    ))
-+                    .stream()
-+                    .map(str -> tryFindClass(str, "net.minecraft.world.entity.ai.sensing."))
-+                    .filter(Optional::isPresent)
-+                    .map(Optional::get)
-+                    .collect(Collectors.toUnmodifiableSet());
-+        } catch (IOException e) {
-+            throw new RuntimeException(e);
++        for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
++            entityType.dabEnabled = true; // reset all, before setting the ones to true
 +        }
++        config.getList("activation-range.blacklisted-entities", ValueType.STRING, Collections.emptyList(), "A list of entities to ignore for activation")
++                .forEach(name -> EntityType.byString(name).ifPresentOrElse(entityType -> {
++                    entityType.dabEnabled = false;
++                }, () -> MinecraftServer.LOGGER.log(Level.WARN, "Unknown entity \"" + name + "\"")));
 +    }
 +
 +
-+    public static String profileWebUrl;
++    public static URI profileWebUrl;
 +
 +    private static void profilerOptions() {
 +        config.setComment("flare", "Configures Flare, the built-in profiler");
 +
-+        profileWebUrl = config.getString("flare.url", "https://flare.airplane.gg", "Sets the server to use for profiles.");
++        profileWebUrl = URI.create(config.getString("flare.url", "https://flare.airplane.gg", "Sets the server to use for profiles."));
 +    }
 +
 +
@@ -782,13 +726,13 @@ index 0000000000000000000000000000000000000000..8f85a7d3fde1d22e2510327b2b7c9e96
 +}
 diff --git a/src/main/java/gg/airplane/flare/CustomCategories.java b/src/main/java/gg/airplane/flare/CustomCategories.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..cf5b8da28dbae29f3050ba3c27a6012db604532a
+index 0000000000000000000000000000000000000000..031700b291ce71eac7de2ff3423a9bbfd8de4ac6
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/CustomCategories.java
 @@ -0,0 +1,8 @@
 +package gg.airplane.flare;
 +
-+import gg.airplane.flare.live.category.GraphCategory;
++import co.technove.flare.live.category.GraphCategory;
 +
 +public class CustomCategories {
 +    public static final GraphCategory MC_PERF = new GraphCategory("MC Performance");
@@ -796,21 +740,22 @@ index 0000000000000000000000000000000000000000..cf5b8da28dbae29f3050ba3c27a6012d
 +}
 diff --git a/src/main/java/gg/airplane/flare/FlareCommand.java b/src/main/java/gg/airplane/flare/FlareCommand.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..295b10a936d616cacbf33064e8a384fc3ac1a423
+index 0000000000000000000000000000000000000000..12acd136a3f98a79c28e4986be3e92c5cc42658e
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/FlareCommand.java
-@@ -0,0 +1,147 @@
+@@ -0,0 +1,136 @@
 +package gg.airplane.flare;
 +
++import co.technove.flare.exceptions.UserReportableException;
++import co.technove.flare.internal.profiling.ProfileType;
 +import gg.airplane.AirplaneConfig;
-+import gg.airplane.flare.exceptions.UserReportableException;
-+import gg.airplane.flare.profiling.AsyncProfilerIntegration;
-+import gg.airplane.flare.profiling.ProfileType;
 +import net.kyori.adventure.text.Component;
 +import net.kyori.adventure.text.event.ClickEvent;
 +import net.kyori.adventure.text.format.NamedTextColor;
 +import net.kyori.adventure.text.format.TextColor;
 +import net.kyori.adventure.text.format.TextDecoration;
++import net.minecraft.server.MinecraftServer;
++import org.apache.logging.log4j.Level;
 +import org.bukkit.Bukkit;
 +import org.bukkit.command.Command;
 +import org.bukkit.command.CommandSender;
@@ -858,7 +803,7 @@ index 0000000000000000000000000000000000000000..295b10a936d616cacbf33064e8a384fc
 +        }
 +        if (ProfilingManager.isProfiling()) {
 +            if (args.length == 1 && args[0].equalsIgnoreCase("status")) {
-+                sender.sendMessage(PREFIX.append(Component.text("Status: " + AsyncProfilerIntegration.status(), HEX)));
++                sender.sendMessage(PREFIX.append(Component.text("Current profile has been ran for " + ProfilingManager.getTimeRan().toString(), HEX)));
 +                return true;
 +            }
 +            if (ProfilingManager.stop()) {
@@ -881,40 +826,28 @@ index 0000000000000000000000000000000000000000..295b10a936d616cacbf33064e8a384fc
 +                    ));
 +                }
 +            }
-+            int interval = 5;
-+            if (args.length > 1) {
-+                try {
-+                    interval = Integer.parseInt(args[1]);
-+                } catch (Exception e) {
-+                    sender.sendMessage(PREFIX.append(Component
-+                      .text("Invalid time in milliseconds ", HEX)
-+                      .append(Component.text(args[1], HEX, TextDecoration.BOLD)
-+                        .append(Component.text("!", HEX)))
-+                    ));
-+                    return true;
-+                }
-+            }
-+            int finalInterval = interval;
 +            ProfileType finalProfileType = profileType;
 +            Bukkit.getScheduler().runTaskAsynchronously(new MinecraftInternalPlugin(), () -> {
 +                try {
-+                    if (ProfilingManager.start(new ProfilingSettings(finalProfileType, Duration.ofMillis(finalInterval)))) {
++                    if (ProfilingManager.start(finalProfileType)) {
 +                        if (!(sender instanceof ConsoleCommandSender)) {
 +                            sender.sendMessage(PREFIX.append(Component
-+                              .text("Flare has been started: " + ProfilingManager.getProfilingUrl(), HEX)
-+                              .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUrl()))
++                              .text("Flare has been started: " + ProfilingManager.getProfilingUri(), HEX)
++                              .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUri()))
 +                            ));
 +                            sender.sendMessage(PREFIX.append(Component.text("  Run /" + commandLabel + " to stop the Flare.", HEX)));
 +                        }
 +                    } else {
 +                        sender.sendMessage(PREFIX.append(Component
-+                          .text("Flare has already been started: " + ProfilingManager.getProfilingUrl(), HEX)
-+                          .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUrl()))
++                          .text("Flare has already been started: " + ProfilingManager.getProfilingUri(), HEX)
++                          .clickEvent(ClickEvent.openUrl(ProfilingManager.getProfilingUri()))
 +                        ));
 +                    }
 +                } catch (UserReportableException e) {
 +                    sender.sendMessage(Component.text("Flare failed to start: " + e.getUserError(), NamedTextColor.RED));
-+                    e.printStackTrace();
++                    if (e.getCause() != null) {
++                        MinecraftServer.LOGGER.log(Level.WARN, "Flare failed to start", e);
++                    }
 +                }
 +            });
 +        }
@@ -949,13 +882,14 @@ index 0000000000000000000000000000000000000000..295b10a936d616cacbf33064e8a384fc
 +}
 diff --git a/src/main/java/gg/airplane/flare/FlareSetup.java b/src/main/java/gg/airplane/flare/FlareSetup.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..cd1998569b702a67d5d15b033b6bdda6d9cdcfe6
+index 0000000000000000000000000000000000000000..932b976a234f2b1d2975e72a34aa53838e9e5170
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/FlareSetup.java
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,33 @@
 +package gg.airplane.flare;
 +
-+import gg.airplane.flare.profiling.InitializationException;
++import co.technove.flare.FlareInitializer;
++import co.technove.flare.internal.profiling.InitializationException;
 +import net.minecraft.server.MinecraftServer;
 +import org.apache.logging.log4j.Level;
 +
@@ -971,7 +905,7 @@ index 0000000000000000000000000000000000000000..cd1998569b702a67d5d15b033b6bdda6
 +
 +        initialized = true;
 +        try {
-+            for (String warning : Flare.initialize()) {
++            for (String warning : FlareInitializer.initialize()) {
 +                MinecraftServer.LOGGER.log(Level.WARN, "Flare warning: " + warning);
 +            }
 +            supported = true;
@@ -1037,15 +971,17 @@ index 0000000000000000000000000000000000000000..22368976212ac6638a31e81d22c322a5
 +}
 diff --git a/src/main/java/gg/airplane/flare/ProfilingManager.java b/src/main/java/gg/airplane/flare/ProfilingManager.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec3ff0888c
+index 0000000000000000000000000000000000000000..8a429348bb4129b7810d5aa048cbc74d126624d8
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/ProfilingManager.java
-@@ -0,0 +1,147 @@
+@@ -0,0 +1,151 @@
 +package gg.airplane.flare;
 +
-+import com.google.common.collect.ImmutableList;
-+import com.google.common.collect.ImmutableMap;
-+import com.google.common.collect.ImmutableSet;
++import co.technove.flare.Flare;
++import co.technove.flare.FlareAuth;
++import co.technove.flare.FlareBuilder;
++import co.technove.flare.exceptions.UserReportableException;
++import co.technove.flare.internal.profiling.ProfileType;
 +import gg.airplane.AirplaneConfig;
 +import gg.airplane.AirplaneLogger;
 +import gg.airplane.compat.ServerConfigurations;
@@ -1053,8 +989,6 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +import gg.airplane.flare.collectors.StatCollector;
 +import gg.airplane.flare.collectors.TPSCollector;
 +import gg.airplane.flare.collectors.WorldCountCollector;
-+import gg.airplane.flare.exceptions.UserReportableException;
-+import gg.airplane.flare.proto.ProfilerFileProto;
 +import org.bukkit.Bukkit;
 +import org.bukkit.craftbukkit.scheduler.MinecraftInternalPlugin;
 +import org.bukkit.scheduler.BukkitTask;
@@ -1066,6 +1000,8 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +import oshi.software.os.OperatingSystem;
 +
 +import java.io.IOException;
++import java.net.URI;
++import java.time.Duration;
 +import java.util.Objects;
 +import java.util.logging.Level;
 +
@@ -1075,15 +1011,23 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +    private static BukkitTask currentTask = null;
 +
 +    public static synchronized boolean isProfiling() {
-+        return currentFlare != null;
++        return currentFlare != null && currentFlare.isRunning();
 +    }
 +
-+    public static synchronized String getProfilingUrl() {
-+        return Objects.requireNonNull(currentFlare).getURL().orElse("Flare is not running");
++    public static synchronized String getProfilingUri() {
++        return Objects.requireNonNull(currentFlare).getURI().map(URI::toString).orElse("Flare is not running");
 +    }
 +
-+    public static synchronized boolean start(ProfilingSettings settings) throws UserReportableException {
-+        if (currentFlare != null && currentFlare.isRan()) {
++    public static Duration getTimeRan() {
++        Flare flare = currentFlare; // copy reference so no need to sync
++        if (flare == null) {
++            return Duration.ofMillis(0);
++        }
++        return flare.getCurrentDuration();
++    }
++
++    public static synchronized boolean start(ProfileType profileType) throws UserReportableException {
++        if (currentFlare != null && !currentFlare.isRunning()) {
 +            currentFlare = null; // errored out
 +        }
 +        if (isProfiling()) {
@@ -1094,56 +1038,50 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +        }
 +
 +        try {
-+            currentFlare = new Flare(
-+              settings,
-+              new ServerData(ServerConfigurations.getCleanCopies(), ImmutableMap.of(
-+                "Primary Version", Bukkit.getVersion(),
-+                "Bukkit Version", Bukkit.getBukkitVersion(),
-+                "Minecraft Version", Bukkit.getMinecraftVersion()
-+              )),
-+              new FlareAuth(AirplaneConfig.accessToken, AirplaneConfig.profileWebUrl),
-+              ImmutableList.of(new TPSCollector(), new WorldCountCollector(), new GCEventCollector(), new StatCollector()),
-+              PluginLookup::getPluginForClass,
-+              ImmutableSet.of(CustomCategories.MC_PERF, CustomCategories.ENTITIES_AND_CHUNKS)
-+            ) {
-+                @Override
-+                public ProfilerFileProto.CreateProfile.HardwareInfo getHardwareInfo() {
-+                    SystemInfo systemInfo = new SystemInfo();
-+                    HardwareAbstractionLayer hardware = systemInfo.getHardware();
++            OperatingSystem os = new SystemInfo().getOperatingSystem();
 +
-+                    CentralProcessor processor = hardware.getProcessor();
-+                    CentralProcessor.ProcessorIdentifier processorIdentifier = processor.getProcessorIdentifier();
++            SystemInfo systemInfo = new SystemInfo();
++            HardwareAbstractionLayer hardware = systemInfo.getHardware();
 +
-+                    GlobalMemory memory = hardware.getMemory();
-+                    VirtualMemory virtualMemory = memory.getVirtualMemory();
++            CentralProcessor processor = hardware.getProcessor();
++            CentralProcessor.ProcessorIdentifier processorIdentifier = processor.getProcessorIdentifier();
 +
-+                    return ProfilerFileProto.CreateProfile.HardwareInfo.newBuilder()
-+                            .setCpu(ProfilerFileProto.CreateProfile.HardwareInfo.CPU.newBuilder()
-+                                    .setModel(processorIdentifier.getName())
-+                                    .setCoreCount(processor.getPhysicalProcessorCount())
-+                                    .setThreadCount(processor.getLogicalProcessorCount())
-+                                    .setFrequency(processor.getMaxFreq())
-+                                    .build())
-+                            .setMemory(ProfilerFileProto.CreateProfile.HardwareInfo.Memory.newBuilder()
-+                                    .setTotal(memory.getTotal())
-+                                    .setSwapTotal(virtualMemory.getSwapTotal())
-+                                    .setVirtualMax(virtualMemory.getVirtualMax())
-+                                    .build())
-+                            .build();
-+                }
++            GlobalMemory memory = hardware.getMemory();
++            VirtualMemory virtualMemory = memory.getVirtualMemory();
 +
-+                @Override
-+                public ProfilerFileProto.CreateProfile.OperatingSystem getOperatingSystem() {
-+                    OperatingSystem os = new SystemInfo().getOperatingSystem();
++            FlareBuilder builder = new FlareBuilder()
++                    .withProfileType(profileType)
++                    .withMemoryProfiling(true)
++                    .withAuth(FlareAuth.fromTokenAndUrl(AirplaneConfig.accessToken, AirplaneConfig.profileWebUrl))
 +
-+                    return ProfilerFileProto.CreateProfile.OperatingSystem.newBuilder()
++                    .withFiles(ServerConfigurations.getCleanCopies())
++                    .withVersion("Primary Version", Bukkit.getVersion())
++                    .withVersion("Bukkit Version", Bukkit.getBukkitVersion())
++                    .withVersion("Minecraft Version", Bukkit.getMinecraftVersion())
++
++                    .withGraphCategories(CustomCategories.ENTITIES_AND_CHUNKS, CustomCategories.MC_PERF)
++                    .withCollectors(new TPSCollector(), new WorldCountCollector(), new GCEventCollector(), new StatCollector())
++                    .withClassIdentifier(PluginLookup::getPluginForClass)
++
++                    .withHardware(new FlareBuilder.HardwareBuilder()
++                            .setCoreCount(processor.getPhysicalProcessorCount())
++                            .setThreadCount(processor.getLogicalProcessorCount())
++                            .setCpuModel(processorIdentifier.getName())
++                            .setCpuFrequency(processor.getMaxFreq())
++
++                            .setTotalMemory(memory.getTotal())
++                            .setTotalSwap(virtualMemory.getSwapTotal())
++                            .setTotalVirtual(virtualMemory.getVirtualMax())
++                    )
++
++                    .withOperatingSystem(new FlareBuilder.OperatingSystemBuilder()
 +                            .setManufacturer(os.getManufacturer())
 +                            .setFamily(os.getFamily())
 +                            .setVersion(os.getVersionInfo().toString())
 +                            .setBitness(os.getBitness())
-+                            .build();
-+                }
-+            };
++                    );
++
++            currentFlare = builder.build();
 +        } catch (IOException e) {
 +            AirplaneLogger.LOGGER.log(Level.WARNING, "Failed to read configuration files:", e);
 +            throw new UserReportableException("Failed to load configuration files, check logs for further details.");
@@ -1157,7 +1095,7 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +        }
 +
 +        currentTask = Bukkit.getScheduler().runTaskLater(new MinecraftInternalPlugin(), ProfilingManager::stop, 20 * 60 * 15);
-+        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been started: " + getProfilingUrl());
++        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been started: " + getProfilingUri());
 +        return true;
 +    }
 +
@@ -1165,11 +1103,11 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +        if (!isProfiling()) {
 +            return false;
 +        }
-+        if (currentFlare.isRan()) {
++        if (!currentFlare.isRunning()) {
 +            currentFlare = null;
 +            return true;
 +        }
-+        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been stopped: " + getProfilingUrl());
++        AirplaneLogger.LOGGER.log(Level.INFO, "Flare has been stopped: " + getProfilingUri());
 +        try {
 +            currentFlare.stop();
 +        } catch (IllegalStateException e) {
@@ -1190,20 +1128,21 @@ index 0000000000000000000000000000000000000000..230c72caab3560a4ae513511d6d41bec
 +}
 diff --git a/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java b/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1be0e40a117322e029bb75897578f105989cbb4a
+index 0000000000000000000000000000000000000000..d355b6cf3132b69ab24e351e49bf4c34e2ab3752
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/collectors/GCEventCollector.java
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,66 @@
 +package gg.airplane.flare.collectors;
 +
++import co.technove.flare.Flare;
++import co.technove.flare.internal.FlareInternal;
++import co.technove.flare.live.CollectorData;
++import co.technove.flare.live.EventCollector;
++import co.technove.flare.live.LiveEvent;
++import co.technove.flare.live.category.GraphCategory;
++import co.technove.flare.live.formatter.DataFormatter;
 +import com.google.common.collect.ImmutableMap;
 +import com.sun.management.GarbageCollectionNotificationInfo;
-+import gg.airplane.flare.Flare;
-+import gg.airplane.flare.live.CollectorData;
-+import gg.airplane.flare.live.EventCollector;
-+import gg.airplane.flare.live.LiveEvent;
-+import gg.airplane.flare.live.category.GraphCategory;
-+import gg.airplane.flare.live.formatter.DataFormatter;
 +
 +import javax.management.ListenerNotFoundException;
 +import javax.management.Notification;
@@ -1261,17 +1200,17 @@ index 0000000000000000000000000000000000000000..1be0e40a117322e029bb75897578f105
 +}
 diff --git a/src/main/java/gg/airplane/flare/collectors/StatCollector.java b/src/main/java/gg/airplane/flare/collectors/StatCollector.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..e36290f881a9a406e0864107954c62e6ea86f6c9
+index 0000000000000000000000000000000000000000..5444a587a28664ebd8aaac98ee51616c078e54dd
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/collectors/StatCollector.java
 @@ -0,0 +1,41 @@
 +package gg.airplane.flare.collectors;
 +
++import co.technove.flare.live.CollectorData;
++import co.technove.flare.live.LiveCollector;
++import co.technove.flare.live.category.GraphCategory;
++import co.technove.flare.live.formatter.DataFormatter;
 +import com.sun.management.OperatingSystemMXBean;
-+import gg.airplane.flare.live.CollectorData;
-+import gg.airplane.flare.live.LiveCollector;
-+import gg.airplane.flare.live.category.GraphCategory;
-+import gg.airplane.flare.live.formatter.DataFormatter;
 +import oshi.SystemInfo;
 +import oshi.hardware.CentralProcessor;
 +
@@ -1308,16 +1247,16 @@ index 0000000000000000000000000000000000000000..e36290f881a9a406e0864107954c62e6
 +}
 diff --git a/src/main/java/gg/airplane/flare/collectors/TPSCollector.java b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..066c9b50d812242a2e9f5734bb680f997ea59541
+index 0000000000000000000000000000000000000000..d7552c92552efc2193fc015b56089d39ce2f6cf0
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/collectors/TPSCollector.java
 @@ -0,0 +1,31 @@
 +package gg.airplane.flare.collectors;
 +
++import co.technove.flare.live.CollectorData;
++import co.technove.flare.live.LiveCollector;
++import co.technove.flare.live.formatter.SuffixFormatter;
 +import gg.airplane.flare.CustomCategories;
-+import gg.airplane.flare.live.CollectorData;
-+import gg.airplane.flare.live.LiveCollector;
-+import gg.airplane.flare.live.formatter.SuffixFormatter;
 +import net.minecraft.server.MinecraftServer;
 +import org.bukkit.Bukkit;
 +
@@ -1345,16 +1284,16 @@ index 0000000000000000000000000000000000000000..066c9b50d812242a2e9f5734bb680f99
 +}
 diff --git a/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java b/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..7efdcff30639f90fc2dde273eaa680eee1deb31e
+index 0000000000000000000000000000000000000000..8b1ca40d99b04db9dca522aa42eb68c761c73037
 --- /dev/null
 +++ b/src/main/java/gg/airplane/flare/collectors/WorldCountCollector.java
 @@ -0,0 +1,45 @@
 +package gg.airplane.flare.collectors;
 +
++import co.technove.flare.live.CollectorData;
++import co.technove.flare.live.LiveCollector;
++import co.technove.flare.live.formatter.SuffixFormatter;
 +import gg.airplane.flare.CustomCategories;
-+import gg.airplane.flare.live.CollectorData;
-+import gg.airplane.flare.live.LiveCollector;
-+import gg.airplane.flare.live.formatter.SuffixFormatter;
 +import org.bukkit.Bukkit;
 +import org.bukkit.World;
 +import org.bukkit.craftbukkit.CraftWorld;
@@ -1772,71 +1711,11 @@ index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be7
 +        entryToRemove.replace(data, value);
 +    }
 +}
-diff --git a/src/main/java/io/papermc/paper/util/ObfHelper.java b/src/main/java/io/papermc/paper/util/ObfHelper.java
-index 271e0a2ec549836a32565bb9100d432cd68d6046..bad3df1eaf4efbb3b3e4b7e89c36b421cafb8746 100644
---- a/src/main/java/io/papermc/paper/util/ObfHelper.java
-+++ b/src/main/java/io/papermc/paper/util/ObfHelper.java
-@@ -24,26 +24,29 @@ public enum ObfHelper {
-     public static final String SPIGOT_NAMESPACE = "spigot";
- 
-     private final @Nullable Map<String, ClassMapping> mappings;
-+    private @Nullable Map<String, ClassMapping> mojangToSpigot; public @Nullable Map<String, ClassMapping> getMojangToSpigot() { return this.mojangToSpigot; } // Airplane
- 
-     ObfHelper() {
--        this.mappings = loadMappingsIfPresent();
-+        this.mappings = loadMappingsIfPresent(this); // Airplane
-     }
- 
-     public @Nullable Map<String, ClassMapping> mappings() {
-         return this.mappings;
-     }
- 
--    private static @Nullable Map<String, ClassMapping> loadMappingsIfPresent() {
-+    private static @Nullable Map<String, ClassMapping> loadMappingsIfPresent(ObfHelper helper) { // Airplane
-         try (final @Nullable InputStream mappingsInputStream = StacktraceDeobfuscator.class.getClassLoader().getResourceAsStream("META-INF/mappings/reobf.tiny")) {
-             if (mappingsInputStream == null) {
-                 return null;
-             }
-             final TinyTree tree = TinyMappingFactory.loadWithDetection(new BufferedReader(new InputStreamReader(mappingsInputStream, Charsets.UTF_8)));
-             final var builder = ImmutableMap.<String, ClassMapping>builder();
-+            final var mojangToSpigotBuilder = ImmutableMap.<String, ClassMapping>builder(); // Airplane
- 
-             for (final ClassDef classDef : tree.getClasses()) {
-                 final String obfClassName = classDef.getName(SPIGOT_NAMESPACE).replace('/', '.');
-                 final var methodMappings = ImmutableMap.<Pair<String, String>, MethodMapping>builder();
-+                final var mojangToSpigotMethodMappings = ImmutableMap.<Pair<String, String>, MethodMapping>builder(); // Airplane
- 
-                 for (final MethodDef methodDef : classDef.getMethods()) {
-                     final MethodMapping method = new MethodMapping(
-@@ -55,6 +58,12 @@ public enum ObfHelper {
-                         new Pair<>(method.obfName(), method.descriptor()),
-                         method
-                     );
-+                    // Airplane start
-+                    mojangToSpigotMethodMappings.put(
-+                        new Pair<>(method.mojangName(), method.descriptor),
-+                        method
-+                    );
-+                    // Airplane end
-                 }
- 
-                 final ClassMapping map = new ClassMapping(
-@@ -63,8 +72,10 @@ public enum ObfHelper {
-                     methodMappings.build()
-                 );
-                 builder.put(map.obfName(), map);
-+                mojangToSpigotBuilder.put(map.mojangName(), map); // Airplane
-             }
- 
-+            helper.mojangToSpigot = mojangToSpigotBuilder.build(); // Airplane
-             return builder.build();
-         } catch (final IOException ex) {
-             System.err.println("Failed to load mappings for stacktrace deobfuscation.");
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56fa42e626a 100644
+index ef1dd7866708fed95a59028f1089bffee2c9b3b0..d690bbcfac8803dc524be0710157cf1e2e1f9826 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
-@@ -315,6 +315,10 @@ public class Util {
+@@ -331,6 +331,10 @@ public class Util {
      }
  
      public static <V> CompletableFuture<List<V>> sequence(List<? extends CompletableFuture<? extends V>> futures) {
@@ -1847,7 +1726,7 @@ index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..621c4b42185b3c65903408b6285ba56f
          return futures.stream().reduce(CompletableFuture.completedFuture(Lists.newArrayList()), (completableFuture, completableFuture2) -> {
              return completableFuture2.thenCombine(completableFuture, (object, list) -> {
                  List<V> list2 = Lists.newArrayListWithCapacity(list.size() + 1);
-@@ -330,6 +334,8 @@ public class Util {
+@@ -346,6 +350,8 @@ public class Util {
                  return list3;
              });
          });
@@ -2199,6 +2078,19 @@ index 2453492429a743677db07e31d575c1473fedf4ad..8b88311545c56c28de41317911daf590
              // Tuinity end
          }
      }
+diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
+index ac99265aacd4a28490705e3079ed04023fb1c54a..96b881fcb4c3871b2fc00080afc19900b28633f5 100644
+--- a/src/main/java/net/minecraft/world/entity/EntityType.java
++++ b/src/main/java/net/minecraft/world/entity/EntityType.java
+@@ -298,6 +298,8 @@ public class EntityType<T extends Entity> implements EntityTypeTest<Entity, T> {
+ 
+     public final String id;
+ 
++    public boolean dabEnabled = false; // Airplane
++
+     public EntityType(EntityType.EntityFactory<T> entitytypes_b, MobCategory enumcreaturetype, boolean flag, boolean flag1, boolean flag2, boolean flag3, ImmutableSet<Block> canSpawnInside, EntityDimensions dimensions, int maxTrackDistance, int trackTickInterval, String id) { // Paper - add id
+         this.factory = entitytypes_b;
+         this.category = enumcreaturetype;
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 index 24c629d5f26bc5aadebcf39a63930b3448525242..49cd42464e62db1e6e64545c7b41fb6d1eac69b6 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
@@ -2274,7 +2166,7 @@ index 5eb93bacd303ebed0a702221f8ae31631d42f45d..8bc9cb5930e826ec4297c9c3f7cac993
          this.level.getProfiler().pop();
          this.level.getProfiler().push("navigation");
 diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-index 75022e5888de2730bb29d1e7535ddc63e2c5f713..f4286c12390b1a1617b839a51f8173f146692534 100644
+index 75022e5888de2730bb29d1e7535ddc63e2c5f713..a7c71fc4e49079d11b9a0537a4f6d20bbbba815b 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
 @@ -76,15 +76,15 @@ public class Brain<E extends LivingEntity> {
@@ -2305,40 +2197,7 @@ index 75022e5888de2730bb29d1e7535ddc63e2c5f713..f4286c12390b1a1617b839a51f8173f1
      }
  
      public <U> long getTimeUntilExpiry(MemoryModuleType<U> type) {
-@@ -366,6 +366,7 @@ public class Brain<E extends LivingEntity> {
-         return brain;
-     }
- 
-+    public boolean needsFullTick = true; // Airplane
-     public void tick(ServerLevel world, E entity) {
-         this.forgetOutdatedMemories();
-         this.tickSensors(world, entity);
-@@ -375,6 +376,7 @@ public class Brain<E extends LivingEntity> {
- 
-     private void tickSensors(ServerLevel world, E entity) {
-         for(Sensor<? super E> sensor : this.sensors.values()) {
-+            if (this.needsFullTick || sensor.alwaysFullyTick()) // Airplane
-             sensor.tick(world, entity);
-         }
- 
-@@ -410,7 +412,7 @@ public class Brain<E extends LivingEntity> {
-                 Activity activity = entry.getKey();
-                 if (this.activeActivities.contains(activity)) {
-                     for(Behavior<? super E> behavior : entry.getValue()) {
--                        if (behavior.getStatus() == Behavior.Status.STOPPED) {
-+                        if ((this.needsFullTick || behavior.alwaysFullyTick()) && behavior.getStatus() == Behavior.Status.STOPPED) { // Airplane
-                             behavior.tryStart(world, entity, l);
-                         }
-                     }
-@@ -424,6 +426,7 @@ public class Brain<E extends LivingEntity> {
-         long l = world.getGameTime();
- 
-         for(Behavior<? super E> behavior : this.getRunningBehaviors()) {
-+            if (this.needsFullTick || behavior.alwaysFullyTick()) // Airplane
-             behavior.tickOrStop(world, entity, l);
-         }
- 
-@@ -465,7 +468,7 @@ public class Brain<E extends LivingEntity> {
+@@ -465,7 +465,7 @@ public class Brain<E extends LivingEntity> {
          private final Optional<? extends ExpirableValue<U>> value;
  
          static <U> Brain.MemoryValue<U> createUnchecked(MemoryModuleType<U> type, Optional<? extends ExpirableValue<?>> data) {
@@ -2389,41 +2248,19 @@ index efe66264ad5717bf3aac0fbda07275fb5571acc1..68188f3322a9af8eac423afc5f87bc4f
          PoiManager poiManager = world.getPoiManager();
          this.batchCache.long2ObjectEntrySet().removeIf((entry) -> {
              return !entry.getValue().isStillValid(time);
-diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-index b1928807851a4fca53e117573b25c62a6deeb8e1..3f97773ae584d52541a44f61f695178876ab3e86 100644
---- a/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/behavior/Behavior.java
-@@ -49,6 +49,18 @@ public abstract class Behavior<E extends LivingEntity> {
-         // Paper end
-     }
- 
-+    // Airplane start
-+    private boolean fullyTick = false;
-+    private int lastUpdateChecked = -1;
-+    public boolean alwaysFullyTick() {
-+        if (this.lastUpdateChecked != gg.airplane.AirplaneConfig.getUpdates()) {
-+            this.lastUpdateChecked = gg.airplane.AirplaneConfig.getUpdates();
-+            this.fullyTick = gg.airplane.AirplaneConfig.fullyTickBehaviors.contains(getClass());
-+        }
-+        return this.fullyTick;
-+    }
-+    // Airplane end
-+
-     public Behavior.Status getStatus() {
-         return this.status;
-     }
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
-index 42d466f7f162943886078eba3db18f2dfc2d7bee..73509aa6ed66188b9ed3d3611392525c1099e363 100644
+index 42d466f7f162943886078eba3db18f2dfc2d7bee..32da2d3f87758bee359522769ebbee73f4f3256a 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
-@@ -37,7 +37,10 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
+@@ -37,7 +37,11 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
  
      @Override
      protected void tick(ServerLevel serverLevel, Villager villager, long l) {
 -        if (l % 100L == 0L) {
 +        // Airplane start
 +        if (villager.nextGolemPanic < 0) villager.nextGolemPanic = l + 100;
-+        if (--villager.nextGolemPanic <= l) {
++        if (--villager.nextGolemPanic < l) {
++            villager.nextGolemPanic = -1;
 +            // Airplane end
              villager.spawnGolemIfNeeded(serverLevel, l, 3);
          }
@@ -2459,29 +2296,6 @@ index c28ade67f6a59146064a57bf016a646197f47ac4..419e6275a400f587f57e81684520072a
                          if (this.mob.isWithinRestriction(mutableBlockPos) && this.isValidTarget(this.mob.level, mutableBlockPos)) {
                              this.blockPos = mutableBlockPos;
                              setTargetPosition(mutableBlockPos.immutable()); // Paper
-diff --git a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-index 8f99a78a55ab8f0ddfa1dd790a9a4a8c23a7f841..f2882d17dbbb59944c8ed831e85ecb7ba17700fb 100644
---- a/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/sensing/Sensor.java
-@@ -49,6 +49,18 @@ public abstract class Sensor<E extends LivingEntity> {
-         this(20);
-     }
- 
-+    // Airplane start
-+    private boolean fullyTick = false;
-+    private int lastUpdateChecked = -1;
-+    public boolean alwaysFullyTick() {
-+        if (this.lastUpdateChecked != gg.airplane.AirplaneConfig.getUpdates()) {
-+            this.lastUpdateChecked = gg.airplane.AirplaneConfig.getUpdates();
-+            this.fullyTick = gg.airplane.AirplaneConfig.fullyTickSensors.contains(getClass());
-+        }
-+        return this.fullyTick;
-+    }
-+    // Airplane end
-+
-     public final void tick(ServerLevel world, E entity) {
-         if (--this.timeToTick <= 0L) {
-             // Paper start - configurable sensor tick rate and timings
 diff --git a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java b/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
 index 3ee691d4caccbc1b3e0f52decb41d436ac0d08ec..8a0aea6b28295e03aaac1768336b1bc36d9ad9e9 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/targeting/TargetingConditions.java
@@ -2536,7 +2350,7 @@ index 153194d937d210e2e4fd8864e4a3c000f85d7e2e..1d415a91b9c90603e8f738dbafe7a5ea
      @Override
      protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index fa365420a4593bc7d652b0d92f4750602fcb334b..4de980d0948369f0040e154e98dd4db02e17ce72 100644
+index fa365420a4593bc7d652b0d92f4750602fcb334b..9c4bf9b66e97d06e17e008784feda1a192a81b00 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 @@ -275,9 +275,11 @@ public class Axolotl extends Animal implements LerpingModel, Bucketable {
@@ -2547,12 +2361,12 @@ index fa365420a4593bc7d652b0d92f4750602fcb334b..4de980d0948369f0040e154e98dd4db0
      @Override
      protected void customServerAiStep() {
          this.level.getProfiler().push("axolotlBrain");
-+        this.getBrain().needsFullTick = this.behaviorTick++ % this.activatedPriority == 0; // Airplane
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
          this.getBrain().tick((ServerLevel) this.level, this); // CraftBukkit - decompile error
          this.level.getProfiler().pop();
          this.level.getProfiler().push("axolotlActivityUpdate");
 diff --git a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
-index 15787afad42f9299638a1c9e57d26678805f18ee..685af5a43d841d7adddd825ae8e47d5ce7127aa8 100644
+index 15787afad42f9299638a1c9e57d26678805f18ee..0d220ea2d2651c46ba60c68bdd8dad3182c69740 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
 @@ -144,9 +144,11 @@ public class Goat extends Animal {
@@ -2563,7 +2377,7 @@ index 15787afad42f9299638a1c9e57d26678805f18ee..685af5a43d841d7adddd825ae8e47d5c
      @Override
      protected void customServerAiStep() {
          this.level.getProfiler().push("goatBrain");
-+        this.getBrain().needsFullTick = this.behaviorTick++ % this.activatedPriority == 0; // Airplane
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
          this.getBrain().tick((ServerLevel) this.level, this); // CraftBukkit - decompile error
          this.level.getProfiler().pop();
          this.level.getProfiler().push("goatActivityUpdate");
@@ -2613,7 +2427,7 @@ index e1e220b3e4967590a2a77370e2a6ab919ad50eaa..5d371a3e94720e24058d007474355af6
          boolean flag1 = iblockdata.getFluidState().is((Tag) FluidTags.WATER);
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index c510da19883d1aa79b2fc25e2d9c8f5cd8dd7bfa..f563ca40b2c413b3b03a03fd0e85d2862c5708c9 100644
+index c510da19883d1aa79b2fc25e2d9c8f5cd8dd7bfa..3f6697d21cf32b83d3dcd74d810effc28c9efc95 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 @@ -123,12 +123,14 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
@@ -2628,12 +2442,12 @@ index c510da19883d1aa79b2fc25e2d9c8f5cd8dd7bfa..f563ca40b2c413b3b03a03fd0e85d286
      @Override
      protected void customServerAiStep() {
          this.level.getProfiler().push("hoglinBrain");
-+        this.getBrain().needsFullTick = this.behaviorTick++ % this.activatedPriority == 0; // Airplane
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
          this.getBrain().tick((ServerLevel)this.level, this);
          this.level.getProfiler().pop();
          HoglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index c7ad0e317c0c74e5ad3e08278c5e7b31c894413e..1f6c420a79435451d9c6acf7c7e216ef71ee0d0d 100644
+index c7ad0e317c0c74e5ad3e08278c5e7b31c894413e..06c6ed64488bb3685b9de3e05d8a1e74ebc62e37 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -289,9 +289,11 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
@@ -2644,12 +2458,12 @@ index c7ad0e317c0c74e5ad3e08278c5e7b31c894413e..1f6c420a79435451d9c6acf7c7e216ef
      @Override
      protected void customServerAiStep() {
          this.level.getProfiler().push("piglinBrain");
-+        this.getBrain().needsFullTick = !gg.airplane.AirplaneConfig.dynamicPiglinBehavior || this.behaviorTick++ % this.activatedPriority == 0; // Airplane
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
          this.getBrain().tick((ServerLevel) this.level, (Piglin) this); // CraftBukkit - decompile error
          this.level.getProfiler().pop();
          PiglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..7d72bdbe4bd8999d5e89ada3604b0b639d7d1dd2 100644
+index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..0f7f7aef78a1f34fe113eeb00a88fd2610351344 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -142,6 +142,8 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -2673,7 +2487,7 @@ index eaefa4f5f86f1c836aa29dd64ea786baced4b34d..7d72bdbe4bd8999d5e89ada3604b0b63
 -        if (!inactive) this.getBrain().tick((ServerLevel) this.level, this); // CraftBukkit - decompile error // Paper
 +        // Airplane start
 +        if (!inactive) {
-+            this.getBrain().needsFullTick = !gg.airplane.AirplaneConfig.dynamicVillagerBehavior || behaviorTick++ % this.activatedPriority == 0;
++            if (this.behaviorTick++ % this.activatedPriority == 0) // Airplane
 +            this.getBrain().tick((ServerLevel) this.level, this);
 +         }
 +        // Airplane end
@@ -3735,7 +3549,7 @@ index d752720f2f234b9dbd2117333fee1bfad663ec02..9868b3a9a35cea9689c76ea9b62f2732
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 966639cc6ba6684bfb52e91ac047808cf4d003e4..4897e69ef40c4583d272e94ad4a804885a4e3cf9 100644
+index 966639cc6ba6684bfb52e91ac047808cf4d003e4..0d56df555b8d2de12447cc2e869c9eba20c5ea6d 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -37,6 +37,10 @@ import co.aikar.timings.MinecraftTimings;
@@ -3755,7 +3569,7 @@ index 966639cc6ba6684bfb52e91ac047808cf4d003e4..4897e69ef40c4583d272e94ad4a80488
                  ActivationRange.activateEntity(entity);
 +
 +                // Airplane start
-+                if (gg.airplane.AirplaneConfig.dearEnabled) {
++                if (gg.airplane.AirplaneConfig.dearEnabled && entity.getType().dabEnabled) {
 +                    Vec3 playerVec = player.position();
 +                    Vec3 entityVec = entity.position();
 +                    double diffX = playerVec.x - entityVec.x, diffY = playerVec.y - entityVec.y, diffZ = playerVec.z - entityVec.z;

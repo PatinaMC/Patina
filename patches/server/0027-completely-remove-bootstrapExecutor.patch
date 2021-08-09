@@ -5,7 +5,7 @@ Subject: [PATCH] completely remove bootstrapExecutor
 
 
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 621c4b42185b3c65903408b6285ba56fa42e626a..7fe39c67e4b1d2086a86053d8280ec3e0e45451a 100644
+index d690bbcfac8803dc524be0710157cf1e2e1f9826..dc352a743a0124d3f0522ae2a353c65607ebb8c2 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
 @@ -65,7 +65,7 @@ import org.apache.logging.log4j.Logger;
@@ -15,9 +15,9 @@ index 621c4b42185b3c65903408b6285ba56fa42e626a..7fe39c67e4b1d2086a86053d8280ec3e
 -    private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority
 +    //private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority // Patina
      private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
-     private static final ExecutorService IO_POOL = makeIoExecutor();
-     public static LongSupplier timeSource = System::nanoTime;
-@@ -133,9 +133,11 @@ public class Util {
+     // Tuinity start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
+     public static final ExecutorService PROFILE_EXECUTOR = Executors.newFixedThreadPool(2, new java.util.concurrent.ThreadFactory() {
+@@ -149,9 +149,11 @@ public class Util {
          return executorService;
      }
  
