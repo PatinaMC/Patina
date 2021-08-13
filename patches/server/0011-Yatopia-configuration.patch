@@ -6,12 +6,12 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 34e18c39c6a91609df8f11287c323a18b618685f..04506ae06b4e9593fde557d8cb217f650d6eae82 100644
+index 006ab5f147751d6bf52ff0c8c2e68bed4c7d69f2..2dc599285d9600f1f18db4273daf6a08884474c1 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Tuinity - add config to timings report
-             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)) // Tuinity - add config to timings report
+@@ -232,6 +232,7 @@ public class TimingsExport extends Thread {
+             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)), // Tuinity - add config to timings report
+             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null))
              ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
 +            ,pair("yatopia", mapAsJSON(Bukkit.spigot().getYatopiaConfig(), null)) // Yatopia - add config to timings report
          ));
