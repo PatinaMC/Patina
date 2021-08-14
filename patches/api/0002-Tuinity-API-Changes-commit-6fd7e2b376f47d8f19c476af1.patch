@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 9 Aug 2021 10:24:23 +0000
+Date: Sat, 14 Aug 2021 15:43:02 +0000
 Subject: [PATCH] Tuinity API Changes commit
- 8e7cc4dc969bf044ab472342538d519a824f358c
+ 6fd7e2b376f47d8f19c476af153bee76719f02b0
 
 Tuinity config
 
@@ -15,10 +15,10 @@ Add per player no-tick, tick, and send view distances.
 Also add send view distance to World.
 
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 50de22d5258f70c0a5f7d40def1782d29c41e5a6..f09444d684ecbd00fcbd5f7921311e73f2678f90 100644
+index 83870d54a5ff1017ad7455e9c931fdee54354434..d6607c1cc3b976367f0087810de698281d4733ab 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1677,6 +1677,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1679,6 +1679,14 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -65,10 +65,10 @@ index 8ae9198ba7fdb006dc420504a984627add20dbb5..4017cc64532a9a8e42c3a6492878cd96
  
      // Spigot start
 diff --git a/src/main/java/org/bukkit/entity/Player.java b/src/main/java/org/bukkit/entity/Player.java
-index 5e8814cc317a705eaf8bdd9f3876a5366c0a0226..7be8c47bdb8cc73c039efe05d81085cdbe0bef58 100644
+index 3ec1be36b90dbedb8631135555da4b69110e4791..c87cb640dc829a266e85e97a2e3bb2f0f52a2eaa 100644
 --- a/src/main/java/org/bukkit/entity/Player.java
 +++ b/src/main/java/org/bukkit/entity/Player.java
-@@ -1818,23 +1818,63 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
+@@ -1887,23 +1887,63 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
       * Gets the view distance for this player
       *
       * @return the player's view distance

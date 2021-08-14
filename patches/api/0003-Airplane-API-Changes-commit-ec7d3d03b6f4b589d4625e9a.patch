@@ -1,15 +1,15 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 13 Aug 2021 08:53:05 +0000
+Date: Sat, 14 Aug 2021 15:50:02 +0000
 Subject: [PATCH] Airplane API Changes commit
- 36c9bc85c938eca91c1915a2f9fbdd6acbf96b63
+ ec7d3d03b6f4b589d4625e9adfeb26ec848bf5d2
 
 Expose findClass for profiler
 
 Ignore lookups if closed
 
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 81292899918c4dc880661ee628384cb840a6244f..9101e0f454f0b4de18e24f7c32baa586bd4a8827 100644
+index 1ab107d5bb20b9a12fc8843513bd9a3ada50c0a3..70aa79c0bfde6aea8031eeb69124344ab3af5c27 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -46,6 +46,8 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot

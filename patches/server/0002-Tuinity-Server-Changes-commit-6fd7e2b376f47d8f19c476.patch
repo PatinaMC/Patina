@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 9 Aug 2021 10:24:23 +0000
+Date: Sat, 14 Aug 2021 15:43:02 +0000
 Subject: [PATCH] Tuinity Server Changes commit
- 8e7cc4dc969bf044ab472342538d519a824f358c
+ 6fd7e2b376f47d8f19c476af153bee76719f02b0
 
 MC-Dev fixes
 
@@ -520,8 +520,10 @@ If enough tasks are submitted the server will eventually stall
 out due to a sync load, as the worldgen threads will be
 stalling on profile lookups.
 
+Boats do not weigh that much
+
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 523a83ffbfefc43d80062c3f33ebc81981cc35ce..e73fd1d5aa36c5eda7710cdefca6daf4345e788c 100644
+index 47050417a37e0ddf40d174affe53a9542b123c11..7466476e05fa5201b47b5cb04cf136d56d1ad4ef 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -1,10 +1,16 @@
@@ -23593,7 +23595,7 @@ index 0000000000000000000000000000000000000000..300364f693583be802a71d94cda5d96c
 +    }
 +}
 diff --git a/src/main/java/co/aikar/timings/MinecraftTimings.java b/src/main/java/co/aikar/timings/MinecraftTimings.java
-index e873b23527cc4e56580c3c7dc5b52ecc3f2a9e31..6317988df19da315c057a9cbc55ff77006f45912 100644
+index 8c883d2f88acc731734a121ebb76821e66658cc9..c2e8380590d83ce20ee02c90d825b0ad5e883ba9 100644
 --- a/src/main/java/co/aikar/timings/MinecraftTimings.java
 +++ b/src/main/java/co/aikar/timings/MinecraftTimings.java
 @@ -45,6 +45,8 @@ public final class MinecraftTimings {
@@ -30358,7 +30360,7 @@ index 0000000000000000000000000000000000000000..f188ff6b08abddd06a3120fb15825e0f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 81f4f26a6b83079d36acd1fd86dede0eb1116c01..ef1dd7866708fed95a59028f1089bffee2c9b3b0 100644
+index 59437f04911662f06596ef61b91017caa6427eec..82e8338c69e846ab9ff0a9b9427d968e0a67927e 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
 @@ -67,6 +67,22 @@ public class Util {
@@ -32757,7 +32759,7 @@ index 1cc4e0a1f3d8235ef88b48e01ca8b78a263d2676..428d94c60b826ddf3797d6713661dff1
 +     */ // Tuinity - replace old loader system
  }
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce161878034e57c3f4 100644
+index 0d143d073fa7cdfa14f12e9c795350dca8ac5e80..78cd1369a8209c709fb3573f0c3e9aae74c87e90 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 @@ -47,6 +47,7 @@ import net.minecraft.world.level.storage.LevelStorageSource;
@@ -33046,11 +33048,18 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
          this.level.timings.doChunkUnload.stopTiming(); // Spigot
          this.level.getProfiler().pop();
          this.clearCache();
-@@ -838,18 +1017,26 @@ public class ServerChunkCache extends ChunkSource {
-             //Collections.shuffle(list); // Paper
-             // Paper - moved up
+@@ -834,24 +1013,29 @@ public class ServerChunkCache extends ChunkSource {
+ 
+             this.lastSpawnState = spawnercreature_d;
+             this.level.getProfiler().pop();
+-            List<ChunkHolder> list = Lists.newArrayList(this.chunkMap.visibleChunkMap.values()); // Paper
+-
+-            Collections.shuffle(list);
++            // Tuinity - no, anyone who cares about mob spawning being even will enable per-player (as that ACTUALLY makes it even)
+             // Paper - moved natural spawn event up
              this.level.timings.chunkTicks.startTiming(); // Paper
--            final int[] chunksTicked = {0}; this.chunkMap.forEachVisibleChunk((playerchunk) -> { // Paper - safe iterator incase chunk loads, also no wrapping
+-            final int[] chunksTicked = {0}; // Paper
+-            list.forEach((playerchunk) -> {
 -                Optional<LevelChunk> optional = ((Either) playerchunk.getTickingChunkFuture().getNow(ChunkHolder.UNLOADED_LEVEL_CHUNK)).left();
 -
 -                if (optional.isPresent()) {
@@ -33080,7 +33089,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
                          }
  
                          // this.level.timings.doTickTiles.startTiming(); // Spigot // Paper
-@@ -857,7 +1044,11 @@ public class ServerChunkCache extends ChunkSource {
+@@ -859,7 +1043,11 @@ public class ServerChunkCache extends ChunkSource {
                          // this.level.timings.doTickTiles.stopTiming(); // Spigot // Paper
                      }
                  }
@@ -33093,7 +33102,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
              this.level.timings.chunkTicks.stopTiming(); // Paper
              this.level.getProfiler().push("customSpawners");
              if (flag1) {
-@@ -866,25 +1057,28 @@ public class ServerChunkCache extends ChunkSource {
+@@ -868,25 +1056,28 @@ public class ServerChunkCache extends ChunkSource {
                  } // Paper - timings
              }
  
@@ -33137,7 +33146,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
      }
  
      private void getFullChunk(long pos, Consumer<LevelChunk> chunkConsumer) {
-@@ -1031,46 +1225,14 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1033,46 +1224,14 @@ public class ServerChunkCache extends ChunkSource {
              super.doRunTask(task);
          }
  
@@ -33187,7 +33196,7 @@ index 1043577580bee20a46ae4b2c9e7cef27d45568ad..3f0168a9edfa67f99e6fe9ce16187803
                  return true;
              } else {
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
-index 2f3e69ad809199ffc2661d524bb627ec8dbc2e80..0fcd6a9162f5bddb3c4fc42b3a64efde7c7d9a9b 100644
+index e5cae2fb67541785072324e5434820ee4b169556..60e58d5f03c66146a86b49c4d1ef17080f094a4c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
 +++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
 @@ -173,7 +173,7 @@ public class ServerEntity {
@@ -33701,7 +33710,7 @@ index baa25df9f446c8edea9666983425df31c32a13ff..f9ed48f5bbde84fd1804e482f2777b51
  
          public void onTrackingStart(Entity entity) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e32da100eabf0d3de12375402e9378c726811358..1c9aec21aa22d0d202a023e9252d1412685ed4b0 100644
+index 5ecfd9a1e39343746828520c307879547feb33a7..b0f5224ec677d2806fde65f495819b11775705e5 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -261,7 +261,7 @@ public class ServerPlayer extends Player {
@@ -33731,7 +33740,7 @@ index e32da100eabf0d3de12375402e9378c726811358..1c9aec21aa22d0d202a023e9252d1412
                  this.setPos(this.getX(), this.getY() + 1.0D, this.getZ());
              }
          }
-@@ -1558,6 +1558,18 @@ public class ServerPlayer extends Player {
+@@ -1562,6 +1562,18 @@ public class ServerPlayer extends Player {
          this.connection.send(new ClientboundContainerClosePacket(this.containerMenu.containerId));
          this.doCloseContainer();
      }
@@ -34256,7 +34265,7 @@ index 961660f6f9e00b93252519e38b74c66c53388ed2..c80280150897064dc9d814edfbbcc1ce
                  protected void initChannel(Channel channel) {
                      try {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 064aecb28f05fcf572ee7d29f611a31cc7b6e49a..c4cea533f619624976c4d1290312ed1a6b250855 100644
+index ad1a9c6c354d40d5fa589666b1b00792d9cd6161..162a4b3b3312867a64425caa0d6ec6af157b20e1 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -536,6 +536,12 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -34569,7 +34578,7 @@ index 61405c2b53e03a4b83e2c70c6e4d3739ca9676cb..357efb989362e0be8cb08533ad677634
  
      private static JsonElement writeGameProfile(GameProfileCache.GameProfileInfo entry, DateFormat dateFormat) {
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 48045993c8ad4b014cf4a67f7c4db42e014d1c81..936ae5576902e6593bd21af4d3cf3998109347b5 100644
+index 9966d0bb4f85866a46f5e4098416ab9af81f8d9f..ea8956b2c4cbe7059512ebfa9fd7a865e5fae0ac 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -177,6 +177,7 @@ public abstract class PlayerList {
@@ -34711,7 +34720,7 @@ index 020a19cd683dd3779c5116d12b3cdcd3b3ca69b4..17d209c347b07acef451180c97835f41
      public static final Codec<IntProvider> POSITIVE_CODEC = codec(1, Integer.MAX_VALUE);
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 896d892237b29eb404398db07264eb6f04786754..2453492429a743677db07e31d575c1473fedf4ad 100644
+index 895c8d8c676bfd3e11cd8371b2ac115b6a2e52b4..eb2a4e299a3c0e35e21f80436432f471f1eed184 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -356,8 +356,27 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
@@ -35044,7 +35053,7 @@ index 896d892237b29eb404398db07264eb6f04786754..2453492429a743677db07e31d575c147
          return false;
      }
  
-@@ -3727,7 +3916,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3742,7 +3931,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
      }
  
      public void setDeltaMovement(Vec3 velocity) {
@@ -35054,7 +35063,7 @@ index 896d892237b29eb404398db07264eb6f04786754..2453492429a743677db07e31d575c147
      }
  
      public void setDeltaMovement(double x, double y, double z) {
-@@ -3794,7 +3985,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3809,7 +4000,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          // Paper end
          // Paper start - fix MC-4
          if (this instanceof ItemEntity) {
@@ -35063,7 +35072,7 @@ index 896d892237b29eb404398db07264eb6f04786754..2453492429a743677db07e31d575c147
                  // encode/decode from PacketPlayOutEntity
                  x = Mth.lfloor(x * 4096.0D) * (1 / 4096.0D);
                  y = Mth.lfloor(y * 4096.0D) * (1 / 4096.0D);
-@@ -3803,7 +3994,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -3818,7 +4009,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          }
          // Paper end - fix MC-4
          if (this.position.x != x || this.position.y != y || this.position.z != z) {
@@ -35622,7 +35631,7 @@ index 925f16d5eb092518ef774f69a8d99689feb0f5d7..01d8af06f19427354cac95d691e65d31
  
      public BlockPos getHomePos() { // Paper - public
 diff --git a/src/main/java/net/minecraft/world/entity/player/Player.java b/src/main/java/net/minecraft/world/entity/player/Player.java
-index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..e7a7de5ad9b64876df77e20465631ca8e5b19a4a 100644
+index d8780f06efc261a42389e466573a0bcf10c333f6..9e0eec259fdae57e235bfe00ece4df9957edc642 100644
 --- a/src/main/java/net/minecraft/world/entity/player/Player.java
 +++ b/src/main/java/net/minecraft/world/entity/player/Player.java
 @@ -498,6 +498,11 @@ public abstract class Player extends LivingEntity {
@@ -35637,6 +35646,33 @@ index 19980b2d627eb3cacf8d0c3e6785ad2206910fbc..e7a7de5ad9b64876df77e20465631ca8
  
      public void closeContainer() {
          this.containerMenu = this.inventoryMenu;
+diff --git a/src/main/java/net/minecraft/world/entity/vehicle/Boat.java b/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
+index 99124b70d82140b108d424a5206657efe94f184e..c1171d9e35cbfb1e8d0523f2d75198105c54717a 100644
+--- a/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
++++ b/src/main/java/net/minecraft/world/entity/vehicle/Boat.java
+@@ -688,7 +688,8 @@ public class Boat extends Entity {
+         this.invFriction = 0.05F;
+         if (this.oldStatus == Boat.Status.IN_AIR && this.status != Boat.Status.IN_AIR && this.status != Boat.Status.ON_LAND) {
+             this.waterLevel = this.getY(1.0D);
+-            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D).add(0.0, ((double) (this.getWaterLevelAbove() - this.getBbHeight()) + 0.101D) - this.getY(), 0.0)); // Paper
++            this.move(MoverType.SELF, new Vec3(0.0, ((double) (this.getWaterLevelAbove() - this.getBbHeight()) + 0.101D) - this.getY(), 0.0)); // Tuinity
++            this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.0D, 1.0D)); // Tuinity
+             this.lastYd = 0.0D;
+             this.status = Boat.Status.IN_WATER;
+         } else {
+diff --git a/src/main/java/net/minecraft/world/item/BoatItem.java b/src/main/java/net/minecraft/world/item/BoatItem.java
+index 9a11248b13d231c1797e14f843cb8cbec0d35a6e..21caa5b3d66cc7b533935cd484f639113e041a0f 100644
+--- a/src/main/java/net/minecraft/world/item/BoatItem.java
++++ b/src/main/java/net/minecraft/world/item/BoatItem.java
+@@ -67,7 +67,7 @@ public class BoatItem extends Item {
+ 
+                 entityboat.setType(this.type);
+                 entityboat.setYRot(user.getYRot());
+-                if (!world.noCollision(entityboat, entityboat.getBoundingBox().inflate(-net.minecraft.Util.COLLISION_EPSILON))) { // Paper
++                if (!world.noCollision(entityboat, entityboat.getBoundingBox())) { // Tuinity
+                     return InteractionResultHolder.fail(itemstack);
+                 } else {
+                     if (!world.isClientSide) {
 diff --git a/src/main/java/net/minecraft/world/item/EnderEyeItem.java b/src/main/java/net/minecraft/world/item/EnderEyeItem.java
 index 7ccfe737fdf7f07b731ea0ff82e897564350705c..abcc3dac7c7369a3f37e85ddeecbe272833298c9 100644
 --- a/src/main/java/net/minecraft/world/item/EnderEyeItem.java
@@ -38815,10 +38851,10 @@ index 0a76032b48af4327580b99730e534f628924fe35..c9c668aa5b2ddf21ffcce8b395e3d88b
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426606169f4 100644
+index fd82aed789324cf09472f1742ff78a89196ac979..8d1ef8323f2d59ea1fe3a084e1146bdf5e90e2c1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -884,6 +884,7 @@ public final class CraftServer implements Server {
+@@ -886,6 +886,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -38826,7 +38862,7 @@ index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426
          for (ServerLevel world : this.console.getAllLevels()) {
              world.serverLevelData.setDifficulty(config.difficulty);
              world.setSpawnSettings(config.spawnMonsters, config.spawnAnimals);
-@@ -918,6 +919,7 @@ public final class CraftServer implements Server {
+@@ -920,6 +921,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -38834,7 +38870,7 @@ index 7f57b992ea10f47cd0d692424f31bf38782a7898..2337b1f0e0bd7cfb9ed27911cff6c426
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -2451,6 +2453,14 @@ public final class CraftServer implements Server {
+@@ -2453,6 +2455,14 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -38985,7 +39021,7 @@ index 7dc26321e20e26821096e79356a358879306cd78..2e79e2a23a4aec4b526814f7e959232c
      // Spigot start
      private final org.bukkit.World.Spigot spigot = new org.bukkit.World.Spigot()
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index ea7df53656766a8dc4ab5fe66de894301db634e1..25e37d67b0ea20ab8cb196e46762194cf7afbfef 100644
+index c099de7d625144711bd720c4364949ead3f17f3e..14e644119e5609476f6f40a851e8bc256fd15745 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -146,6 +146,13 @@ public class Main {
@@ -39062,7 +39098,7 @@ index 85ca30aef0703db6859e66c62781ecfd334426e7..8ce49478441e77cedf5148ecb81d78b3
      @Override
      public boolean teleport(Location location) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
-index 9e8918d03b8213e5f6689fc93030138fd704aca9..5038bd2d0920ffc37a33d0c971cf28c330e58e06 100644
+index 63aa742c505e14faa9bf5df29a8f759486fac80b..b2c6d1611422a3900e5c9d4b1983cc74dd820973 100644
 --- a/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/entity/CraftPlayer.java
 @@ -517,15 +517,70 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
