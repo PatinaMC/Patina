@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 1 Jul 2021 12:32:56 +0000
+Subject: [PATCH] relocate
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index fe66c28478101719b166bbd6792e4994d4423b7c..40717328b5cfb66ae8d6dbda24a8b2afe0be66f0 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -118,6 +118,7 @@ relocation {
+     relocate("org.bukkit.craftbukkit" to "org.bukkit.craftbukkit.v$packageVersion") {
+         exclude("org.bukkit.craftbukkit.Main*")
+     }
++    relocate("org.yatopiamc.yatopia.server" to "org.bukkit.craftbukkit.libs") // Patina
+ 
+     fun cb(pack: String) = "org.bukkit.craftbukkit.libs.$pack"
+ 

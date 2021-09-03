@@ -34,7 +34,7 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 16eca1b7881232b114f4b77906b7801cd7bb3d65..6b327f332a7e2b4b7e81973eed7373f45a009724 100644
+index dfd6ded37dcf51348d58e8500ceae59c99950a26..21ec8e95557f130656f8ed23b4f31c01d9df398f 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2063,6 +2063,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -61,10 +61,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e3a41a1a0e9e4936b1a4bd74c9379cb0f38ab74c..5000c91aceaa49a82161f57af683d2d08340efd4 100644
+index 4c55bb04ff41fabb47c6477ba33e0e0aabd1c843..449c7dcb5a674961050ba5834454be7fee019238 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -901,7 +901,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -898,7 +898,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -87,7 +87,7 @@ index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490a
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 04d5ef90cd4171f9360017ac0c01ce48ae6ec983..db06add3e6027c04b864c60d30b0d0622732a5d8 100644
+index c5663df749dd2bbfd2ba9bf7e1e7a9e21992b81a..2eab201cc59db2d26bf15be65312b2dcf8bca99b 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -890,7 +890,8 @@ public abstract class BlockBehaviour {
@@ -101,10 +101,10 @@ index 04d5ef90cd4171f9360017ac0c01ce48ae6ec983..db06add3e6027c04b864c60d30b0d062
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 2e79e2a23a4aec4b526814f7e959232c0a074860..75855b03512dbb8d2aa1869bac30abe0794d41b4 100644
+index 2f81399b0e747d2a2b36560d2c8de0e397d961e8..e891191440e37fb5d381bf3af838bba2644ded46 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -512,7 +512,7 @@ public class CraftWorld implements World {
+@@ -371,7 +371,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

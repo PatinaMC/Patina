@@ -28,12 +28,12 @@ index d36e4bc3c3713407704b865574cba28662f17315..90ccbaa47beb1fdf506ea4748b97407c
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index d6607c1cc3b976367f0087810de698281d4733ab..c74242e2acb9ae743f1693bd32afd9586dcec36e 100644
+index 83870d54a5ff1017ad7455e9c931fdee54354434..2003dcf9caf59783a48e1816c418d6e06588c613 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1687,6 +1687,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1679,6 +1679,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
-         // Tuinity end - add config to timings report
+         // Paper end
  
 +        // Purpur start
 +        @NotNull
@@ -50,7 +50,7 @@ index d6607c1cc3b976367f0087810de698281d4733ab..c74242e2acb9ae743f1693bd32afd958
          /**
           * Sends the component to the player
           *
-@@ -1797,4 +1809,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1789,4 +1801,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end

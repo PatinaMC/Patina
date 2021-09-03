@@ -5,13 +5,13 @@ Subject: [PATCH] Fix Javadoc generation
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 206ac6d91e9935c12e65244fe5ed9c168781eb6b..9a756babb1ee54ab66f24a69ae47ca2f9bc7b03b 100644
+index 9f50b301e8ec5b914e5f9bb0229549078bcbf257..a5471bb5b95cf6246f7c37626a9864a8e9aa9323 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -74,6 +74,8 @@ tasks.jar {
- }
+@@ -86,6 +86,8 @@ tasks.jar {
  
  tasks.withType<Javadoc>().configureEach {
+     (options as CoreJavadocOptions).addStringOption("sourcepath", apiAndDocs.resolvedConfiguration.files.joinToString(separator = File.pathSeparator, transform = File::getPath))
 +    (options as StandardJavadocDocletOptions).encoding = "UTF-8"
 +    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
      (options as StandardJavadocDocletOptions).links(

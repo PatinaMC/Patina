@@ -47,10 +47,10 @@ index 0e25119564dfa9cb12f3c5dc5f653d7f2c147a9d..747494010c85bded946451375d38b36c
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-index 04fa3991f6ce4e9dad804f28fc6c947695857089..cb11eab6e13ed1c395b8f7db033c9a2817f4089c 100644
+index c943bd801b54519ba6cf5d45aec593d7b7438f99..a350580b006c5ab45704e2a8a09850282d8b0c93 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-@@ -111,7 +111,7 @@ public abstract class JavaPlugin extends PluginBase {
+@@ -112,7 +112,7 @@ public abstract class JavaPlugin extends PluginBase {
       * @return File containing this plugin
       */
      @NotNull
@@ -111,7 +111,7 @@ index b622cedeeee017f042bcf92485d81832030a8030..f1d3042e7f224059547ac840524cae5d
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 9101e0f454f0b4de18e24f7c32baa586bd4a8827..5d7ea07417624ad788b3c4b7a2056a3d23bcff34 100644
+index 70aa79c0bfde6aea8031eeb69124344ab3af5c27..86332fb31453620d8c5148051781c0f304178b08 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -246,4 +246,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot

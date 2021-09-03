@@ -5,7 +5,7 @@ Subject: [PATCH] completely remove bootstrapExecutor
 
 
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index ea372e5018fad6edbd82a38c2c89baa3f51712bf..4364e3b6b96acb6925680ad69624b32f0bbde62b 100644
+index 5c7b9ad379f3c272e15648dd16f4df9245d927da..7e27ac97db6e65031bd7a31cc7b4934473a10076 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
 @@ -65,7 +65,7 @@ import org.apache.logging.log4j.Logger;
@@ -15,9 +15,9 @@ index ea372e5018fad6edbd82a38c2c89baa3f51712bf..4364e3b6b96acb6925680ad69624b32f
 -    private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority
 +    //private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority // Patina
      private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
-     // Tuinity start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
+     // Paper start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
      public static final ExecutorService PROFILE_EXECUTOR = Executors.newFixedThreadPool(2, new java.util.concurrent.ThreadFactory() {
-@@ -150,9 +150,11 @@ public class Util {
+@@ -162,9 +162,11 @@ public class Util {
          return executorService;
      }
  

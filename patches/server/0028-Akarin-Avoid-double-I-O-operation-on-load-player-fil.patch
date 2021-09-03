@@ -8,7 +8,7 @@ Original code by Akarin-project, licensed under GNU General Public License versi
 you can find the original code on https://github.com/Akarin-project/Akarin/
 
 diff --git a/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java b/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
-index 6727468946ea5f60bd80549f827a7c2b9a42b98b..10e4985e2eb09e6d736c0ac976ef8009907c0f6a 100644
+index 35c39aed9583275ef25d32c783715798b52bdb63..331ed6aa983714d6fc3596526fc7df0ab993062c 100644
 --- a/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
 +++ b/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
 @@ -56,7 +56,8 @@ public class PlayerDataStorage {

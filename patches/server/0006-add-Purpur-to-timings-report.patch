@@ -5,13 +5,13 @@ Subject: [PATCH] add Purpur to timings report
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 4cd8116fd623fbc9e175986526d3ae51a72b76e0..006ab5f147751d6bf52ff0c8c2e68bed4c7d69f2 100644
+index da6a5b1b2f5203a0fab8e4fccd727951df7c9c9a..c0da3958cab4ed4a78a879cc0272451c76b50300 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Tuinity - add config to timings report
-             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)), // Tuinity - add config to timings report
-             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null))
+@@ -230,6 +230,7 @@ public class TimingsExport extends Thread {
+             pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Airplane
+             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null)) // Airplane
 +            ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
          ));
  

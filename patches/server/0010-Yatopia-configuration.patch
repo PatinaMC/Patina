@@ -6,22 +6,22 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 006ab5f147751d6bf52ff0c8c2e68bed4c7d69f2..2dc599285d9600f1f18db4273daf6a08884474c1 100644
+index c0da3958cab4ed4a78a879cc0272451c76b50300..524d81fee03a6617e4dc9e44d05d2f7a5967afd7 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -232,6 +232,7 @@ public class TimingsExport extends Thread {
-             pair("tuinity", mapAsJSON(Bukkit.spigot().getTuinityConfig(), null)), // Tuinity - add config to timings report
-             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null))
+@@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Airplane
+             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null)) // Airplane
              ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
 +            ,pair("yatopia", mapAsJSON(Bukkit.spigot().getYatopiaConfig(), null)) // Yatopia - add config to timings report
          ));
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index aeffcf139cf12c05c2c27e1d00d3aaf217b66ac0..1b070da1b7ea3aaa14819a93830f68024ef67028 100644
+index 3be9208ef5dd9b41a67b383b49cc0cdb7f909f85..35ba3ded7b20906655629a5b5b9d73a4a957b3dc 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -236,6 +236,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          gg.airplane.AirplaneConfig.load(); // Airplane - config
          gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
  
@@ -38,12 +38,12 @@ index aeffcf139cf12c05c2c27e1d00d3aaf217b66ac0..1b070da1b7ea3aaa14819a93830f6802
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e0ea6e1a12191b153af10490a314c0e4843b408a..57d95784446ff7aa4926e936f689eb56b7f43c7c 100644
+index b48c0b0620b682f821d8a15d9fbc8a9da80e0847..da57c71b43b973945a4275886ffa472f78add091 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
          // Spigot - view distance
-         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Tuinity - replace old player chunk management
+         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Paper - replace old player chunk management
          player.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
 -        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf(this.getServer().getServerModName())));
 +        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf((org.yatopiamc.yatopia.server.YatopiaConfig.brandName)))); // Yatopia)));
@@ -51,7 +51,7 @@ index e0ea6e1a12191b153af10490a314c0e4843b408a..57d95784446ff7aa4926e936f689eb56
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 18859a2dd2d5d90716ee2036b3b80b9d35fa6e65..b793db1ddf740f4fd098f63a6723bf6dbda6ddd1 100644
+index ea2d19ca815db7aaae59ac31c1a7d3c9d5b50642..8278998b234f248aa4e9a4b284ce55692d5e1b9e 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
@@ -91,10 +91,10 @@ index 18859a2dd2d5d90716ee2036b3b80b9d35fa6e65..b793db1ddf740f4fd098f63a6723bf6d
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index beb11601a203a8c70ee466b7a4208f39f88332f4..9c1e7c8892adf2d7fc8d9f70a4810da8a60baaf1 100644
+index 59d6825600f0ac7b6eecfa3471d31749d3d7e1ab..f62f059bb2a4917cd996c649eb72d60c08aeed43 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -882,6 +882,7 @@ public final class CraftServer implements Server {
+@@ -888,6 +888,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +102,7 @@ index beb11601a203a8c70ee466b7a4208f39f88332f4..9c1e7c8892adf2d7fc8d9f70a4810da8
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2488,6 +2489,13 @@ public final class CraftServer implements Server {
+@@ -2538,6 +2539,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -117,10 +117,10 @@ index beb11601a203a8c70ee466b7a4208f39f88332f4..9c1e7c8892adf2d7fc8d9f70a4810da8
          public void broadcast(BaseComponent component) {
              for (Player player : CraftServer.this.getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 6635666bc8900475acb2ec64763fb7e175769169..ca2df5165a351140e513b9659ffcd86ebd22b766 100644
+index 56674053351962a75b2731dde137dbbc0c70dbde..449d998143070b3da374c1a9e9d14551efef1e4f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -162,6 +162,14 @@ public class Main {
+@@ -155,6 +155,14 @@ public class Main {
                      .describedAs("Yml file");
                  // Purpur end
  

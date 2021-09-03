@@ -686,7 +686,7 @@ index 218f5bafeed8551b55b91c7fccaf6935c8b631ca..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 32943ab2d8f68b5ecea548e70557c1dbeb07477f..8fa5d0c7e97620bcf1f239e47c21365d96afc762 100644
+index 17e91fb9303e98e4a216f773340e4f551436bf54..e12948591648adcc6f57ec2fc7d1d7c03fa2a7c5 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -51,7 +51,7 @@ public class PaperConfig {
@@ -1359,7 +1359,7 @@ index 8f15af52d2ed734732134bf011ccdd4b7856a284..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/spigotmc/SpigotConfig.java b/src/main/java/org/spigotmc/SpigotConfig.java
-index 66a3395a7a0cc8eb1b3cd24761bed9d8c3349f4c..dfce19097da5ee909f3a7c7cbe512a992ef5d8f1 100644
+index ba0e8902e7205bc6da88efd28be70ece04cc1974..740752da2942911d68f323c889725749d1a73bfe 100644
 --- a/src/main/java/org/spigotmc/SpigotConfig.java
 +++ b/src/main/java/org/spigotmc/SpigotConfig.java
 @@ -48,7 +48,7 @@ public class SpigotConfig
