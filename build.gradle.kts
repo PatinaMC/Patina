@@ -54,6 +54,9 @@ paperweight {
 
     usePaperUpstream(providers.gradleProperty("paperRef")) {
         withPaperPatcher {
+            remapRepo.set("https://maven.quiltmc.org/repository/release/")
+            decompileRepo.set("https://files.minecraftforge.net/maven/")
+
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
             apiOutputDir.set(layout.projectDirectory.dir("Patina-API"))
 

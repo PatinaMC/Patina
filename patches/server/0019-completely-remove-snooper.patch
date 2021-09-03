@@ -5,7 +5,7 @@ Subject: [PATCH] completely remove snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a00874244 100644
+index c07510132607d50ef0d125e410dabd4484d8f966..0ef47023477a3930fe72ccb9ff70ba61fc9adafa 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -189,14 +189,14 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -46,7 +46,7 @@ index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a
  
          this.resources.close();
  
-@@ -1525,6 +1527,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1521,6 +1523,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -54,15 +54,15 @@ index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a
          this.profiler.push("snooper");
          if (((DedicatedServer) this).getProperties().snooperEnabled && !this.snooper.isStarted() && this.tickCount > 100) { // Spigot
              this.snooper.start();
-@@ -1533,6 +1536,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1529,6 +1532,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          if (((DedicatedServer) this).getProperties().snooperEnabled && this.tickCount % 6000 == 0) { // Spigot
              this.snooper.prepare();
          }
 +        */
  
+         io.papermc.paper.util.CachedLists.reset(); // Paper
          this.profiler.pop();
- 
-@@ -1888,6 +1892,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1878,6 +1882,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.resourcePackHash = hash;
      }
  
@@ -70,7 +70,7 @@ index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a
      @Override
      public void populateSnooper(Snooper snooper) {
          snooper.setDynamicData("whitelist_enabled", (Object) false);
-@@ -1921,7 +1926,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1911,7 +1916,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          snooper.setDynamicData("worlds", (Object) i);
      }
@@ -80,7 +80,7 @@ index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a
      @Override
      public void populateSnooperInitial(Snooper snooper) {
          snooper.setFixedData("singleplayer", this.isSingleplayer());
-@@ -1929,11 +1936,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1919,11 +1926,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          snooper.setFixedData("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
          snooper.setFixedData("dedicated", this.isDedicatedServer());
      }
@@ -95,7 +95,7 @@ index deed5eae2066865514b74df163404c7dd4b0cc08..3fd1da7b88f4b1c05df96bd1f5997d3a
  
      public abstract boolean isDedicatedServer();
  
-@@ -2030,9 +2040,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2020,9 +2030,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          return this.tickCount;
      }
  

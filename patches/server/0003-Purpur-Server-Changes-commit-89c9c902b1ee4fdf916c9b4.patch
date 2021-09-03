@@ -37,7 +37,7 @@ Configurable TPS Catchup
 Squid EAR immunity
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 6ba32b6efd32e6861f2c6bc8296b12c5c9cee593..17e91fb9303e98e4a216f773340e4f551436bf54 100644
+index 0f0b0bbcc0e47b8fe3e1e5d4a4ef0eed389d020b..644d57939eb2e281c3d45cae3e6703b62fb302a9 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -118,6 +118,11 @@ public class PaperConfig {
@@ -108,17 +108,17 @@ index 6fec6a47538da4c0c5a4505e9bedf492bb3376dd..8c019cede209c1c022a843146f16db36
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 85b846b6f118fc11743d7197bf798527d4f96bc4..2216a97cd33c08d9a14c64dc8804bd45a3a208c6 100644
+index 57632470fbf21163d7896b08344dca4d90ea6776..24e828148a392e4bae015094695707071958d6a6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -307,6 +307,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -306,6 +306,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public static final int TICK_TIME = 1000000000 / MinecraftServer.TPS;
      private static final int SAMPLE_INTERVAL = 20; // Paper
      public final double[] recentTps = new double[ 3 ];
 +    public boolean lagging = false; // Purpur
      public final SlackActivityAccountant slackActivityAccountant = new SlackActivityAccountant();
      // Spigot end
- 
+     public static long currentTickLong = 0L; // Paper
 @@ -1257,6 +1258,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                          this.recentTps[1] = tps5.getAverage();
                          this.recentTps[2] = tps15.getAverage();
@@ -126,8 +126,8 @@ index 85b846b6f118fc11743d7197bf798527d4f96bc4..2216a97cd33c08d9a14c64dc8804bd45
 +                        lagging = recentTps[0] < net.pl3x.purpur.PurpurConfig.laggingThreshold; // Purpur
                          tickSection = curTime;
                      }
-                     // Paper - replace logic
-@@ -1275,7 +1277,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+                     // Spigot end
+@@ -1274,7 +1276,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.tickServer(this::haveTime);
                      this.profiler.popPush("nextTickWait");
                      this.mayHaveDelayedTasks = true;
@@ -319,10 +319,10 @@ index ad9fb50791779a5fe7d22268b71bd10d9c9ff3f0..7b8fe792696a3adab44c29ae4d434ccb
              player.connection.send(new ClientboundEntityEventPacket(player, b0));
          }
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index d898b5c55f7659a344259cc0d5bc4abfb837eb15..1858f82444208bc5ef159dc6b94e049d02a951dd 100644
+index 732eb171f6a8fe1b02044a00fcf85217c41116ac..2eb13a973af9926b9b7bbebbf1a7b4ac181a99e9 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1763,6 +1763,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -1768,6 +1768,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          this.setXRot(Mth.clamp(pitch, -90.0F, 90.0F) % 360.0F);
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();

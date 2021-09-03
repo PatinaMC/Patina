@@ -5,14 +5,13 @@ Subject: [PATCH] Optimised hallowen checker
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 2216a97cd33c08d9a14c64dc8804bd45a3a208c6..63b56149f13a78e961e1b8d084ee7e6046961d5e 100644
+index 24e828148a392e4bae015094695707071958d6a6..e4c2049a69ca48bcf02c0813888d065027716d63 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1541,6 +1541,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1537,6 +1537,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+         }
          // Paper end
  
-         io.papermc.paper.util.CachedLists.reset(); // Paper
-+
 +        org.yatopiamc.yatopia.server.util.entity.HalloweenChecker.tick(); // Yatopia
 +
          // Paper start
