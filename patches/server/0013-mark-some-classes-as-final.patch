@@ -1097,19 +1097,6 @@ index 568aa6228d7914bdcb35c18d2caf579d869c8582..10ae0e4498a35576bc447f382fabac0e
  
      private BlockPosition a;
      private String[] b;
-diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseEntity.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseEntity.java
-index ce63f3e5ac4d1a4311c0ebeb7574d999d45987d9..117b00e9e7b5cddea77330ea95b278deb83e5b5a 100644
---- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseEntity.java
-+++ b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseEntity.java
-@@ -9,7 +9,7 @@ import net.minecraft.world.entity.Entity;
- import net.minecraft.world.level.World;
- import net.minecraft.world.phys.Vec3D;
- 
--public class PacketPlayInUseEntity implements Packet<PacketListenerPlayIn> {
-+final public class PacketPlayInUseEntity implements Packet<PacketListenerPlayIn> {
- 
-     private int a; public int getEntityId() { return this.a; } // Paper - add accessor
-     private PacketPlayInUseEntity.EnumEntityUseAction action;
 diff --git a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseItem.java b/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseItem.java
 index 00f33483cb7027fc326cb1e0dce0f63b89b2b71a..1a634b332ce7de63c46190dce41201ffa80696d6 100644
 --- a/src/main/java/net/minecraft/network/protocol/game/PacketPlayInUseItem.java
