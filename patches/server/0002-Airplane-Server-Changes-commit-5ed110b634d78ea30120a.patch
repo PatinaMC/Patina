@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 3 Sep 2021 07:50:51 +0000
+Date: Fri, 1 Oct 2021 10:24:45 +0000
 Subject: [PATCH] Airplane Server Changes commit
- 368ee6e9f9609f0e1b0acad3a66ee345b48724bc
+ 5ed110b634d78ea30120a07edd2c619f38110085
 
 MC-Dev Fixes
 
@@ -279,7 +279,7 @@ Patch Paper to use fast item merge raytracing
 
 Use aging cache for biome temperatures
 
-Cache world height in the chunk, as it's final
+Ensure level height is inlined
 
 Use thread unsafe random for mob spawning
 
@@ -305,23 +305,32 @@ Reduce entity allocations
 
 Remove lambda from ticking guard
 
+Reduce entity fluid lookups if no fluids
+
+Collision cache
+
+Temporarily pull my Paper PR
+
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4350421763379dc5f25a931a0380b0ae558aa59d..b8986164b9299c250e05f343162f234000487707 100644
+index 4350421763379dc5f25a931a0380b0ae558aa59d..05e4a3eed1ff4b0d19cacd2b1caf65359564a72e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -65,6 +65,10 @@ dependencies {
+@@ -65,6 +65,13 @@ dependencies {
      implementation("org.quiltmc:tiny-mappings-parser:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
      implementation("com.velocitypowered:velocity-native:1.1.0-SNAPSHOT") // Paper
  
 +    implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
-+    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.7.2") // Airplane - more config
++    implementation("org.yaml:snakeyaml:1.28")
++    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.7.2") { // Airplane - more config
++        exclude(group="org.yaml", module="snakeyaml") // exclude snakeyaml dependency because its old (1.26)
++    } // Airplane - more config
 +    implementation("com.github.technove:Flare:2c4a2114a0") // Airplane - flare
 +
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.1")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 7d44abcb4fff9717a1af55879deb7eb9c2d9e7e9..da6a5b1b2f5203a0fab8e4fccd727951df7c9c9a 100644
+index e29b0a90019b12bd6586ad0f7b5314f307e527ba..6e8001c7ff6497c9e5c274a5fe85cc204f3ba4c5 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -228,7 +228,8 @@ public class TimingsExport extends Thread {
@@ -335,7 +344,7 @@ index 7d44abcb4fff9717a1af55879deb7eb9c2d9e7e9..da6a5b1b2f5203a0fab8e4fccd727951
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index dcae40fde8087ce09ec8b9360f2abc860b88c975..0f0b0bbcc0e47b8fe3e1e5d4a4ef0eed389d020b 100644
+index f421e6a2e43e0a673dbb8a9a2b4331387e523e02..3cb9e223c90f97aa106ee1e9512d33897a6bac1a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -202,16 +202,26 @@ public class PaperConfig {
@@ -366,6 +375,32 @@ index dcae40fde8087ce09ec8b9360f2abc860b88c975..0f0b0bbcc0e47b8fe3e1e5d4a4ef0eed
          int timingHistoryInterval = getInt("timings.history-interval", 300);
          int timingHistoryLength = getInt("timings.history-length", 3600);
          timingsServerName = getString("timings.server-name", "Unknown Server");
+diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+index 9a3f75288b1d743a7ec4bfd663c1c2988678d3e6..7db27ff19a66454a941d24d3c6fb47830e927509 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+@@ -268,6 +268,9 @@ public class PaperWorldConfig {
+ 
+     public int softDespawnDistance;
+     public int hardDespawnDistance;
++    // Airplane start - separate squared values
++    public int softDespawnDistanceSq;
++    public int hardDespawnDistanceSq;
+     private void despawnDistances() {
+         softDespawnDistance = getInt("despawn-ranges.soft", 32); // 32^2 = 1024, Minecraft Default
+         hardDespawnDistance = getInt("despawn-ranges.hard", 128); // 128^2 = 16384, Minecraft Default
+@@ -278,8 +281,9 @@ public class PaperWorldConfig {
+ 
+         log("Living Entity Despawn Ranges:  Soft: " + softDespawnDistance + " Hard: " + hardDespawnDistance);
+ 
+-        softDespawnDistance = softDespawnDistance*softDespawnDistance;
+-        hardDespawnDistance = hardDespawnDistance*hardDespawnDistance;
++        softDespawnDistanceSq = softDespawnDistance*softDespawnDistance;
++        hardDespawnDistanceSq = hardDespawnDistance*hardDespawnDistance;
++        // Airplane end
+     }
+ 
+     public boolean keepSpawnInMemory;
 diff --git a/src/main/java/gg/airplane/AirplaneCommand.java b/src/main/java/gg/airplane/AirplaneCommand.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..89c89e633f14b5820147e734b1b7ad8cadfdce80
@@ -741,10 +776,10 @@ index 0000000000000000000000000000000000000000..807cf274619b8f7be839e249cb62b981
 +}
 diff --git a/src/main/java/gg/airplane/compat/ServerConfigurations.java b/src/main/java/gg/airplane/compat/ServerConfigurations.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..59e6f3c31e8efa7f3e827b641f19bc3a9cd809ef
+index 0000000000000000000000000000000000000000..f9a71ff3edd7e7b6cda680e5a156373b5aa813c2
 --- /dev/null
 +++ b/src/main/java/gg/airplane/compat/ServerConfigurations.java
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,78 @@
 +package gg.airplane.compat;
 +
 +import co.aikar.timings.TimingsManager;
@@ -771,7 +806,6 @@ index 0000000000000000000000000000000000000000..59e6f3c31e8efa7f3e827b641f19bc3a
 +      "bukkit.yml",
 +      "spigot.yml",
 +      "paper.yml",
-+      "tuinity.yml",
 +      "airplane.yml"
 +    };
 +
@@ -823,6 +857,390 @@ index 0000000000000000000000000000000000000000..59e6f3c31e8efa7f3e827b641f19bc3a
 +        }
 +    }
 +
++}
+diff --git a/src/main/java/gg/airplane/entity/CollisionCache.java b/src/main/java/gg/airplane/entity/CollisionCache.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..3822fc6b78419e681ff838bc2050c4f8fb3e90eb
+--- /dev/null
++++ b/src/main/java/gg/airplane/entity/CollisionCache.java
+@@ -0,0 +1,244 @@
++package gg.airplane.entity;
++
++import io.papermc.paper.util.CollisionUtil;
++import io.papermc.paper.util.WorldUtil;
++import net.minecraft.core.BlockPos;
++import net.minecraft.core.SectionPos;
++import net.minecraft.server.level.ServerChunkCache;
++import net.minecraft.util.Mth;
++import net.minecraft.world.entity.Entity;
++import net.minecraft.world.level.CollisionGetter;
++import net.minecraft.world.level.block.Blocks;
++import net.minecraft.world.level.block.state.BlockState;
++import net.minecraft.world.level.chunk.LevelChunk;
++import net.minecraft.world.level.chunk.LevelChunkSection;
++import net.minecraft.world.phys.AABB;
++import net.minecraft.world.phys.shapes.CollisionContext;
++import net.minecraft.world.phys.shapes.Shapes;
++import net.minecraft.world.phys.shapes.VoxelShape;
++import org.bukkit.craftbukkit.util.UnsafeList;
++import org.jetbrains.annotations.NotNull;
++import org.simpleyaml.utils.Validate;
++
++import java.util.HashSet;
++import java.util.List;
++import java.util.Set;
++import java.util.function.BiPredicate;
++
++public class CollisionCache {
++
++    private static record BlockEntry(int x, int y, int z, BlockState state, VoxelShape shape){}
++
++    @NotNull
++    private final Entity entity;
++    private final UnsafeList<BlockEntry> blocks = new UnsafeList<>();
++    private Set<CollisionCacheList> chunkToList = new HashSet<>();
++
++    private boolean dirty = true;
++
++    private int previousMinBlockX;
++    private int previousMaxBlockX;
++    private int previousMinBlockY;
++    private int previousMaxBlockY;
++    private int previousMinBlockZ;
++    private int previousMaxBlockZ;
++
++    public CollisionCache(@NotNull Entity entity) {
++        this.entity = entity;
++    }
++
++    public int getId() {
++        return this.entity.getId();
++    }
++
++    public void dirtySection(@NotNull SectionPos sectionPos) {
++        this.dirty = true;
++    }
++
++    public void onRemove() {
++        this.blocks.setSize(0);
++
++        for (CollisionCacheList collisionCaches : this.chunkToList) {
++            collisionCaches.remove(this);
++        }
++        this.chunkToList.clear();
++        this.dirty = false;
++    }
++
++    public boolean getCollisions(final CollisionGetter view, AABB aabb, List<AABB> into, boolean collidesWithUnloaded, boolean checkOnly, BiPredicate<BlockState, BlockPos> predicate) {
++        boolean ret = false;
++
++        int minBlockX = Mth.floor(aabb.minX - CollisionUtil.COLLISION_EPSILON) - 1;
++        int maxBlockX = Mth.floor(aabb.maxX + CollisionUtil.COLLISION_EPSILON) + 1;
++
++        int minBlockY = Mth.floor(aabb.minY - CollisionUtil.COLLISION_EPSILON) - 1;
++        int maxBlockY = Mth.floor(aabb.maxY + CollisionUtil.COLLISION_EPSILON) + 1;
++
++        int minBlockZ = Mth.floor(aabb.minZ - CollisionUtil.COLLISION_EPSILON) - 1;
++        int maxBlockZ = Mth.floor(aabb.maxZ + CollisionUtil.COLLISION_EPSILON) + 1;
++
++        // if nothing changed and the location didn't move out of our area, use previous set
++        if (!this.dirty && minBlockX >= this.previousMinBlockX && maxBlockX <= this.previousMaxBlockX &&
++                minBlockY >= this.previousMinBlockY && maxBlockY <= this.previousMaxBlockY &&
++                minBlockZ >= this.previousMinBlockZ && maxBlockZ <= this.previousMaxBlockZ) {
++            if (checkOnly) {
++                BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
++                for (int i = 0, length = this.blocks.size(); i < length; i++) {
++                    BlockEntry entry = this.blocks.unsafeGet(i);
++                    if (entry.shape.intersects(aabb) && predicate.test(entry.state, pos.set(entry.x, entry.y, entry.z))) {
++                        return true;
++                    }
++                }
++            } else {
++                for (int i = 0, length = this.blocks.size(); i < length; i++) {
++                    ret |= CollisionUtil.addBoxesToIfIntersects(this.blocks.unsafeGet(i).shape, aabb, into);
++                }
++            }
++
++            return ret;
++        } else if (checkOnly) {
++            // tl;dr this is only used by inWall right now, and we don't want to generate a cache for inWall because it'll always be smaller than a move cache anyways
++            return CollisionUtil.getCollisionsForBlocksOrWorldBorder(view, this.entity, aabb, into, false, collidesWithUnloaded, false, checkOnly, predicate);
++        }
++
++        Validate.isTrue(predicate == null, "predicate cannot be used without checkOnly");
++
++        this.previousMinBlockX = minBlockX;
++        this.previousMaxBlockX = maxBlockX;
++
++        this.previousMinBlockY = minBlockY;
++        this.previousMaxBlockY = maxBlockY;
++
++        this.previousMinBlockZ = minBlockZ;
++        this.previousMaxBlockZ = maxBlockZ;
++
++        // remove old shapes, since we missed cache
++        this.blocks.setSize(0);
++        this.dirty = false;
++
++        final int minSection = WorldUtil.getMinSection(this.entity.level);
++        final int maxSection = WorldUtil.getMaxSection(this.entity.level);
++        final int minBlock = minSection << 4;
++        final int maxBlock = (maxSection << 4) | 15;
++
++        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
++        CollisionContext collisionShape = null;
++
++        // special cases:
++        if (minBlockY > maxBlock || maxBlockY < minBlock) {
++            // no point in checking
++            if (!this.chunkToList.isEmpty()) {
++                for (CollisionCacheList collisionCaches : this.chunkToList) {
++                    collisionCaches.remove(this);
++                }
++                this.chunkToList.clear();
++            }
++            return ret;
++        }
++
++        int minYIterate = Math.max(minBlock, minBlockY);
++        int maxYIterate = Math.min(maxBlock, maxBlockY);
++
++        int minChunkX = minBlockX >> 4;
++        int maxChunkX = maxBlockX >> 4;
++
++        int minChunkZ = minBlockZ >> 4;
++        int maxChunkZ = maxBlockZ >> 4;
++
++        ServerChunkCache chunkProvider = (ServerChunkCache) this.entity.level.getChunkSource();
++
++        Set<CollisionCacheList> cacheLists = new HashSet<>(this.blocks.size());
++
++        for (int currChunkZ = minChunkZ; currChunkZ <= maxChunkZ; ++currChunkZ) {
++            int minZ = currChunkZ == minChunkZ ? minBlockZ & 15 : 0; // coordinate in chunk
++            int maxZ = currChunkZ == maxChunkZ ? maxBlockZ & 15 : 15; // coordinate in chunk
++
++            for (int currChunkX = minChunkX; currChunkX <= maxChunkX; ++currChunkX) {
++                int minX = currChunkX == minChunkX ? minBlockX & 15 : 0; // coordinate in chunk
++                int maxX = currChunkX == maxChunkX ? maxBlockX & 15 : 15; // coordinate in chunk
++
++                int chunkXGlobalPos = currChunkX << 4;
++                int chunkZGlobalPos = currChunkZ << 4;
++
++                LevelChunk chunk = chunkProvider.getChunkAtIfLoadedImmediately(currChunkX, currChunkZ);
++
++                if (chunk == null) {
++                    if (collidesWithUnloaded) {
++                        into.add(CollisionUtil.getBoxForChunk(currChunkX, currChunkZ));
++                        ret = true;
++                    }
++                    continue;
++                }
++
++                LevelChunkSection[] sections = chunk.getSections();
++
++                // bound y
++
++                for (int currY = minYIterate; currY <= maxYIterate; ++currY) {
++                    int sectionIndex = SectionPos.blockToSectionCoord(currY) - minSection;
++
++                    CollisionCacheList cacheList = chunk.collisionCaches[sectionIndex];
++                    if (cacheLists.add(cacheList)) {
++                        cacheList.add(this);
++                    }
++
++                    LevelChunkSection section = sections[sectionIndex];
++                    if (section == null || section.isEmpty()) {
++                        // empty
++                        // skip to next section
++                        currY = (currY & ~(15)) + 15; // increment by 15: iterator loop increments by the extra one
++                        continue;
++                    }
++
++                    net.minecraft.world.level.chunk.PalettedContainer<BlockState> blocks = section.states;
++
++                    for (int currZ = minZ; currZ <= maxZ; ++currZ) {
++                        for (int currX = minX; currX <= maxX; ++currX) {
++                            int localBlockIndex = (currX) | (currZ << 4) | ((currY & 15) << 8);
++                            int blockX = currX | chunkXGlobalPos;
++                            int blockY = currY;
++                            int blockZ = currZ | chunkZGlobalPos;
++
++                            int edgeCount = ((blockX == minBlockX || blockX == maxBlockX) ? 1 : 0) +
++                                    ((blockY == minBlockY || blockY == maxBlockY) ? 1 : 0) +
++                                    ((blockZ == minBlockZ || blockZ == maxBlockZ) ? 1 : 0);
++                            if (edgeCount == 3) {
++                                continue;
++                            }
++
++                            BlockState blockData = blocks.get(localBlockIndex);
++                            if (blockData.isAir()) {
++                                continue;
++                            }
++
++                            if ((edgeCount != 1 || blockData.shapeExceedsCube()) && (edgeCount != 2 || blockData.getBlock() == Blocks.MOVING_PISTON)) {
++                                mutablePos.set(blockX, blockY, blockZ);
++                                if (collisionShape == null) {
++                                    collisionShape = new CollisionUtil.LazyEntityCollisionContext(entity);
++                                }
++                                VoxelShape voxelshape2 = blockData.getCollisionShape(this.entity.level, mutablePos, collisionShape);
++                                if (voxelshape2 != Shapes.empty()) {
++                                    VoxelShape voxelshape3 = voxelshape2.move((double) blockX, (double) blockY, (double) blockZ);
++
++                                    this.blocks.add(new BlockEntry(blockX, blockY, blockZ, blockData, voxelshape3));
++
++                                    ret |= CollisionUtil.addBoxesToIfIntersects(voxelshape3, aabb, into);
++                                }
++                            }
++                        }
++                    }
++                }
++            }
++        }
++
++        for (CollisionCacheList cache : this.chunkToList) {
++            if (!cacheLists.contains(cache)) {
++                cache.remove(this);
++            }
++        }
++        this.chunkToList = cacheLists;
++
++        return ret;
++    }
++
++}
+diff --git a/src/main/java/gg/airplane/entity/CollisionCacheList.java b/src/main/java/gg/airplane/entity/CollisionCacheList.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..017da9e1461250a0fd8baacdcca203d6949244fc
+--- /dev/null
++++ b/src/main/java/gg/airplane/entity/CollisionCacheList.java
+@@ -0,0 +1,128 @@
++package gg.airplane.entity;
++
++import it.unimi.dsi.fastutil.ints.Int2IntOpenHashMap;
++
++import java.util.Arrays;
++import java.util.Iterator;
++import java.util.NoSuchElementException;
++
++/**
++ * @see com.destroystokyo.paper.util.maplist.EntityList
++ */
++public class CollisionCacheList implements Iterable<CollisionCache> {
++
++    protected final Int2IntOpenHashMap entityToIndex = new Int2IntOpenHashMap(2, 0.8f);
++
++    {
++        this.entityToIndex.defaultReturnValue(Integer.MIN_VALUE);
++    }
++
++    protected static final CollisionCache[] EMPTY_LIST = new CollisionCache[0];
++
++    protected CollisionCache[] entities = EMPTY_LIST;
++    protected int count;
++
++    public int size() {
++        return this.count;
++    }
++
++    public boolean contains(final CollisionCache entity) {
++        return this.entityToIndex.containsKey(entity.getId());
++    }
++
++    public boolean remove(final CollisionCache entity) {
++        final int index = this.entityToIndex.remove(entity.getId());
++        if (index == Integer.MIN_VALUE) {
++            return false;
++        }
++
++        // move the entity at the end to this index
++        final int endIndex = --this.count;
++        final CollisionCache end = this.entities[endIndex];
++        if (index != endIndex) {
++            // not empty after this call
++            this.entityToIndex.put(end.getId(), index); // update index
++        }
++        this.entities[index] = end;
++        this.entities[endIndex] = null;
++
++        return true;
++    }
++
++    public boolean add(final CollisionCache entity) {
++        final int count = this.count;
++        final int currIndex = this.entityToIndex.putIfAbsent(entity.getId(), count);
++
++        if (currIndex != Integer.MIN_VALUE) {
++            return false; // already in this list
++        }
++
++        CollisionCache[] list = this.entities;
++
++        if (list.length == count) {
++            // resize required
++            list = this.entities = Arrays.copyOf(list, (int) Math.max(4L, count * 2L)); // overflow results in negative
++        }
++
++        list[count] = entity;
++        this.count = count + 1;
++
++        return true;
++    }
++
++    public CollisionCache getChecked(final int index) {
++        if (index < 0 || index >= this.count) {
++            throw new IndexOutOfBoundsException("Index: " + index + " is out of bounds, size: " + this.count);
++        }
++        return this.entities[index];
++    }
++
++    public CollisionCache getUnchecked(final int index) {
++        return this.entities[index];
++    }
++
++    public CollisionCache[] getRawData() {
++        return this.entities;
++    }
++
++    public void clear() {
++        this.entityToIndex.clear();
++        Arrays.fill(this.entities, 0, this.count, null);
++        this.count = 0;
++    }
++
++    @Override
++    public Iterator<CollisionCache> iterator() {
++        return new Iterator<CollisionCache>() {
++
++            CollisionCache lastRet;
++            int current;
++
++            @Override
++            public boolean hasNext() {
++                return this.current < CollisionCacheList.this.count;
++            }
++
++            @Override
++            public CollisionCache next() {
++                if (this.current >= CollisionCacheList.this.count) {
++                    throw new NoSuchElementException();
++                }
++                return this.lastRet = CollisionCacheList.this.entities[this.current++];
++            }
++
++            @Override
++            public void remove() {
++                final CollisionCache lastRet = this.lastRet;
++
++                if (lastRet == null) {
++                    throw new IllegalStateException();
++                }
++                this.lastRet = null;
++
++                CollisionCacheList.this.remove(lastRet);
++                --this.current;
++            }
++        };
++    }
 +}
 diff --git a/src/main/java/gg/airplane/flare/CustomCategories.java b/src/main/java/gg/airplane/flare/CustomCategories.java
 new file mode 100644
@@ -1577,23 +1995,26 @@ index 0000000000000000000000000000000000000000..aa8467b9dda1f7707e41f50ac7b3e9d7
 +}
 diff --git a/src/main/java/gg/airplane/structs/ItemListWithBitset.java b/src/main/java/gg/airplane/structs/ItemListWithBitset.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..04565b596f7579eb22263ef844513aeba3437eb3
+index 0000000000000000000000000000000000000000..1b7a4ee47f4445d7f2ac91d3a73ae113edbdddb2
 --- /dev/null
 +++ b/src/main/java/gg/airplane/structs/ItemListWithBitset.java
-@@ -0,0 +1,105 @@
+@@ -0,0 +1,114 @@
 +package gg.airplane.structs;
 +
 +import net.minecraft.core.NonNullList;
 +import net.minecraft.world.item.ItemStack;
 +import org.apache.commons.lang.Validate;
 +import org.jetbrains.annotations.NotNull;
++import org.jetbrains.annotations.Nullable;
 +
++import java.util.AbstractList;
 +import java.util.Arrays;
++import java.util.List;
 +
-+public class ItemListWithBitset extends NonNullList<ItemStack> {
-+    public static ItemListWithBitset fromNonNullList(NonNullList<ItemStack> list) {
-+        if (list instanceof ItemListWithBitset) {
-+            return (ItemListWithBitset) list;
++public class ItemListWithBitset extends AbstractList<ItemStack> {
++    public static ItemListWithBitset fromList(List<ItemStack> list) {
++        if (list instanceof ItemListWithBitset ours) {
++            return ours;
 +        }
 +        return new ItemListWithBitset(list);
 +    }
@@ -1609,7 +2030,15 @@ index 0000000000000000000000000000000000000000..04565b596f7579eb22263ef844513aeb
 +    private long bitSet = 0;
 +    private final long allBits;
 +
-+    private ItemListWithBitset(NonNullList<ItemStack> list) {
++    private static class OurNonNullList extends NonNullList<ItemStack> {
++        protected OurNonNullList(List<ItemStack> delegate) {
++            super(delegate, ItemStack.EMPTY);
++        }
++    }
++
++    public final NonNullList<ItemStack> nonNullList = new OurNonNullList(this);
++
++    private ItemListWithBitset(List<ItemStack> list) {
 +        this(list.size());
 +
 +        for (int i = 0; i < list.size(); i++) {
@@ -1618,8 +2047,6 @@ index 0000000000000000000000000000000000000000..04565b596f7579eb22263ef844513aeb
 +    }
 +
 +    public ItemListWithBitset(int size) {
-+        super(null, ItemStack.EMPTY);
-+
 +        Validate.isTrue(size < Long.BYTES * 8, "size is too large");
 +
 +        this.items = createArray(size);
@@ -1811,6 +2238,24 @@ index 0000000000000000000000000000000000000000..a7f297ebb569f7c1f205e967ca485be7
 +        entryToRemove.replace(data, value);
 +    }
 +}
+diff --git a/src/main/java/io/papermc/paper/util/CollisionUtil.java b/src/main/java/io/papermc/paper/util/CollisionUtil.java
+index 98ca1199a823cdf55b913396ce0a24554e85f116..840142d340d4569772552b961f829ca921b15dc4 100644
+--- a/src/main/java/io/papermc/paper/util/CollisionUtil.java
++++ b/src/main/java/io/papermc/paper/util/CollisionUtil.java
+@@ -547,6 +547,13 @@ public final class CollisionUtil {
+         return ret;
+     }
+ 
++    public static boolean getEntityCollisionsWithCache(final net.minecraft.world.level.Level getter, Entity entity, AABB aabb, List<AABB> into,
++                                                       final boolean loadChunks, final boolean collidesWithUnloaded,
++                                                       final boolean checkBorder, final boolean checkOnly, final BiPredicate<BlockState, BlockPos> predicate) {
++        return entity.collisionCache.getCollisions(getter, aabb, into, collidesWithUnloaded, checkOnly, predicate) ||
++                getEntityHardCollisions(getter, entity, aabb, into, checkOnly, null);
++    }
++
+     public static boolean getEntityHardCollisions(final CollisionGetter getter, final Entity entity, AABB aabb,
+                                                   final List<AABB> into, final boolean checkOnly, final Predicate<Entity> predicate) {
+         if (isEmpty(aabb) || !(getter instanceof EntityGetter entityGetter)) {
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
 index 505546d32eea4682452dbac02311433157f6a30e..5c7b9ad379f3c272e15648dd16f4df9245d927da 100644
 --- a/src/main/java/net/minecraft/Util.java
@@ -1836,7 +2281,7 @@ index 505546d32eea4682452dbac02311433157f6a30e..5c7b9ad379f3c272e15648dd16f4df92
  
      public static <V> CompletableFuture<List<V>> sequenceFailFast(List<? extends CompletableFuture<? extends V>> futures) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f3bc2417559b31b89054a0f5218c1ac254410266..57632470fbf21163d7896b08344dca4d90ea6776 100644
+index 8ec62b37c502b9450209241744d6965fcdef56e4..c7e6101616aec8047f9b9842e389bab3411e702d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -2297,6 +2297,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -1848,12 +2293,12 @@ index f3bc2417559b31b89054a0f5218c1ac254410266..57632470fbf21163d7896b08344dca4d
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..8242200f073aee40482b190c7c0aafd5320ac4fe 100644
+index 1bf19965d12514dee34545235bfbadc0b74ddc8b..2a569d05edf0f5337afbcd6803c0513d338ca55e 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
+         io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 +        gg.airplane.AirplaneConfig.load(); // Airplane - config
 +        gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
@@ -1861,7 +2306,7 @@ index 7b6c547e71230fbb3733f99a4597b3f5b51547b8..8242200f073aee40482b190c7c0aafd5
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 4386402e5e55438475c48b023c61bfb2dbe71a8f..2eacfbe3512f374169d96ac66c8be5a4f1561b6a 100644
+index 4045b7999948710517259edf1cda7028a96cc4c9..961787473601fcddef98f321eb4fb5127c0f8ebc 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -2402,8 +2402,28 @@ Sections go from 0..16. Now whenever a section is not empty, it can potentially
@@ -1936,7 +2381,7 @@ index b7c9294fdd3d799d410afba4a1118aa371c98533..c71bc00973899feec0ec5530bf3d2379
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index cebaf0fb8187335ca303621a2cb412bb22584e23..d743d50a9b3ad9502fc11adc6fe43e9a58d7a94b 100644
+index 9e4ad810dd6348ad95c9a7e6d1bd63f6ec37c986..416f579560115caddadf6a400b80a4d1d6ebe04c 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -772,7 +772,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -2105,21 +2550,22 @@ index 7437f01ca8f416e2c9150250e324af4725a4efb6..bdcd0e38a3ba904811112f41d8bfbfc0
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 94857a736d2a16e8ade286c6f2ddf8bd798008eb..732eb171f6a8fe1b02044a00fcf85217c41116ac 100644
+index 94857a736d2a16e8ade286c6f2ddf8bd798008eb..7e65ed2a6a4dfa4f22bef5a01a079b8b7cb9e212 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -338,6 +338,10 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -338,6 +338,11 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
      protected int numCollisions = 0; // Paper
      public void inactiveTick() { }
      // Spigot end
 +    // Airplane start
 +    public int activatedPriority = gg.airplane.AirplaneConfig.maximumActivationPrio; // golf score
 +    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // used where needed
++    public final gg.airplane.entity.CollisionCache collisionCache = new gg.airplane.entity.CollisionCache(this);
 +    // Airplane end
  
      public float getBukkitYaw() {
          return this.yRot;
-@@ -362,17 +366,36 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -362,17 +367,36 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
          this.isLegacyTrackingEntity = isLegacyTrackingEntity;
      }
  
@@ -2157,7 +2603,7 @@ index 94857a736d2a16e8ade286c6f2ddf8bd798008eb..732eb171f6a8fe1b02044a00fcf85217
          for (Entity passenger : passengers) {
              org.spigotmc.TrackingRange.TrackingRangeType passengerType = passenger.trackingRangeType;
              int passengerRange = chunkMap.getEntityTrackerRange(passengerType.ordinal());
-@@ -381,6 +404,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -381,6 +405,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
                  range = passengerRange;
              }
          }
@@ -2167,17 +2613,140 @@ index 94857a736d2a16e8ade286c6f2ddf8bd798008eb..732eb171f6a8fe1b02044a00fcf85217
  
          return chunkMap.playerEntityTrackerTrackMaps[type.ordinal()].getObjectsInRange(MCUtil.getCoordinateKey(this));
      }
-@@ -2439,9 +2465,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+@@ -1264,8 +1291,10 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+                 }
+             }
+ 
+-            io.papermc.paper.util.CollisionUtil.getCollisions(world, this, collisionBox, potentialCollisions, false, true,
+-                false, false, null, null);
++            // Airplane start - use collision cache
++            io.papermc.paper.util.CollisionUtil.getEntityCollisionsWithCache(world, this, collisionBox, potentialCollisions, false, true,
++                    false, false, null);
++            // Airplane end
+ 
+             if (io.papermc.paper.util.CollisionUtil.isCollidingWithBorderEdge(world.getWorldBorder(), collisionBox)) {
+                 io.papermc.paper.util.CollisionUtil.addBoxesToIfIntersects(world.getWorldBorder().getCollisionShape(), collisionBox, potentialCollisions);
+@@ -2438,10 +2467,8 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+             AABB axisalignedbb = AABB.ofSize(this.getEyePosition(), (double) f, 1.0E-6D, (double) f);
  
              // Paper start
-             return io.papermc.paper.util.CollisionUtil.getCollisionsForBlocksOrWorldBorder(this.level, this, axisalignedbb, null,
+-            return io.papermc.paper.util.CollisionUtil.getCollisionsForBlocksOrWorldBorder(this.level, this, axisalignedbb, null,
 -                false, false, false, true, (iblockdata, blockposition) -> {
 -                    return iblockdata.isSuffocating(this.level, blockposition);
 -            });
++            return io.papermc.paper.util.CollisionUtil.getEntityCollisionsWithCache(this.level, this, axisalignedbb, null, // Airplane - use cache
 +                false, false, false, true, this.level.isAlmostSuffocating); // Airplane - don't allocate lambda here
              // Paper end
          }
      }
+@@ -3809,16 +3836,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+     }
+ 
+     public boolean updateFluidHeightAndDoFluidPushing(Tag<Fluid> tag, double d0) {
+-        if (this.touchingUnloadedChunk()) {
++        if (false && this.touchingUnloadedChunk()) { // Airplane - cost of a lookup here is the same cost as below, so skip
+             return false;
+         } else {
+             AABB axisalignedbb = this.getBoundingBox().deflate(0.001D);
+-            int i = Mth.floor(axisalignedbb.minX);
+-            int j = Mth.ceil(axisalignedbb.maxX);
+-            int k = Mth.floor(axisalignedbb.minY);
+-            int l = Mth.ceil(axisalignedbb.maxY);
+-            int i1 = Mth.floor(axisalignedbb.minZ);
+-            int j1 = Mth.ceil(axisalignedbb.maxZ);
++            // Airplane start - rename
++            int minBlockX = Mth.floor(axisalignedbb.minX);
++            int maxBlockX = Mth.ceil(axisalignedbb.maxX);
++            int minBlockY = Mth.floor(axisalignedbb.minY);
++            int maxBlockY = Mth.ceil(axisalignedbb.maxY);
++            int minBlockZ = Mth.floor(axisalignedbb.minZ);
++            int maxBlockZ = Mth.ceil(axisalignedbb.maxZ);
++            // Airplane end
+             double d1 = 0.0D;
+             boolean flag = this.isPushedByFluid();
+             boolean flag1 = false;
+@@ -3826,14 +3855,62 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+             int k1 = 0;
+             BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
+ 
+-            for (int l1 = i; l1 < j; ++l1) {
+-                for (int i2 = k; i2 < l; ++i2) {
+-                    for (int j2 = i1; j2 < j1; ++j2) {
+-                        blockposition_mutableblockposition.set(l1, i2, j2);
+-                        FluidState fluid = this.level.getFluidState(blockposition_mutableblockposition);
++            // Airplane start - based off CollisionUtil.getCollisionsForBlocksOrWorldBorder
++            final int minSection = io.papermc.paper.util.WorldUtil.getMinSection(this.level);
++            final int maxSection = io.papermc.paper.util.WorldUtil.getMaxSection(this.level);
++            final int minBlock = minSection << 4;
++            final int maxBlock = (maxSection << 4) | 15;
++
++            // special cases:
++            if (minBlockY > maxBlock || maxBlockY < minBlock) {
++                // no point in checking
++                return false;
++            }
++
++            int minYIterate = Math.max(minBlock, minBlockY);
++            int maxYIterate = Math.min(maxBlock, maxBlockY);
++
++            int minChunkX = minBlockX >> 4;
++            int maxChunkX = maxBlockX >> 4;
++
++            int minChunkZ = minBlockZ >> 4;
++            int maxChunkZ = maxBlockZ >> 4;
++
++            for (int currChunkZ = minChunkZ; currChunkZ <= maxChunkZ; ++currChunkZ) {
++                int minZ = currChunkZ == minChunkZ ? minBlockZ & 15 : 0; // coordinate in chunk
++                int maxZ = currChunkZ == maxChunkZ ? maxBlockZ & 15 : 16; // coordinate in chunk
++
++                for (int currChunkX = minChunkX; currChunkX <= maxChunkX; ++currChunkX) {
++                    int minX = currChunkX == minChunkX ? minBlockX & 15 : 0; // coordinate in chunk
++                    int maxX = currChunkX == maxChunkX ? maxBlockX & 15 : 16; // coordinate in chunk
++
++                    net.minecraft.world.level.chunk.ChunkAccess chunk = this.level.getChunkIfLoadedImmediately(currChunkX, currChunkZ);
++                    if (chunk == null) {
++                        return false; // if we're touching an unloaded chunk then it's false
++                    }
++
++                    net.minecraft.world.level.chunk.LevelChunkSection[] sections = chunk.getSections();
++
++                    for (int currY = minYIterate; currY < maxYIterate; ++currY) {
++                        net.minecraft.world.level.chunk.LevelChunkSection section = sections[(currY >> 4) - minSection];
++
++                        if (section == null || section.isEmpty() || section.fluidStateCount == 0) { // if no fluids, nothing in this section
++                            // empty
++                            // skip to next section
++                            currY = (currY & ~(15)) + 15; // increment by 15: iterator loop increments by the extra one
++                            continue;
++                        }
++
++                        net.minecraft.world.level.chunk.PalettedContainer<BlockState> blocks = section.states;
++
++                        for (int currZ = minZ; currZ < maxZ; ++currZ) {
++                            for (int currX = minX; currX < maxX; ++currX) {
++                                int localBlockIndex = (currX) | (currZ << 4) | ((currY & 15) << 8);
++                                FluidState fluid = blocks.get(localBlockIndex).getFluidState();
+ 
+                         if (fluid.is(tag)) {
+-                            double d2 = (double) ((float) i2 + fluid.getHeight(this.level, blockposition_mutableblockposition));
++                            blockposition_mutableblockposition.set((currChunkX << 4) + currX, currY, (currChunkZ << 4) + currZ);
++                            double d2 = (double) ((float) currY + fluid.getHeight(this.level, blockposition_mutableblockposition));
+ 
+                             if (d2 >= axisalignedbb.minY) {
+                                 flag1 = true;
+@@ -3850,9 +3927,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, n
+                                 }
+                             }
+                         }
++                            }
++                        }
+                     }
+                 }
+             }
++            // Airplane end
+ 
+             if (vec3d.length() > 0.0D) {
+                 if (k1 > 0) {
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
 index 1c446dba5de89698397041ee38a2e1a00bec8a56..03371c99c34ba4b2ffde3f6da36f171b582e3c3f 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
@@ -2191,7 +2760,7 @@ index 1c446dba5de89698397041ee38a2e1a00bec8a56..03371c99c34ba4b2ffde3f6da36f171b
      public final String id;
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 6175360eb2b19c8197cc5b82a09030211afd838b..f0ce1e4364e1a549163c8a3a714fb20df42ae3c3 100644
+index 1149a15486016ac101c5976b45b7d1c1109244ce..8347b13e515e306253ca2a1f79001e1aced30c2a 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2202,7 +2771,7 @@ index 6175360eb2b19c8197cc5b82a09030211afd838b..f0ce1e4364e1a549163c8a3a714fb20d
  
  public abstract class LivingEntity extends Entity {
  
-@@ -1828,6 +1827,20 @@ public abstract class LivingEntity extends Entity {
+@@ -1829,6 +1828,20 @@ public abstract class LivingEntity extends Entity {
          return this.lastClimbablePos;
      }
  
@@ -2223,7 +2792,7 @@ index 6175360eb2b19c8197cc5b82a09030211afd838b..f0ce1e4364e1a549163c8a3a714fb20d
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3432,7 +3445,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3433,7 +3446,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
@@ -2236,7 +2805,7 @@ index 6175360eb2b19c8197cc5b82a09030211afd838b..f0ce1e4364e1a549163c8a3a714fb20d
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 8a864238e154e2131834d013652746b7e7a78c97..b8e512e1c4b00b468b2d22add5653b98f4a2c81a 100644
+index 8a864238e154e2131834d013652746b7e7a78c97..6051fd771dd989f2903b854b6564252a847a74e3 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -207,10 +207,10 @@ public abstract class Mob extends LivingEntity {
@@ -2252,6 +2821,26 @@ index 8a864238e154e2131834d013652746b7e7a78c97..b8e512e1c4b00b468b2d22add5653b98
              this.targetSelector.tick();
          }
      }
+@@ -801,16 +801,16 @@ public abstract class Mob extends LivingEntity {
+                 int i = this.getType().getCategory().getDespawnDistance();
+                 int j = i * i;
+ 
+-                if (d0 > (double) level.paperConfig.hardDespawnDistance) { // CraftBukkit - remove isTypeNotPersistent() check // Paper - custom despawn distances
++                if (d0 > (double) level.paperConfig.hardDespawnDistanceSq) { // CraftBukkit - remove isTypeNotPersistent() check // Paper - custom despawn distances // Airplane
+                     this.discard();
+                 }
+ 
+                 int k = this.getType().getCategory().getNoDespawnDistance();
+                 int l = k * k;
+ 
+-                if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > level.paperConfig.softDespawnDistance) { // CraftBukkit - remove isTypeNotPersistent() check // Paper - custom despawn distances
++                if (this.noActionTime > 600 && this.random.nextInt(800) == 0 && d0 > level.paperConfig.softDespawnDistanceSq) { // CraftBukkit - remove isTypeNotPersistent() check // Paper - custom despawn distances // Airplane
+                     this.discard();
+-                } else if (d0 < level.paperConfig.softDespawnDistance) { // Paper - custom despawn distances
++                } else if (d0 < level.paperConfig.softDespawnDistanceSq) { // Paper - custom despawn distances // Airplane
+                     this.noActionTime = 0;
+                 }
+             }
 @@ -838,9 +838,11 @@ public abstract class Mob extends LivingEntity {
          this.sensing.tick();
          this.level.getProfiler().pop();
@@ -2365,7 +2954,7 @@ index 42d466f7f162943886078eba3db18f2dfc2d7bee..32da2d3f87758bee359522769ebbee73
          }
  
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
-index f779f202985d34cb7e379b0f3d5690dd20f091ba..36b5d504cd864ab30cc239201d6a4a52c9d16b7d 100644
+index a96831d5df2b88203aec8fe2a5909708764b38ee..441e2edd8357c4f11093b4dee2192780ac3f3579 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
 @@ -49,9 +49,12 @@ public class GoalSelector {
@@ -2449,7 +3038,7 @@ index 153194d937d210e2e4fd8864e4a3c000f85d7e2e..1d415a91b9c90603e8f738dbafe7a5ea
      @Override
      protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index fa365420a4593bc7d652b0d92f4750602fcb334b..9c4bf9b66e97d06e17e008784feda1a192a81b00 100644
+index 0c616bd9309d304727a29ff5cb1c60d9f031b34c..b67562ea0ba8dc5c3fb26b3e79b89e0b3fd69631 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 @@ -275,9 +275,11 @@ public class Axolotl extends Animal implements LerpingModel, Bucketable {
@@ -2626,7 +3215,7 @@ index c7e16e96633e17b951f0681599c5b3efc3ce1e6c..8d329bca0818033df41fbd781028919c
          return false;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 37356b36f0ae12d55150f399318581fa77c30cee..008e3b769011df76697ad0abcdde5727cef05f64 100644
+index 6339203bda5e569d5df241dd589eb36e7233704b..461173191361fdb0c2c950eacf03ba43693e1908 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -42,6 +42,36 @@ public abstract class Projectile extends Entity {
@@ -2667,39 +3256,50 @@ index 37356b36f0ae12d55150f399318581fa77c30cee..008e3b769011df76697ad0abcdde5727
          if (entity != null) {
              this.ownerUUID = entity.getUUID();
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
-index f57864ce919ef4721cfb5913c636fe8903ce4cc1..4792d3d60e60202face2eb851c9f5b122dcfc19d 100644
+index f57864ce919ef4721cfb5913c636fe8903ce4cc1..610d756b4a264deb58ea8144c951f652697805ee 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
-@@ -40,7 +40,7 @@ import org.bukkit.inventory.InventoryHolder;
+@@ -40,7 +40,10 @@ import org.bukkit.inventory.InventoryHolder;
  
  public abstract class AbstractMinecartContainer extends AbstractMinecart implements Container, MenuProvider {
  
--    private NonNullList<ItemStack> itemStacks;
-+    private gg.airplane.structs.ItemListWithBitset itemStacks; // Airplane
++    // Airplane start
+     private NonNullList<ItemStack> itemStacks;
++    private gg.airplane.structs.ItemListWithBitset itemStacksOptimized;
++    // Airplane end
      @Nullable
      public ResourceLocation lootTable;
      public long lootTableSeed;
-@@ -89,12 +89,12 @@ public abstract class AbstractMinecartContainer extends AbstractMinecart impleme
+@@ -89,12 +92,18 @@ public abstract class AbstractMinecartContainer extends AbstractMinecart impleme
  
      protected AbstractMinecartContainer(EntityType<?> type, Level world) {
          super(type, world);
 -        this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY); // CraftBukkit - SPIGOT-3513
-+        this.itemStacks = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // CraftBukkit - SPIGOT-3513 // Airplane
++        // Airplane start
++        this.itemStacksOptimized = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // CraftBukkit - SPIGOT-3513
++        this.itemStacks = this.itemStacksOptimized.nonNullList;
++        // Airplane end
      }
  
      protected AbstractMinecartContainer(EntityType<?> type, double x, double y, double z, Level world) {
          super(type, world, x, y, z);
 -        this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY); // CraftBukkit - SPIGOT-3513
-+        this.itemStacks = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // CraftBukkit - SPIGOT-3513 // Airplane
++        // Airplane start
++        this.itemStacksOptimized = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // CraftBukkit - SPIGOT-3513
++        this.itemStacks = this.itemStacksOptimized.nonNullList;
++        // Airplane end
      }
  
      @Override
-@@ -217,7 +217,7 @@ public abstract class AbstractMinecartContainer extends AbstractMinecart impleme
+@@ -217,7 +226,10 @@ public abstract class AbstractMinecartContainer extends AbstractMinecart impleme
      protected void readAdditionalSaveData(CompoundTag nbt) {
          super.readAdditionalSaveData(nbt);
          this.lootableData.loadNbt(nbt); // Paper
 -        this.itemStacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-+        this.itemStacks = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // Airplane
++        // Airplane start
++        this.itemStacksOptimized = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize());
++        this.itemStacks = this.itemStacksOptimized.nonNullList;
++        // Airplane end
          if (nbt.contains("LootTable", 8)) {
              this.lootTable = new ResourceLocation(nbt.getString("LootTable"));
              this.lootTableSeed = nbt.getLong("LootTableSeed");
@@ -2832,7 +3432,7 @@ index e7ca5d6fb8922e7e8065864f736b06056be080a0..833ad6fbedfc275b3fde640b0e873f23
          final String id;
          private final GameRules.Category category;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..6f4e6105aa1d6546daa2424f57972fd29db25fa3 100644
+index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..81531878de02d2e50b64fce39d6a69c6812d9320 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -175,6 +175,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -2844,7 +3444,37 @@ index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..6f4e6105aa1d6546daa2424f57972fd2
      // Paper start - fix and optimise world upgrading
      // copied from below
      public static ResourceKey<DimensionType> getDimensionKey(DimensionType manager) {
-@@ -450,6 +452,91 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -310,6 +312,15 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     }
+     // Paper end - optimise checkDespawn
+ 
++    // Airplane start - ensure these get inlined
++    private final int minBuildHeight, minSection, height, maxBuildHeight, maxSection;
++    @Override public final int getMaxBuildHeight() { return this.maxBuildHeight; }
++    @Override public final int getMinSection() { return this.minSection; }
++    @Override public final int getMaxSection() { return this.maxSection; }
++    @Override public final int getMinBuildHeight() { return this.minBuildHeight; }
++    @Override public final int getHeight() { return this.height; }
++    // Airplane end
++
+     protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Anti-Xray - Pass executor
+         this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
+         this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
+@@ -327,6 +338,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+         this.profiler = supplier;
+         this.levelData = worlddatamutable;
+         this.dimensionType = dimensionmanager;
++        // Airplane start
++        this.minBuildHeight = dimensionmanager.minY();
++        this.minSection = SectionPos.blockToSectionCoord(this.minBuildHeight);
++        this.height = dimensionmanager.height();
++        this.maxBuildHeight = this.minBuildHeight + this.height;
++        this.maxSection = SectionPos.blockToSectionCoord(this.maxBuildHeight - 1) + 1;
++        // Airplane end
+         this.dimension = resourcekey;
+         this.isClientSide = flag;
+         if (dimensionmanager.coordinateScale() != 1.0D) {
+@@ -450,6 +468,91 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          return null;
      }
  
@@ -2936,7 +3566,7 @@ index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..6f4e6105aa1d6546daa2424f57972fd2
      public boolean isInWorldBounds(BlockPos pos) {
          return pos.isValidLocation(this); // Paper - use better/optimized check
      }
-@@ -985,13 +1072,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -985,13 +1088,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          try {
              tickConsumer.accept(entity);
              MinecraftServer.getServer().executeMidTickTasks(); // Paper - execute chunk tasks mid tick
@@ -2952,7 +3582,7 @@ index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..6f4e6105aa1d6546daa2424f57972fd2
              // Paper end
          }
      }
-@@ -1445,6 +1532,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1445,6 +1548,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      }
  
      public ProfilerFiller getProfiler() {
@@ -2961,10 +3591,10 @@ index b93056b91e7ebd49e6ddb53ccb6c05c056088df9..6f4e6105aa1d6546daa2424f57972fd2
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 403f50ef908f65c62d4aaa7e5328faa0a7654480..e5fa91b5e19edab169b361865e7a6b2742c9ca4b 100644
+index 0b228b8bcae5ed2840ab244b6de35732f737504d..d2a282d9c84952627a0ae1a4b1ff388e39c472c3 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -407,12 +407,12 @@ public final class NaturalSpawner {
+@@ -415,12 +415,12 @@ public final class NaturalSpawner {
          return spawnGroup == MobCategory.MONSTER && world.getBlockState(pos.below()).is(Blocks.NETHER_BRICKS) && structureAccessor.getStructureAt(pos, false, StructureFeature.NETHER_BRIDGE).isValid() ? StructureFeature.NETHER_BRIDGE.getSpecialEnemies() : chunkGenerator.getMobsAt(biome != null ? biome : world.getBiome(pos), structureAccessor, spawnGroup, pos);
      }
  
@@ -2982,7 +3612,7 @@ index 403f50ef908f65c62d4aaa7e5328faa0a7654480..e5fa91b5e19edab169b361865e7a6b27
          return new BlockPos(i, l, j);
      }
 diff --git a/src/main/java/net/minecraft/world/level/biome/Biome.java b/src/main/java/net/minecraft/world/level/biome/Biome.java
-index a7a7e6cd87270e64a92448f03f8b0b0c7e375ec7..0ea6fedf6e660bc133fd5eb34d3d9bac3e581f32 100644
+index 2b814006fa30dd233dcb345d1d20ce3bf6469053..b5c6b0bc307aef2835761cfa50413cebfd624795 100644
 --- a/src/main/java/net/minecraft/world/level/biome/Biome.java
 +++ b/src/main/java/net/minecraft/world/level/biome/Biome.java
 @@ -104,8 +104,10 @@ public final class Biome {
@@ -3032,19 +3662,21 @@ index a7a7e6cd87270e64a92448f03f8b0b0c7e375ec7..0ea6fedf6e660bc133fd5eb34d3d9bac
          }
      }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
-index 52de9852f87d346714a950b60a0004d386ac10f0..305a8f5ea917c7e242011fa98a3e161517afe9be 100644
+index 52de9852f87d346714a950b60a0004d386ac10f0..86bbd9fcee5982cf901ef0480052025ccf57ccb4 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/ChestBlockEntity.java
-@@ -32,7 +32,7 @@ import org.bukkit.entity.HumanEntity;
+@@ -32,7 +32,10 @@ import org.bukkit.entity.HumanEntity;
  public class ChestBlockEntity extends RandomizableContainerBlockEntity implements LidBlockEntity {
  
      private static final int EVENT_SET_OPEN_COUNT = 1;
--    private NonNullList<ItemStack> items;
-+    private gg.airplane.structs.ItemListWithBitset items; // Airplane
++    // Airplane start
+     private NonNullList<ItemStack> items;
++    private gg.airplane.structs.ItemListWithBitset optimizedItems;
++    // Airplane end
      public final ContainerOpenersCounter openersCounter;
      private final ChestLidController chestLidController;
  
-@@ -66,9 +66,10 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+@@ -66,9 +69,13 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
      }
      // CraftBukkit end
  
@@ -3052,88 +3684,102 @@ index 52de9852f87d346714a950b60a0004d386ac10f0..305a8f5ea917c7e242011fa98a3e1615
      protected ChestBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
          super(type, pos, state);
 -        this.items = NonNullList.withSize(27, ItemStack.EMPTY);
-+        this.items = new gg.airplane.structs.ItemListWithBitset(27); // Airplane - use with bitset
++        // Airplane start
++        this.optimizedItems = new gg.airplane.structs.ItemListWithBitset(27);
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
          this.openersCounter = new ContainerOpenersCounter() {
              @Override
              protected void onOpen(Level world, BlockPos pos, BlockState state) {
-@@ -99,6 +100,23 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+@@ -99,6 +106,23 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
          this.chestLidController = new ChestLidController();
      }
  
 +    // Airplane start
 +    @Override
 +    public boolean hasEmptySlot(Direction enumdirection) {
-+        return isNative ? !this.items.hasFullStacks() : super.hasEmptySlot(enumdirection);
++        return isNative ? !this.optimizedItems.hasFullStacks() : super.hasEmptySlot(enumdirection);
 +    }
 +
 +    @Override
 +    public boolean isCompletelyFull(Direction enumdirection) {
-+        return isNative ? this.items.hasFullStacks() && super.isCompletelyFull(enumdirection) : super.isCompletelyFull(enumdirection);
++        return isNative ? this.optimizedItems.hasFullStacks() && super.isCompletelyFull(enumdirection) : super.isCompletelyFull(enumdirection);
 +    }
 +
 +    @Override
 +    public boolean isCompletelyEmpty(Direction enumdirection) {
-+        return isNative && this.items.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
++        return isNative && this.optimizedItems.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
 +    }
 +    // Airplane end
 +
      public ChestBlockEntity(BlockPos pos, BlockState state) {
          this(BlockEntityType.CHEST, pos, state);
      }
-@@ -116,7 +134,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+@@ -116,7 +140,10 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
      @Override
      public void load(CompoundTag nbt) {
          super.load(nbt);
 -        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-+        this.items = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // Airplane
++        // Airplane start
++        this.optimizedItems = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize());
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
          if (!this.tryLoadLootTable(nbt)) {
              ContainerHelper.loadAllItems(nbt, this.items);
          }
-@@ -189,7 +207,7 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
+@@ -189,7 +216,10 @@ public class ChestBlockEntity extends RandomizableContainerBlockEntity implement
  
      @Override
      protected void setItems(NonNullList<ItemStack> list) {
 -        this.items = list;
-+        this.items = gg.airplane.structs.ItemListWithBitset.fromNonNullList(list); // Airplane
++        // Airplane start
++        this.optimizedItems = gg.airplane.structs.ItemListWithBitset.fromList(list);
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
      }
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-index d41851f9119c334cae3fc2c433d6450a3eed9096..ddf82e65d3ef1f53b72017bf5159b9f7b5484632 100644
+index 4950d49ed414e1c82c125b9347113f595f1078b6..f9b0956ea73cee2f97c22c5ed2fa42546278a650 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/HopperBlockEntity.java
-@@ -44,7 +44,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -44,7 +44,10 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
      public static final int MOVE_ITEM_SPEED = 8;
      public static final int HOPPER_CONTAINER_SIZE = 5;
--    private NonNullList<ItemStack> items;
-+    private gg.airplane.structs.ItemListWithBitset items; // Airplane
++    // Airplane start
+     private NonNullList<ItemStack> items;
++    private gg.airplane.structs.ItemListWithBitset optimizedItems; // Airplane
++    // Airplane end
      private int cooldownTime;
      private long tickedGameTime;
  
-@@ -80,14 +80,31 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -80,14 +83,37 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
      public HopperBlockEntity(BlockPos pos, BlockState state) {
          super(BlockEntityType.HOPPER, pos, state);
 -        this.items = NonNullList.withSize(5, ItemStack.EMPTY);
-+        this.items = new gg.airplane.structs.ItemListWithBitset(5); // Airplane
++        // Airplane start
++        this.optimizedItems = new gg.airplane.structs.ItemListWithBitset(5);
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
          this.cooldownTime = -1;
      }
  
 +    // Airplane start
 +    @Override
-+   public boolean hasEmptySlot(Direction enumdirection) {
-+        return !this.items.hasFullStacks();
++    public boolean hasEmptySlot(Direction enumdirection) {
++        return !this.optimizedItems.hasFullStacks();
 +    }
 +
 +    @Override
 +    public boolean isCompletelyFull(Direction enumdirection) {
-+        return this.items.hasFullStacks() && super.isCompletelyFull(enumdirection);
++        return this.optimizedItems.hasFullStacks() && super.isCompletelyFull(enumdirection);
 +    }
 +
 +    @Override
 +    public boolean isCompletelyEmpty(Direction enumdirection) {
-+        return this.items.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
++        return this.optimizedItems.isCompletelyEmpty() || super.isCompletelyEmpty(enumdirection);
 +    }
 +    // Airplane end
 +
@@ -3141,20 +3787,23 @@ index d41851f9119c334cae3fc2c433d6450a3eed9096..ddf82e65d3ef1f53b72017bf5159b9f7
      public void load(CompoundTag nbt) {
          super.load(nbt);
 -        this.items = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-+        this.items = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize()); // Airplane
++        // Airplane start
++        this.optimizedItems = new gg.airplane.structs.ItemListWithBitset(this.getContainerSize());
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
          if (!this.tryLoadLootTable(nbt)) {
              ContainerHelper.loadAllItems(nbt, this.items);
          }
-@@ -160,7 +177,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -160,7 +186,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
                      flag = HopperBlockEntity.a(world, pos, state, (Container) blockEntity, blockEntity); // CraftBukkit
                  }
  
 -                if (!blockEntity.inventoryFull()) {
-+                if (!blockEntity.items.hasFullStacks() || !blockEntity.inventoryFull()) { // Airplane - use bitset first
++                if (!blockEntity.optimizedItems.hasFullStacks() || !blockEntity.inventoryFull()) { // Airplane - use bitset first
                      flag |= booleansupplier.getAsBoolean();
                  }
  
-@@ -199,7 +216,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -199,7 +225,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
          skipPushModeEventFire = skipHopperEvents;
          boolean foundItem = false;
          for (int i = 0; i < hopper.getContainerSize(); ++i) {
@@ -3163,7 +3812,7 @@ index d41851f9119c334cae3fc2c433d6450a3eed9096..ddf82e65d3ef1f53b72017bf5159b9f7
              if (!item.isEmpty()) {
                  foundItem = true;
                  ItemStack origItemStack = item;
-@@ -403,12 +420,18 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -403,12 +429,18 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
      }
  
      private static boolean isFullContainer(Container inventory, Direction direction) {
@@ -3184,7 +3833,7 @@ index d41851f9119c334cae3fc2c433d6450a3eed9096..ddf82e65d3ef1f53b72017bf5159b9f7
      }
      private static boolean allMatch(Container iinventory, Direction enumdirection, java.util.function.BiPredicate<ItemStack, Integer> test) {
          if (iinventory instanceof WorldlyContainer) {
-@@ -585,7 +608,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -585,7 +617,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
          if (HopperBlockEntity.canPlaceItemInContainer(to, stack, slot, enumdirection)) {
              boolean flag = false;
@@ -3193,12 +3842,15 @@ index d41851f9119c334cae3fc2c433d6450a3eed9096..ddf82e65d3ef1f53b72017bf5159b9f7
  
              if (itemstack1.isEmpty()) {
                  // Spigot start - SPIGOT-6693, InventorySubcontainer#setItem
-@@ -731,7 +754,7 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
+@@ -733,7 +765,10 @@ public class HopperBlockEntity extends RandomizableContainerBlockEntity implemen
  
      @Override
      protected void setItems(NonNullList<ItemStack> list) {
 -        this.items = list;
-+        this.items = gg.airplane.structs.ItemListWithBitset.fromNonNullList(list); // Airplane
++        // Airplane start
++        this.optimizedItems = gg.airplane.structs.ItemListWithBitset.fromList(list);
++        this.items = this.optimizedItems.nonNullList;
++        // Airplane end
      }
  
      public static void entityInside(Level world, BlockPos pos, BlockState state, Entity entity, HopperBlockEntity blockEntity) {
@@ -3222,10 +3874,10 @@ index ed3518fe7c841d9e1a9c97626acaa3d765a6d76f..ac564148956beb984650341c5c099457
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 86686c24b0b7de4b4bfadbc77419a8872a8e86ee..e265980f07d95a7912bf8873819033e51ef04c98 100644
+index 86686c24b0b7de4b4bfadbc77419a8872a8e86ee..db7904b1bb402a36684b97c443336630762aeaf9 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-@@ -172,11 +172,25 @@ public class LevelChunk implements ChunkAccess {
+@@ -172,6 +172,20 @@ public class LevelChunk implements ChunkAccess {
      }
      // Paper end - rewrite light engine
  
@@ -3241,17 +3893,25 @@ index 86686c24b0b7de4b4bfadbc77419a8872a8e86ee..e265980f07d95a7912bf8873819033e5
 +    }
 +    // Airplane end
 +
-+    private final int levelHeight; private final int minBuildHeight; // Airplane
++    public final gg.airplane.entity.CollisionCacheList[] collisionCaches; // Airplane
++
      public LevelChunk(Level world, ChunkPos pos, ChunkBiomeContainer biomes) {
          this(world, pos, biomes, UpgradeData.EMPTY, EmptyTickList.empty(), EmptyTickList.empty(), 0L, (LevelChunkSection[]) null, (Consumer) null);
      }
- 
-     public LevelChunk(Level world, ChunkPos pos, ChunkBiomeContainer biomes, UpgradeData upgradeData, TickList<Block> blockTickScheduler, TickList<Fluid> fluidTickScheduler, long inhabitedTime, @Nullable LevelChunkSection[] sections, @Nullable Consumer<LevelChunk> loadToWorldConsumer) {
-+        this.levelHeight = world.getHeight(); this.minBuildHeight = world.getMinBuildHeight(); // Airplane
-         // Paper start
-         this.blockNibbles = StarLightEngine.getFilledEmptyLight(world);
-         this.skyNibbles = StarLightEngine.getFilledEmptyLight(world);
-@@ -220,6 +234,7 @@ public class LevelChunk implements ChunkAccess {
+@@ -209,6 +223,12 @@ public class LevelChunk implements ChunkAccess {
+         this.inhabitedTime = inhabitedTime;
+         this.postLoad = loadToWorldConsumer;
+         this.sections = new LevelChunkSection[world.getSectionsCount()];
++        // Airplane start
++        this.collisionCaches = new gg.airplane.entity.CollisionCacheList[world.getSectionsCount()];
++        for (int i = 0; i < this.collisionCaches.length; i++) {
++            this.collisionCaches[i] = new gg.airplane.entity.CollisionCacheList();
++        }
++        // Airplane end
+         if (sections != null) {
+             if (this.sections.length == sections.length) {
+                 System.arraycopy(sections, 0, this.sections, 0, this.sections.length);
+@@ -220,6 +240,7 @@ public class LevelChunk implements ChunkAccess {
          this.postProcessing = new ShortList[world.getSectionsCount()];
          // CraftBukkit start
          this.bukkitChunk = new org.bukkit.craftbukkit.CraftChunk(this);
@@ -3259,28 +3919,62 @@ index 86686c24b0b7de4b4bfadbc77419a8872a8e86ee..e265980f07d95a7912bf8873819033e5
      }
  
      public org.bukkit.Chunk bukkitChunk;
-@@ -1296,13 +1311,17 @@ public class LevelChunk implements ChunkAccess {
-     }
+@@ -655,6 +676,17 @@ public class LevelChunk implements ChunkAccess {
+         int i1 = blockposition.getZ() & 15;
+         BlockState iblockdata1 = chunksection.setBlockState(k, l, i1, iblockdata);
  
-     @Override
--    public int getMinBuildHeight() {
--        return this.level.getMinBuildHeight();
-+    // Airplane start
-+    public final int getMinBuildHeight() {
-+        return this.minBuildHeight;
++        // Airplane start - notify dirty
++        SectionPos pos = SectionPos.of(this.chunkPos, j);
++        gg.airplane.entity.CollisionCache[] caches = this.collisionCaches[j].getRawData();
++        for (int index = 0; index < caches.length; index++) {
++            gg.airplane.entity.CollisionCache cache = caches[index];
++            if (cache != null) {
++                cache.dirtySection(pos);
++            }
++        }
 +        // Airplane end
-     }
- 
-     @Override
--    public int getHeight() {
--        return this.level.getHeight();
++
+         if (iblockdata1 == iblockdata) {
+             return null;
+         } else {
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
+index 72e3264dc74822f746fb84fec0be400047d2d9f5..831e2dbe530daf63ac9e681a92af2740fa18ac8c 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunkSection.java
+@@ -18,6 +18,9 @@ public class LevelChunkSection {
+     short nonEmptyBlockCount; // Paper - package-private
+     private short tickingBlockCount;
+     private short tickingFluidCount;
 +    // Airplane start
-+    public final int getHeight() {
-+        return this.levelHeight;
-+        // Airplane end
-     }
++    public short fluidStateCount;
++    // Airplane end
+     public final PalettedContainer<BlockState> states; // Paper - package-private // Paper - public
+     public final com.destroystokyo.paper.util.maplist.IBlockDataList tickingList = new com.destroystokyo.paper.util.maplist.IBlockDataList(); // Paper
  
-     @Override
+@@ -88,6 +91,7 @@ public class LevelChunkSection {
+ 
+         if (!fluidState.isEmpty()) {
+             --this.tickingFluidCount;
++            --this.fluidStateCount; // Airplane
+         }
+ 
+         if (!state.isAir()) {
+@@ -102,6 +106,7 @@ public class LevelChunkSection {
+ 
+         if (!fluidState2.isEmpty()) {
+             ++this.tickingFluidCount;
++            ++this.fluidStateCount; // Airplane
+         }
+ 
+         return blockState;
+@@ -155,6 +160,7 @@ public class LevelChunkSection {
+                 if (fluidState.isRandomlyTicking()) {
+                     this.tickingFluidCount = (short)(this.tickingFluidCount + 1); // Paper
+                 }
++                this.fluidStateCount++; // Airplane
+             }
+ 
+         });
 diff --git a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java b/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
 index c9e942669458668a184aaec3bc0a5509dd6ab5f0..178e56ffc87ea2beb4d84d1f278f4acf90102379 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/PalettedContainer.java
@@ -3359,6 +4053,23 @@ index 3b13f6ea36a3bfecabe09221eb5c48dddab119db..c02b9104c0cc1a7319cca29d5e32a5c2
      @Nullable
      @Override
      public T get(int id) {
+diff --git a/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java b/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
+index 1ed6573e0ca6b353d1de3b4486e199a5db9aa447..125a067ac989ba05e796c1aa5c28206dbe08eb50 100644
+--- a/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
++++ b/src/main/java/net/minecraft/world/level/entity/PersistentEntitySectionManager.java
+@@ -606,6 +606,12 @@ public class PersistentEntitySectionManager<T extends EntityAccess> implements A
+             PersistentEntitySectionManager.this.knownUuids.remove(this.entity.getUUID());
+             this.entity.setLevelCallback(PersistentEntitySectionManager.Callback.NULL);
+             PersistentEntitySectionManager.this.removeSectionIfEmpty(this.currentSectionKey, this.currentSection);
++
++            // Airplane start
++            if (this.entity instanceof Entity realEntity) {
++                realEntity.collisionCache.onRemove();
++            }
++            // Airplane end
+         }
+     }
+ }
 diff --git a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java b/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
 index 7fda7da544b2d0bbd3803d88ee34c92350a8b8ef..adf91f3006a2d224c957f08520f93f761c3ba832 100644
 --- a/src/main/java/net/minecraft/world/level/material/FlowingFluid.java
@@ -3571,10 +4282,10 @@ index fcb7bd9f3b6b6ada0f2e5692bce32ab76b8798a7..61c2096f2c034dbc3ad33b193b058c7d
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 24a56f8863504f63b4ab01366ce3e9e9f6e962f0..c6a3e01618c46082a0428f2574a3566070956fc1 100644
+index 4fe2bf9052f640b3c3fb5e356735ef571636f973..579725f355854eb1ff8e78e65b4e86ed1fa950f9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1001,6 +1001,11 @@ public final class CraftServer implements Server {
+@@ -997,6 +997,11 @@ public final class CraftServer implements Server {
                  plugin.getDescription().getName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));

@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 48c96f67d139f95b106ebdb02d2b6f9a1214d91a..8f1b2d4aa4be04e96c973c4a2bf960403d0ad9bf 100644
+index 74d0e3221d7e1ea680ba1617b4163125c9e7c2fa..3c9b1031fe7e63b8d0b6b60a7c1b0b7198d698e6 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -648,7 +648,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -18,7 +18,7 @@ index 48c96f67d139f95b106ebdb02d2b6f9a1214d91a..8f1b2d4aa4be04e96c973c4a2bf96040
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index f982378aaee01cba64fdad8d10a73cfeaaac5ff0..d6ea7b238552ce935e32a4ac986c2953ba9ff4e9 100644
+index 41a17803e0042f16e91b6cda149c145883817b0b..3e85a118d3b2b946e6c8649d25da69d963886c71 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -372,7 +372,7 @@ public class ServerPlayer extends Player {
@@ -53,7 +53,7 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfd
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 05222cfe31ee6a6046e6242f219cfdcbc4d7348b..6c1b728bd22273925a633c5355016247a9a45845 100644
+index e6b021f359f497967b70db384fc31076112940fa..12c10e64839210ab6d5185a1ddc2df636409e5e8 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -123,13 +123,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -95,10 +95,10 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..75b00ee813da7447f33ba2a334e96892
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5e7190cea2c9ba690655a66c513c8651fc83aeaa..ea61d2601b1eedbfe4e4abb67a81d2aeac576cc3 100644
+index a27d735f0712b3a6135ec8bcaaeb88fb5c9535c1..58182eac081432990b46d759781eeb2a0f00c082 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1181,7 +1181,7 @@ public final class CraftServer implements Server {
+@@ -1177,7 +1177,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              dimensionmanager = (DimensionType) console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);

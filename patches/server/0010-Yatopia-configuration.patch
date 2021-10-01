@@ -6,7 +6,7 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index c0da3958cab4ed4a78a879cc0272451c76b50300..524d81fee03a6617e4dc9e44d05d2f7a5967afd7 100644
+index f1675934d348118bb929eb897e534f6df4e206d0..568af7f669c2c3b4a25db07db85c8ab5fd3dbe27 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
 @@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
@@ -18,7 +18,7 @@ index c0da3958cab4ed4a78a879cc0272451c76b50300..524d81fee03a6617e4dc9e44d05d2f7a
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 3be9208ef5dd9b41a67b383b49cc0cdb7f909f85..35ba3ded7b20906655629a5b5b9d73a4a957b3dc 100644
+index 96af519b5e21ac60edf11ad5388ea623d2a02bff..fd8132d63315db111e30b7e7d68c826c7b5f6583 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -38,7 +38,7 @@ index 3be9208ef5dd9b41a67b383b49cc0cdb7f909f85..35ba3ded7b20906655629a5b5b9d73a4
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index b48c0b0620b682f821d8a15d9fbc8a9da80e0847..da57c71b43b973945a4275886ffa472f78add091 100644
+index 7b8fe792696a3adab44c29ae4d434ccb117e9a8f..a83a35920d0a996ac86e2423069e9f7d871de5f7 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
@@ -51,7 +51,7 @@ index b48c0b0620b682f821d8a15d9fbc8a9da80e0847..da57c71b43b973945a4275886ffa472f
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ea2d19ca815db7aaae59ac31c1a7d3c9d5b50642..8278998b234f248aa4e9a4b284ce55692d5e1b9e 100644
+index 5167bcbced5d094b1588ab0088a4da78ef858920..83adf8913fc5210d931ea6a2e8c9bd32f5fa2b7a 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
@@ -91,7 +91,7 @@ index ea2d19ca815db7aaae59ac31c1a7d3c9d5b50642..8278998b234f248aa4e9a4b284ce5569
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 59d6825600f0ac7b6eecfa3471d31749d3d7e1ab..f62f059bb2a4917cd996c649eb72d60c08aeed43 100644
+index 089a2262424082aed0acec137eb32e06265f61f8..0c79cc4dfa7caa147593bae24284da3fff36e516 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -888,6 +888,7 @@ public final class CraftServer implements Server {
@@ -102,7 +102,7 @@ index 59d6825600f0ac7b6eecfa3471d31749d3d7e1ab..f62f059bb2a4917cd996c649eb72d60c
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2538,6 +2539,13 @@ public final class CraftServer implements Server {
+@@ -2534,6 +2535,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

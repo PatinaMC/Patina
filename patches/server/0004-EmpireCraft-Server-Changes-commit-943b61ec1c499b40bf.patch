@@ -34,10 +34,10 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index dfd6ded37dcf51348d58e8500ceae59c99950a26..21ec8e95557f130656f8ed23b4f31c01d9df398f 100644
+index 15d6ce8766a9910ea3c04c288ef661f0626d82be..9044be7aacf2b1f5160ad0f71f63b04fd7d8edbd 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2063,6 +2063,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2072,6 +2072,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -61,10 +61,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 4c55bb04ff41fabb47c6477ba33e0e0aabd1c843..449c7dcb5a674961050ba5834454be7fee019238 100644
+index f66bdba35826a9a6b6e40edabd2b6cc90fd09068..8d75f625c8e0f6122c423d88ddbbf639adcce2e2 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -898,7 +898,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -914,7 +914,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -101,10 +101,10 @@ index d87f8d106834678364f8720447d671de60c2454e..8017220284661c295bb18bd0240dc295
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 7e56d6e60f1e1bd8dbf768afcbe06addcd5c5a60..48a07932a81a0570c4dbe91798510023017c5e9e 100644
+index 883b2070fcf99cf10d44aef6dece0f7f84bfeeed..b559bbe0d62742c0af375ed7a2f0b43945a54a4f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -368,7 +368,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -369,7 +369,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {
