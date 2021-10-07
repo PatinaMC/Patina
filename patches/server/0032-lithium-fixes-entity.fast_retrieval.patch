@@ -1,0 +1,65 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 7 Oct 2021 04:03:29 +0000
+Subject: [PATCH] lithium fixes: entity.fast_retrieval
+
+https://github.com/CaffeineMC/lithium-fabric/commit/b34ac353bc6bd97d1b436898f353f998d29626a4 & https://github.com/CaffeineMC/lithium-fabric/commit/7616d35d922bb3cbed1ab0ef7c3993b7a15cfbdc
+
+diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
+index 48a16dd572f73d9803e05036b263073ae321f18c..df633df0365e83fb11c7121145cafe1de43464e4 100644
+--- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
++++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
+@@ -42,19 +42,46 @@ public class EntitySectionStorage<T extends EntityAccess> {
+         int maxY = SectionPos.posToSectionCoord(box.maxY + 2.0D);
+         int maxZ = SectionPos.posToSectionCoord(box.maxZ + 2.0D);
+ 
++        // Vanilla order of the AVL long set is sorting by ascending long value. The x, y, z positions are packed into
++        // a long with the x position's lowest 22 bits placed at the MSB.
++        // Therefore the long is negative iff the 22th bit of the x position is set, which happens iff the x position
++        // is negative. A positive x position will never have its 22th bit set, as these big coordinates are far outside
++        // the world. y and z positions are treated as unsigned when sorting by ascending long value, as their sign bits
++        // are placed somewhere inside the packed long
++
+         for (int x = minX; x <= maxX; x++) {
+-            for (int z = minZ; z <= maxZ; z++) {
+-                for (int y = minY; y <= maxY; y++) {
+-                    EntitySection<T> section = this.getSection(SectionPos.asLong(x, y, z));
+-                    if (section != null && section.getStatus().isAccessible()) {
+-                        action.accept(section);
+-                    }
+-                }
++            for (int z = Math.max(minZ, 0); z <= maxZ; z++) {
++                this.forEachInColumn(x, minY, maxY, z, action);
++            }
++
++            int bound = Math.min(-1, maxZ);
++            for (int z = minZ; z <= bound; z++) {
++                this.forEachInColumn(x, minY, maxY, z, action);
+             }
+         }
+         // Yatopia end
+     }
+ 
++    // Patina start
++    private void forEachInColumn(int x, int minY, int maxY, int z, Consumer<EntitySection<T>> action) {
++        //y from negative to positive, but y is treated as unsigned
++        for (int y = Math.max(minY, 0); y <= maxY; y++) {
++            this.consumeSection(x, y, z, action);
++        }
++        int bound = Math.min(-1, maxY);
++        for (int y = minY; y <= bound; y++) {
++            this.consumeSection(x, y, z, action);
++        }
++    }
++
++    private void consumeSection(int x, int y, int z, Consumer<EntitySection<T>> action) {
++        var section = this.findTrackingSection(SectionPos.asLong(x, y, z));
++        if (section != null && section.getStatus().isAccessible()) {
++            action.accept(section);
++        }
++    }
++    // Patina end
++
+     public LongStream getExistingSectionPositionsInChunk(long chunkPos) {
+         int i = ChunkPos.getX(chunkPos);
+         int j = ChunkPos.getZ(chunkPos);
