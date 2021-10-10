@@ -6,7 +6,7 @@ Subject: [PATCH] lithium fixes: entity.fast_retrieval
 https://github.com/CaffeineMC/lithium-fabric/commit/b34ac353bc6bd97d1b436898f353f998d29626a4 & https://github.com/CaffeineMC/lithium-fabric/commit/7616d35d922bb3cbed1ab0ef7c3993b7a15cfbdc
 
 diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-index 48a16dd572f73d9803e05036b263073ae321f18c..df633df0365e83fb11c7121145cafe1de43464e4 100644
+index 48a16dd572f73d9803e05036b263073ae321f18c..bdc194e3eab4f3a404238fadcd927435a34b11e6 100644
 --- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 +++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 @@ -42,19 +42,46 @@ public class EntitySectionStorage<T extends EntityAccess> {
@@ -53,7 +53,7 @@ index 48a16dd572f73d9803e05036b263073ae321f18c..df633df0365e83fb11c7121145cafe1d
 +    }
 +
 +    private void consumeSection(int x, int y, int z, Consumer<EntitySection<T>> action) {
-+        var section = this.findTrackingSection(SectionPos.asLong(x, y, z));
++        var section = this.getSection(SectionPos.asLong(x, y, z));
 +        if (section != null && section.getStatus().isAccessible()) {
 +            action.accept(section);
 +        }
