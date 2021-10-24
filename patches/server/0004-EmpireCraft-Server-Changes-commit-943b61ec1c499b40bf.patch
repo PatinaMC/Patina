@@ -61,10 +61,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index f66bdba35826a9a6b6e40edabd2b6cc90fd09068..8d75f625c8e0f6122c423d88ddbbf639adcce2e2 100644
+index 061af7fc45564c297958e2f08cd0a2fbd64a5c8e..fd218f1667228c42bd24a70af45a2b015f50581a 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -914,7 +914,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -916,7 +916,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -101,10 +101,10 @@ index d87f8d106834678364f8720447d671de60c2454e..8017220284661c295bb18bd0240dc295
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 883b2070fcf99cf10d44aef6dece0f7f84bfeeed..b559bbe0d62742c0af375ed7a2f0b43945a54a4f 100644
+index 00d8b61c04ac91770b0ff3b846d3ff70bef2e8e7..dd3f4f57ae5b84e2531c5344910d8e7664168a76 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -369,7 +369,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -370,7 +370,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {
