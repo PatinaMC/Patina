@@ -5,7 +5,7 @@ Subject: [PATCH] completely remove snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d4074be7d 100644
+index 0a175998aa613a184ba2b548df3a64aaa48b05df..eb1509ce3fc0ba3bf6cf20395669dd23ae5c6565 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -189,14 +189,14 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -34,7 +34,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
      private final List<Runnable> tickables = Lists.newArrayList();
      private MetricsRecorder metricsRecorder;
      private ProfilerFiller profiler;
-@@ -1083,9 +1083,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1088,9 +1088,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              }
          }
  
@@ -46,7 +46,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
  
          this.resources.close();
  
-@@ -1521,6 +1523,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1526,6 +1528,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
              // MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -54,7 +54,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
          this.profiler.push("snooper");
          if (((DedicatedServer) this).getProperties().snooperEnabled && !this.snooper.isStarted() && this.tickCount > 100) { // Spigot
              this.snooper.start();
-@@ -1529,6 +1532,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1534,6 +1537,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          if (((DedicatedServer) this).getProperties().snooperEnabled && this.tickCount % 6000 == 0) { // Spigot
              this.snooper.prepare();
          }
@@ -62,7 +62,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
  
          io.papermc.paper.util.CachedLists.reset(); // Paper
          this.profiler.pop();
-@@ -1878,6 +1882,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1883,6 +1887,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          this.resourcePackHash = hash;
      }
  
@@ -70,7 +70,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
      @Override
      public void populateSnooper(Snooper snooper) {
          snooper.setDynamicData("whitelist_enabled", (Object) false);
-@@ -1911,7 +1916,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1916,7 +1921,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
          snooper.setDynamicData("worlds", (Object) i);
      }
@@ -80,7 +80,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
      @Override
      public void populateSnooperInitial(Snooper snooper) {
          snooper.setFixedData("singleplayer", this.isSingleplayer());
-@@ -1919,11 +1926,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1924,11 +1931,14 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          snooper.setFixedData("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
          snooper.setFixedData("dedicated", this.isDedicatedServer());
      }
@@ -95,7 +95,7 @@ index 81ede26b4214178a9765e23555548e439b44068e..2c4788eb96d840c262a50d930113905d
  
      public abstract boolean isDedicatedServer();
  
-@@ -2020,9 +2030,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2025,9 +2035,11 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          return this.tickCount;
      }
  

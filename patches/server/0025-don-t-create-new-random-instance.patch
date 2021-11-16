@@ -5,10 +5,10 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a89ef96540c2db7b57002df5615427cb05c94b46..cf5ff96b654ebcf4468b80f967c97bc8562e020f 100644
+index d6076bd648410c1ecfb9c4239b50db9047873db4..f002533e19bd851085ce5e28dc63b464a587374f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -648,7 +648,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+@@ -653,7 +653,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
  
              if (worlddimension == null) {
                  dimensionmanager = (DimensionType) this.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
@@ -18,7 +18,7 @@ index a89ef96540c2db7b57002df5615427cb05c94b46..cf5ff96b654ebcf4468b80f967c97bc8
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5f31e170f1998535648cbdfd2d5e4587e4a1231e..a7f854210d4c85d935c644aca968a823ae5e4c61 100644
+index c440c214c095f08b8e1db49b812a484954fe47e9..4fd572dec0beda06f1eba696484530ee9bf4af6e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -372,7 +372,7 @@ public class ServerPlayer extends Player {
@@ -95,10 +95,10 @@ index 57b12ba5a24e68b0a0420d692946fe5e83974db4..75b00ee813da7447f33ba2a334e96892
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5744e96d64a6ddc0d16ccb6cb57b3e5b4b09e12d..737dc797420f9435ce24d2d8792edd2f8634a090 100644
+index 1c3868785045ae8dff95328b8a9b3ce34175bc52..d593a35fefbc1260cb7f4bec712c89dc04b2c67a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1198,7 +1198,7 @@ public final class CraftServer implements Server {
+@@ -1215,7 +1215,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              dimensionmanager = (DimensionType) console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);

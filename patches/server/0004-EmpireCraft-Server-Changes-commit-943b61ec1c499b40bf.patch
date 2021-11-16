@@ -34,10 +34,10 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 15d6ce8766a9910ea3c04c288ef661f0626d82be..9044be7aacf2b1f5160ad0f71f63b04fd7d8edbd 100644
+index fc355c63529b4eaf9223c0655067640922a02bad..62f888a2949c1b03b095a9db66b5ab99b629d6f4 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2072,6 +2072,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2077,6 +2077,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -87,7 +87,7 @@ index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490a
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index d87f8d106834678364f8720447d671de60c2454e..8017220284661c295bb18bd0240dc295936a0156 100644
+index 83d813025efca5846538e36508a5d4fe38b02108..cc2231d8da7ee18a3b1303ddd89640a846ba7bd9 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -889,7 +889,8 @@ public abstract class BlockBehaviour {

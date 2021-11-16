@@ -5,10 +5,10 @@ Subject: [PATCH] relocate
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 3fcd028b8aa2dd330afb3075ea0680847416c79e..809e02e1f9fc63854b961e06588bce12b8e9280d 100644
+index a29539fbcb87690af0219c2d10f0ead71442b202..ade6bbda2b8b2ba9ca310827f3bd199503647137 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -120,6 +120,7 @@ relocation {
+@@ -113,6 +113,7 @@ relocation {
      relocate("org.bukkit.craftbukkit" to "org.bukkit.craftbukkit.v$packageVersion") {
          exclude("org.bukkit.craftbukkit.Main*")
      }
