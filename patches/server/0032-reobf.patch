@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 1 Dec 2021 02:48:08 +0000
+Subject: [PATCH] reobf
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index ade6bbda2b8b2ba9ca310827f3bd199503647137..14351cf10401353dbb2904c1a0f263fbc200b323 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -142,6 +142,22 @@ relocation {
+     }
+ }
+ 
++val generateReobfMappings = rootProject.tasks.named<io.papermc.paperweight.tasks.GenerateReobfMappings>("generateReobfMappings")
++
++val patchReobfMappings by tasks.registering<io.papermc.paperweight.tasks.PatchMappings> {
++    inputMappings.set(generateReobfMappings.flatMap { it.reobfMappings })
++    patch.set(rootProject.layout.cache.resolve("paperweight/upstreams/paper/build-data/reobf-mappings-patch.tiny"))
++
++    fromNamespace.set(io.papermc.paperweight.util.constants.DEOBF_NAMESPACE)
++    toNamespace.set(io.papermc.paperweight.util.constants.SPIGOT_NAMESPACE)
++
++    outputMappings.set(layout.cache.resolve("paperweight/mappings/reobf-patched.tiny"))
++}
++
++tasks.reobfJar {
++    mappingsFile.set(patchReobfMappings.flatMap { it.outputMappings })
++}
++
+ val generatePom = tasks.named<GenerateMavenPom>("generatePomFileForMavenPublication")
+ 
+ tasks.shadowJar {
