@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 1 Dec 2021 05:52:51 +0000
+Subject: [PATCH] velocity 1.1.9 - fix build issue
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 14351cf10401353dbb2904c1a0f263fbc200b323..70b12a768efb6b820a9077f19df4e9c03ad05775 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -56,7 +56,7 @@ dependencies {
+     implementation("io.netty:netty-all:4.1.65.Final") // Paper
+ 
+     implementation("net.fabricmc:mapping-io:0.3.0") // Paper - needed to read mappings for stacktrace deobfuscation
+-    implementation("com.velocitypowered:velocity-native:1.1.0-SNAPSHOT") // Paper
++    implementation("com.velocitypowered:velocity-native:1.1.9") // Patina - 1.1.9 - fix build issue
+ 
+     implementation("com.github.technove:AIR:fe3dbb4420") // Airplane - config
+     implementation("org.yaml:snakeyaml:1.28")
