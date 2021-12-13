@@ -5,22 +5,22 @@ Subject: [PATCH] Add nspt command
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 35ba3ded7b20906655629a5b5b9d73a4a957b3dc..c47890c78234abe2ec72f2e1de9bec1b951c005a 100644
+index a34a56bd1eb4e9bd6091f0859661948b7a373fbd..1a094bd7858dca40c95edf5abc84cd22f8d34fbf 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -218,6 +218,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -228,6 +228,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
              DedicatedServer.LOGGER.error("Unable to load server configuration", e);
              return false;
          }
-+        org.yatopiamc.yatopia.server.YatopiaConfig.registerCommands(); // Yatopia
++		org.yatopiamc.yatopia.server.YatopiaConfig.registerCommands(); // Yatopia
+         thread.start(); // Paper - start console thread after MinecraftServer.console & PaperConfig are initialized
          com.destroystokyo.paper.PaperConfig.registerCommands();
          // Purpur start
-         try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f62f059bb2a4917cd996c649eb72d60c08aeed43..5e7190cea2c9ba690655a66c513c8651fc83aeaa 100644
+index 944b758c6da50bcb8cc55b95c56b685b64e9ab22..f0f0d193ce935bb6e8af0d55071fc69f19d99d37 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -945,6 +945,7 @@ public final class CraftServer implements Server {
+@@ -983,6 +983,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
          net.pl3x.purpur.PurpurConfig.registerCommands(); // Purpur

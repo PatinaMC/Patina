@@ -5,10 +5,10 @@ Subject: [PATCH] Optimised hallowen checker
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 24e828148a392e4bae015094695707071958d6a6..e4c2049a69ca48bcf02c0813888d065027716d63 100644
+index 0505d7ffa5b74bfe9bb99f686a28813f2609c1e9..4bcfaa225adad0cbfaaee316c9e2d71491e9b346 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1537,6 +1537,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1545,6 +1545,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
          // Paper end
  
@@ -18,7 +18,7 @@ index 24e828148a392e4bae015094695707071958d6a6..e4c2049a69ca48bcf02c0813888d0650
          long endTime = System.nanoTime();
          long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
 diff --git a/src/main/java/net/minecraft/world/entity/ambient/Bat.java b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
-index 1d415a91b9c90603e8f738dbafe7a5ea57ef14cc..bcfdbd77b572d48b17aa5dbb5a8ea0788c4c228f 100644
+index cda441f5cf64f061dc145fbeba175874c31cebe4..0d75413af4a1e9dee19a3685afbbecaed14359c3 100644
 --- a/src/main/java/net/minecraft/world/entity/ambient/Bat.java
 +++ b/src/main/java/net/minecraft/world/entity/ambient/Bat.java
 @@ -254,11 +254,17 @@ public class Bat extends AmbientCreature {
@@ -71,7 +71,7 @@ index cd75f895b6818fbb7ed4b0ef3df873f264bb2d1b..99c0510890ec8dd7d9830ef074840533
                  this.armorDropChances[EquipmentSlot.HEAD.getIndex()] = 0.0F;
              }
 diff --git a/src/main/java/net/minecraft/world/entity/monster/Zombie.java b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
-index 6408e158745c20ab449c44a28420bc9b28e1efac..efdd5daea05f22a13bb483d5733b1289fdd1b7e2 100644
+index 8da494792786fd80be50efc4cbb56caeae18d004..9897f8979c37eadb2e8f2208b6ff3e7f717c47bc 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/Zombie.java
 @@ -539,11 +539,16 @@ public class Zombie extends Monster {

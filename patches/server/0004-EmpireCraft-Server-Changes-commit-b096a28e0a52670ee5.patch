@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 7 Aug 2021 13:38:20 +0000
+From: steve <50219120+steveb05@users.noreply.github.com>
+Date: Sun, 12 Dec 2021 17:55:52 +0100
 Subject: [PATCH] EmpireCraft Server Changes commit
- 943b61ec1c499b40bf7e560b6e241dad00f9c108
+ b096a28e0a52670ee5bbd0295e27a48e5fcb41a0
 
 Don't save Fireworks
 
@@ -11,7 +11,7 @@ launcher can very easily fill a chunk.
 
 Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
 
-Fix Give command
+Do not drop items from Give command
 
 Don't use force unload for keep spawn setting change
 
@@ -34,10 +34,10 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 15d6ce8766a9910ea3c04c288ef661f0626d82be..9044be7aacf2b1f5160ad0f71f63b04fd7d8edbd 100644
+index deb0837ba9a450cb6a0a833961b8db6a18a238eb..39d754cd95893125c4b593cb3026133ccd09a956 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2072,6 +2072,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2077,6 +2077,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -61,10 +61,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index f66bdba35826a9a6b6e40edabd2b6cc90fd09068..8d75f625c8e0f6122c423d88ddbbf639adcce2e2 100644
+index 216bd08b4f74b029968acc5e168e1681327629b1..d6dda395d71f9eb57e61f25dcd3474ad5cba16fc 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -914,7 +914,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -905,7 +905,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -87,7 +87,7 @@ index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490a
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index d87f8d106834678364f8720447d671de60c2454e..8017220284661c295bb18bd0240dc295936a0156 100644
+index 83d813025efca5846538e36508a5d4fe38b02108..cc2231d8da7ee18a3b1303ddd89640a846ba7bd9 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -889,7 +889,8 @@ public abstract class BlockBehaviour {
@@ -101,10 +101,10 @@ index d87f8d106834678364f8720447d671de60c2454e..8017220284661c295bb18bd0240dc295
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 883b2070fcf99cf10d44aef6dece0f7f84bfeeed..b559bbe0d62742c0af375ed7a2f0b43945a54a4f 100644
+index 858e29ad77aee8a1b7797c2d82902abbfd662da2..c19a6ae40d6699a4f48d008c55c4d1aa1d4ebc85 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -369,7 +369,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -371,7 +371,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

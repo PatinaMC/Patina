@@ -1,22 +1,23 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 27 Jul 2021 02:54:08 +0000
+From: steve <50219120+steveb05@users.noreply.github.com>
+Date: Sat, 11 Dec 2021 21:48:29 +0100
 Subject: [PATCH] Purpur API Changes commit
- 89c9c902b1ee4fdf916c9b45123cf06531260524
+ 6edaf8394eb522846ae05ce6e7cf9ffe8aa08625
 
 Purpur config files
 
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index d36e4bc3c3713407704b865574cba28662f17315..90ccbaa47beb1fdf506ea4748b97407c0f168855 100644
+index c551010f84ac5d3ebc626c253a8f8282924152c4..db3511ff2efc272746bd83284b54670b8b9ac7e1 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2063,4 +2063,14 @@ public final class Bukkit {
+@@ -2118,4 +2118,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
-+
++	
++    // Purpur start
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
 +     *
@@ -28,10 +29,10 @@ index d36e4bc3c3713407704b865574cba28662f17315..90ccbaa47beb1fdf506ea4748b97407c
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 83870d54a5ff1017ad7455e9c931fdee54354434..2003dcf9caf59783a48e1816c418d6e06588c613 100644
+index c34cfba8f9ed7e9dbd0b6b8ffef9fba46abff046..b165f8cae0d70d8938e05adc3dfdd32b447dc15d 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1679,6 +1679,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1715,6 +1715,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -50,11 +51,12 @@ index 83870d54a5ff1017ad7455e9c931fdee54354434..2003dcf9caf59783a48e1816c418d6e0
          /**
           * Sends the component to the player
           *
-@@ -1789,4 +1801,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1837,4 +1849,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
-+
++	
++    // Purpur start
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
 +     *

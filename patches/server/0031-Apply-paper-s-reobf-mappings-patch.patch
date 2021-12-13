@@ -6,27 +6,20 @@ Subject: [PATCH] Apply paper's reobf mappings patch
 Workaround until paperweight implements reobf mappings patch support for forks
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 8dceeda57022d45b02ad766a24d6756c6aa0ad7d..038dd0bb111a085fae909a55a2006fde06b560c4 100644
+index 9510537b51ebe5236e07ad74a6f0cee445d8d68b..77a7f8dce379a7e56ed816a4a0171beeb79fbe6a 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -1,10 +1,16 @@
+@@ -1,6 +1,9 @@
  import com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer
  import com.github.jengelman.gradle.plugins.shadow.transformers.Transformer
  import io.papermc.paperweight.tasks.BaseTask
 +import io.papermc.paperweight.tasks.GenerateReobfMappings
 +import io.papermc.paperweight.tasks.PatchMappings
 +import io.papermc.paperweight.util.constants.*
- import io.papermc.paperweight.util.Git
-+import io.papermc.paperweight.util.cache
- import io.papermc.paperweight.util.defaultOutput
- import io.papermc.paperweight.util.openZip
- import io.papermc.paperweight.util.path
-+import io.papermc.paperweight.util.registering
-+import io.papermc.paperweight.util.set
+ import io.papermc.paperweight.util.*
  import shadow.org.apache.logging.log4j.core.config.plugins.processor.PluginProcessor.PLUGIN_CACHE_FILE
  import java.nio.file.Files
- import java.util.Locale
-@@ -149,6 +155,22 @@ relocation {
+@@ -145,6 +148,22 @@ relocation {
      }
  }
  
