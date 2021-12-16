@@ -18,10 +18,10 @@ index f1675934d348118bb929eb897e534f6df4e206d0..568af7f669c2c3b4a25db07db85c8ab5
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 96af519b5e21ac60edf11ad5388ea623d2a02bff..fd8132d63315db111e30b7e7d68c826c7b5f6583 100644
+index a125f7d0b34872df3eaf64dfc569b962f7c6308a..a34a56bd1eb4e9bd6091f0859661948b7a373fbd 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -246,6 +246,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          gg.airplane.AirplaneConfig.load(); // Airplane - config
          gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
  
@@ -38,7 +38,7 @@ index 96af519b5e21ac60edf11ad5388ea623d2a02bff..fd8132d63315db111e30b7e7d68c826c
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 7b8fe792696a3adab44c29ae4d434ccb117e9a8f..a83a35920d0a996ac86e2423069e9f7d871de5f7 100644
+index e32bd3bd241d2a9153a222df3d183862d3e720f4..f28d13fac5897012c738cf20f0bb0c9b7f815ecf 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
@@ -51,7 +51,7 @@ index 7b8fe792696a3adab44c29ae4d434ccb117e9a8f..a83a35920d0a996ac86e2423069e9f7d
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 5167bcbced5d094b1588ab0088a4da78ef858920..83adf8913fc5210d931ea6a2e8c9bd32f5fa2b7a 100644
+index fa46c281d02178a1acff517a72e0c76134e82eea..1d6f67ffe1b3456bbb785936d5d021cbcd7c6072 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
@@ -91,10 +91,10 @@ index 5167bcbced5d094b1588ab0088a4da78ef858920..83adf8913fc5210d931ea6a2e8c9bd32
          if (this.fireImmune() || this.level.isClientSide) {
              this.clearFire();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 089a2262424082aed0acec137eb32e06265f61f8..0c79cc4dfa7caa147593bae24284da3fff36e516 100644
+index 8d4a1adc89842e8b95872fb728f9a4d96888213c..944b758c6da50bcb8cc55b95c56b685b64e9ab22 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -888,6 +888,7 @@ public final class CraftServer implements Server {
+@@ -920,6 +920,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +102,7 @@ index 089a2262424082aed0acec137eb32e06265f61f8..0c79cc4dfa7caa147593bae24284da3f
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2534,6 +2535,13 @@ public final class CraftServer implements Server {
+@@ -2591,6 +2592,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

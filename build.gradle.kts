@@ -1,7 +1,7 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.0.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.1.11"
+    id("com.github.johnrengelman.shadow") version "7.1.0" apply false
+    id("io.papermc.paperweight.patcher") version "1.2.0"
 }
 
 repositories {
@@ -11,15 +11,11 @@ repositories {
             onlyForConfigurations("paperclip")
         }
     }
-    maven("https://maven.quiltmc.org/repository/release/") {
-        content {
-            onlyForConfigurations("remapper")
-        }
-    }
 }
 
 dependencies {
-    remapper("org.quiltmc:tiny-remapper:0.4.3:fat")
+    remapper("net.fabricmc:tiny-remapper:0.7.0:fat")
+    decompiler("net.minecraftforge:forgeflower:1.5.498.12")
     paperclip("io.papermc:paperclip:2.0.1")
 }
 
@@ -54,7 +50,7 @@ paperweight {
 
     usePaperUpstream(providers.gradleProperty("paperRef")) {
         withPaperPatcher {
-            remapRepo.set("https://maven.quiltmc.org/repository/release/")
+            remapRepo.set("https://maven.fabricmc.net/")
             decompileRepo.set("https://files.minecraftforge.net/maven/")
 
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
