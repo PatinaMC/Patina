@@ -1,39 +1,38 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.1.0" apply false
-    id("io.papermc.paperweight.patcher") version "1.2.0"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.papermc.paperweight.patcher") version "1.3.3"
 }
 
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/") {
-        content {
-            onlyForConfigurations("paperclip")
-        }
+        content { onlyForConfigurations("paperclip") }
     }
 }
 
 dependencies {
     remapper("net.fabricmc:tiny-remapper:0.7.0:fat")
-    decompiler("net.minecraftforge:forgeflower:1.5.498.12")
-    paperclip("io.papermc:paperclip:2.0.1")
+    decompiler("net.minecraftforge:forgeflower:1.5.498.22")
+    paperclip("io.papermc:paperclip:3.0.2")
 }
 
 subprojects {
     apply(plugin = "java")
 
     java {
-        toolchain {
-            languageVersion.set(JavaLanguageVersion.of(16))
-        }
+        sourceCompatibility = JavaVersion.VERSION_16
+        targetCompatibility = JavaVersion.VERSION_16
+        toolchain { languageVersion.set(JavaLanguageVersion.of(17)) }
     }
 
     tasks.withType<JavaCompile>().configureEach {
         options.encoding = "UTF-8"
-        options.release.set(16)
+        options.release.set(17)
     }
 
     repositories {
+        mavenLocal()
         mavenCentral()
         maven("https://oss.sonatype.org/content/groups/public/")
         maven("https://papermc.io/repo/repository/maven-public/")
@@ -41,7 +40,7 @@ subprojects {
         maven("https://repo.aikar.co/content/groups/aikar")
         maven("https://repo.md-5.net/content/repositories/releases/")
         maven("https://hub.spigotmc.org/nexus/content/groups/public/")
-        maven("https://jitpack.io") // Airplane
+        maven("https://jitpack.io")
     }
 }
 
