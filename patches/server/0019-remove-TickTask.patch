@@ -5,19 +5,19 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 04f3f61a8a67de3b6027c86be077d6e20eb49dfe..96e01999959bd1d75e73d23d1ad97598c417e469 100644
+index c1bf9299b329f1c6e1508bf58a9cb4c451f59208..787eb42cc993d322399e9b3a75405ba5729a66f5 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -189,7 +189,7 @@ import org.bukkit.event.server.ServerLoadEvent;
+@@ -186,7 +186,7 @@ import org.bukkit.event.server.ServerLoadEvent;
  import co.aikar.timings.MinecraftTimings; // Paper
  import org.spigotmc.SlackActivityAccountant; // Spigot
  
--public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements CommandSource, AutoCloseable { // SnooperPopulator, // Patina - completely remove snooper
+-public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTask> implements CommandSource, AutoCloseable {
 +public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnable> implements CommandSource, AutoCloseable { // Patina
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogManager.getLogger();
-@@ -1390,19 +1390,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1377,19 +1377,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      @Override
@@ -41,12 +41,12 @@ index 04f3f61a8a67de3b6027c86be077d6e20eb49dfe..96e01999959bd1d75e73d23d1ad97598
  
      @Override
      public boolean pollTask() {
-@@ -1433,10 +1435,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1420,10 +1422,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
 +    /* // Patina
-     public void doRunTask(TickTask ticktask) {
+     public void doRunTask(TickTask ticktask) { // CraftBukkit - decompile error
          this.getProfiler().incrementCounter("runTask");
          super.doRunTask(ticktask);
      }
@@ -55,10 +55,10 @@ index 04f3f61a8a67de3b6027c86be077d6e20eb49dfe..96e01999959bd1d75e73d23d1ad97598
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 5116b1f90c0f27ce1d3cee6632563f32356a1eb6..dcdada42813105a1b76bd72e3642372aad9069bf 100644
+index f51fcaba69c9ddc27130ab615526e05b1b4f0e07..236daea15b42f461ab1cc5073d54622f43e0c78a 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1214,10 +1214,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1258,10 +1258,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  

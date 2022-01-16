@@ -5,10 +5,10 @@ Subject: [PATCH] Preload ProtocolLib EnumWrappers
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4bcfaa225adad0cbfaaee316c9e2d71491e9b346..2e83254a7b76626b0bf5dcc16ad866faf6f58d53 100644
+index 96c26094e76a1d65af3473b97d952be15a14155f..c1bf9299b329f1c6e1508bf58a9cb4c451f59208 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1236,6 +1236,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1220,6 +1220,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  LOGGER.info("Done ({})! For help, type \"help\"", doneTime);
                  // Paper end
  

@@ -5,34 +5,25 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f442236efe30d7d9e0c6a8dfb0f040540dc62753..fb35e2c08f44e8473eb9309e603002ef68bca100 100644
+index 75eca4bd07f80923b31700dbaf719c8485865b50..6c21124ad25730b2ffad2f11c6b7201f67f995ad 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -22,8 +22,8 @@ repositories {
+@@ -18,8 +18,8 @@ repositories {
  }
  
  dependencies {
--    implementation(project(":Paper-API"))
--    implementation(project(":Paper-MojangAPI"))
+-    implementation(project(":paper-api"))
+-    implementation(project(":paper-mojangapi"))
 +    implementation(project(":Patina-API")) // Patina
 +    implementation(project(":Patina-MojangAPI")) // Patina
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
-@@ -202,7 +202,7 @@ tasks.test {
- fun TaskContainer.registerRunTask(
-     name: String, block: JavaExec.() -> Unit
- ): TaskProvider<JavaExec> = register<JavaExec>(name) {
--    group = "paper"
-+    group = "paperweight"
-     standardInput = System.`in`
-     workingDir = rootProject.layout.projectDirectory.dir(
-         providers.gradleProperty("runWorkDir").forUseAtConfigurationTime().orElse("run")
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5a4172faaf960d48939d6a485719041987df9242..6dc21d84de6ed12c041daea20cf9f0f61033c923 100644
+index bf0f1c992853096dd886d627cc7e965198cae096..19cd755483cbf64bcf4a600699e0ffb431f7a141 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1729,7 +1729,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1719,7 +1719,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -42,10 +33,10 @@ index 5a4172faaf960d48939d6a485719041987df9242..6dc21d84de6ed12c041daea20cf9f0f6
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 99a94898316b0601f55b333c15a9926eae24f8a2..c337908cf6f51361f12db685e8151b9edc1eb653 100644
+index fa33d02055829f4dd2452febffe6ad02fda2c0c5..0dd48ea1ae59102b87714e1d421895ceee8d6105 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -251,7 +251,7 @@ import javax.annotation.Nullable; // Paper
+@@ -254,7 +254,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

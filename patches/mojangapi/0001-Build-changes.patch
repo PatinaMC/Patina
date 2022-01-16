@@ -5,15 +5,15 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index f7bf0ff771e6f951f0f1d97b9e3b3fa4cd9dc5c2..d4b1533cb0d289d413194fb6fc5e0012b4f17887 100644
+index c90209011a266e71511954f23a1e42efa8c62a54..4a6a7db602292a89c3675bd1c9aa8efe0fe8d856 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -16,7 +16,7 @@ repositories {
+@@ -14,7 +14,7 @@ repositories {
  }
  
  dependencies {
--    implementation(project(":Paper-API"))
+-    implementation(project(":paper-api"))
 +    implementation(project(":Patina-API")) // Patina
      api("com.mojang:brigadier:1.0.18")
  
-     compileOnly("it.unimi.dsi:fastutil:8.2.2")
+     compileOnly("it.unimi.dsi:fastutil:8.5.6")

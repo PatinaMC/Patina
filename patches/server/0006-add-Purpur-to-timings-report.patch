@@ -5,13 +5,13 @@ Subject: [PATCH] add Purpur to timings report
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index da6a5b1b2f5203a0fab8e4fccd727951df7c9c9a..c0da3958cab4ed4a78a879cc0272451c76b50300 100644
+index 26bde1c22363ddbdbe4127d14bae54e17b0d7393..6a1d0ed30fa05b76f70397b8bb719ba7df40c794 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -230,6 +230,7 @@ public class TimingsExport extends Thread {
+@@ -229,6 +229,7 @@ public class TimingsExport extends Thread {
              pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Airplane
-             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null)) // Airplane
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
+             pair("pufferfish", mapAsJSON(gg.pufferfish.pufferfish.PufferfishConfig.getConfigCopy(), null)) // Pufferfish
 +            ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
          ));
  

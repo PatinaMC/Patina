@@ -6,24 +6,24 @@ Subject: [PATCH] Yatopia configuration
 also some basic settings that dont deserve a patch
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index f1675934d348118bb929eb897e534f6df4e206d0..568af7f669c2c3b4a25db07db85c8ab5fd3dbe27 100644
+index 6a1d0ed30fa05b76f70397b8bb719ba7df40c794..4638f6b1df7e232f395f3eccea9ddf3d2c1f16a0 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -231,6 +231,7 @@ public class TimingsExport extends Thread {
-             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Airplane
-             pair("airplane", mapAsJSON(gg.airplane.AirplaneConfig.getConfigCopy(), null)) // Airplane
+@@ -230,6 +230,7 @@ public class TimingsExport extends Thread {
+             pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
+             pair("pufferfish", mapAsJSON(gg.pufferfish.pufferfish.PufferfishConfig.getConfigCopy(), null)) // Pufferfish
              ,pair("purpur", mapAsJSON(Bukkit.spigot().getPurpurConfig(), null)) // Patina - add Purpur to timings report
 +            ,pair("yatopia", mapAsJSON(Bukkit.spigot().getYatopiaConfig(), null)) // Yatopia - add config to timings report
          ));
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index a125f7d0b34872df3eaf64dfc569b962f7c6308a..a34a56bd1eb4e9bd6091f0859661948b7a373fbd 100644
+index 20efc03d5b115e4ccea534049314445f5283f821..a947bc4d2a3ca0d1a585392d572394106c56d837 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -246,6 +246,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
-         gg.airplane.AirplaneConfig.load(); // Airplane - config
-         gg.airplane.commands.AirplaneCommands.init(); // Airplane - command
+@@ -244,6 +244,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
+         gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
  
 +        // Yatopia start
 +        try {
@@ -38,12 +38,12 @@ index a125f7d0b34872df3eaf64dfc569b962f7c6308a..a34a56bd1eb4e9bd6091f0859661948b
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e32bd3bd241d2a9153a222df3d183862d3e720f4..f28d13fac5897012c738cf20f0bb0c9b7f815ecf 100644
+index 6a2c91042fcc1ef452d5e7587bfa5ce7571235e4..f683b57b024d50110308d79efe5f1978ba6ec952 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -269,7 +269,7 @@ public abstract class PlayerList {
          // Spigot - view distance
-         playerconnection.send(new ClientboundLoginPacket(player.getId(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), worlddata.isHardcore(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), this.getMaxPlayers(), worldserver1.getChunkSource().chunkMap.playerChunkManager.getLoadDistance(), flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat())); // Paper - no-tick view distance // Paper - replace old player chunk management
+         playerconnection.send(new ClientboundLoginPacket(player.getId(), worlddata.isHardcore(), player.gameMode.getGameModeForPlayer(), player.gameMode.getPreviousGameModeForPlayer(), this.server.levelKeys(), this.registryHolder, worldserver1.dimensionType(), worldserver1.dimension(), BiomeManager.obfuscateSeed(worldserver1.getSeed()), this.getMaxPlayers(), worldserver1.spigotConfig.viewDistance, worldserver1.spigotConfig.simulationDistance, flag1, !flag, worldserver1.isDebug(), worldserver1.isFlat()));
          player.getBukkitEntity().sendSupportedChannels(); // CraftBukkit
 -        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf(this.getServer().getServerModName())));
 +        playerconnection.send(new ClientboundCustomPayloadPacket(ClientboundCustomPayloadPacket.BRAND, (new FriendlyByteBuf(Unpooled.buffer())).writeUtf((org.yatopiamc.yatopia.server.YatopiaConfig.brandName)))); // Yatopia)));
@@ -51,50 +51,30 @@ index e32bd3bd241d2a9153a222df3d183862d3e720f4..f28d13fac5897012c738cf20f0bb0c9b
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index fa46c281d02178a1acff517a72e0c76134e82eea..1d6f67ffe1b3456bbb785936d5d021cbcd7c6072 100644
+index bfe8559d3b9c3ca94dff228ce4392422cd26d352..118716c272226ab51bcaaea5d8efcd949281c222 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -392,21 +392,23 @@ public abstract class LivingEntity extends Entity {
-         this.level.getProfiler().push("livingEntityBaseTick");
-         boolean flag = this instanceof net.minecraft.world.entity.player.Player;
+@@ -391,6 +391,7 @@ public abstract class LivingEntity extends Entity {
+             this.clearFire();
+         }
  
--        if (this.isAlive()) {
--            if (this.isInWall()) {
--                this.hurt(DamageSource.IN_WALL, 1.0F);
--            } else if (flag && !this.level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
--                double d0 = this.level.getWorldBorder().getDistanceToBorder((Entity) this) + this.level.getWorldBorder().getDamageSafeZone();
--
--                if (d0 < 0.0D) {
--                    double d1 = this.level.getWorldBorder().getDamagePerBlock();
--
--                    if (d1 > 0.0D) {
--                        this.hurt(DamageSource.IN_WALL, (float) Math.max(1, Mth.floor(-d0 * d1)));
 +        if (!org.yatopiamc.yatopia.server.YatopiaConfig.disableEntityStuckChecks) { // Yatopia
-+            if (this.isAlive()) {
-+                if (this.isInWall()) {
-+                    this.hurt(DamageSource.IN_WALL, 1.0F);
-+                } else if (flag && !this.level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
-+                    double d0 = this.level.getWorldBorder().getDistanceToBorder((Entity) this) + this.level.getWorldBorder().getDamageSafeZone();
-+
-+                    if (d0 < 0.0D) {
-+                        double d1 = this.level.getWorldBorder().getDamagePerBlock();
-+
-+                        if (d1 > 0.0D) {
-+                            this.hurt(DamageSource.IN_WALL, (float) Math.max(1, Mth.floor(-d0 * d1)));
-+                        }
+         if (this.isAlive()) {
+             boolean flag = this instanceof net.minecraft.world.entity.player.Player;
+             if (tickCount % 20 == 0 && couldPossiblyBeHurt(1.0F) && this.isInWall()) { // Pufferfish - optimize suffocation
+@@ -406,6 +407,7 @@ public abstract class LivingEntity extends Entity {
                      }
                  }
              }
--        }
 +        } // Yatopia
  
-         if (this.fireImmune() || this.level.isClientSide) {
-             this.clearFire();
+             if (this.isEyeInFluid(FluidTags.WATER) && !this.level.getBlockState(new BlockPos(this.getX(), this.getEyeY(), this.getZ())).is(Blocks.BUBBLE_COLUMN)) {
+                 boolean flag1 = !this.canBreatheUnderwater() && !MobEffectUtil.hasWaterBreathing(this) && (!flag || !((net.minecraft.world.entity.player.Player) this).getAbilities().invulnerable);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8d4a1adc89842e8b95872fb728f9a4d96888213c..944b758c6da50bcb8cc55b95c56b685b64e9ab22 100644
+index 0dd48ea1ae59102b87714e1d421895ceee8d6105..82f3eda11342ef965887f3f9b135743c35e00059 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -920,6 +920,7 @@ public final class CraftServer implements Server {
+@@ -948,6 +948,7 @@ public final class CraftServer implements Server {
              this.playerList.getBans().load();
          } catch (IOException ex) {
              this.logger.log(Level.WARNING, "Failed to load banned-players.json, " + ex.getMessage());
@@ -102,7 +82,7 @@ index 8d4a1adc89842e8b95872fb728f9a4d96888213c..944b758c6da50bcb8cc55b95c56b685b
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2591,6 +2592,13 @@ public final class CraftServer implements Server {
+@@ -2687,6 +2688,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  
@@ -117,10 +97,10 @@ index 8d4a1adc89842e8b95872fb728f9a4d96888213c..944b758c6da50bcb8cc55b95c56b685b
          public void broadcast(BaseComponent component) {
              for (Player player : CraftServer.this.getOnlinePlayers()) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 56674053351962a75b2731dde137dbbc0c70dbde..449d998143070b3da374c1a9e9d14551efef1e4f 100644
+index 6f14a1b26e92d0170538ed60c6a651a031e7209e..f3f846a8d008923e00e1891dc3eb04d4b553a460 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -155,6 +155,14 @@ public class Main {
+@@ -161,6 +161,14 @@ public class Main {
                      .describedAs("Yml file");
                  // Purpur end
  

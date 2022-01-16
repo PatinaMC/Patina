@@ -5,35 +5,35 @@ Subject: [PATCH] completely remove bootstrapExecutor
 
 
 diff --git a/src/main/java/net/minecraft/Util.java b/src/main/java/net/minecraft/Util.java
-index 5c7b9ad379f3c272e15648dd16f4df9245d927da..7e27ac97db6e65031bd7a31cc7b4934473a10076 100644
+index 90018506da9e900d448a1fc43b3213ac513686e6..bd50d7f001aac517dcb9004241896ef20a589cd1 100644
 --- a/src/main/java/net/minecraft/Util.java
 +++ b/src/main/java/net/minecraft/Util.java
-@@ -65,7 +65,7 @@ import org.apache.logging.log4j.Logger;
- 
- public class Util {
+@@ -73,7 +73,7 @@ public class Util {
+     private static final int DEFAULT_MAX_THREADS = 255;
+     private static final String MAX_THREADS_SYSTEM_PROPERTY = "max.bg.threads";
      private static final AtomicInteger WORKER_COUNT = new AtomicInteger(1);
 -    private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority
 +    //private static final ExecutorService BOOTSTRAP_EXECUTOR = makeExecutor("Bootstrap", -2); // Paper - add -2 priority // Patina
      private static final ExecutorService BACKGROUND_EXECUTOR = makeExecutor("Main", -1); // Paper - add -1 priority
      // Paper start - don't submit BLOCKING PROFILE LOOKUPS to the world gen thread
      public static final ExecutorService PROFILE_EXECUTOR = Executors.newFixedThreadPool(2, new java.util.concurrent.ThreadFactory() {
-@@ -162,9 +162,11 @@ public class Util {
-         return executorService;
+@@ -192,9 +192,11 @@ public class Util {
+         return 255;
      }
  
 +    /* // Patina
-     public static Executor bootstrapExecutor() {
+     public static ExecutorService bootstrapExecutor() {
          return BOOTSTRAP_EXECUTOR;
      }
 +    */
  
-     public static Executor backgroundExecutor() {
+     public static ExecutorService backgroundExecutor() {
          return BACKGROUND_EXECUTOR;
 diff --git a/src/main/java/net/minecraft/util/datafix/DataFixers.java b/src/main/java/net/minecraft/util/datafix/DataFixers.java
-index f7c100c975210ba3c3af68311ee53f845ebe8dd3..d56b5c5725aa1c07526fbbf5ccde016c9ad74d57 100644
+index b08d32bc80b4a65ebb980366a3e717c3b0e1bdab..a4ff80ec773e3a33238d444966054bd9a48a60d8 100644
 --- a/src/main/java/net/minecraft/util/datafix/DataFixers.java
 +++ b/src/main/java/net/minecraft/util/datafix/DataFixers.java
-@@ -75,15 +75,15 @@ public class DataFixers {
+@@ -78,15 +78,15 @@ public class DataFixers {
  
      private static final BiFunction<Integer, Schema, Schema> SAME = Schema::new;
      private static final BiFunction<Integer, Schema, Schema> SAME_NAMESPACED = NamespacedSchema::new;

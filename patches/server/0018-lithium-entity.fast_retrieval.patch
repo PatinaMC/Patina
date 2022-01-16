@@ -5,13 +5,13 @@ Subject: [PATCH] lithium: entity.fast_retrieval
 
 
 diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-index 24552500307c42f9f3dc5c4d9ba73a84a787423a..48a16dd572f73d9803e05036b263073ae321f18c 100644
+index 74210dc2eef63da7360b1f833bb59b278419fb2b..566a63bce5f17ab9f5d978c4b26a08e52103dcea 100644
 --- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 +++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-@@ -34,31 +34,25 @@ public class EntitySectionStorage<T extends EntityAccess> {
+@@ -33,31 +33,25 @@ public class EntitySectionStorage<T extends EntityAccess> {
      }
  
-     public void forEachAccessibleSection(AABB box, Consumer<EntitySection<T>> action) {
+     public void forEachAccessibleNonEmptySection(AABB box, Consumer<EntitySection<T>> action) {
 -        int i = SectionPos.posToSectionCoord(box.minX - 2.0D);
 -        int j = SectionPos.posToSectionCoord(box.minY - 2.0D);
 -        int k = SectionPos.posToSectionCoord(box.minZ - 2.0D);
@@ -30,7 +30,7 @@ index 24552500307c42f9f3dc5c4d9ba73a84a787423a..48a16dd572f73d9803e05036b263073a
 -                int t = SectionPos.z(r);
 -                if (s >= j && s <= m && t >= k && t <= n) {
 -                    EntitySection<T> entitySection = this.sections.get(r);
--                    if (entitySection != null && entitySection.getStatus().isAccessible()) {
+-                    if (entitySection != null && !entitySection.isEmpty() && entitySection.getStatus().isAccessible()) {
 -                        action.accept(entitySection);
 +        // Yatopia start - port lithium
 +        int minX = SectionPos.posToSectionCoord(box.minX - 2.0D);

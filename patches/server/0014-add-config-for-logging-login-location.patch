@@ -5,10 +5,10 @@ Subject: [PATCH] add config for logging login location
 
 
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index da57c71b43b973945a4275886ffa472f78add091..93d3645fc8210fccc22e2f77fe474d74282743ae 100644
+index f683b57b024d50110308d79efe5f1978ba6ec952..bbbb090fc2c535fa44e2dcf8eae18e18aa3bc1f4 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -484,7 +484,14 @@ public abstract class PlayerList {
+@@ -483,7 +483,14 @@ public abstract class PlayerList {
          }
          // Paper end
          // CraftBukkit - Moved from above, added world

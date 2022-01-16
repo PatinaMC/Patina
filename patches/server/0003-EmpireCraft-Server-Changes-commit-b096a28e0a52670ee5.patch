@@ -34,10 +34,10 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index deb0837ba9a450cb6a0a833961b8db6a18a238eb..39d754cd95893125c4b593cb3026133ccd09a956 100644
+index 5117c71e83f1a989850183a685f8838cb58649a3..4f4c79d6c09a99eb489eaf299451b9950cbf4c31 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2077,6 +2077,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2101,6 +2101,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -46,7 +46,7 @@ index deb0837ba9a450cb6a0a833961b8db6a18a238eb..39d754cd95893125c4b593cb3026133c
              this.player.resetLastActionTime();
              String s = message.getRaw();
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa92a0db4d 100644
+index fe502e148e218ae404e0049c0251d3e3ca08c825..b9aecfa32039eb71726439dea29d1f77985c06e0 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 @@ -355,4 +355,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
@@ -61,10 +61,10 @@ index 3ac0d0419cbdacabf647a530a82ddf67ddaa13b7..a1e473800ccaf00283f7233b53536caa
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 216bd08b4f74b029968acc5e168e1681327629b1..d6dda395d71f9eb57e61f25dcd3474ad5cba16fc 100644
+index b915f549dc1a6aab1f645395e260f00e45ea7249..b723fa525064ef2ba200014cadf509d290e56949 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -905,7 +905,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -896,7 +896,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -75,7 +75,7 @@ index 216bd08b4f74b029968acc5e168e1681327629b1..d6dda395d71f9eb57e61f25dcd3474ad
              try {
                  // CraftBukkit start
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490ad0612c4b 100644
+index da00f75ccc9f8c2e2174d4450479202a50844245..fe8d0a0a25b244530b0c56f1bdb085e9d2a64eed 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -69,6 +69,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -87,13 +87,13 @@ index ac564148956beb984650341c5c0994573f4f7225..3b85ca881235d604e24e924e4bb8490a
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 83d813025efca5846538e36508a5d4fe38b02108..cc2231d8da7ee18a3b1303ddd89640a846ba7bd9 100644
+index 05c46f3b3bce5225b819d86e6e06729a5093e092..eefac56b8e7aeccb34cc6616f672521497ac9cee 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-@@ -889,7 +889,8 @@ public abstract class BlockBehaviour {
+@@ -930,7 +930,8 @@ public abstract class BlockBehaviour {
                  Direction enumdirection = aenumdirection[l];
  
-                 blockposition_mutableblockposition.setWithOffset((Vec3i) pos, enumdirection);
+                 blockposition_mutableblockposition.setWithOffset(pos, enumdirection);
 -                BlockState iblockdata = world.getBlockState(blockposition_mutableblockposition);
 +                BlockState iblockdata = world.getTypeIfLoaded(blockposition_mutableblockposition); // EMC
 +                if (iblockdata == null) { continue; } // EMC
@@ -101,10 +101,10 @@ index 83d813025efca5846538e36508a5d4fe38b02108..cc2231d8da7ee18a3b1303ddd89640a8
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 858e29ad77aee8a1b7797c2d82902abbfd662da2..c19a6ae40d6699a4f48d008c55c4d1aa1d4ebc85 100644
+index c28f7074a07051ea9aee5dc67dfef9193426a42d..b3cfa449def3554edbefb4e25ebb7b763a1614b9 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -371,7 +371,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -398,7 +398,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

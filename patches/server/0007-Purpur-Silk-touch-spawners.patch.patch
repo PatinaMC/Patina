@@ -5,14 +5,14 @@ Subject: [PATCH] Purpur Silk-touch-spawners.patch
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index f763a3ea5796737304e0c1f41349622e1d7adadf..26c5c3c6e7c51ad6ccc9bac05e2af4972658179d 100644
+index 3661ac5e3bfdebb2911cb1b118942b9fc7884140..6d5a8583c1eea83d6c643466757938c43e5ea4a4 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -91,6 +91,7 @@ public final class PaperAdventure {
-         })
+@@ -93,6 +93,7 @@ public final class PaperAdventure {
          .build();
      public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
+     public static final PlainComponentSerializer PLAIN_COMPONENT = PlainComponentSerializer.builder().flattener(FLATTENER).build();
 +    public static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.builder().character(LegacyComponentSerializer.AMPERSAND_CHAR).hexColors().build(); // Purpur
-     public static final PlainComponentSerializer PLAIN = PlainComponentSerializer.builder().flattener(FLATTENER).build();
+     public static final PlainTextComponentSerializer PLAIN = PlainTextComponentSerializer.builder().flattener(FLATTENER).build();
      public static final GsonComponentSerializer GSON = GsonComponentSerializer.builder()
          .legacyHoverEventSerializer(NBTLegacyHoverEventSerializer.INSTANCE)

@@ -5,10 +5,10 @@ Subject: [PATCH] Optimize TileEntity load/unload
 
 
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 449c7dcb5a674961050ba5834454be7fee019238..05222cfe31ee6a6046e6242f219cfdcbc4d7348b 100644
+index b723fa525064ef2ba200014cadf509d290e56949..2df497c05d7e8a7fd8a974d37aed8df61a9fda98 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -115,8 +115,10 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -116,8 +116,10 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public static final int TICKS_PER_DAY = 24000;
      public static final int MAX_ENTITY_SPAWN_Y = 20000000;
      public static final int MIN_ENTITY_SPAWN_Y = -20000000;
