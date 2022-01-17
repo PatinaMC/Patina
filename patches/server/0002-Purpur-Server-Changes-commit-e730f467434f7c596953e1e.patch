@@ -346,7 +346,7 @@ index d4da096f22bd3c118304fb00c7b9763562b9c889..bfe8559d3b9c3ca94dff228ce4392422
          double d1 = this.getZ() - this.zo;
          float f = (float) (d0 * d0 + d1 * d1);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 7d6bc3c253a77adfc7c35383caadb37154dc5c0f..c36770fa0364d5b0cfcc6a6d29a1b05970323c82 100644
+index 7d6bc3c253a77adfc7c35383caadb37154dc5c0f..38b3cc53c074963eb2d28ba3c1fed57af1dfeb5b 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -137,6 +137,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -365,7 +365,7 @@ index 7d6bc3c253a77adfc7c35383caadb37154dc5c0f..c36770fa0364d5b0cfcc6a6d29a1b059
      }
  
      @Override
-@@ -248,6 +250,10 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
+@@ -248,9 +250,13 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
      protected void customServerAiStep() { mobTick(false); }
      protected void mobTick(boolean inactive) {
          this.level.getProfiler().push("villagerBrain");
@@ -375,7 +375,11 @@ index 7d6bc3c253a77adfc7c35383caadb37154dc5c0f..c36770fa0364d5b0cfcc6a6d29a1b059
 +        // Purpur end
          // Pufferfish start
          if (!inactive) {
-             if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
+-            if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
++            if (level.purpurConfig.villagerBrainTicks != 1 || this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish // Purpur
+             this.getBrain().tick((ServerLevel) this.level, this); // Paper
+          }
+         // Pufferfish end
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
 index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..b915f549dc1a6aab1f645395e260f00e45ea7249 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
