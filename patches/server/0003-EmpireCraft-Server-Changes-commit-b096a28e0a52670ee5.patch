@@ -61,7 +61,7 @@ index fe502e148e218ae404e0049c0251d3e3ca08c825..b9aecfa32039eb71726439dea29d1f77
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b915f549dc1a6aab1f645395e260f00e45ea7249..b723fa525064ef2ba200014cadf509d290e56949 100644
+index b915f549dc1a6aab1f645395e260f00e45ea7249..7bdb544fb21760de6bea13dde5c450430e9a98e0 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -896,7 +896,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -69,7 +69,7 @@ index b915f549dc1a6aab1f645395e260f00e45ea7249..b723fa525064ef2ba200014cadf509d2
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
 -            BlockState iblockdata = this.getBlockState(pos);
-+            BlockState iblockdata = this.getTypeIfLoaded(pos); // EMC
++            BlockState iblockdata = this.getBlockStateIfLoaded(pos); // EMC
 +            if (iblockdata == null) return; // EMC
  
              try {

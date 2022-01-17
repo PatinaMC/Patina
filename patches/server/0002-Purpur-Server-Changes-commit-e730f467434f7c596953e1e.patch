@@ -473,7 +473,7 @@ index 8033d2074d68635515b4737b4416ec9354a3edad..b942e7c85e6c8f9a7664d9e5bf93bcd7
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
-index 6371176fba41218a209ea59b4cafe5b2d4a685fd..f7ab1782c67754a6211c4a67ab8d60573146411d 100644
+index 6371176fba41218a209ea59b4cafe5b2d4a685fd..cbccd903286980e6091cc3fee950ef4501ba7c13 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 @@ -179,6 +179,22 @@ public class SignBlockEntity extends BlockEntity implements CommandSource { // C
@@ -492,7 +492,7 @@ index 6371176fba41218a209ea59b4cafe5b2d4a685fd..f7ab1782c67754a6211c4a67ab8d6057
 +            nbt.putString("Text" + (i + 1), json);
 +        }
 +        nbt.putString("PurpurEditor", "true");
-+        return new ClientboundBlockEntityDataPacket(worldPosition, 9, nbt);
++        return ClientboundBlockEntityDataPacket.create(this, entity -> nbt);
 +    }
 +    // Purpur end
 +

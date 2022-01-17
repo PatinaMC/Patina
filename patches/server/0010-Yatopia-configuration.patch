@@ -51,17 +51,17 @@ index 6a2c91042fcc1ef452d5e7587bfa5ce7571235e4..f683b57b024d50110308d79efe5f1978
          playerconnection.send(new ClientboundPlayerAbilitiesPacket(player.getAbilities()));
          playerconnection.send(new ClientboundSetCarriedItemPacket(player.getInventory().selected));
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index bfe8559d3b9c3ca94dff228ce4392422cd26d352..118716c272226ab51bcaaea5d8efcd949281c222 100644
+index bfe8559d3b9c3ca94dff228ce4392422cd26d352..114911e5a966c5efe1e359e9ea01f0508f2bbbcf 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -391,6 +391,7 @@ public abstract class LivingEntity extends Entity {
-             this.clearFire();
-         }
+@@ -393,6 +393,7 @@ public abstract class LivingEntity extends Entity {
  
-+        if (!org.yatopiamc.yatopia.server.YatopiaConfig.disableEntityStuckChecks) { // Yatopia
          if (this.isAlive()) {
              boolean flag = this instanceof net.minecraft.world.entity.player.Player;
++        if (!org.yatopiamc.yatopia.server.YatopiaConfig.disableEntityStuckChecks) { // Yatopia
              if (tickCount % 20 == 0 && couldPossiblyBeHurt(1.0F) && this.isInWall()) { // Pufferfish - optimize suffocation
+                 this.hurt(DamageSource.IN_WALL, 1.0F);
+             } else if (flag && !this.level.getWorldBorder().isWithinBounds(this.getBoundingBox())) {
 @@ -406,6 +407,7 @@ public abstract class LivingEntity extends Entity {
                      }
                  }
