@@ -95,7 +95,7 @@ index 05c46f3b3bce5225b819d86e6e06729a5093e092..eefac56b8e7aeccb34cc6616f6725214
  
                  blockposition_mutableblockposition.setWithOffset(pos, enumdirection);
 -                BlockState iblockdata = world.getBlockState(blockposition_mutableblockposition);
-+                BlockState iblockdata = world.getTypeIfLoaded(blockposition_mutableblockposition); // EMC
++                BlockState iblockdata = world.getBlockStateIfLoaded(blockposition_mutableblockposition); // EMC
 +                if (iblockdata == null) { continue; } // EMC
                  BlockState iblockdata1 = iblockdata.updateShape(enumdirection.getOpposite(), this.asState(), world, blockposition_mutableblockposition, pos);
  
