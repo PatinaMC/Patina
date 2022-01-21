@@ -5,7 +5,7 @@ Subject: [PATCH] Optimised hallowen checker
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 19cd755483cbf64bcf4a600699e0ffb431f7a141..96c26094e76a1d65af3473b97d952be15a14155f 100644
+index c2dfcadab6752819931e841805df2b67b09493e3..68218d12b9e8cc32345925209367e21393f7c95f 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1528,6 +1528,9 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa

@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 787eb42cc993d322399e9b3a75405ba5729a66f5..48bde83f3886c4455e1c5aaec77468116eed7210 100644
+index cc9f7a754693dcaff7e9ab357ff125ce6e6bcc0f..e29db9096ca948b62bb6cedc74442a56059a0613 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -651,7 +651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -53,7 +53,7 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfd
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 2df497c05d7e8a7fd8a974d37aed8df61a9fda98..61988abf0f5c382daec248f49ccf1418ad4a9322 100644
+index f6dfafb9180b0f13a4a6be221d3b34d22bce650b..dab5360881fff2c637995afc45109ff0d4b6cdc1 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -124,13 +124,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -95,7 +95,7 @@ index 286c75989282c6d370ca64ac714ab15d784210ab..a580c191a0450c1088c32344b30a3f45
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index e6b3c4514e9fbbff657612b1f27dfeb76feb7d8b..0e35c4fd992de86f4348cc6c2da8f9beb985a760 100644
+index 773a2c8fe00ee12998c079230ef177a2aec7e681..12d566307ab4dfa7c3190dad2139d1393285d791 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1241,7 +1241,7 @@ public final class CraftServer implements Server {

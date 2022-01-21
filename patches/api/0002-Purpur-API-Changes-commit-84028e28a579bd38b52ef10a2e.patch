@@ -1,22 +1,19 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
-From: steve <50219120+steveb05@users.noreply.github.com>
-Date: Sat, 11 Dec 2021 21:48:29 +0100
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Fri, 21 Jan 2022 05:45:09 -0800
 Subject: [PATCH] Purpur API Changes commit
- 6edaf8394eb522846ae05ce6e7cf9ffe8aa08625
+ 84028e28a579bd38b52ef10a2ebb6520b55f36fc
 
-Purpur config files
-
-Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 53c4e5ca208ee17c7c244e416c537c7b63edf194..06bd98b26f25a11a94d67737fba1f7c88d8117db 100644
+index 53c4e5ca208ee17c7c244e416c537c7b63edf194..8aed0d140c8faef173259e2641de9bc81030554c 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
 @@ -2181,4 +2181,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
-+	
++
 +    // Purpur start
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
@@ -29,7 +26,7 @@ index 53c4e5ca208ee17c7c244e416c537c7b63edf194..06bd98b26f25a11a94d67737fba1f7c8
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e48af3822e9f118399c3a1c9358c56efae12e0da..6dbf856ff422a02cd035d2a9a8535b97bc76ac2f 100644
+index e48af3822e9f118399c3a1c9358c56efae12e0da..a320f3911f9cfca61e3f658abb4bdf45e9e37d02 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -1778,6 +1778,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -55,7 +52,7 @@ index e48af3822e9f118399c3a1c9358c56efae12e0da..6dbf856ff422a02cd035d2a9a8535b97
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end
-+	
++
 +    // Purpur start
 +    /**
 +     * Check if server is lagging according to laggy threshold setting

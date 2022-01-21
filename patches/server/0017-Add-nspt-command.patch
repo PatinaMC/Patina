@@ -5,7 +5,7 @@ Subject: [PATCH] Add nspt command
 
 
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index a947bc4d2a3ca0d1a585392d572394106c56d837..4f4e7051adc5212df44de248770cb461e63d0397 100644
+index b224402f0052e1f14b77dea3b61b95f2b55bf148..479d51b3e3717576584b185a8bb6aa4b0dbbee10 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -226,6 +226,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -17,13 +17,13 @@ index a947bc4d2a3ca0d1a585392d572394106c56d837..4f4e7051adc5212df44de248770cb461
          com.destroystokyo.paper.PaperConfig.registerCommands();
          // Purpur start
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 82f3eda11342ef965887f3f9b135743c35e00059..e6b3c4514e9fbbff657612b1f27dfeb76feb7d8b 100644
+index 910425424d1188216d20d00ae138156d51c85649..cde3366e7084f12a4f2618a805a9bf2d4e095c06 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1011,6 +1011,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
-         net.pl3x.purpur.PurpurConfig.registerCommands(); // Purpur
+         org.purpurmc.purpur.PurpurConfig.registerCommands(); // Purpur
 +        org.yatopiamc.yatopia.server.YatopiaConfig.registerCommands(); // Yatopia
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
