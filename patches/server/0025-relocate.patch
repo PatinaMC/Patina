@@ -12,7 +12,7 @@ index 3963f2ce9b7cff606126c1412a213db443142be6..b2864c0e1d0cdd0970c1b46df9e01271
      relocate("org.bukkit.craftbukkit" to "org.bukkit.craftbukkit.v$packageVersion") {
          exclude("org.bukkit.craftbukkit.Main*")
      }
-+    relocate("org.yatopiamc.yatopia.server" to "org.bukkit.craftbukkit.libs") // Patina
++    relocate("me.titaniumtown" to "org.bukkit.craftbukkit.libs") // Patina
  }
  
  tasks.shadowJar {
