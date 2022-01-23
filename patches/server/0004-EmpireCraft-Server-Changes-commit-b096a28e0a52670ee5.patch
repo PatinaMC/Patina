@@ -34,7 +34,7 @@ index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a
                          itemStack.setCount(1);
                          ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5117c71e83f1a989850183a685f8838cb58649a3..4f4c79d6c09a99eb489eaf299451b9950cbf4c31 100644
+index e69898d7529634da1eca752beb7e6f6cb72fa399..8925863b4b01fdd3cca74bf6e60017430d313220 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2101,6 +2101,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -61,10 +61,10 @@ index fe502e148e218ae404e0049c0251d3e3ca08c825..b9aecfa32039eb71726439dea29d1f77
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b915f549dc1a6aab1f645395e260f00e45ea7249..7bdb544fb21760de6bea13dde5c450430e9a98e0 100644
+index aedfc839c1ed81431be8e0f7633c6e62ee040707..dcbeecd8d14bce835633d150ba5c9e09b9a32565 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -896,7 +896,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -897,7 +897,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
  
      public void neighborChanged(BlockPos pos, Block sourceBlock, BlockPos neighborPos) {
          if (!this.isClientSide) {
@@ -87,7 +87,7 @@ index da00f75ccc9f8c2e2174d4450479202a50844245..fe8d0a0a25b244530b0c56f1bdb085e9
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 05c46f3b3bce5225b819d86e6e06729a5093e092..eefac56b8e7aeccb34cc6616f672521497ac9cee 100644
+index b7c4f2144fae2ceadcdfd94f7e3948d9ceef4a4a..a329570852b88602fe7ca323f7d81826afbb969f 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 @@ -930,7 +930,8 @@ public abstract class BlockBehaviour {

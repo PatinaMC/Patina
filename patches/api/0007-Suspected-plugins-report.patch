@@ -6,7 +6,7 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 05bb388407b5bd8a942478237580a38ffaa388c8..a8f2edec1f4bd7fc1d2df6c8b3e4b9644c568e3c 100644
+index 0cbe93474b5f250638246cbd28f314cddc319d0c..a6b246f19792046d30cffaec0ab89c5719bd7fb1 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -582,7 +582,11 @@ public final class SimplePluginManager implements PluginManager {
@@ -22,7 +22,7 @@ index 05bb388407b5bd8a942478237580a38ffaa388c8..a8f2edec1f4bd7fc1d2df6c8b3e4b964
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
          callEvent(new ServerExceptionEvent(new ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -645,7 +649,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -653,7 +657,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -35,7 +35,7 @@ index 05bb388407b5bd8a942478237580a38ffaa388c8..a8f2edec1f4bd7fc1d2df6c8b3e4b964
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
                  if (!(event instanceof ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new ServerExceptionEvent(new ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -931,4 +939,10 @@ public final class SimplePluginManager implements PluginManager {
+@@ -939,4 +947,10 @@ public final class SimplePluginManager implements PluginManager {
      }
      // Paper end
  

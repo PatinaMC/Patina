@@ -61,7 +61,7 @@ index 1617437515590a32c42687d290dd11bc8fa8edf5..beac966ddf6348ac956920a803dd509a
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 113e55e266502d40f601388a7fc2947e24bbe4a3..d89f272ff94b476af3888ffa2cdf9b4419c039cd 100644
+index a8bcd3b08d6b542c2afaedb40bc39ad606377c0f..a53cfa737df526d0354ee0658749115c49a19697 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -304,6 +304,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -108,7 +108,7 @@ index f7959fe8d5247504dd79a18010470d98781c7cfe..6f5b7650d45958284f7b5c675c1e32d4
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index aae2dadabedb075fd1bc712f0226882b85f4551d..6e68c186178924188ade4c5bf58d15a6ea867af4 100644
+index 5a229066d8f13041224574b5ba6b1064fce76303..ec7382b85e7ca9fead5f398a3e61989a012e06eb 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -228,6 +228,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -140,7 +140,7 @@ index 7b23535a680d2a8534dcb8dd87770f66fb982c13..b3d1a3cc43e2766bfa362ea8bdaab0db
          this.connection.send(new ClientboundBlockUpdatePacket(this.level, sign.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos()));
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 889a4804eaa128e2f79a4ea48b8aa796336576d1..b89e03fb609ea0c0bc809ca2593b7f534cfea485 100644
+index 0105a60a9a361624f650e21c3efbd1ee5adb86a1..e69898d7529634da1eca752beb7e6f6cb72fa399 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -228,6 +228,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -224,10 +224,10 @@ index 4fa79d37ff4e70c61672cce7c55257c46232c026..df43d0a0f3d1e34baabae150cbf01a00
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f55f8c0b2c748a5442199c0a7f772b02ed533753..6a2c91042fcc1ef452d5e7587bfa5ce7571235e4 100644
+index 3f998b8235f4c998e8c29adc6f91085b5a3f2fa6..15afcf4e8048fc15f1a2d407972cca90df8f66c0 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1156,6 +1156,7 @@ public abstract class PlayerList {
+@@ -1162,6 +1162,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -260,7 +260,7 @@ index 5ded03b80f71111e8480036ae2787b419ac57133..d2df01b9fe9dad4fa7a6265e9916e345
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index d4da096f22bd3c118304fb00c7b9763562b9c889..bfe8559d3b9c3ca94dff228ce4392422cd26d352 100644
+index f9db4045f3e909c669e2b24473efad41cc811899..6788b09c619c768a0b41bc1a112bacd6fb2c4c7c 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2924,7 +2924,7 @@ public abstract class LivingEntity extends Entity {
@@ -304,10 +304,10 @@ index 7d6bc3c253a77adfc7c35383caadb37154dc5c0f..6cadaa49c23cf420e19648780b801722
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..37884e05689288d56ef0efe92296b80ef6093b3c 100644
+index 7e9b4477ad94aae37894f6ff3d318bc268806209..aedfc839c1ed81431be8e0f7633c6e62ee040707 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -169,6 +169,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -170,6 +170,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final com.destroystokyo.paper.PaperWorldConfig paperConfig; // Paper
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
  
@@ -316,7 +316,7 @@ index 90aa1d75b5c23e5ee27ceae9f6ef90de913a6601..37884e05689288d56ef0efe92296b80e
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -320,6 +322,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -321,6 +323,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, final DimensionType dimensionmanager, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName(), this.spigotConfig); // Paper
@@ -428,18 +428,18 @@ index 6371176fba41218a209ea59b4cafe5b2d4a685fd..7666bca74f4f68bb4e902ec2eb7c4895
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index a92a2302c9e3013d354ee885165af17540d9c343..8617944e6e26951ce8c8acca42da54d1a6a6182e 100644
+index 43ad783a4f9027d8a4e3ee5b6b26be5cc3155731..eaf55e9ee442539a918c5ca94c569b406da13d35 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
- 
+@@ -953,6 +953,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
+         me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
 +        org.purpurmc.purpur.PurpurConfig.init((File) console.options.valueOf("purpur-settings")); // Purpur
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -992,6 +993,7 @@ public final class CraftServer implements Server {
+@@ -993,6 +994,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -447,7 +447,7 @@ index a92a2302c9e3013d354ee885165af17540d9c343..8617944e6e26951ce8c8acca42da54d1
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -1007,6 +1009,7 @@ public final class CraftServer implements Server {
+@@ -1008,6 +1010,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -455,7 +455,7 @@ index a92a2302c9e3013d354ee885165af17540d9c343..8617944e6e26951ce8c8acca42da54d1
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2667,6 +2670,18 @@ public final class CraftServer implements Server {
+@@ -2668,6 +2671,18 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -474,7 +474,7 @@ index a92a2302c9e3013d354ee885165af17540d9c343..8617944e6e26951ce8c8acca42da54d1
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2821,4 +2836,11 @@ public final class CraftServer implements Server {
+@@ -2822,4 +2837,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -487,12 +487,12 @@ index a92a2302c9e3013d354ee885165af17540d9c343..8617944e6e26951ce8c8acca42da54d1
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 55bae3efbc630be6d40d415509de4c3e744a5004..6f14a1b26e92d0170538ed60c6a651a031e7209e 100644
+index bc26c18535e161d4254b644ffbdaad23e95ff631..95f0cc6ad45bf0f6feeb15acfc0b8ee0b4258a3a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -153,6 +153,14 @@ public class Main {
-                         .describedAs("Jar file");
-                 // Paper end
+@@ -161,6 +161,14 @@ public class Main {
+                         .describedAs("Yml file");
+                 // JettPack end
  
 +                // Purpur Start
 +                acceptsAll(asList("purpur", "purpur-settings"), "File for purpur settings")
@@ -505,7 +505,7 @@ index 55bae3efbc630be6d40d415509de4c3e744a5004..6f14a1b26e92d0170538ed60c6a651a0
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
-@@ -261,7 +269,7 @@ public class Main {
+@@ -269,7 +277,7 @@ public class Main {
                      System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
                  }
  
