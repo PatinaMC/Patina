@@ -5,6 +5,6 @@ pluginManagement {
     }
 }
 
-rootProject.name = "Patina"
+rootProject.name = "patina"
 
-include("Patina-API", "Patina-Server", "Patina-MojangAPI")
+include("patina-api", "patina-server", "patina-mojangapi")

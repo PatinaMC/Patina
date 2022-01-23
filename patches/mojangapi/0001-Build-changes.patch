@@ -13,7 +13,7 @@ index c90209011a266e71511954f23a1e42efa8c62a54..4a6a7db602292a89c3675bd1c9aa8efe
  
  dependencies {
 -    implementation(project(":paper-api"))
-+    implementation(project(":Patina-API")) // Patina
++    implementation(project(":patina-api")) // Patina
      api("com.mojang:brigadier:1.0.18")
  
      compileOnly("it.unimi.dsi:fastutil:8.5.6")
