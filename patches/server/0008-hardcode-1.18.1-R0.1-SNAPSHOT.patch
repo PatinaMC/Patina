@@ -1,11 +1,11 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
 Date: Mon, 28 Jun 2021 11:44:27 +0000
-Subject: [PATCH] hardcode 1.17.1-R0.1-SNAPSHOT
+Subject: [PATCH] hardcode 1.18.1-R0.1-SNAPSHOT
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 774556a62eb240da42e84db4502e2ed43495be17..f3d02fc44a189218e8c09d711db594db4702f70b 100644
+index 774556a62eb240da42e84db4502e2ed43495be17..8d9f27f91cd0b9d14305230244888725861bb621 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -9,21 +9,6 @@ import org.bukkit.Bukkit;
@@ -28,6 +28,6 @@ index 774556a62eb240da42e84db4502e2ed43495be17..f3d02fc44a189218e8c09d711db594db
 -        }
 -
 -        return result;
-+        return "1.17.1-R0.1-SNAPSHOT"; // Patina
++        return "1.18.1-R0.1-SNAPSHOT"; // Patina
      }
  }
