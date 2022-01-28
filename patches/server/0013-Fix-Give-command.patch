@@ -5,10 +5,10 @@ Subject: [PATCH] Fix Give command
 
 
 diff --git a/src/main/java/net/minecraft/server/commands/CommandGive.java b/src/main/java/net/minecraft/server/commands/CommandGive.java
-index 5cbe3ed2987dcd2e2fa0fcc428e5fcf0c2b12372..8b8dafc0722bdf6bc36d6428fb077725b20fac78 100644
+index a10207f7cb9455e29db7e6906cb2138ad5609a1f..9c3ce0e257602b308b96d998bda18badeb3f18e2 100644
 --- a/src/main/java/net/minecraft/server/commands/CommandGive.java
 +++ b/src/main/java/net/minecraft/server/commands/CommandGive.java
-@@ -47,6 +47,7 @@ final public class CommandGive {
+@@ -47,6 +47,7 @@ public class CommandGive {
                  boolean flag = entityplayer.inventory.pickup(itemstack);
                  EntityItem entityitem;
  

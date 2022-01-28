@@ -96,8 +96,8 @@ This is an overview of all the patches that are currently used.
 | server |  Make sure inlined getChunkAt has inlined logic for loaded      | Spottedleaf |  |
 | server |  Manually inline methods in BlockPosition      | Spottedleaf |  |
 | server |  Modify POM      | YatopiaMC |  |
-| server |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
+| server |  Modify POM      | YatopiaMC |  |
 | api |  Modify POM      | YatopiaMC |  |
 | server |  More debug for plugins not shutting down tasks      | Paul Sauve |  |
 | server |  Multi-Threaded Server Ticking Vanilla      | Spottedleaf |  |
@@ -182,6 +182,7 @@ This is an overview of all the patches that are currently used.
 | server |  Time scoreboard search      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
+| server |  Update log4j      | Nassim Jahnke |  |
 | server |  Update version fetcher repo      | JRoy |  |
 | server |  Use array for gamerule storage      | Paul Sauve |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |
@@ -211,5 +212,4 @@ This is an overview of all the patches that are currently used.
 | server |  lithium: cache chunk gen sea level      | SuperCoder7979 |  |
 | server |  logo      | foss-mc |  |
 | server |  mark some OBFHELPER as final      | foss-mc |  |
-| server |  mark some classes as final      | foss-mc |  |
 | server |  remove Yatopia&#39;s brand-name: it is incomplete      | foss-mc |  |

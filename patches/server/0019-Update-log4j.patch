@@ -1,4 +1,3 @@
-
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Nassim Jahnke <jahnke.nassim@gmail.com>
 Date: Thu, 9 Dec 2021 21:30:08 +0100
@@ -6,10 +5,10 @@ Subject: [PATCH] Update log4j
 
 
 diff --git a/pom.xml b/pom.xml
-index 1a9204c869dd36e80932b1366352db15ebd70723..1d6469b65a624c1f9ed7ed0e72d8f44f47358755 100644
+index de892cc1ed8b7caae432419b4d4772da3315b122..cd8bfa00aecb1b52fcba5389091299b3eff2dd13 100644
 --- a/pom.xml
 +++ b/pom.xml
-@@ -30,7 +30,7 @@
+@@ -60,7 +60,7 @@
              <dependency>
                  <groupId>org.apache.logging.log4j</groupId>
                  <artifactId>log4j-bom</artifactId>
