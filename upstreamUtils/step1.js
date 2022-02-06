@@ -4,7 +4,7 @@ const util = require('util');
 const fs = require('fs');
 
 function execAsync(cmd, callback) {
-  const c = child_process.exec(cmd, callback);
+  const c = child_process.exec(cmd, {shell: 'bash'}, callback);
 
   c.stdout.pipe(process.stdout);
   c.stderr.pipe(process.stderr);
