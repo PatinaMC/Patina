@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Tue, 8 Feb 2022 11:19:17 +0000
+Subject: [PATCH] JettPack da9591aea4431709c257241b2f5032c5506da9a8
+ 0025-reduce-allocs.patch src/main/java/net/minecraft/core/Direction.java
+
+
+diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
+index db61e58b376926c77030d85f03bb7a9f54c6f8e4..8a39ef112ec3f7543b3045dbda2eb98869ac72f0 100644
+--- a/src/main/java/net/minecraft/core/Direction.java
++++ b/src/main/java/net/minecraft/core/Direction.java
+@@ -41,7 +41,7 @@ public enum Direction implements StringRepresentable {
+     private final Direction.Axis axis;
+     private final Direction.AxisDirection axisDirection;
+     private final Vec3i normal;
+-    private static final Direction[] VALUES = values();
++    public static final Direction[] VALUES = values(); // JettPack - private->public
+     private static final Map<String, Direction> BY_NAME = Arrays.stream(VALUES).collect(Collectors.toMap(Direction::getName, (direction) -> {
+         return direction;
+     }));
+@@ -532,7 +532,6 @@ public enum Direction implements StringRepresentable {
+                 return z;
+             }
+         };
+-
+         public static final Direction.Axis[] VALUES = values();
+         public static final Codec<Direction.Axis> CODEC = StringRepresentable.fromEnum(Direction.Axis::values, Direction.Axis::byName);
+         private static final Map<String, Direction.Axis> BY_NAME = Arrays.stream(VALUES).collect(Collectors.toMap(Direction.Axis::getName, (axis) -> {
