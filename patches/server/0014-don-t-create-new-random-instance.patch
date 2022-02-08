@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a574f325af65ff89d81fbce1e96ed5cab1592318..38d37ffb64f39eee56ab8e8da369f30f9dd64636 100644
+index 1d980aac27365935407e8d889fc2a8990b93eeee..25e659eb8f1f76d0c6509f2acc0e3a1ee82d2457 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -651,7 +651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -18,7 +18,7 @@ index a574f325af65ff89d81fbce1e96ed5cab1592318..38d37ffb64f39eee56ab8e8da369f30f
                  dimensionmanager = worlddimension.type();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b3d1a3cc43e2766bfa362ea8bdaab0dbefba350b..aecb294c004ea987c231b20eba6ff3ce684678e7 100644
+index 824b28d1aae995bf15975c0602aae04de673c15c..5d53b71812eae0b14d5157131360c83da714a46f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -368,7 +368,7 @@ public class ServerPlayer extends Player {
@@ -53,10 +53,10 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfd
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index dcbeecd8d14bce835633d150ba5c9e09b9a32565..13ebf46e88ab4c797b771b86cf5d56fecbef0fb1 100644
+index a8d3657deda93cbc5f157b101e8b3e602db86cc5..c18b878e578bcb95d575d9c91b1522efab7e1e63 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -123,13 +123,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -122,13 +122,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final Thread thread;
      private final boolean isDebug;
      private int skyDarken;

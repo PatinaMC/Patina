@@ -5,7 +5,7 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 38d2840a00b43d74ee6a61ced0d752a989806ba7..a574f325af65ff89d81fbce1e96ed5cab1592318 100644
+index 5b00f5e65188203b7641122ebd52dea17cdd3d1e..1d980aac27365935407e8d889fc2a8990b93eeee 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -186,7 +186,7 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -41,7 +41,7 @@ index 38d2840a00b43d74ee6a61ced0d752a989806ba7..a574f325af65ff89d81fbce1e96ed5ca
  
      @Override
      public boolean pollTask() {
-@@ -1418,10 +1420,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1419,10 +1421,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
@@ -55,10 +55,10 @@ index 38d2840a00b43d74ee6a61ced0d752a989806ba7..a574f325af65ff89d81fbce1e96ed5ca
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 401326bfd610302a5b073cec646b435a861ad109..325ad14a55fbcfde73c061a03ca3592196360363 100644
+index addf249717b5271b664f4a9d28dd6cc177db5688..d63d923562878e00cd0c95d3b46a11ee68932011 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1270,10 +1270,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1264,10 +1264,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  

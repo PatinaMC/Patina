@@ -5,10 +5,10 @@ Subject: [PATCH] add Purpur to timings report
 
 
 diff --git a/src/main/java/co/aikar/timings/TimingsExport.java b/src/main/java/co/aikar/timings/TimingsExport.java
-index 26bde1c22363ddbdbe4127d14bae54e17b0d7393..6a1d0ed30fa05b76f70397b8bb719ba7df40c794 100644
+index d3bb2a3ead944a89330bbced6812df73d174d061..b0e1c6fbdcf02477f3b4d5c5feb1237605629b63 100644
 --- a/src/main/java/co/aikar/timings/TimingsExport.java
 +++ b/src/main/java/co/aikar/timings/TimingsExport.java
-@@ -229,6 +229,7 @@ public class TimingsExport extends Thread {
+@@ -233,6 +233,7 @@ public class TimingsExport extends Thread {
              pair("bukkit", mapAsJSON(Bukkit.spigot().getBukkitConfig(), null)),
              pair("paper", mapAsJSON(Bukkit.spigot().getPaperConfig(), null)), // Pufferfish
              pair("pufferfish", mapAsJSON(gg.pufferfish.pufferfish.PufferfishConfig.getConfigCopy(), null)) // Pufferfish

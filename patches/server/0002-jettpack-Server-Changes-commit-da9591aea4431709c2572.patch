@@ -1,0 +1,1476 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Tue, 8 Feb 2022 10:29:32 +0000
+Subject: [PATCH] jettpack Server Changes commit
+ da9591aea4431709c257241b2f5032c5506da9a8
+
+mcdev fixes
+
+lithium HashedList
+
+Original code by JellySquid, licensed under GNU Lesser General Public License v3.0
+you can find the original code on https://github.com/CaffeineMC/lithium-fabric/ (Yarn mappings)
+
+JettPack Config
+
+(Yatopia) New nbt cache
+
+The goal of this patch is to reduce I/O operations from the main thread while saving player data and also to avoid too many I/O operations while reading NBT Player file by using a cache (Which start to delete the oldest data when there is too much player compared to the map size)
+
+Original code by Yatopia, licensed under MIT License
+Co-authored-by: ishland <ishlandmc@yeah.net>
+
+configurable logging of player login location
+
+configurable fishing rod length
+
+(PaperPR) Optimize despawn when no player is on range
+
+Original PR: https://github.com/PaperMC/Paper/pull/7049
+
+Optimize VarInts
+
+Original PR: https://github.com/PaperMC/Paper/pull/6957
+
+lithium: replace AI goal set with optimized collection
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+lithium: math.fast_util
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+lithium: entity.fast_retrieval
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+lithium: cached_hashcode
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+lithium: shapes.precompute_shape_arrays
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+C2ME: Math optimizations
+
+Original code created for the C2ME project (https://github.com/RelativityMC/C2ME-fabric) by RelativityMC, licensed under the MIT License
+Copyright (c) 2021-2022 ishland
+
+lithium: world.inline_height
+
+Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
+
+diff --git a/src/main/java/me/jellysquid/mods/lithium/common/util/collections/HashedList.java b/src/main/java/me/jellysquid/mods/lithium/common/util/collections/HashedList.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..2d79932dbd1fc386a94b8d6ea3526934c54c2aad
+--- /dev/null
++++ b/src/main/java/me/jellysquid/mods/lithium/common/util/collections/HashedList.java
+@@ -0,0 +1,280 @@
++package me.jellysquid.mods.lithium.common.util.collections;
++
++import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
++import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
++import java.util.Collection;
++import java.util.Iterator;
++import java.util.List;
++import java.util.ListIterator;
++import java.util.NoSuchElementException;
++
++/**
++ * Wraps a {@link List} with a hash table which provides O(1) lookups for {@link Collection#contains(Object)}. The type
++ * contained by this list must use reference-equality semantics.
++ */
++@SuppressWarnings("SuspiciousMethodCalls")
++public class HashedList<T> implements List<T> {
++    private final ReferenceArrayList<T> list;
++    private final Reference2IntOpenHashMap<T> counter;
++
++    public HashedList(List<T> list) {
++        this.list = new ReferenceArrayList<>();
++        this.list.addAll(list);
++
++        this.counter = new Reference2IntOpenHashMap<>();
++        this.counter.defaultReturnValue(0);
++
++        for (T obj : this.list) {
++            this.counter.addTo(obj, 1);
++        }
++    }
++
++    @Override
++    public int size() {
++        return this.list.size();
++    }
++
++    @Override
++    public boolean isEmpty() {
++        return this.list.isEmpty();
++    }
++
++    @Override
++    public boolean contains(Object o) {
++        return this.counter.containsKey(o);
++    }
++
++    @Override
++    public Iterator<T> iterator() {
++        return this.listIterator();
++    }
++
++    @Override
++    public Object[] toArray() {
++        return this.list.toArray();
++    }
++
++    @SuppressWarnings("SuspiciousToArrayCall")
++    @Override
++    public <T1> T1[] toArray(T1[] a) {
++        return this.list.toArray(a);
++    }
++
++    @Override
++    public boolean add(T t) {
++        this.trackReferenceAdded(t);
++
++        return this.list.add(t);
++    }
++
++    @Override
++    public boolean remove(Object o) {
++        this.trackReferenceRemoved(o);
++
++        return this.list.remove(o);
++    }
++
++    @Override
++    public boolean containsAll(Collection<?> c) {
++        for (Object obj : c) {
++            if (!this.counter.containsKey(obj)) {
++                return false;
++            }
++        }
++
++        return true;
++    }
++
++    @Override
++    public boolean addAll(Collection<? extends T> c) {
++        for (T obj : c) {
++            this.trackReferenceAdded(obj);
++        }
++
++        return this.list.addAll(c);
++    }
++
++    @Override
++    public boolean addAll(int index, Collection<? extends T> c) {
++        for (T obj : c) {
++            this.trackReferenceAdded(obj);
++        }
++
++        return this.list.addAll(index, c);
++    }
++
++    @Override
++    public boolean removeAll(Collection<?> c) {
++        for (Object obj : c) {
++            this.trackReferenceRemoved(obj);
++        }
++
++        return this.list.removeAll(c);
++    }
++
++    @Override
++    public boolean retainAll(Collection<?> c) {
++        return this.list.retainAll(c);
++    }
++
++    @Override
++    public void clear() {
++        this.counter.clear();
++        this.list.clear();
++    }
++
++    @Override
++    public T get(int index) {
++        return this.list.get(index);
++    }
++
++    @Override
++    public T set(int index, T element) {
++        T prev = this.list.set(index, element);
++
++        if (prev != element) {
++            if (prev != null) {
++                this.trackReferenceRemoved(prev);
++            }
++
++            this.trackReferenceAdded(element);
++        }
++
++        return prev;
++    }
++
++    @Override
++    public void add(int index, T element) {
++        this.trackReferenceAdded(element);
++
++        this.list.add(index, element);
++    }
++
++    @Override
++    public T remove(int index) {
++        T prev = this.list.remove(index);
++
++        if (prev != null) {
++            this.trackReferenceRemoved(prev);
++        }
++
++        return prev;
++    }
++
++    @Override
++    public int indexOf(Object o) {
++        return this.list.indexOf(o);
++    }
++
++    @Override
++    public int lastIndexOf(Object o) {
++        return this.list.lastIndexOf(o);
++    }
++
++    @Override
++    public ListIterator<T> listIterator() {
++        return this.listIterator(0);
++    }
++
++    @Override
++    public ListIterator<T> listIterator(int index) {
++        return new ListIterator<T>() {
++            private final ListIterator<T> inner = HashedList.this.list.listIterator(index);
++
++            @Override
++            public boolean hasNext() {
++                return this.inner.hasNext();
++            }
++
++            @Override
++            public T next() {
++                return this.inner.next();
++            }
++
++            @Override
++            public boolean hasPrevious() {
++                return this.inner.hasPrevious();
++            }
++
++            @Override
++            public T previous() {
++                return this.inner.previous();
++            }
++
++            @Override
++            public int nextIndex() {
++                return this.inner.nextIndex();
++            }
++
++            @Override
++            public int previousIndex() {
++                return this.inner.previousIndex();
++            }
++
++            @Override
++            public void remove() {
++                int last = this.previousIndex();
++
++                if (last == -1) {
++                    throw new NoSuchElementException();
++                }
++
++                T prev = HashedList.this.get(last);
++
++                if (prev != null) {
++                    HashedList.this.trackReferenceRemoved(prev);
++                }
++
++                this.inner.remove();
++            }
++
++            @Override
++            public void set(T t) {
++                int last = this.previousIndex();
++
++                if (last == -1) {
++                    throw new NoSuchElementException();
++                }
++
++                T prev = HashedList.this.get(last);
++
++                if (prev != t) {
++                    if (prev != null) {
++                        HashedList.this.trackReferenceRemoved(prev);
++                    }
++
++                    HashedList.this.trackReferenceAdded(t);
++                }
++
++                this.inner.remove();
++            }
++
++            @Override
++            public void add(T t) {
++                HashedList.this.trackReferenceAdded(t);
++
++                this.inner.add(t);
++            }
++        };
++    }
++
++    @Override
++    public List<T> subList(int fromIndex, int toIndex) {
++        return this.list.subList(fromIndex, toIndex);
++    }
++
++    private void trackReferenceAdded(T t) {
++        this.counter.addTo(t, 1);
++    }
++
++    @SuppressWarnings("unchecked")
++    private void trackReferenceRemoved(Object o) {
++        if (this.counter.addTo((T) o, -1) <= 1) {
++            this.counter.removeInt(o);
++        }
++    }
++
++    public static <T> HashedList<T> wrapper(List<T> list) {
++        return new HashedList<>(list);
++    }
++}
+diff --git a/src/main/java/me/titaniumtown/JettPackConfig.java b/src/main/java/me/titaniumtown/JettPackConfig.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..56e9e776750ad569de0d69a3f96994fc4e64d555
+--- /dev/null
++++ b/src/main/java/me/titaniumtown/JettPackConfig.java
+@@ -0,0 +1,124 @@
++package me.titaniumtown;
++
++import com.google.common.base.Throwables;
++import java.io.File;
++import java.io.IOException;
++import java.lang.reflect.InvocationTargetException;
++import java.lang.reflect.Method;
++import java.lang.reflect.Modifier;
++import java.util.List;
++import java.util.concurrent.TimeUnit;
++import java.util.logging.Level;
++import java.util.regex.Pattern;
++import org.bukkit.Bukkit;
++import org.bukkit.configuration.InvalidConfigurationException;
++import org.bukkit.configuration.file.YamlConfiguration;
++
++public class JettPackConfig {
++
++    public static File CONFIG_FILE;
++    private static final String HEADER = "This is the main configuration file for JettPack.\n"
++                        + "JettPack does some **experimental** and possibly unstable stuff\n"
++                        + "You've been warned\n";
++    /*========================================================================*/
++    public static YamlConfiguration config;
++    public static int version; // since we're remapping sidestreams' configs we need this public
++    public static boolean verbose; // since we're remapping sidestreams' configs we need this public
++    /*========================================================================*/
++
++    public static void init(File configFile) {
++        CONFIG_FILE = configFile;
++        config = new YamlConfiguration();
++        try {
++            config.load(CONFIG_FILE);
++        } catch (IOException ex) {
++        } catch (InvalidConfigurationException ex) {
++            Bukkit.getLogger().log(Level.SEVERE, "Could not load jettpack.yml, please correct your syntax errors", ex);
++            throw Throwables.propagate(ex);
++        }
++        config.options().header(HEADER);
++        config.options().copyDefaults(true);
++        verbose = getBoolean("verbose", false);
++
++        version = getInt("config-version", 1);
++        set("config-version", 1);
++        readConfig(JettPackConfig.class, null);
++    }
++
++    protected static void logError(String s) {
++        Bukkit.getLogger().severe(s);
++    }
++
++    protected static void log(String s) {
++        if (verbose) {
++            Bukkit.getLogger().info(s);
++        }
++    }
++
++    static void readConfig(Class<?> clazz, Object instance) {
++        for (Method method : clazz.getDeclaredMethods()) {
++            if (Modifier.isPrivate(method.getModifiers())) {
++                if (method.getParameterTypes().length == 0 && method.getReturnType() == Void.TYPE) {
++                    try {
++                        method.setAccessible(true);
++                        method.invoke(instance);
++                    } catch (InvocationTargetException ex) {
++                        throw Throwables.propagate(ex.getCause());
++                    } catch (Exception ex) {
++                        Bukkit.getLogger().log(Level.SEVERE, "Error invoking " + method, ex);
++                    }
++                }
++            }
++        }
++
++        try {
++            config.save(CONFIG_FILE);
++        } catch (IOException ex) {
++            Bukkit.getLogger().log(Level.SEVERE, "Could not save " + CONFIG_FILE, ex);
++        }
++    }
++
++    private static final Pattern SPACE = Pattern.compile(" ");
++    private static final Pattern NOT_NUMERIC = Pattern.compile("[^-\\d.]");
++
++
++    private static void set(String path, Object val) {
++        config.set(path, val);
++    }
++
++    private static boolean getBoolean(String path, boolean def) {
++        config.addDefault(path, def);
++        return config.getBoolean(path, config.getBoolean(path));
++    }
++
++    private static double getDouble(String path, double def) {
++        config.addDefault(path, def);
++        return config.getDouble(path, config.getDouble(path));
++    }
++
++    private static float getFloat(String path, float def) {
++        return (float) getDouble(path, (double) def);
++    }
++
++    private static int getInt(String path, int def) {
++        config.addDefault(path, def);
++        return config.getInt(path, config.getInt(path));
++    }
++
++    private static <T> List<T> getList(String path, List<T> def) {
++        config.addDefault(path, def);
++        return (List<T>) config.getList(path, config.getList(path));
++    }
++
++    private static String getString(String path, String def) {
++        config.addDefault(path, def);
++        return config.getString(path, config.getString(path));
++    }
++
++    public static boolean logPlayerLoginLoc = true;
++    public static double fishingRodLength = 1024.0D;
++    private static void general() {
++        logPlayerLoginLoc = getBoolean("settings.log-player-login-location", logPlayerLoginLoc);
++        fishingRodLength = getDouble("settings.fishing-rod-length", fishingRodLength);
++    }
++}
+\ No newline at end of file
+diff --git a/src/main/java/me/titaniumtown/cache/NBTCache.java b/src/main/java/me/titaniumtown/cache/NBTCache.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0a2d2349f4e3fbde700c0f80ef89f2917e54d505
+--- /dev/null
++++ b/src/main/java/me/titaniumtown/cache/NBTCache.java
+@@ -0,0 +1,32 @@
++package me.titaniumtown.cache;
++
++import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenCustomHashMap;
++import net.minecraft.server.MinecraftServer;
++import net.minecraft.nbt.CompoundTag;
++
++import java.io.File;
++
++public class NBTCache extends Object2ObjectLinkedOpenCustomHashMap<File, CompoundTag> {
++
++    public NBTCache() {
++        super(100, 0.75F, new Strategy<File>() {
++            @Override
++            public int hashCode(File k) {
++                return k.hashCode();
++            }
++
++            @Override
++            public boolean equals(File k, File k1) {
++                return k.equals(k1);
++            }
++        });
++    }
++
++    @Override
++    public CompoundTag put(File k, CompoundTag v) {
++        if (this.size() > MinecraftServer.getServer().getPlayerCount()) {
++            this.removeLast();
++        }
++        return super.putAndMoveToFirst(k, v);
++    }
++}
+diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
+index 6d883db5c04cbcf454952c0f361029ecbfe4f037..db61e58b376926c77030d85f03bb7a9f54c6f8e4 100644
+--- a/src/main/java/net/minecraft/core/Direction.java
++++ b/src/main/java/net/minecraft/core/Direction.java
+@@ -191,7 +191,7 @@ public enum Direction implements StringRepresentable {
+     }
+ 
+     public Direction getOpposite() {
+-        return from3DDataValue(this.oppositeIndex);
++        return VALUES[this.oppositeIndex]; // JettPack - lithium: fast_util
+     }
+ 
+     public Direction getClockWise(Direction.Axis axis) {
+@@ -441,7 +441,7 @@ public enum Direction implements StringRepresentable {
+     }
+ 
+     public static Direction getRandom(Random random) {
+-        return Util.getRandom(VALUES, random);
++        return VALUES[random.nextInt(VALUES.length)]; // JettPack - lithium: fast_util        
+     }
+ 
+     public static Direction getNearest(double x, double y, double z) {
+diff --git a/src/main/java/net/minecraft/network/FriendlyByteBuf.java b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+index 896a4237f871d46cf39b0721e909c2cc3b5fc728..e2a0a7fd5afd8cd3467dab049695956c381fb3cd 100644
+--- a/src/main/java/net/minecraft/network/FriendlyByteBuf.java
++++ b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
+@@ -65,19 +65,22 @@ public class FriendlyByteBuf extends ByteBuf {
+     public java.util.Locale adventure$locale; // Paper
+     public static final short MAX_STRING_LENGTH = 32767;
+     public static final int MAX_COMPONENT_STRING_LENGTH = 262144;
++    // Paper start - Optimize VarInts
++    private static final int[] VARINT_EXACT_BYTE_LENGTHS = new int[33];
++    static {
++        for (int i = 0; i <= 32; ++i) {
++            VARINT_EXACT_BYTE_LENGTHS[i] = (int) Math.ceil((31d - (i - 1)) / 7d);
++        }
++        VARINT_EXACT_BYTE_LENGTHS[32] = 1; // Special case for the number 0.
++    }
++    // Paper end - Optimize VarInts
+ 
+     public FriendlyByteBuf(ByteBuf parent) {
+         this.source = parent;
+     }
+ 
+     public static int getVarIntSize(int value) {
+-        for (int j = 1; j < 5; ++j) {
+-            if ((value & -1 << j * 7) == 0) {
+-                return j;
+-            }
+-        }
+-
+-        return 5;
++        return VARINT_EXACT_BYTE_LENGTHS[Integer.numberOfLeadingZeros(value)]; // Paper - Optimize VarInts
+     }
+ 
+     public static int getVarLongSize(long value) {
+@@ -420,7 +423,23 @@ public class FriendlyByteBuf extends ByteBuf {
+         return new UUID(this.readLong(), this.readLong());
+     }
+ 
++    // Paper start - Optimize VarInts
+     public FriendlyByteBuf writeVarInt(int value) {
++        // Peel the one and two byte count cases explicitly as they are the most common VarInt sizes
++        // that the proxy will write, to improve inlining.
++        if ((value & (0xFFFFFFFF << 7)) == 0) {
++            writeByte(value);
++        } else if ((value & (0xFFFFFFFF << 14)) == 0) {
++            int w = (value & 0x7F | 0x80) << 8 | (value >>> 7);
++            writeShort(w);
++        } else {
++            writeVarInt_(value);
++        }
++        return this;
++    }
++
++    public FriendlyByteBuf writeVarInt_(int value) {
++    // Paper end - Optimize VarInts
+         while ((value & -128) != 0) {
+             this.writeByte(value & 127 | 128);
+             value >>>= 7;
+diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+index aae2dadabedb075fd1bc712f0226882b85f4551d..5a229066d8f13041224574b5ba6b1064fce76303 100644
+--- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
++++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
+@@ -235,6 +235,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+         gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
+         gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
+ 
++        // Yatopia start
++        try {
++            me.titaniumtown.JettPackConfig.init((java.io.File) options.valueOf("jettpack-settings"));
++        } catch (Exception e) {
++            DedicatedServer.LOGGER.error("Unable to load server configuration", e);
++            return false;
++        }
++        // Yatopia end
++
+         this.setPvpAllowed(dedicatedserverproperties.pvp);
+         this.setFlightAllowed(dedicatedserverproperties.allowFlight);
+         this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
+diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
+index 7a0c1ba40156df69bbbf36d96bed0950130d2351..a9a10346f98c48caaad18e9aa1c9ab0e2d69de3b 100644
+--- a/src/main/java/net/minecraft/server/players/PlayerList.java
++++ b/src/main/java/net/minecraft/server/players/PlayerList.java
+@@ -487,7 +487,13 @@ public abstract class PlayerList {
+         }
+         // Paper end
+         // CraftBukkit - Moved from above, added world
+-        PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", player.getName().getString(), s1, player.getId(), worldserver1.serverLevelData.getLevelName(), player.getX(), player.getY(), player.getZ());
++        // JettPack start -  configurable logging of player login location
++        if (me.titaniumtown.JettPackConfig.logPlayerLoginLoc) {
++            PlayerList.LOGGER.info("{}[{}] logged in with entity id {} at ([{}]{}, {}, {})", player.getName().getString(), s1, player.getId(), worldserver1.serverLevelData.getLevelName(), player.getX(), player.getY(), player.getZ());
++        } else {
++            PlayerList.LOGGER.info("{}[{}] logged in with entity id {}", player.getName().getString(), s1, player.getId());
++        }
++        // JettPack end
+     }
+ 
+     public void updateEntireScoreboard(ServerScoreboard scoreboard, ServerPlayer player) {
+diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
+index 35ff7abd8251b0af6c23fbb63804db632ec5b85d..b101e0b234c9cef315f871b880c1dcb3647d5ff6 100644
+--- a/src/main/java/net/minecraft/world/entity/Mob.java
++++ b/src/main/java/net/minecraft/world/entity/Mob.java
+@@ -796,9 +796,6 @@ public abstract class Mob extends LivingEntity {
+         } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
+             // Paper start - optimise checkDespawn
+             Player entityhuman = this.level.findNearbyPlayer(this, level.paperConfig.hardDespawnDistances.getInt(this.getType().getCategory()) + 1, EntitySelector.affectsSpawning); // Paper
+-            if (entityhuman == null) {
+-                entityhuman = ((ServerLevel)this.level).playersAffectingSpawning.isEmpty() ? null : ((ServerLevel)this.level).playersAffectingSpawning.get(0);
+-            }
+             // Paper end - optimise checkDespawn
+ 
+             if (entityhuman != null) {
+@@ -818,6 +815,8 @@ public abstract class Mob extends LivingEntity {
+                 } else if (d0 < (double) l) {
+                     this.noActionTime = 0;
+                 }
++            } else {
++                this.discard(); // Paper - no entity found on hardDespawnDistance, we should discard it
+             }
+ 
+         } else {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
+index d1d576a616797d7658c117582435434743aeef58..aa69c4c22645245528a0e0208ce9a6b4baffa88e 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
++++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
+@@ -74,16 +74,16 @@ public class Brain<E extends LivingEntity> {
+             }
+ 
+             public <T> DataResult<Brain<E>> decode(DynamicOps<T> dynamicOps, MapLike<T> mapLike) {
+-                MutableObject<DataResult<Builder<Brain.MemoryValue<?>>>> mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder()));
++                MutableObject<DataResult<Builder<Brain.MemoryValue<?>>>> decode_mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder())); // JettPack - decomp fix
+                 mapLike.entries().forEach((pair) -> {
+                     DataResult<MemoryModuleType<?>> dataResult = Registry.MEMORY_MODULE_TYPE.byNameCodec().parse(dynamicOps, pair.getFirst());
+                     DataResult<? extends Brain.MemoryValue<?>> dataResult2 = dataResult.flatMap((memoryModuleType) -> {
+                         return this.captureRead(memoryModuleType, dynamicOps, (T)pair.getSecond());
+                     });
+-                    mutableObject.setValue(mutableObject.getValue().apply2(Builder::add, dataResult2));
++                    decode_mutableObject.setValue(decode_mutableObject.getValue().apply2(Builder::add, dataResult2)); // JettPack - decomp fix
+                 });
+-                ImmutableList<Brain.MemoryValue<?>> immutableList = mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(Builder::build).orElseGet(ImmutableList::of);
+-                return DataResult.success(new Brain<>(memoryModules, sensors, immutableList, mutableObject::getValue));
++                ImmutableList<Brain.MemoryValue<?>> immutableList = decode_mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(Builder::build).orElseGet(ImmutableList::of); // JettPack - decomp fix
++                return DataResult.success(new Brain<E>(memoryModules, sensors, immutableList, mutableObject::getValue)); // JettPack - decomp fix
+             }
+ 
+             private <T, U> DataResult<Brain.MemoryValue<U>> captureRead(MemoryModuleType<U> memoryModuleType, DynamicOps<T> dynamicOps, T object) {
+@@ -135,7 +135,7 @@ public class Brain<E extends LivingEntity> {
+ 
+     Stream<Brain.MemoryValue<?>> memories() {
+         return this.memories.entrySet().stream().map((entry) -> {
+-            return Brain.MemoryValue.createUnchecked(entry.getKey(), entry.getValue());
++            return Brain.MemoryValue.createUnchecked((MemoryModuleType)entry.getKey(), (Optional)entry.getValue()); // JettPack - decomp fix
+         });
+     }
+ 
+@@ -171,7 +171,7 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     public <U> Optional<U> getMemory(MemoryModuleType<U> type) {
+-        return this.memories.get(type).map(ExpirableValue::getValue);
++        return ((Optional)this.memories.get(type)).map(object -> ((ExpirableValue)object).getValue()); // JettPack - decomp fix    
+     }
+ 
+     public <U> long getTimeUntilExpiry(MemoryModuleType<U> type) {
+@@ -354,7 +354,7 @@ public class Brain<E extends LivingEntity> {
+     }
+ 
+     public Brain<E> copyWithoutBehaviors() {
+-        Brain<E> brain = new Brain<>(this.memories.keySet(), this.sensors.keySet(), ImmutableList.of(), this.codec);
++        Brain<E> brain = new Brain<E>(this.memories.keySet(), this.sensors. keySet(), ImmutableList.of(), this.codec); // JettPack - decomp fix
+ 
+         for(Entry<MemoryModuleType<?>, Optional<? extends ExpirableValue<?>>> entry : this.memories.entrySet()) {
+             MemoryModuleType<?> memoryModuleType = entry.getKey();
+@@ -464,8 +464,8 @@ public class Brain<E extends LivingEntity> {
+         private final MemoryModuleType<U> type;
+         private final Optional<? extends ExpirableValue<U>> value;
+ 
+-        static <U> Brain.MemoryValue<U> createUnchecked(MemoryModuleType<U> type, Optional<? extends ExpirableValue<?>> data) {
+-            return new Brain.MemoryValue<>(type, data);
++        static <U> Brain.MemoryValue<U> createUnchecked(MemoryModuleType<U> type, Optional<? extends ExpirableValue<U>> data) { // JettPack - decomp fix
++            return new Brain.MemoryValue<U>(type, data); // JettPack - decomp fix
+         }
+ 
+         MemoryValue(MemoryModuleType<U> type, Optional<? extends ExpirableValue<U>> data) {
+diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
+index 02f44b5682b99417f3cd6d6b25dc46cdc2a09093..5b1fdbddb6345345f5cf6a94b5b927bc75c31e87 100644
+--- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
++++ b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
+@@ -13,6 +13,7 @@ import java.util.stream.Stream;
+ import net.minecraft.util.profiling.ProfilerFiller;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet; // JettPack
+ 
+ public class GoalSelector {
+     private static final Logger LOGGER = LogManager.getLogger();
+@@ -28,7 +29,7 @@ public class GoalSelector {
+         }
+     };
+     private final Map<Goal.Flag, WrappedGoal> lockedFlags = new EnumMap<>(Goal.Flag.class);
+-    public final Set<WrappedGoal> availableGoals = Sets.newLinkedHashSet();
++    public final Set<WrappedGoal> availableGoals = new ObjectLinkedOpenHashSet<>(); // JettPack - lithium: replace AI goal set with optimized collection
+     private final Supplier<ProfilerFiller> profiler;
+     private final EnumSet<Goal.Flag> disabledFlags = EnumSet.noneOf(Goal.Flag.class); // Paper unused, but dummy to prevent plugins from crashing as hard. Theyll need to support paper in a special case if this is super important, but really doesn't seem like it would be.
+     private final com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<net.minecraft.world.entity.ai.goal.Goal.Flag> goalTypes = new com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<>(Goal.Flag.class); // Paper - remove streams from pathfindergoalselector
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+index f958ce70efb64d4077fae60a790a0df6786ad0ea..23aa4f3f3295a8cc6e58eca410a8ad1471ba356e 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
+@@ -143,7 +143,7 @@ public class FishingHook extends Projectile {
+ 
+     @Override
+     public boolean shouldRenderAtSqrDistance(double distance) {
+-        double d1 = 64.0D;
++        // double d1 = 64.0D; // Jettpack
+ 
+         return distance < 4096.0D;
+     }
+@@ -248,7 +248,7 @@ public class FishingHook extends Projectile {
+                 this.setDeltaMovement(Vec3.ZERO);
+             }
+ 
+-            double d1 = 0.92D;
++            // double d1 = 0.92D; // Jettpack
+ 
+             this.setDeltaMovement(this.getDeltaMovement().scale(0.92D));
+             this.reapplyPosition();
+@@ -266,7 +266,7 @@ public class FishingHook extends Projectile {
+         boolean flag = itemstack.is(Items.FISHING_ROD);
+         boolean flag1 = itemstack1.is(Items.FISHING_ROD);
+ 
+-        if (!player.isRemoved() && player.isAlive() && (flag || flag1) && this.distanceToSqr((Entity) player) <= 1024.0D) {
++        if (!player.isRemoved() && player.isAlive() && (flag || flag1) && this.distanceToSqr((Entity) player) <= me.titaniumtown.JettPackConfig.fishingRodLength) { // Jettpack
+             return false;
+         } else {
+             this.discard();
+diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
+index a98d115b7dccd836fa2c0f50333730db6f388aff..a0138fa3120492e1b61449213a36003d2eb7af13 100644
+--- a/src/main/java/net/minecraft/world/level/Level.java
++++ b/src/main/java/net/minecraft/world/level/Level.java
+@@ -116,8 +116,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     public static final int TICKS_PER_DAY = 24000;
+     public static final int MAX_ENTITY_SPAWN_Y = 20000000;
+     public static final int MIN_ENTITY_SPAWN_Y = -20000000;
+-    protected final List<TickingBlockEntity> blockEntityTickers = Lists.newArrayList(); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper
+-    private final List<TickingBlockEntity> pendingBlockEntityTickers = Lists.newArrayList();
++    protected final List<TickingBlockEntity> blockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper // Jettpack - lithium: hashed_list
++    private final List<TickingBlockEntity> pendingBlockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); // Jettpack - lithium: hashed_list
+     private boolean tickingBlockEntities;
+     public final Thread thread;
+     private final boolean isDebug;
+diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
+index ab5b9f00123e2ede2931ffc520684e482aac49b4..230848eb7e78fb67d5a679f402e3057f0064f1eb 100644
+--- a/src/main/java/net/minecraft/world/level/block/Block.java
++++ b/src/main/java/net/minecraft/world/level/block/Block.java
+@@ -589,11 +589,18 @@ public class Block extends BlockBehaviour implements ItemLike {
+         private final BlockState first;
+         private final BlockState second;
+         private final Direction direction;
++        private int hash; // JettPack
+ 
+         public BlockStatePairKey(BlockState self, BlockState other, Direction facing) {
+             this.first = self;
+             this.second = other;
+             this.direction = facing;
++            // JettPack start - lithium: cached_hashcode
++            int hash = this.first.hashCode();
++            hash = 31 * hash + this.second.hashCode();
++            hash = 31 * hash + this.direction.hashCode();
++            this.hash = hash;
++            // JettPack end
+         }
+ 
+         public boolean equals(Object object) {
+@@ -609,11 +616,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+         }
+ 
+         public int hashCode() {
+-            int i = this.first.hashCode();
+-
+-            i = 31 * i + this.second.hashCode();
+-            i = 31 * i + this.direction.hashCode();
+-            return i;
++            return this.hash; // JettPack
+         }
+     }
+ }
+diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+index 087be9acfa77d3fd0216e5983aa62149e668cfc7..9e0b041dc917b01847e16d56984b913e0dff3e49 100644
+--- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
++++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
+@@ -76,6 +76,54 @@ public class LevelChunk extends ChunkAccess {
+             return "<null>";
+         }
+     };
++
++    // JettPack start - lithium: world.inline_height
++    @Override
++    public int getMaxBuildHeight() {
++        return this.level.getMaxBuildHeight();
++    }
++
++    @Override
++    public int getSectionsCount() {
++        return this.level.getSectionsCount();
++    }
++
++    @Override
++    public int getMinSection() {
++        return this.level.getMinSection();
++    }
++
++    @Override
++    public int getMaxSection() {
++        return this.level.getMaxSection();
++    }
++
++    @Override
++    public boolean isOutsideBuildHeight(BlockPos pos) {
++        return this.level.isOutsideBuildHeight(pos);
++    }
++
++    @Override
++    public boolean isOutsideBuildHeight(int y) {
++        return this.level.isOutsideBuildHeight(y);
++    }
++
++    @Override
++    public int getSectionIndex(int y) {
++        return this.level.getSectionIndex(y);
++    }
++
++    @Override
++    public int getSectionIndexFromSectionY(int coord) {
++        return this.level.getSectionIndexFromSectionY(coord);
++    }
++
++    @Override
++    public int getSectionYFromSectionIndex(int index) {
++        return this.level.getSectionYFromSectionIndex(index);
++    }
++    // JettPack end
++
+     private final Map<BlockPos, LevelChunk.RebindableTickingBlockEntityWrapper> tickersInLevel;
+     public boolean loaded;
+     private boolean clientLightReady;
+diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
+index 74210dc2eef63da7360b1f833bb59b278419fb2b..859d2e82f21efa1232e7e69f787840b16ed4bd4b 100644
+--- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
++++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
+@@ -32,33 +32,66 @@ public class EntitySectionStorage<T extends EntityAccess> {
+         this.intialSectionVisibility = chunkStatusDiscriminator;
+     }
+ 
++    // JettPack start - lithium: entity.fast_retrieval
+     public void forEachAccessibleNonEmptySection(AABB box, Consumer<EntitySection<T>> action) {
+-        int i = SectionPos.posToSectionCoord(box.minX - 2.0D);
+-        int j = SectionPos.posToSectionCoord(box.minY - 2.0D);
+-        int k = SectionPos.posToSectionCoord(box.minZ - 2.0D);
+-        int l = SectionPos.posToSectionCoord(box.maxX + 2.0D);
+-        int m = SectionPos.posToSectionCoord(box.maxY + 2.0D);
+-        int n = SectionPos.posToSectionCoord(box.maxZ + 2.0D);
+-
+-        for(int o = i; o <= l; ++o) {
+-            long p = SectionPos.asLong(o, 0, 0);
+-            long q = SectionPos.asLong(o, -1, -1);
+-            LongIterator longIterator = this.sectionIds.subSet(p, q + 1L).iterator();
+-
+-            while(longIterator.hasNext()) {
+-                long r = longIterator.nextLong();
+-                int s = SectionPos.y(r);
+-                int t = SectionPos.z(r);
+-                if (s >= j && s <= m && t >= k && t <= n) {
+-                    EntitySection<T> entitySection = this.sections.get(r);
+-                    if (entitySection != null && !entitySection.isEmpty() && entitySection.getStatus().isAccessible()) {
+-                        action.accept(entitySection);
++        int minX = SectionPos.posToSectionCoord(box.minX - 2.0D);
++        int minY = SectionPos.posToSectionCoord(box.minY - 2.0D);
++        int minZ = SectionPos.posToSectionCoord(box.minZ - 2.0D);
++        int maxX = SectionPos.posToSectionCoord(box.maxX + 2.0D);
++        int maxY = SectionPos.posToSectionCoord(box.maxY + 2.0D);
++        int maxZ = SectionPos.posToSectionCoord(box.maxZ + 2.0D);
++
++        if (maxX >= minX + 4 || maxZ >= minZ + 4) {
++            // [VanillaCopy]
++            for(int o = minX; o <= maxX; ++o) {
++                long p = SectionPos.asLong(o, 0, 0);
++                long q = SectionPos.asLong(o, -1, -1);
++                LongIterator longIterator = this.sectionIds.subSet(p, q + 1L).iterator();
++
++                while(longIterator.hasNext()) {
++                    long r = longIterator.nextLong();
++                    int s = SectionPos.y(r);
++                    int t = SectionPos.z(r);
++                    if (s >= minY && s <= maxY && t >= minZ && t <= maxZ) {
++                        EntitySection<T> entitySection = this.sections.get(r);
++                        if (entitySection != null && !entitySection.isEmpty() && entitySection.getStatus().isAccessible()) {
++                            action.accept(entitySection);
++                        }
+                     }
+                 }
+             }
++        } else {
++            for (int x = minX; x <= maxX; x++) {
++                for (int z = Math.max(minZ, 0); z <= maxZ; z++) {
++                    this.forEachInColumn(x, minY, maxY, z, action);
++                }
++
++                int bound = Math.min(-1, maxZ);
++                for (int z = minZ; z <= bound; z++) {
++                    this.forEachInColumn(x, minY, maxY, z, action);
++                }
++            }
+         }
++    }
+ 
++    private void forEachInColumn(int x, int minY, int maxY, int z, Consumer<EntitySection<T>> action) {
++        //y from negative to positive, but y is treated as unsigned
++        for (int y = Math.max(minY, 0); y <= maxY; y++) {
++            this.consumeSection(SectionPos.asLong(x, y, z), action);
++        }
++        int bound = Math.min(-1, maxY);
++        for (int y = minY; y <= bound; y++) {
++            this.consumeSection(SectionPos.asLong(x, y, z), action);
++        }
++    }
++
++    private void consumeSection(long pos, Consumer<EntitySection<T>> action) {
++        EntitySection<T> section = this.getSection(pos);
++        if (section != null && 0 != section.size() && section.getStatus().isAccessible()) {
++            action.accept(section);
++        }
+     }
++    // JettPack end
+ 
+     public LongStream getExistingSectionPositionsInChunk(long chunkPos) {
+         int i = ChunkPos.getX(chunkPos);
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
+index 765b56776e457109ddea9f7dbfd0b17beefee51e..3a83c357f1a244f61c429ad5c34e3aed7b80449f 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
+@@ -11,14 +11,35 @@ public final class ImprovedNoise {
+     public final double yo;
+     public final double zo;
+ 
++    // JettPack start - C2ME math optimizations
++    private static final double[][] SIMPLEX_NOISE_GRADIENTS = new double[][]{
++            {1, 1, 0},
++            {-1, 1, 0},
++            {1, -1, 0},
++            {-1, -1, 0},
++            {1, 0, 1},
++            {-1, 0, 1},
++            {1, 0, -1},
++            {-1, 0, -1},
++            {0, 1, 1},
++            {0, -1, 1},
++            {0, 1, -1},
++            {0, -1, -1},
++            {1, 1, 0},
++            {0, -1, 1},
++            {-1, 1, 0},
++            {0, -1, -1}
++    };
++    // JettPack end
++
+     public ImprovedNoise(RandomSource random) {
+         this.xo = random.nextDouble() * 256.0D;
+         this.yo = random.nextDouble() * 256.0D;
+         this.zo = random.nextDouble() * 256.0D;
+-        this.p = new byte[256];
++        this.p = new byte[256]; // JettPack - rename
+ 
+         for(int i = 0; i < 256; ++i) {
+-            this.p[i] = (byte)i;
++            this.p[i] = (byte)i; // JettPack
+         }
+ 
+         for(int j = 0; j < 256; ++j) {
+@@ -34,34 +55,38 @@ public final class ImprovedNoise {
+         return this.noise(x, y, z, 0.0D, 0.0D);
+     }
+ 
++    // JettPack start - C2ME math optimizations
++    /**
++     * @author ishland
++     * @reason optimize: remove frequent type conversions
++     */
+     /** @deprecated */
+     @Deprecated
+     public double noise(double x, double y, double z, double yScale, double yMax) {
+         double d = x + this.xo;
+         double e = y + this.yo;
+         double f = z + this.zo;
+-        int i = Mth.floor(d);
+-        int j = Mth.floor(e);
+-        int k = Mth.floor(f);
+-        double g = d - (double)i;
+-        double h = e - (double)j;
+-        double l = f - (double)k;
+-        double o;
+-        if (yScale != 0.0D) {
++        double i = Mth.floor(d);
++        double j = Mth.floor(e);
++        double k = Mth.floor(f);
++        double g = d - i;
++        double h = e - j;
++        double l = f - k;
++        double o = 0.0D;
++        if (yScale != 0.0) {
+             double m;
+-            if (yMax >= 0.0D && yMax < h) {
++            if (yMax >= 0.0 && yMax < h) {
+                 m = yMax;
+             } else {
+                 m = h;
+             }
+ 
+-            o = (double)Mth.floor(m / yScale + (double)1.0E-7F) * yScale;
+-        } else {
+-            o = 0.0D;
++            o = Mth.floor(m / yScale + 1.0E-7F) * yScale;
+         }
+ 
+-        return this.sampleAndLerp(i, j, k, g, h - o, l, h);
++        return this.sampleAndLerp((int) i, (int) j, (int) k, g, h - o, l, h);
+     }
++    // JettPack end
+ 
+     public double noiseWithDerivative(double x, double y, double z, double[] ds) {
+         double d = x + this.xo;
+@@ -84,26 +109,140 @@ public final class ImprovedNoise {
+         return this.p[hash & 255] & 255;
+     }
+ 
++    // JettPack start - C2ME math optimizations
++    /**
++     * @author ishland
++     * @reason inline math & small optimization: remove frequent type conversions and redundant ops
++     */
+     private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalX) {
+-        int i = this.p(sectionX);
+-        int j = this.p(sectionX + 1);
+-        int k = this.p(i + sectionY);
+-        int l = this.p(i + sectionY + 1);
+-        int m = this.p(j + sectionY);
+-        int n = this.p(j + sectionY + 1);
+-        double d = gradDot(this.p(k + sectionZ), localX, localY, localZ);
+-        double e = gradDot(this.p(m + sectionZ), localX - 1.0D, localY, localZ);
+-        double f = gradDot(this.p(l + sectionZ), localX, localY - 1.0D, localZ);
+-        double g = gradDot(this.p(n + sectionZ), localX - 1.0D, localY - 1.0D, localZ);
+-        double h = gradDot(this.p(k + sectionZ + 1), localX, localY, localZ - 1.0D);
+-        double o = gradDot(this.p(m + sectionZ + 1), localX - 1.0D, localY, localZ - 1.0D);
+-        double p = gradDot(this.p(l + sectionZ + 1), localX, localY - 1.0D, localZ - 1.0D);
+-        double q = gradDot(this.p(n + sectionZ + 1), localX - 1.0D, localY - 1.0D, localZ - 1.0D);
+-        double r = Mth.smoothstep(localX);
+-        double s = Mth.smoothstep(fadeLocalX);
+-        double t = Mth.smoothstep(localZ);
+-        return Mth.lerp3(r, s, t, d, e, f, g, h, o, p, q);
++        final int var0 = sectionX & 0xFF;
++        final int var1 = (sectionX + 1) & 0xFF;
++        final int var2 = this.p[var0] & 0xFF;
++        final int var3 = this.p[var1] & 0xFF;
++        final int var4 = (var2 + sectionY) & 0xFF;
++        final int var5 = (var2 + sectionY + 1) & 0xFF;
++        final int var6 = (var3 + sectionY) & 0xFF;
++        final int var7 = (var3 + sectionY + 1) & 0xFF;
++        final int var8 = this.p[var4] & 0xFF;
++        final int var9 = this.p[var5] & 0xFF;
++        final int var10 = this.p[var6] & 0xFF;
++        final int var11 = this.p[var7] & 0xFF;
++
++        final int var12 = (var8 + sectionZ) & 0xFF;
++        final int var13 = (var10 + sectionZ) & 0xFF;
++        final int var14 = (var9 + sectionZ) & 0xFF;
++        final int var15 = (var11 + sectionZ) & 0xFF;
++        final int var16 = (var8 + sectionZ + 1) & 0xFF;
++        final int var17 = (var10 + sectionZ + 1) & 0xFF;
++        final int var18 = (var9 + sectionZ + 1) & 0xFF;
++        final int var19 = (var11 + sectionZ + 1) & 0xFF;
++        final int var20 = this.p[var12] & 15;
++        final int var21 = this.p[var13] & 15;
++        final int var22 = this.p[var14] & 15;
++        final int var23 = this.p[var15] & 15;
++        final int var24 = this.p[var16] & 15;
++        final int var25 = this.p[var17] & 15;
++        final int var26 = this.p[var18] & 15;
++        final int var27 = this.p[var19] & 15;
++        final double[] var28 = SIMPLEX_NOISE_GRADIENTS[var20];
++        final double[] var29 = SIMPLEX_NOISE_GRADIENTS[var21];
++        final double[] var30 = SIMPLEX_NOISE_GRADIENTS[var22];
++        final double[] var31 = SIMPLEX_NOISE_GRADIENTS[var23];
++        final double[] var32 = SIMPLEX_NOISE_GRADIENTS[var24];
++        final double[] var33 = SIMPLEX_NOISE_GRADIENTS[var25];
++        final double[] var34 = SIMPLEX_NOISE_GRADIENTS[var26];
++        final double[] var35 = SIMPLEX_NOISE_GRADIENTS[var27];
++        final double var36 = var28[0];
++        final double var37 = var28[1];
++        final double var38 = var28[2];
++        final double var39 = var29[0];
++        final double var40 = var29[1];
++        final double var41 = var29[2];
++        final double var42 = var30[0];
++        final double var43 = var30[1];
++        final double var44 = var30[2];
++        final double var45 = var31[0];
++        final double var46 = var31[1];
++        final double var47 = var31[2];
++        final double var48 = var32[0];
++        final double var49 = var32[1];
++        final double var50 = var32[2];
++        final double var51 = var33[0];
++        final double var52 = var33[1];
++        final double var53 = var33[2];
++        final double var54 = var34[0];
++        final double var55 = var34[1];
++        final double var56 = var34[2];
++        final double var57 = var35[0];
++        final double var58 = var35[1];
++        final double var59 = var35[2];
++        final double var60 = localX - 1.0;
++        final double var61 = localY - 1.0;
++        final double var62 = localZ - 1.0;
++        final double var63 = var36 * localX;
++        final double var64 = var37 * localY;
++        final double var65 = var38 * localZ;
++        final double var66 = var39 * var60;
++        final double var67 = var40 * localY;
++        final double var68 = var41 * localZ;
++        final double var69 = var42 * localX;
++        final double var70 = var43 * var61;
++        final double var71 = var44 * localZ;
++        final double var72 = var45 * var60;
++        final double var73 = var46 * var61;
++        final double var74 = var47 * localZ;
++        final double var75 = var48 * localX;
++        final double var76 = var49 * localY;
++        final double var77 = var50 * var62;
++        final double var78 = var51 * var60;
++        final double var79 = var52 * localY;
++        final double var80 = var53 * var62;
++        final double var81 = var54 * localX;
++        final double var82 = var55 * var61;
++        final double var83 = var56 * var62;
++        final double var84 = var57 * var60;
++        final double var85 = var58 * var61;
++        final double var86 = var59 * var62;
++        final double var87 = var63 + var64 + var65;
++        final double var88 = var66 + var67 + var68;
++        final double var89 = var69 + var70 + var71;
++        final double var90 = var72 + var73 + var74;
++        final double var91 = var75 + var76 + var77;
++        final double var92 = var78 + var79 + var80;
++        final double var93 = var81 + var82 + var83;
++        final double var94 = var84 + var85 + var86;
++
++        final double var95 = localX * 6.0 - 15.0;
++        final double var96 = fadeLocalX * 6.0 - 15.0;
++        final double var97 = localZ * 6.0 - 15.0;
++        final double var98 = localX * var95 + 10.0;
++        final double var99 = fadeLocalX * var96 + 10.0;
++        final double var100 = localZ * var97 + 10.0;
++        final double var101 = localX * localX * localX * var98;
++        final double var102 = fadeLocalX * fadeLocalX * fadeLocalX * var99;
++        final double var103 = localZ * localZ * localZ * var100;
++
++        final double var104 = var90 - var89;
++        final double var105 = var88 - var87;
++        final double var106 = var94 - var93;
++        final double var107 = var92 - var91;
++        final double var108 = var101 * var104;
++        final double var109 = var101 * var105;
++        final double var110 = var101 * var106;
++        final double var111 = var101 * var107;
++        final double var112 = var89 + var108;
++        final double var113 = var87 + var109;
++        final double var114 = var93 + var110;
++        final double var115 = var91 + var111;
++        final double var116 = var112 - var113;
++        final double var117 = var114 - var115;
++        final double var118 = var102 * var116;
++        final double var119 = var102 * var117;
++        final double var120 = var113 + var118;
++        final double var121 = var115 + var119;
++        return var120 + (var103 * (var121 - var120));
+     }
++    // JettPack end
+ 
+     private double sampleWithDerivative(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double[] ds) {
+         int i = this.p(sectionX);
+diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+index b6b56a3db74e07ca015deb7a8ebddc97f6228025..38dd370dda50ae5639fc51d4801f2b0b7d533961 100644
+--- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
++++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
+@@ -164,9 +164,15 @@ public class PerlinNoise {
+         return this.noiseLevels[this.noiseLevels.length - 1 - octave];
+     }
+ 
++    // JettPack start - C2ME math optimizations
++    /**
++     * @author ishland
++     * @reason remove frequent type conversion
++     */
+     public static double wrap(double value) {
+-        return value - (double)Mth.lfloor(value / 3.3554432E7D + 0.5D) * 3.3554432E7D;
++        return value - Mth.lfloor(value / 3.3554432E7 + 0.5) * 3.3554432E7;
+     }
++    // JettPack end
+ 
+     protected int firstOctave() {
+         return this.firstOctave;
+diff --git a/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java b/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
+index 35c39aed9583275ef25d32c783715798b52bdb63..66a74ad8190bd99c9324e3a4ccb3425cb0cea67e 100644
+--- a/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
++++ b/src/main/java/net/minecraft/world/level/storage/PlayerDataStorage.java
+@@ -24,6 +24,7 @@ public class PlayerDataStorage {
+     private static final Logger LOGGER = LogManager.getLogger();
+     private final File playerDir;
+     protected final DataFixer fixerUpper;
++    private final me.titaniumtown.cache.NBTCache dataCache = new me.titaniumtown.cache.NBTCache(); // JettPack - NBT Cache system
+ 
+     public PlayerDataStorage(LevelStorageSource.LevelStorageAccess session, DataFixer dataFixer) {
+         this.fixerUpper = dataFixer;
+@@ -37,11 +38,23 @@ public class PlayerDataStorage {
+             CompoundTag nbttagcompound = player.saveWithoutId(new CompoundTag());
+             File file = File.createTempFile(player.getStringUUID() + "-", ".dat", this.playerDir);
+ 
+-            NbtIo.writeCompressed(nbttagcompound, file);
+-            File file1 = new File(this.playerDir, player.getStringUUID() + ".dat");
+-            File file2 = new File(this.playerDir, player.getStringUUID() + ".dat_old");
++            // JettPack start - NBT Cache system
++            Runnable task = () -> {
++                try {
++                    NbtIo.writeCompressed(nbttagcompound, file);
++                    File file1 = new File(this.playerDir, player.getStringUUID() + ".dat");
++                    File file2 = new File(this.playerDir, player.getStringUUID() + ".dat_old");
+ 
+-            Util.safeReplaceFile(file1, file, file2);
++                    Util.safeReplaceFile(file1, file, file2);
++                } catch (Exception exception) {
++                    PlayerDataStorage.LOGGER.error("Failed to save player data for {}", player.getScoreboardName(), exception); // Paper
++                }
++                };
++            synchronized (this.dataCache){
++                this.dataCache.put(file, nbttagcompound);
++            }
++            net.minecraft.server.MCUtil.asyncExecutor.execute(task);
++            // JettPack end
+         } catch (Exception exception) {
+             PlayerDataStorage.LOGGER.warn("Failed to save player data for {}", player.getScoreboardName(), exception); // Paper
+         }
+@@ -56,9 +69,18 @@ public class PlayerDataStorage {
+             File file = new File(this.playerDir, player.getStringUUID() + ".dat");
+             // Spigot Start
+             boolean usingWrongFile = false;
+-            if ( org.bukkit.Bukkit.getOnlineMode() && !file.exists() ) // Paper - Check online mode first
++            // JettPack start - NBT Cache system
++            boolean normalFile = file.exists() && file.isFile();
++            CompoundTag playerData;
++            synchronized (this.dataCache){
++                playerData = this.dataCache.get(file);
++            }
++            if (playerData == null && org.bukkit.Bukkit.getOnlineMode() && !normalFile ) // Paper - Check online mode first
+             {
+                 file = new File( this.playerDir, java.util.UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + player.getScoreboardName() ).getBytes( "UTF-8" ) ).toString() + ".dat");
++                synchronized (this.dataCache){
++                    playerData = this.dataCache.get(file);
++                }
+                 if ( file.exists() )
+                 {
+                     usingWrongFile = true;
+@@ -67,9 +89,13 @@ public class PlayerDataStorage {
+             }
+             // Spigot End
+ 
+-            if (file.exists() && file.isFile()) {
++            if (playerData != null) {
++                nbttagcompound = playerData;
++            } else if (normalFile) {
++
+                 nbttagcompound = NbtIo.readCompressed(file);
+             }
++            // JettPack end
+             // Spigot Start
+             if ( usingWrongFile )
+             {
+diff --git a/src/main/java/net/minecraft/world/phys/AABB.java b/src/main/java/net/minecraft/world/phys/AABB.java
+index 68cc6f2a78a06293a29317fda72ab3ee79b3533a..dfbc871cd3474346b8d83f0b55b4f5f9665e4386 100644
+--- a/src/main/java/net/minecraft/world/phys/AABB.java
++++ b/src/main/java/net/minecraft/world/phys/AABB.java
+@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
+ import net.minecraft.core.Direction;
+ import net.minecraft.util.Mth;
+ import net.minecraft.world.level.levelgen.structure.BoundingBox;
++import net.minecraft.core.Direction; // JettPack
+ 
+ public class AABB {
+     private static final double EPSILON = 1.0E-7D;
+@@ -16,6 +17,15 @@ public class AABB {
+     public final double maxY;
+     public final double maxZ;
+ 
++    // JettPack start - lithium: fast_util
++    static {
++        assert Direction.Axis.X.ordinal() == 0;
++        assert Direction.Axis.Y.ordinal() == 1;
++        assert Direction.Axis.Z.ordinal() == 2;
++        assert Direction.Axis.values().length == 3;
++    }
++    // JettPack end
++
+     public AABB(double x1, double y1, double z1, double x2, double y2, double z2) {
+         this.minX = Math.min(x1, x2);
+         this.minY = Math.min(y1, y2);
+@@ -81,11 +91,33 @@ public class AABB {
+     }
+ 
+     public double min(Direction.Axis axis) {
+-        return axis.choose(this.minX, this.minY, this.minZ);
++        // JettPack start - lithium: fast_util
++        switch (axis.ordinal()) {
++            case 0: //X
++                return this.minX;
++            case 1: //Y
++                return this.minY;
++            case 2: //Z
++                return this.minZ;
++        }
++
++        throw new IllegalArgumentException();
++        // JettPack end
+     }
+ 
+     public double max(Direction.Axis axis) {
+-        return axis.choose(this.maxX, this.maxY, this.maxZ);
++        // JettPack start - lithium: fast_util
++        switch (axis.ordinal()) {
++            case 0: //X
++                return this.maxX;
++            case 1: //Y
++                return this.maxY;
++            case 2: //Z
++                return this.maxZ;
++        }
++
++        throw new IllegalArgumentException();
++        // JettPack end
+     }
+ 
+     @Override
+diff --git a/src/main/java/net/minecraft/world/phys/shapes/CubePointRange.java b/src/main/java/net/minecraft/world/phys/shapes/CubePointRange.java
+index a544db042c8d2ecec8d323770552c4f10ca758a6..c04da8da5b40430b61972bce32cec4e8c0370bac 100644
+--- a/src/main/java/net/minecraft/world/phys/shapes/CubePointRange.java
++++ b/src/main/java/net/minecraft/world/phys/shapes/CubePointRange.java
+@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.doubles.AbstractDoubleList;
+ 
+ public class CubePointRange extends AbstractDoubleList {
+     private final int parts;
++    private double scale; // JettPack - lithium: shapes.precompute_shape_arrays
+ 
+     CubePointRange(int sectionCount) {
+         if (sectionCount <= 0) {
+@@ -11,10 +12,11 @@ public class CubePointRange extends AbstractDoubleList {
+         } else {
+             this.parts = sectionCount;
+         }
++        this.scale = 1.0D / sectionCount; // JettPack - lithium: shapes.precompute_shape_arrays
+     }
+ 
+     public double getDouble(int i) {
+-        return (double)i / (double)this.parts;
++        return i * this.scale; // JettPack - lithium: shapes.precompute_shape_arrays
+     }
+ 
+     public int size() {
+diff --git a/src/main/java/net/minecraft/world/phys/shapes/CubeVoxelShape.java b/src/main/java/net/minecraft/world/phys/shapes/CubeVoxelShape.java
+index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e62117f6ccdc4 100644
+--- a/src/main/java/net/minecraft/world/phys/shapes/CubeVoxelShape.java
++++ b/src/main/java/net/minecraft/world/phys/shapes/CubeVoxelShape.java
+@@ -3,15 +3,25 @@ package net.minecraft.world.phys.shapes;
+ import it.unimi.dsi.fastutil.doubles.DoubleList;
+ import net.minecraft.core.Direction;
+ import net.minecraft.util.Mth;
++import net.minecraft.world.phys.shapes.CubePointRange; // JettPack
+ 
+ public final class CubeVoxelShape extends VoxelShape {
++    private DoubleList[] list; // JettPack - lithium: shapes.precompute_shape_arrays
++
+     protected CubeVoxelShape(DiscreteVoxelShape voxels) {
+         super(voxels);
++        // JettPack start - lithium: shapes.precompute_shape_arrays
++        this.list = new DoubleList[Direction.VALUES.length];
++
++        for (Direction.Axis axis : Direction.Axis.VALUES) {
++            this.list[axis.ordinal()] = new CubePointRange(voxels.getSize(axis));
++        }
++        // JettPack end
+     }
+ 
+     @Override
+     protected DoubleList getCoords(Direction.Axis axis) {
+-        return new CubePointRange(this.shape.getSize(axis));
++        return this.list[axis.ordinal()]; // JettPack - lithium: shapes.precompute_shape_arrays
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+index a92a2302c9e3013d354ee885165af17540d9c343..43ad783a4f9027d8a4e3ee5b6b26be5cc3155731 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
+@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
+ 
+         org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
+         com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
++        me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
+         for (ServerLevel world : this.console.getAllLevels()) {
+             // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
+             world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
+diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
+index 55bae3efbc630be6d40d415509de4c3e744a5004..bc26c18535e161d4254b644ffbdaad23e95ff631 100644
+--- a/src/main/java/org/bukkit/craftbukkit/Main.java
++++ b/src/main/java/org/bukkit/craftbukkit/Main.java
+@@ -153,6 +153,14 @@ public class Main {
+                         .describedAs("Jar file");
+                 // Paper end
+ 
++                // JettPack start
++                acceptsAll(asList("jettpack", "jettpack-settings"), "File for jettpack settings")
++                        .withRequiredArg()
++                        .ofType(File.class)
++                        .defaultsTo(new File("jettpack.yml"))
++                        .describedAs("Yml file");
++                // JettPack end
++
+                 // Paper start
+                 acceptsAll(asList("server-name"), "Name of the server")
+                         .withRequiredArg()
