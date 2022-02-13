@@ -53,10 +53,10 @@ paperweight {
             decompileRepo.set("https://files.minecraftforge.net/maven/")
 
             apiPatchDir.set(layout.projectDirectory.dir("patches/api"))
-            apiOutputDir.set(layout.projectDirectory.dir("patina-api"))
+            apiOutputDir.set(layout.projectDirectory.dir("Patina-API"))
 
             serverPatchDir.set(layout.projectDirectory.dir("patches/server"))
-            serverOutputDir.set(layout.projectDirectory.dir("patina-server"))
+            serverOutputDir.set(layout.projectDirectory.dir("Patina-Server"))
         }
 
         patchTasks {
@@ -64,7 +64,7 @@ paperweight {
                 isBareDirectory.set(true)
                 upstreamDirPath.set("Paper-MojangAPI")
                 patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
-                outputDir.set(layout.projectDirectory.dir("patina-mojangapi"))
+                outputDir.set(layout.projectDirectory.dir("Patina-MojangAPI"))
             }
         }
     }

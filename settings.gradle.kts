@@ -1,3 +1,5 @@
+import java.util.Locale
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -7,4 +9,9 @@ pluginManagement {
 
 rootProject.name = "patina"
 
-include("patina-api", "patina-server", "patina-mojangapi")
+
+for (name in listOf("Patina-API", "Patina-Server", "Patina-MojangAPI")) {
+    val projName = name.toLowerCase(Locale.ENGLISH)
+    include(projName)
+    findProject(":$projName")!!.projectDir = file(name)
+}

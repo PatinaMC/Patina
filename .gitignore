@@ -46,8 +46,8 @@ out/
 # other stuff
 run/
 
-patina-server
-patina-api
-patina-mojangapi
+Patina-Server
+Patina-API
+Patina-MojangAPI
 
 !gradle/wrapper/gradle-wrapper.jar
