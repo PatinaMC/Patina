@@ -686,7 +686,7 @@ index 218f5bafeed8551b55b91c7fccaf6935c8b631ca..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 8d205a841c2d77dd57e1f2d189686f6f7426896c..f1d40081c7941e30cf064d753bbc9f45d398835a 100644
+index 6ad4c30fd8fc57d24c56ed5a0a294e1312fd8feb..2825b11591fbfa47299e9c04d2c93ed132578e6a 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -51,7 +51,7 @@ public class PaperConfig {

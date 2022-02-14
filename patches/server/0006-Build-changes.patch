@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 75eca4bd07f80923b31700dbaf719c8485865b50..6d0ce0a1fa7e9bca836eefeb223a3d8dfb90cef9 100644
+index 552ffe1f19a9a6a9e1401d3a5a6fb993d4291f6d..3fc228c422faed44f25dab03f1c5035f46e752c3 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
