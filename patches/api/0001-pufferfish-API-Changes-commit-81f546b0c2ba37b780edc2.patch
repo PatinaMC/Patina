@@ -1,17 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sun, 13 Feb 2022 07:22:31 -0800
+Date: Tue, 15 Feb 2022 13:59:09 +0000
 Subject: [PATCH] pufferfish API Changes commit
- 1b5273f018327af056030c3e180ebcef1ce16532
-
-pufferfish API Changes
-commit 1b5273f018327af056030c3e180ebcef1ce16532
-
-pufferfish API Changes
-commit 1b5273f018327af056030c3e180ebcef1ce16532
-
-pufferfish API Changes
-commit 1b5273f018327af056030c3e180ebcef1ce16532
+ 81f546b0c2ba37b780edc2090d5fcba85d244ccf
 
 Add Sentry
 
@@ -298,7 +289,7 @@ index 0000000000000000000000000000000000000000..1bbec0b032a4765f5e55a1475a1b7401
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/simd/VectorMapPalette.java b/src/main/java/gg/pufferfish/pufferfish/simd/VectorMapPalette.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..48b67864752d6da4e2cc626e746eeb7c32b6524f
+index 0000000000000000000000000000000000000000..2341b564b6383d5eca5fafe80273e046bfea070e
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/simd/VectorMapPalette.java
 @@ -0,0 +1,79 @@
@@ -317,7 +308,7 @@ index 0000000000000000000000000000000000000000..48b67864752d6da4e2cc626e746eeb7c
 +	public static void matchColorVectorized(int[] in, byte[] out) {
 +		int speciesLength = IntVector.SPECIES_256.length();
 +		int i;
-+		for (i = 0; i < in.length; i += speciesLength) {
++		for (i = 0; i < in.length - speciesLength; i += speciesLength) {
 +			float[] redsArr = new float[speciesLength];
 +			float[] bluesArr = new float[speciesLength];
 +			float[] greensArr = new float[speciesLength];
@@ -418,7 +409,7 @@ index b937441d2fb46b108644c49fcf073859765aa02e..d95b01bfd0657cf089c0f5412453cca0
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 1366496271c4c7f72d1e5f990e51775b1c371f99..05bb388407b5bd8a942478237580a38ffaa388c8 100644
+index 1366496271c4c7f72d1e5f990e51775b1c371f99..23bc96e9b2d2d53a81c5140a94430d17add69228 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -581,7 +581,9 @@ public final class SimplePluginManager implements PluginManager {
@@ -431,7 +422,7 @@ index 1366496271c4c7f72d1e5f990e51775b1c371f99..05bb388407b5bd8a942478237580a38f
          callEvent(new ServerExceptionEvent(new ServerPluginEnableDisableException(msg, ex, plugin)));
      }
      // Paper end
-@@ -640,14 +642,16 @@ public final class SimplePluginManager implements PluginManager {
+@@ -640,9 +642,11 @@ public final class SimplePluginManager implements PluginManager {
                              ));
                  }
              } catch (Throwable ex) {
@@ -443,12 +434,6 @@ index 1366496271c4c7f72d1e5f990e51775b1c371f99..05bb388407b5bd8a942478237580a38f
                  if (!(event instanceof ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new ServerExceptionEvent(new ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
                  }
-                 // Paper end
--            }
-+            } finally { gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); } // Pufferfish
-         }
-     }
- 
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 index c8b11793c6a3baabc1c9566e0463ab1d6e293827..2b9218ddd262e89180588c3014dad328317dd8db 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
