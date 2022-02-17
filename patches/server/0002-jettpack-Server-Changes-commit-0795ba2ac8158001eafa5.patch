@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 14 Feb 2022 12:27:52 +0000
+Date: Thu, 17 Feb 2022 13:13:00 +0000
 Subject: [PATCH] jettpack Server Changes commit
- 2b60975e2bdbaadd78646eb7220ed199b84f2285
+ 0795ba2ac8158001eafa5d28dd99832387859804
 
 mcdev fixes
 
@@ -2089,7 +2089,7 @@ index 499d5d5a35323571571911969cc9bac3b90cec99..6ad4c30fd8fc57d24c56ed5a0a294e13
      }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index d7dcf36c8c972e30320c56e447822cf26f6d5fb3..1bcdc9092de8c9456974391c6aceba0aa3f480c9 100644
+index d7dcf36c8c972e30320c56e447822cf26f6d5fb3..14c21ab46cb5e1260015f4fda52d0cb566d2cee8 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -77,13 +77,37 @@ public class PaperWorldConfig {
@@ -2114,7 +2114,7 @@ index d7dcf36c8c972e30320c56e447822cf26f6d5fb3..1bcdc9092de8c9456974391c6aceba0a
 +            boolean oldUseEigenCraft = getBoolean("use-faster-eigencraft-redstone", false);
 +            if (!oldUseEigenCraft) {
 +                redstoneAlgoString = "vanilla";
-+                set("redstone.algo", "vanilla");
++                set("redstone-algo", "vanilla");
 +            }
 +        }
 +        switch (redstoneAlgoString) {
@@ -2593,9 +2593,18 @@ index 0000000000000000000000000000000000000000..0a2d2349f4e3fbde700c0f80ef89f291
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
-index 6d883db5c04cbcf454952c0f361029ecbfe4f037..db61e58b376926c77030d85f03bb7a9f54c6f8e4 100644
+index 6d883db5c04cbcf454952c0f361029ecbfe4f037..b0136e72d7e12f7a2ea6f7e4aacb71095e95ecdc 100644
 --- a/src/main/java/net/minecraft/core/Direction.java
 +++ b/src/main/java/net/minecraft/core/Direction.java
+@@ -41,7 +41,7 @@ public enum Direction implements StringRepresentable {
+     private final Direction.Axis axis;
+     private final Direction.AxisDirection axisDirection;
+     private final Vec3i normal;
+-    private static final Direction[] VALUES = values();
++    public static final Direction[] VALUES = values(); // JettPack
+     private static final Map<String, Direction> BY_NAME = Arrays.stream(VALUES).collect(Collectors.toMap(Direction::getName, (direction) -> {
+         return direction;
+     }));
 @@ -191,7 +191,7 @@ public enum Direction implements StringRepresentable {
      }
  

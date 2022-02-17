@@ -1,13 +1,13 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 14 Feb 2022 12:27:52 +0000
+Date: Thu, 17 Feb 2022 13:13:00 +0000
 Subject: [PATCH] jettpack API Changes commit
- 2b60975e2bdbaadd78646eb7220ed199b84f2285
+ 0795ba2ac8158001eafa5d28dd99832387859804
 
 skip event if no listeners
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 05bb388407b5bd8a942478237580a38ffaa388c8..0cbe93474b5f250638246cbd28f314cddc319d0c 100644
+index 23bc96e9b2d2d53a81c5140a94430d17add69228..1ad58032fec9008a055eb0ad74ab4070d2b80092 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -611,6 +611,14 @@ public final class SimplePluginManager implements PluginManager {

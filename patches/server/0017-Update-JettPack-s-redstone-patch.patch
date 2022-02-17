@@ -20,7 +20,7 @@ index 2825b11591fbfa47299e9c04d2c93ed132578e6a..4d2bb93314c6abbb9c2fb07a4df0dfbf
      }
  
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index 1bcdc9092de8c9456974391c6aceba0aa3f480c9..1c3a54bf0fe9551d3ed6bff03b68d468db5d2031 100644
+index 14c21ab46cb5e1260015f4fda52d0cb566d2cee8..1c3a54bf0fe9551d3ed6bff03b68d468db5d2031 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -83,14 +83,8 @@ public class PaperWorldConfig {
@@ -32,7 +32,7 @@ index 1bcdc9092de8c9456974391c6aceba0aa3f480c9..1c3a54bf0fe9551d3ed6bff03b68d468
 -            boolean oldUseEigenCraft = getBoolean("use-faster-eigencraft-redstone", false);
 -            if (!oldUseEigenCraft) {
 -                redstoneAlgoString = "vanilla";
--                set("redstone.algo", "vanilla");
+-                set("redstone-algo", "vanilla");
 -            }
 -        }
 +        String redstoneAlgoString = getString("redstone-algo", getBoolean("use-faster-eigencraft-redstone", false) ? "eigencraft" : "vanilla").toLowerCase().trim(); // Patina
