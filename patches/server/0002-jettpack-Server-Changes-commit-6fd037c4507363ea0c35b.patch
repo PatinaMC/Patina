@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 17 Feb 2022 13:13:00 +0000
+Date: Tue, 22 Feb 2022 11:55:37 -0800
 Subject: [PATCH] jettpack Server Changes commit
- 0795ba2ac8158001eafa5d28dd99832387859804
+ 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
 
 mcdev fixes
 
@@ -2073,21 +2073,6 @@ index 0000000000000000000000000000000000000000..6d6c1b81b696187add53e744aaffa54d
 +		return ++i < queue.length ? i : 0;
 +	}
 +}
-diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 499d5d5a35323571571911969cc9bac3b90cec99..6ad4c30fd8fc57d24c56ed5a0a294e1312fd8feb 100644
---- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
-+++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-@@ -71,8 +71,8 @@ public class PaperConfig {
-         commands.put("paper", new PaperCommand("paper"));
-         commands.put("mspt", new MSPTCommand("mspt"));
- 
--        version = getInt("config-version", 24);
--        set("config-version", 24);
-+        version = getInt("config-version", 25);
-+        set("config-version", 25);
-         readConfig(PaperConfig.class, null);
-     }
- 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 index d7dcf36c8c972e30320c56e447822cf26f6d5fb3..14c21ab46cb5e1260015f4fda52d0cb566d2cee8 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
@@ -2702,7 +2687,7 @@ index aae2dadabedb075fd1bc712f0226882b85f4551d..5a229066d8f13041224574b5ba6b1064
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 59d57108f38f38e03cd8b69a53c3e9d40179599a..8d07449ef08179f8b7ce74cd6b5ad9eab4de2add 100644
+index 740e1d7b299e78668bff5b176bbe54f478c73fd3..554ff7070d0136c477894d778041ed1a9b7ef3a8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -161,9 +161,14 @@ import org.bukkit.event.weather.LightningStrikeEvent;
@@ -2809,7 +2794,7 @@ index da725ee77c9e3fd7d9ee89763792ecd31c773037..a4640d98aac3a03032c9c6188f6031bd
      @Override
      public Iterator<T> iterator() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 3236a1dc51c394b784d3f42b78e76bf7c2f69c37..e1ff0bea724d0196dc2ac02986dae32536baefa0 100644
+index 6f98681ac54f575be047867a8c0b58e1dbd2a37d..c446dfd39e7aa0499c80abf6efa876dd935a1824 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -564,11 +564,11 @@ public abstract class LivingEntity extends Entity {
@@ -2836,7 +2821,7 @@ index 3236a1dc51c394b784d3f42b78e76bf7c2f69c37..e1ff0bea724d0196dc2ac02986dae325
      }
  
      protected void onChangedBlock(BlockPos pos) {
-@@ -2419,6 +2418,7 @@ public abstract class LivingEntity extends Entity {
+@@ -2428,6 +2427,7 @@ public abstract class LivingEntity extends Entity {
      }
  
      protected void updateSwingTime() {
@@ -2845,7 +2830,7 @@ index 3236a1dc51c394b784d3f42b78e76bf7c2f69c37..e1ff0bea724d0196dc2ac02986dae325
  
          if (this.swinging) {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 35ff7abd8251b0af6c23fbb63804db632ec5b85d..b101e0b234c9cef315f871b880c1dcb3647d5ff6 100644
+index 73af374f4aa9e3e8f188434c21a5f1433cffc637..659aad561b029be055dcecf66baadbd9e7229cc5 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -796,9 +796,6 @@ public abstract class Mob extends LivingEntity {
@@ -3054,10 +3039,10 @@ index 74a0866513ea04f635089badfd5cde132d2d1355..c6c3e0b25040513fd600b09f505ac259
  
                  if (entityraider == null || !entityraider.isAlive()) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index a98d115b7dccd836fa2c0f50333730db6f388aff..a0138fa3120492e1b61449213a36003d2eb7af13 100644
+index 4f8b2617adc0013035cc0ca72bf1b83eb5c18c6c..392d34a0a5ba4769bce035a74eacba86b07719cb 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -116,8 +116,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -118,8 +118,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public static final int TICKS_PER_DAY = 24000;
      public static final int MAX_ENTITY_SPAWN_Y = 20000000;
      public static final int MIN_ENTITY_SPAWN_Y = -20000000;
@@ -4263,10 +4248,10 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index a92a2302c9e3013d354ee885165af17540d9c343..43ad783a4f9027d8a4e3ee5b6b26be5cc3155731 100644
+index d6240004f10cf3c014c038e90241731b4b6622ea..b8b5566ead8fd5972264b013ed144c960a6c94a8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -952,6 +952,7 @@ public final class CraftServer implements Server {
+@@ -957,6 +957,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
@@ -4275,7 +4260,7 @@ index a92a2302c9e3013d354ee885165af17540d9c343..43ad783a4f9027d8a4e3ee5b6b26be5c
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 55bae3efbc630be6d40d415509de4c3e744a5004..bc26c18535e161d4254b644ffbdaad23e95ff631 100644
+index f810bebfca3932c80e20646eb0680f7718506707..a9233afb367f052f01be59dae83371edf4357ba3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -153,6 +153,14 @@ public class Main {

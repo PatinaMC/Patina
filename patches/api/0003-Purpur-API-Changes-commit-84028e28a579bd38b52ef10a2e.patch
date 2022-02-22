@@ -6,10 +6,10 @@ Subject: [PATCH] Purpur API Changes commit
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 53c4e5ca208ee17c7c244e416c537c7b63edf194..8aed0d140c8faef173259e2641de9bc81030554c 100644
+index 795f8c0aa3929f6de4b4ea4b139bef8b672ab97a..814a911fbf434945559b006266529e00dbe13021 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2181,4 +2181,15 @@ public final class Bukkit {
+@@ -2303,4 +2303,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -26,10 +26,10 @@ index 53c4e5ca208ee17c7c244e416c537c7b63edf194..8aed0d140c8faef173259e2641de9bc8
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e48af3822e9f118399c3a1c9358c56efae12e0da..a320f3911f9cfca61e3f658abb4bdf45e9e37d02 100644
+index a62c27777672eff1c488517b37876e3a44a2d57d..a2dd5fbbcee31360e760b1ab087480c7c574fc97 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1778,6 +1778,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1886,6 +1886,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -48,7 +48,7 @@ index e48af3822e9f118399c3a1c9358c56efae12e0da..a320f3911f9cfca61e3f658abb4bdf45
          /**
           * Sends the component to the player
           *
-@@ -1888,4 +1900,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1996,4 +2008,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      @NotNull
      io.papermc.paper.datapack.DatapackManager getDatapackManager();
      // Paper end

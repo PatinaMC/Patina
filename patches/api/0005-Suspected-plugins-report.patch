@@ -6,10 +6,10 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 0cbe93474b5f250638246cbd28f314cddc319d0c..a6b246f19792046d30cffaec0ab89c5719bd7fb1 100644
+index b7e032bbb55cabe4cb020a49135b495411614222..244ddd3170b34b6bc691cc5453b1138dd62e8a85 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -582,7 +582,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -583,7 +583,11 @@ public final class SimplePluginManager implements PluginManager {
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
          gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -22,7 +22,7 @@ index 0cbe93474b5f250638246cbd28f314cddc319d0c..a6b246f19792046d30cffaec0ab89c57
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
          callEvent(new ServerExceptionEvent(new ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -653,7 +657,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -654,7 +658,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -35,7 +35,7 @@ index 0cbe93474b5f250638246cbd28f314cddc319d0c..a6b246f19792046d30cffaec0ab89c57
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
                  if (!(event instanceof ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new ServerExceptionEvent(new ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -939,4 +947,10 @@ public final class SimplePluginManager implements PluginManager {
+@@ -940,4 +948,10 @@ public final class SimplePluginManager implements PluginManager {
      }
      // Paper end
  
@@ -110,7 +110,7 @@ index 2b9218ddd262e89180588c3014dad328317dd8db..0c27011e6b2ff254057204084cd2f448
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index c67e91316f35750b18e082746206a01e783f1740..8196d100e0080f920594dbf663ccbad27be7cdf9 100644
+index dc76cdbe93a0229a8ff552e4048613e3d8e050ce..fc930eab2a0b3f61af5bbcf01cb651c33d8505e4 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -251,4 +251,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot

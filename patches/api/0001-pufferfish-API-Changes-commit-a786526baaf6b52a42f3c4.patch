@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 15 Feb 2022 13:59:09 +0000
+Date: Tue, 22 Feb 2022 11:56:03 -0800
 Subject: [PATCH] pufferfish API Changes commit
- 81f546b0c2ba37b780edc2090d5fcba85d244ccf
+ a786526baaf6b52a42f3c46cebb1e0c1d37dc7b8
 
 Add Sentry
 
@@ -251,13 +251,11 @@ index 0000000000000000000000000000000000000000..77cf83bd096bbf6bfa7e510d97716b51
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/simd/SIMDDetection.java b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDDetection.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..1bbec0b032a4765f5e55a1475a1b7401f72164e7
+index 0000000000000000000000000000000000000000..c6a7f59b246ab9a8f3c7ac895287ed71a28a6aaa
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDDetection.java
 @@ -0,0 +1,32 @@
 +package gg.pufferfish.pufferfish.simd;
-+
-+import jdk.incubator.vector.IntVector;
 +
 +@Deprecated
 +public class SIMDDetection {
@@ -283,7 +281,9 @@ index 0000000000000000000000000000000000000000..1bbec0b032a4765f5e55a1475a1b7401
 +		} else {
 +			int dot = version.indexOf(".");
 +			if(dot != -1) { version = version.substring(0, dot); }
-+		} return Integer.parseInt(version);
++		}
++		version = version.split("-")[0]; // Azul is stupid
++		return Integer.parseInt(version);
 +	}
 +	
 +}
@@ -409,10 +409,10 @@ index b937441d2fb46b108644c49fcf073859765aa02e..d95b01bfd0657cf089c0f5412453cca0
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 1366496271c4c7f72d1e5f990e51775b1c371f99..23bc96e9b2d2d53a81c5140a94430d17add69228 100644
+index 42da20011544075a9bea63a12ae86f2f21720667..16d0e517afd3fae21f2666c6b4e1e38dcf5ea64b 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -581,7 +581,9 @@ public final class SimplePluginManager implements PluginManager {
+@@ -582,7 +582,9 @@ public final class SimplePluginManager implements PluginManager {
  
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
@@ -422,7 +422,7 @@ index 1366496271c4c7f72d1e5f990e51775b1c371f99..23bc96e9b2d2d53a81c5140a94430d17
          callEvent(new ServerExceptionEvent(new ServerPluginEnableDisableException(msg, ex, plugin)));
      }
      // Paper end
-@@ -640,9 +642,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -641,9 +643,11 @@ public final class SimplePluginManager implements PluginManager {
                              ));
                  }
              } catch (Throwable ex) {

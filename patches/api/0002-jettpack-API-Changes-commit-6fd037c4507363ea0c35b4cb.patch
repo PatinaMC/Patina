@@ -1,16 +1,16 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 17 Feb 2022 13:13:00 +0000
+Date: Tue, 22 Feb 2022 11:55:37 -0800
 Subject: [PATCH] jettpack API Changes commit
- 0795ba2ac8158001eafa5d28dd99832387859804
+ 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
 
 skip event if no listeners
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 23bc96e9b2d2d53a81c5140a94430d17add69228..1ad58032fec9008a055eb0ad74ab4070d2b80092 100644
+index 16d0e517afd3fae21f2666c6b4e1e38dcf5ea64b..b7e032bbb55cabe4cb020a49135b495411614222 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -611,6 +611,14 @@ public final class SimplePluginManager implements PluginManager {
+@@ -612,6 +612,14 @@ public final class SimplePluginManager implements PluginManager {
       */
      @Override
      public void callEvent(@NotNull Event event) {
@@ -25,7 +25,7 @@ index 23bc96e9b2d2d53a81c5140a94430d17add69228..1ad58032fec9008a055eb0ad74ab4070
          // Paper - replace callEvent by merging to below method
          if (event.isAsynchronous() && server.isPrimaryThread()) {
              throw new IllegalStateException(event.getEventName() + " may only be triggered asynchronously.");
-@@ -618,8 +626,8 @@ public final class SimplePluginManager implements PluginManager {
+@@ -619,8 +627,8 @@ public final class SimplePluginManager implements PluginManager {
              throw new IllegalStateException(event.getEventName() + " may only be triggered synchronously.");
          }
  

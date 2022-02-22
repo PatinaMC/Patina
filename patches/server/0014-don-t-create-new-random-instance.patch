@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1d980aac27365935407e8d889fc2a8990b93eeee..25e659eb8f1f76d0c6509f2acc0e3a1ee82d2457 100644
+index c04dd8da9a4d23d876144ad22b7d92d22e25252a..fd592ff360f8c7f6704bea5a7987c8804eac2dfc 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -651,7 +651,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
@@ -53,10 +53,10 @@ index 25ae440839f1d286550a77d0a4c61e1dc02b369d..711d5dc2a8b3a5f2a2a35cab59b5ecfd
          }
  
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index a8d3657deda93cbc5f157b101e8b3e602db86cc5..c18b878e578bcb95d575d9c91b1522efab7e1e63 100644
+index b3fdd847615dbad459de32450b0d2122888b4d70..f7997d2f26ce311625ccbbf63d2338ab0db515c3 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -122,13 +122,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -124,13 +124,14 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public final Thread thread;
      private final boolean isDebug;
      private int skyDarken;
@@ -95,10 +95,10 @@ index 286c75989282c6d370ca64ac714ab15d784210ab..a580c191a0450c1088c32344b30a3f45
          if (!s1.isEmpty()) {
              try {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4c3cf130c0ecc2e219c34a4ae2a547f385ad4d62..bee5c701f6514eec66b474c8bfa35e0292423e86 100644
+index 76c342f334e302b79b33c9df6e6ab756f09200e8..5b726ff4fae292cb225abc5d8f739068fedab39a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1240,7 +1240,7 @@ public final class CraftServer implements Server {
+@@ -1221,7 +1221,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              dimensionmanager = (DimensionType) console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrThrow(DimensionType.OVERWORLD_LOCATION);
