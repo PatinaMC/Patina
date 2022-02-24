@@ -37,17 +37,16 @@ jobs:
         id: mcver
       - name: Build
         run: |
-          ./gradlew createReobfBundleJar --stacktrace --no-daemon
-          ./gradlew paperclip --stacktrace --no-daemon
+          ./gradlew createReobfPaperclipJar --stacktrace --no-daemon
       - name: Archive Paperclip
         uses: actions/upload-artifact@v2
         with:
           name: Patina
-          path: build/libs/patina-bundler-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT-reobf.jar
+          path: build/libs/patina-paperclip-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT-reobf.jar
       - name: Prepare Github Page Files
         run: |
           mkdir -p public
-          cp build/libs/patina-bundler-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT-reobf.jar public/
+          cp build/libs/patina-paperclip-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT-reobf.jar public/
       - name: Deploy to Github Pages
         if: github.event_name != 'pull_request'
         uses: peaceiris/actions-gh-pages@v3
