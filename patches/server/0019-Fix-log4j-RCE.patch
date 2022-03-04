@@ -1,0 +1,106 @@
+From 750680fc546a261a3dc83cd08648c867808baadc Mon Sep 17 00:00:00 2001
+From: FlyProject <jim20071128@163.com>
+Date: Fri, 4 Mar 2022 09:18:15 +0800
+Subject: [PATCH] Fix log4j RCE
+
+---
+ pom.xml                       | 16 ++++------------
+ src/main/resources/log4j2.xml | 12 ++++++------
+ 2 files changed, 10 insertions(+), 18 deletions(-)
+
+diff --git a/pom.xml b/pom.xml
+index de892cc..746472a 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -55,18 +55,6 @@
+         </repository>
+     </repositories>
+ 
+-    <dependencyManagement>
+-        <dependencies>
+-            <dependency>
+-                <groupId>org.apache.logging.log4j</groupId>
+-                <artifactId>log4j-bom</artifactId>
+-                <version>2.11.2</version>
+-                <type>pom</type>
+-                <scope>import</scope>
+-            </dependency>
+-        </dependencies>
+-    </dependencyManagement>
+-
+     <dependencies>
+         <dependency>
+             <groupId>foss.patina</groupId>
+@@ -113,16 +101,19 @@
+         <dependency>
+             <groupId>org.apache.logging.log4j</groupId>
+             <artifactId>log4j-core</artifactId>
++            <version>2.17.1</version>
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.logging.log4j</groupId>
+             <artifactId>log4j-api</artifactId>
++            <version>2.17.1</version>
+             <scope>compile</scope>
+         </dependency>
+         <dependency>
+             <groupId>org.apache.logging.log4j</groupId>
+             <artifactId>log4j-iostreams</artifactId>
++            <version>2.17.1</version>
+             <scope>compile</scope>
+         </dependency>
+         <!-- Paper - Async loggers -->
+@@ -186,6 +177,7 @@
+         <dependency>
+             <groupId>org.apache.logging.log4j</groupId>
+             <artifactId>log4j-slf4j-impl</artifactId>
++            <version>2.11.2</version> <!--Can't use 2.15+ version-->
+             <!--<version>2.8.1</version>--> <!--handled by bom-->
+             <scope>runtime</scope>
+             <exclusions>
+diff --git a/src/main/resources/log4j2.xml b/src/main/resources/log4j2.xml
+index 67da1aa..6d816cd 100644
+--- a/src/main/resources/log4j2.xml
++++ b/src/main/resources/log4j2.xml
+@@ -2,25 +2,25 @@
+ <Configuration status="WARN" packages="com.mojang.util" shutdownHook="disable">
+     <Appenders>
+         <Queue name="ServerGuiConsole">
+-            <PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg%n" />
++            <PatternLayout pattern="[%d{HH:mm:ss} %level]: %msg{nolookups}%n" />
+         </Queue>
+         <TerminalConsole name="TerminalConsole">
+             <PatternLayout>
+-                <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %paperMinecraftFormatting{%msg}%n%xEx{full}}">
++                <LoggerNamePatternSelector defaultPattern="%highlightError{[%d{HH:mm:ss} %level]: [%logger] %paperMinecraftFormatting{%msg{nolookups}}%n%xEx{full}}">
+                     <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
+                     <!-- Disable prefix for various plugins that bypass the plugin logger -->
+                     <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE"
+-                                  pattern="%highlightError{[%d{HH:mm:ss} %level]: %paperMinecraftFormatting{%msg}%n%xEx{full}}" />
++                                  pattern="%highlightError{[%d{HH:mm:ss} %level]: %paperMinecraftFormatting{%msg{nolookups}}%n%xEx{full}}" />
+                 </LoggerNamePatternSelector>
+             </PatternLayout>
+         </TerminalConsole>
+         <RollingRandomAccessFile name="File" fileName="logs/latest.log" filePattern="logs/%d{yyyy-MM-dd}-%i.log.gz">
+             <PatternLayout>
+-                <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %paperMinecraftFormatting{%msg}{strip}%n%xEx{full}">
++                <LoggerNamePatternSelector defaultPattern="[%d{HH:mm:ss}] [%t/%level]: [%logger] %paperMinecraftFormatting{%msg{nolookups}}{strip}%n%xEx{full}">
+                     <!-- Log root, Minecraft, Mojang and Bukkit loggers without prefix -->
+                     <!-- Disable prefix for various plugins that bypass the plugin logger -->
+                     <PatternMatch key=",net.minecraft.,Minecraft,com.mojang.,com.sk89q.,ru.tehkode.,Minecraft.AWE"
+-                                  pattern="[%d{HH:mm:ss}] [%t/%level]: %paperMinecraftFormatting{%msg}{strip}%n%xEx{full}" />
++                                  pattern="[%d{HH:mm:ss}] [%t/%level]: %paperMinecraftFormatting{%msg{nolookups}}{strip}%n%xEx{full}" />
+                 </LoggerNamePatternSelector>
+             </PatternLayout>
+             <Policies>
+@@ -40,4 +40,4 @@
+             <AppenderRef ref="ServerGuiConsole" level="info"/>
+         </Root>
+     </Loggers>
+-</Configuration>
++</Configuration>
+\ No newline at end of file
+-- 
+1.8.3.1
+
