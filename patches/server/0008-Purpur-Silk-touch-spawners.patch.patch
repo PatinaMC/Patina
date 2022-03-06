@@ -5,12 +5,12 @@ Subject: [PATCH] Purpur Silk-touch-spawners.patch
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 3661ac5e3bfdebb2911cb1b118942b9fc7884140..6d5a8583c1eea83d6c643466757938c43e5ea4a4 100644
+index 85c9056f92711b985e251f0f06ed551d03deb562..14c84b18b4b0c1cd84d02e0f2d7757bc731755f8 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -93,6 +93,7 @@ public final class PaperAdventure {
-         .build();
+@@ -94,6 +94,7 @@ public final class PaperAdventure {
      public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
+     @Deprecated
      public static final PlainComponentSerializer PLAIN_COMPONENT = PlainComponentSerializer.builder().flattener(FLATTENER).build();
 +    public static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.builder().character(LegacyComponentSerializer.AMPERSAND_CHAR).hexColors().build(); // Purpur
      public static final PlainTextComponentSerializer PLAIN = PlainTextComponentSerializer.builder().flattener(FLATTENER).build();

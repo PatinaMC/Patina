@@ -5,7 +5,7 @@ Subject: [PATCH] Update JettPack's redstone patch
 
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index 2825b11591fbfa47299e9c04d2c93ed132578e6a..4d2bb93314c6abbb9c2fb07a4df0dfbf49ed4e86 100644
+index 5525d3280b6e838ae7bc474a58f3200067b0e9d0..bfcb920175c198cc39827213139e4ffaab7a5319 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -71,8 +71,8 @@ public class PaperConfig {

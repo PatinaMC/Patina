@@ -5,7 +5,7 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5b00f5e65188203b7641122ebd52dea17cdd3d1e..1d980aac27365935407e8d889fc2a8990b93eeee 100644
+index 6ea99a1e59f9a5a383238a914dbae91a22b7de54..2ee5604bbf035ecf953c3a966ce47b227fc6d426 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -186,7 +186,7 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -16,8 +16,8 @@ index 5b00f5e65188203b7641122ebd52dea17cdd3d1e..1d980aac27365935407e8d889fc2a899
 +public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnable> implements CommandSource, AutoCloseable { // Patina
  
      private static MinecraftServer SERVER; // Paper
-     public static final Logger LOGGER = LogManager.getLogger();
-@@ -1375,19 +1375,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     public static final Logger LOGGER = LogUtils.getLogger();
+@@ -1362,19 +1362,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      @Override
@@ -41,7 +41,7 @@ index 5b00f5e65188203b7641122ebd52dea17cdd3d1e..1d980aac27365935407e8d889fc2a899
  
      @Override
      public boolean pollTask() {
-@@ -1419,10 +1421,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1406,10 +1408,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
@@ -55,10 +55,10 @@ index 5b00f5e65188203b7641122ebd52dea17cdd3d1e..1d980aac27365935407e8d889fc2a899
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index addf249717b5271b664f4a9d28dd6cc177db5688..d63d923562878e00cd0c95d3b46a11ee68932011 100644
+index f33ae29fd86fbfb2a94748fbf9515e3b4ae01753..798cadd37a1c8213ccc20bf425b6a8f3cc46f7c7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1264,10 +1264,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1265,10 +1265,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  
@@ -72,7 +72,7 @@ index addf249717b5271b664f4a9d28dd6cc177db5688..d63d923562878e00cd0c95d3b46a11ee
          @Override
          protected boolean scheduleExecutables() {
 diff --git a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
-index dcce05d2f4ab16424db4ab103a12188e207a457b..1342ea2b85d6c57893c1a0272ef687f1b47a350f 100644
+index 7a4ade1a4190bf4fbb048919ae2be230f7b80fff..70ad8f83a08bdebebae5073a88792125e1c96a6a 100644
 --- a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
 +++ b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
 @@ -29,7 +29,9 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Profiler
@@ -85,7 +85,7 @@ index dcce05d2f4ab16424db4ab103a12188e207a457b..1342ea2b85d6c57893c1a0272ef687f1
  
      public boolean isSameThread() {
          return Thread.currentThread() == this.getRunningThread();
-@@ -116,7 +118,7 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Profiler
+@@ -120,7 +122,7 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Profiler
          R runnable = this.pendingRunnables.peek();
          if (runnable == null) {
              return false;
