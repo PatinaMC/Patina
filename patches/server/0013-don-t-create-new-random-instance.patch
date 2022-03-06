@@ -52,41 +52,6 @@ index 000918fe0cc3fde07145e027b25f148afcb0de62..411d895544ee1fdebdfc6dd1552dfc1f
              this.challengeBytes = String.format("\t%s%d\u0000", this.ident, this.challenge).getBytes(StandardCharsets.UTF_8);
          }
  
-diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index f504b2a4de27efd213573ec4694d0defccf5a046..f1b1fa43a5535892056560b8a0a74bd75a6c3e42 100644
---- a/src/main/java/net/minecraft/world/level/Level.java
-+++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -121,7 +121,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-     public final Thread thread;
-     private final boolean isDebug;
-     private int skyDarken;
--    protected int randValue = (new Random()).nextInt();
-+    // Patina - moved down
-     protected final int addend = 1013904223;
-     protected float oRainLevel;
-     public float rainLevel;
-diff --git a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
-index f1aee097318f91d582aa143a77662ec12e812c93..197a6962359db5208347ddcda0a6fe4bbf452ad0 100644
---- a/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
-+++ b/src/main/java/net/minecraft/world/level/levelgen/WorldGenSettings.java
-@@ -82,7 +82,7 @@ public class WorldGenSettings {
-     }
- 
-     public static WorldGenSettings makeDefault(RegistryAccess registryManager) {
--        long l = (new Random()).nextLong();
-+        long l = java.util.concurrent.ThreadLocalRandom.current().nextLong(); // Patina - don't create new random instance
-         return new WorldGenSettings(l, true, false, withOverworld(registryManager.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY), DimensionType.defaultDimensions(registryManager, l), makeDefaultOverworld(registryManager, l)));
-     }
- 
-@@ -188,7 +188,7 @@ public class WorldGenSettings {
-     }
- 
-     public static WorldGenSettings create(RegistryAccess registryManager, DedicatedServerProperties.WorldGenProperties worldGenProperties) {
--        long l = parseSeed(worldGenProperties.levelSeed()).orElse((new Random()).nextLong());
-+        long l = parseSeed(worldGenProperties.levelSeed()).orElse(java.util.concurrent.ThreadLocalRandom.current().nextLong()); // Patina - don't create new random instance
-         Registry<DimensionType> registry = registryManager.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
-         Registry<Biome> registry2 = registryManager.registryOrThrow(Registry.BIOME_REGISTRY);
-         Registry<StructureSet> registry3 = registryManager.registryOrThrow(Registry.STRUCTURE_SET_REGISTRY);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 index 97eab206485f2a071ae11f2267566b05b7d03249..4b25731bc0e52c20d559bd998217a1526ce3d681 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
