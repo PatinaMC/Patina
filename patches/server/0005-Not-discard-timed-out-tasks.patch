@@ -5,7 +5,7 @@ Subject: [PATCH] Not discard timed-out tasks
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4c8964d2f03a28e66c5aa444dd1770341a806256..8b109a5c8eac5dcb36eca6fc06b43dcfc5cb2a0c 100644
+index 744d77090b32eb6f7494f0542787a106c016e483..bb0162746fb202f4a5a417600e8d334a3801376e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -184,7 +184,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
@@ -17,7 +17,7 @@ index 4c8964d2f03a28e66c5aa444dd1770341a806256..8b109a5c8eac5dcb36eca6fc06b43dcf
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogManager.getLogger();
-@@ -1313,19 +1313,17 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1318,19 +1318,17 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      // Tuinity - replace logic
  
      @Override
@@ -40,7 +40,7 @@ index 4c8964d2f03a28e66c5aa444dd1770341a806256..8b109a5c8eac5dcb36eca6fc06b43dcf
  
      @Override
      public boolean executeNext() {
-@@ -1356,10 +1354,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1361,10 +1359,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
      }
  

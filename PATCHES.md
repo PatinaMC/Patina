@@ -182,7 +182,6 @@ This is an overview of all the patches that are currently used.
 | server |  Time scoreboard search      | Spottedleaf |  |
 | server |  Tuinity Server Config      | Spottedleaf |  |
 | api |  Tuinity config      | Spottedleaf |  |
-| server |  Update log4j      | Nassim Jahnke |  |
 | server |  Update version fetcher repo      | JRoy |  |
 | server |  Use array for gamerule storage      | Paul Sauve |  |
 | server |  Use hash table for maintaing changed block set      | Spottedleaf |  |

@@ -318,10 +318,10 @@ index 0000000000000000000000000000000000000000..508534e91eda174645b7f432bf844c9d
 +}
 \ No newline at end of file
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 200ec8ad168e5b5e3672a4284e851b06fcc706b0..80341dabd8932dbfab980ab78e95d06c53fabe94 100644
+index dbf14471627d03052cb592dd03982463b3b409c3..cd90ed06a460f5f9ba8848b508237668ddff2004 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1086,6 +1086,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1091,6 +1091,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  // Paper end
  
                  PaperJvmChecker.checkJvm(); // Paper jvm version nag
@@ -363,7 +363,7 @@ index f7f593a9e58b537109fa6ca1c783f6614f4bfad5..0c680af8b317f246e5e0d021790d42da
          this.world = new CraftWorld((WorldServer) this, gen, env);
          this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5ab23a2266f81a3dea6c5ab0c5b8a97917d2b418..f48988db2f396b5e74f04d7224a76cdead8880b5 100644
+index 4ed50994ef537287d2c8c355bbdec0839bab498c..0cf9e212f21f9a98d4477ff0504455afa736e206 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -880,6 +880,7 @@ public final class CraftServer implements Server {
@@ -382,7 +382,7 @@ index 5ab23a2266f81a3dea6c5ab0c5b8a97917d2b418..f48988db2f396b5e74f04d7224a76cde
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -2371,6 +2373,14 @@ public final class CraftServer implements Server {
+@@ -2372,6 +2374,14 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  

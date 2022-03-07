@@ -82,7 +82,7 @@ index aee3cb0dcc50298e3e79556e5ed3855b641f9143..d8a1ca4e0216f8068c9fb26a86ffb60a
          if (this.isFireProof() || this.world.isClientSide) {
              this.extinguish();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3f5cfb6fa3b6f8f63e25e539395adcc5d209dcae..2abf72e3fb8fd62a007f5bac50a9c406b55743f0 100644
+index 48b190605041def99c775576d3e7701be4f14754..9ee4ea1d0f33d8cfe9a01e2fbeaa8f828c47fb09 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -876,6 +876,7 @@ public final class CraftServer implements Server {
@@ -93,7 +93,7 @@ index 3f5cfb6fa3b6f8f63e25e539395adcc5d209dcae..2abf72e3fb8fd62a007f5bac50a9c406
          }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-@@ -2411,6 +2412,13 @@ public final class CraftServer implements Server {
+@@ -2412,6 +2413,13 @@ public final class CraftServer implements Server {
              org.spigotmc.RestartCommand.restart();
          }
  

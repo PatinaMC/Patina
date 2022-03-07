@@ -5,7 +5,7 @@ Subject: [PATCH] Revert Yatopia's update of hamcrest version
 
 
 diff --git a/pom.xml b/pom.xml
-index 4da9e30a18973fdc42fb9e3f598542eddd89b74a..91615686c954e5287ceda4ee9237cd694a193476 100644
+index 6a99264bbe4d9f1f008bf84709bf366a826409f3..80977be9892421d542eca8f0c76e691f0a6c6806 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -185,7 +185,7 @@

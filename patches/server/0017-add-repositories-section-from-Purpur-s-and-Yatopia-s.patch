@@ -6,7 +6,7 @@ Subject: [PATCH] add repositories section from Purpur's and Yatopia's
 
 
 diff --git a/pom.xml b/pom.xml
-index a42847215a44471dd0a17e82b8b0a15d83ab1a4a..de892cc1ed8b7caae432419b4d4772da3315b122 100644
+index 44df1faf157a181ffa1eb40c13bfc2635984f0d5..cd8bfa00aecb1b52fcba5389091299b3eff2dd13 100644
 --- a/pom.xml
 +++ b/pom.xml
 @@ -34,6 +34,27 @@

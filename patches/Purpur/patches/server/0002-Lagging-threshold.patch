@@ -5,7 +5,7 @@ Subject: [PATCH] Lagging threshold
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 1472bbdac9b545c97368df03672b975abf2dbcb4..6e82bbcf20adefd91bed71f3b01950ed75547fa7 100644
+index 7f5c84fbc7aae821f53ca1868562153770978c0c..56eb02dc6cb9624a494ba2c2ca485593ce4b0bf3 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -280,6 +280,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
@@ -16,7 +16,7 @@ index 1472bbdac9b545c97368df03672b975abf2dbcb4..6e82bbcf20adefd91bed71f3b01950ed
      public final SlackActivityAccountant slackActivityAccountant = new SlackActivityAccountant();
      // Spigot end
  
-@@ -1118,6 +1119,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1123,6 +1124,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                          recentTps[1] = tps5.getAverage();
                          recentTps[2] = tps15.getAverage();
                          // Paper end
@@ -39,10 +39,10 @@ index 74fc4fc2216cf82e1546ef3d567f2750b1240df1..d59d84421caba999540981972f3edc32
 +    }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 7d15e05b3547ed2ff2211b7dc89658d2df9f93c9..dbf3c298c58396dd9e757015e81d309c077ccf31 100644
+index 15671ebfa708b27e73051f8bcf467050a7b1521b..62593a6a1cea8a493414059af3a3a94d11aa8e76 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -2558,4 +2558,10 @@ public final class CraftServer implements Server {
+@@ -2559,4 +2559,10 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

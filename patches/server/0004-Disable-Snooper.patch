@@ -5,7 +5,7 @@ Subject: [PATCH] Disable Snooper
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index f704271de93a51b80321bf247abbed91844ea74c..4c8964d2f03a28e66c5aa444dd1770341a806256 100644
+index ac7f3208147a7a43e58bd69114cbcc91df96785a..744d77090b32eb6f7494f0542787a106c016e483 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -184,7 +184,7 @@ import org.spigotmc.SlackActivityAccountant; // Spigot
@@ -26,7 +26,7 @@ index f704271de93a51b80321bf247abbed91844ea74c..4c8964d2f03a28e66c5aa444dd177034
      private final List<Runnable> tickables = Lists.newArrayList();
      private final GameProfilerSwitcher m;
      private GameProfilerFiller methodProfiler;
-@@ -942,9 +942,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -947,9 +947,9 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              }
          }
  
@@ -38,7 +38,7 @@ index f704271de93a51b80321bf247abbed91844ea74c..4c8964d2f03a28e66c5aa444dd177034
  
          this.dataPackResources.close();
  
-@@ -1453,14 +1453,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1458,14 +1458,14 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
              //MinecraftServer.LOGGER.debug("Autosave finished"); // Paper
          //} // Paper
  
@@ -55,7 +55,7 @@ index f704271de93a51b80321bf247abbed91844ea74c..4c8964d2f03a28e66c5aa444dd177034
  
          this.methodProfiler.exit();
  
-@@ -1807,7 +1807,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1812,7 +1812,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          this.L = s1;
      }
  
@@ -64,7 +64,7 @@ index f704271de93a51b80321bf247abbed91844ea74c..4c8964d2f03a28e66c5aa444dd177034
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
          mojangstatisticsgenerator.a("whitelist_enabled", false);
          mojangstatisticsgenerator.a("whitelist_count", 0);
-@@ -1839,7 +1839,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1844,7 +1844,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          }
  
          mojangstatisticsgenerator.a("worlds", i);

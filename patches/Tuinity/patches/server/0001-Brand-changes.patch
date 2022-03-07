@@ -40,10 +40,10 @@ index a0f53c9eff04a40780b3ba568dbfc5bbe9bd8504..3bc5cd1e53dd7c94b948e7f57f0dc8e0
                      throwable = throwable1;
                      throw throwable1;
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index bf80e870e6a2a6fe1d4ae1bea355bcd7a0735d3b..da66369c63e60e6e0328392b2eb98579613be63e 100644
+index 0737009363635c677246642f371847c9100e49a8..005bc80222b47992c4fd6f97b84acead0e20636a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1583,7 +1583,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1588,7 +1588,7 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
      }
  
      public String getServerModName() {
@@ -53,7 +53,7 @@ index bf80e870e6a2a6fe1d4ae1bea355bcd7a0735d3b..da66369c63e60e6e0328392b2eb98579
  
      public CrashReport b(CrashReport crashreport) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index cebecee640ed5a7fc2b978e00ff7eb012228267d..5ab23a2266f81a3dea6c5ab0c5b8a97917d2b418 100644
+index 894c7834f8e5829058e5004829a795a1004510bf..4ed50994ef537287d2c8c355bbdec0839bab498c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -230,7 +230,7 @@ import javax.annotation.Nullable; // Paper

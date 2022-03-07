@@ -75,10 +75,10 @@ index 71a000edfab27c9965d1929af78582821d5af97a..5c5ac70b4dae5d51303ab974261055aa
                              LOGGER.error("Error whilst processing packet {} for {}[{}]", packet, networkmanager.getPlayer().getName(), networkmanager.getSocketAddress(), e);
                          } else {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5318d2e8fa6fcfa4a85afd604097fb7d7268ddc0..f704271de93a51b80321bf247abbed91844ea74c 100644
+index 08349ff4cd21be5daa8d0f8f1e7d224b11da5df4..ac7f3208147a7a43e58bd69114cbcc91df96785a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1161,7 +1161,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -1166,7 +1166,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
                  return;
              }
              // Paper end
@@ -123,10 +123,10 @@ index 4bfb8a4cc899ac4d4eeb3b7e87c1a8b4cd8062a5..97aab6dcff740a53c9da1e3a53641933
                          getServer().getPluginManager().callEvent(new ServerExceptionEvent(new ServerInternalException(msg, throwable)));
                          // Paper end
 diff --git a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-index 0be39dac4b9dd69d7d73d86d64cf1e33e4086e81..c53531bc769ecd39c4f03b7a10c5bc6a48ace081 100644
+index 3bfb0e2f18d86776d79576e657e0fecefb562ae8..34e370cc205d1089a786e4e25f48b2dae97a9aa5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
 +++ b/src/main/java/org/bukkit/craftbukkit/scheduler/CraftScheduler.java
-@@ -455,6 +455,7 @@ public class CraftScheduler implements BukkitScheduler {
+@@ -472,6 +472,7 @@ public class CraftScheduler implements BukkitScheduler {
          parsePending();
          while (isReady(currentTick)) {
              final CraftTask task = pending.remove();
@@ -134,7 +134,7 @@ index 0be39dac4b9dd69d7d73d86d64cf1e33e4086e81..c53531bc769ecd39c4f03b7a10c5bc6a
              if (task.getPeriod() < CraftTask.NO_REPEATING) {
                  if (task.isSync()) {
                      runners.remove(task.getTaskId(), task);
-@@ -473,12 +474,15 @@ public class CraftScheduler implements BukkitScheduler {
+@@ -490,12 +491,15 @@ public class CraftScheduler implements BukkitScheduler {
                          task.getTaskId(),
                          task.getOwner().getDescription().getFullName());
                      if (task.getOwner() == MINECRAFT) {
@@ -155,7 +155,7 @@ index 0be39dac4b9dd69d7d73d86d64cf1e33e4086e81..c53531bc769ecd39c4f03b7a10c5bc6a
                      }
                      org.bukkit.Bukkit.getServer().getPluginManager().callEvent(
                          new ServerExceptionEvent(new ServerSchedulerException(msg, throwable, task)));
-@@ -493,6 +497,7 @@ public class CraftScheduler implements BukkitScheduler {
+@@ -510,6 +514,7 @@ public class CraftScheduler implements BukkitScheduler {
                  // We don't need to parse pending
                  // (async tasks must live with race-conditions if they attempt to cancel between these few lines of code)
              }
@@ -163,7 +163,7 @@ index 0be39dac4b9dd69d7d73d86d64cf1e33e4086e81..c53531bc769ecd39c4f03b7a10c5bc6a
              final long period = task.getPeriod(); // State consistency
              if (period > 0) {
                  task.setNextRun(currentTick + period);
-@@ -646,4 +651,10 @@ public class CraftScheduler implements BukkitScheduler {
+@@ -670,4 +675,10 @@ public class CraftScheduler implements BukkitScheduler {
          };
      }
      // Paper end

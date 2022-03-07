@@ -11,10 +11,10 @@ gui. It looks like during sigint shutdown there can be some
 deadlock between the server thread and awt shutdown thread here.
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 7317a64269b8ce2a30117ebb23acfe98e1eeb281..6f90a4182e008b49a4b3328e569311382e4bec0d 100644
+index 2fb52c153d2c232e935d4e331e84eecd34d04936..b6c497d7ab86a4af4fd2465988d568e83f91206d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -882,10 +882,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
+@@ -887,10 +887,11 @@ public abstract class MinecraftServer extends IAsyncTaskHandlerReentrant<TickTas
          org.spigotmc.WatchdogThread.doStop(); // Paper
          if (!isMainThread()) {
              MinecraftServer.LOGGER.info("Stopping main thread (Ignore any thread death message you see! - DO NOT REPORT THREAD DEATH TO PAPER)");
