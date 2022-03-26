@@ -2074,7 +2074,7 @@ index 0000000000000000000000000000000000000000..6d6c1b81b696187add53e744aaffa54d
 +	}
 +}
 diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
-index d7dcf36c8c972e30320c56e447822cf26f6d5fb3..14c21ab46cb5e1260015f4fda52d0cb566d2cee8 100644
+index ad3f0ff353a0448babde334641d1b1ac94779b07..15be778f249a959c327d84f43013dc476813c096 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
 @@ -77,13 +77,37 @@ public class PaperWorldConfig {
@@ -2687,7 +2687,7 @@ index 27e90ca03275a42271bbe97ee1a63a355b098ede..568cc931329dadd416fe93a08ce87c95
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 48e428ce0590c530522de56c9f9c8cf1631c6e01..2896ff39a933b5baf870cce8f6146cabb9fa4f67 100644
+index 1b6d32d8720f66908b9f1b872115fcff081f5378..466a957cbfde871917b9e968dae8d1f911ea6785 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -162,9 +162,14 @@ import org.bukkit.event.weather.LightningStrikeEvent;
@@ -2937,7 +2937,7 @@ index 8229001df0a901d9016fb16e4ddc81b5a0f51452..f9fd8d173b8bc42409de98fb163a6119
      private final EnumSet<Goal.Flag> disabledFlags = EnumSet.noneOf(Goal.Flag.class); // Paper unused, but dummy to prevent plugins from crashing as hard. Theyll need to support paper in a special case if this is super important, but really doesn't seem like it would be.
      private final com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<net.minecraft.world.entity.ai.goal.Goal.Flag> goalTypes = new com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<>(Goal.Flag.class); // Paper - remove streams from pathfindergoalselector
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index cc288174b22f959e8ef11e43f0ea4008bae7bdc5..9386d2f6e8ba9a6c4776635f4204489afcbb0801 100644
+index 3789a0db398766f0fbc9e5ac5bf4228a0a0dac88..07810a1da6f8ad310e50d1b2d37b1b67878d4596 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 @@ -146,7 +146,7 @@ public class FishingHook extends Projectile {
@@ -2958,7 +2958,7 @@ index cc288174b22f959e8ef11e43f0ea4008bae7bdc5..9386d2f6e8ba9a6c4776635f4204489a
  
              this.setDeltaMovement(this.getDeltaMovement().scale(0.92D));
              this.reapplyPosition();
-@@ -269,7 +269,7 @@ public class FishingHook extends Projectile {
+@@ -264,7 +264,7 @@ public class FishingHook extends Projectile {
          boolean flag = itemstack.is(Items.FISHING_ROD);
          boolean flag1 = itemstack1.is(Items.FISHING_ROD);
  
@@ -3629,7 +3629,7 @@ index a4344bf2267112e3c1e31c07c9f6b8eae9666947..3b4ef54b11cb98c390ea6b494112dcf4
      public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
      public static final BooleanProperty ATTACHED = BlockStateProperties.ATTACHED;
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 5d91f00e81864a981ca457fc4fa88f01dbc67a47..e9aa63725e771ab1b9d77843e18d019dbc8100f8 100644
+index 74882f89f32b14ff8cd44f0e4eb1f350f52d636d..9532296f49b56d5d5ccdcf0d2781026235a0a776 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -76,6 +76,54 @@ public class LevelChunk extends ChunkAccess {
@@ -4248,7 +4248,7 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 067669d434fa82866f3bd146d2bdfa132a13ed87..e593619735b683ab1fe6594857aad5db28e1df5e 100644
+index acd57ba592e7331a0b3271b2df67b67ced2e9ef3..73215ce87dfc4ece97e0e3e80181fd6ff46c597e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -955,6 +955,7 @@ public final class CraftServer implements Server {
@@ -4260,7 +4260,7 @@ index 067669d434fa82866f3bd146d2bdfa132a13ed87..e593619735b683ab1fe6594857aad5db
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index afcc80d1f79d1743b0940c69858eacec88fec889..0fefa3a51da466fd086467aa03ed193aa469f501 100644
+index fbe68bd4739d9a0e7d9bc4c3d5ba8ecfd2d13954..268f90f5ba27a89f15691d6b083d8dbb414926a3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -153,6 +153,14 @@ public class Main {

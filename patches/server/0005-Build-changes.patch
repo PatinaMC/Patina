@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 24da9b830bad05fcf389107fe60b916eb49d7697..c6e723b09fa962d037ec6268dd4ec5f74a4c08cf 100644
+index 9711839386e7e794fe426d0814032188ddc741fa..85803de67dba24489809d780a614d38798b4f63e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -18,8 +18,8 @@ repositories {
@@ -20,10 +20,10 @@ index 24da9b830bad05fcf389107fe60b916eb49d7697..c6e723b09fa962d037ec6268dd4ec5f7
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 039f2f4efaeccc80344bf63393e27708b8392a5d..6ea99a1e59f9a5a383238a914dbae91a22b7de54 100644
+index 8b252571020d515547ed6344ff55e284cc23bf91..9057d1a9cb93d2680a2393d3511757d75f002348 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1707,7 +1707,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1703,7 +1703,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
@@ -33,7 +33,7 @@ index 039f2f4efaeccc80344bf63393e27708b8392a5d..6ea99a1e59f9a5a383238a914dbae91a
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f442f9cc242cfd2bcea702558c22e38f124e9796..97eab206485f2a071ae11f2267566b05b7d03249 100644
+index 19d47c56aa8184acef8aae2a6ecb2e40290e456a..4527c36960b0d0b6fdcacde121b312017f9246f7 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -248,7 +248,7 @@ import javax.annotation.Nullable; // Paper

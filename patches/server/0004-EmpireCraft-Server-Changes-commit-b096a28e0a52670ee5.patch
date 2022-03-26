@@ -22,22 +22,22 @@ dont load chunks for physics
 Do not process chat/commands before player has joined
 
 diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-index a0dc380e90415de9068ea408d62a1605c82631df..be8380837c1ddcd5b27694de2d5c3a9a2760c093 100644
+index a60a84d5df0b05cf35668df8c5f08b811bc42a9f..89db70ab1b34d842f7531a085ba2d4953b081a9b 100644
 --- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
 +++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-@@ -45,6 +45,7 @@ public class GiveCommand {
-                     k -= l;
-                     ItemStack itemStack = item.createItemStack(l, false);
-                     boolean bl = serverPlayer.getInventory().add(itemStack);
+@@ -55,6 +55,7 @@ public class GiveCommand {
+                     l -= i1;
+                     ItemStack itemstack = item.createItemStack(i1, false);
+                     boolean flag = entityplayer.getInventory().add(itemstack);
 +                    if (true) { continue; } // EMC - never drop items
-                     if (bl && itemStack.isEmpty()) {
-                         itemStack.setCount(1);
-                         ItemEntity itemEntity2 = serverPlayer.drop(itemStack, false, false, true); // Paper - Fix duplicating /give items on item drop cancel
+                     ItemEntity entityitem;
+ 
+                     if (flag && itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 13975ccbc24cfaef5eab1417b3e7ec2cbb3e78b7..3e6bce7ed4c2216eae6f31549e990abce0a485bf 100644
+index ab3ffb714cf944944eae0e839d3b46b38ed6f03a..f6dd05250346f41ed0fe4c242ed3dcd7b1355901 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2113,6 +2113,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2122,6 +2122,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -46,7 +46,7 @@ index 13975ccbc24cfaef5eab1417b3e7ec2cbb3e78b7..3e6bce7ed4c2216eae6f31549e990abc
              this.player.resetLastActionTime();
              String s = message.getRaw();
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index 9930f7a0681899017329bd2c599db7308310b395..e923624d5c39fe947fc391e36836f222ac008e95 100644
+index 5a062a19bb2fc427c9391bb4731f071719b72c52..bb67097c5c635aa602372c67a6dbf432b391a204 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 @@ -358,4 +358,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
