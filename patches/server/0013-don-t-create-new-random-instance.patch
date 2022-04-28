@@ -18,10 +18,10 @@ index 4830e668f25771066e46cf6c2739d44651f67352..4297f75c68e2413271c9dfa6838e4820
                  holder = worlddimension.typeHolder();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9a25a0088c2c5ba1e73f5e99778f49e1b27a9fee..63e75cfd49a470b71e6bf2e2dcc79412e5fb2b2c 100644
+index c98e03fd081c804c3c5efa6434ca3f042f47067e..15e5c5bf3864ea8a7d64e00116aa034df3b014e4 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -366,7 +366,7 @@ public class ServerPlayer extends Player {
+@@ -367,7 +367,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
@@ -30,7 +30,7 @@ index 9a25a0088c2c5ba1e73f5e99778f49e1b27a9fee..63e75cfd49a470b71e6bf2e2dcc79412
  
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
-@@ -403,7 +403,7 @@ public class ServerPlayer extends Player {
+@@ -404,7 +404,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
@@ -53,10 +53,10 @@ index 000918fe0cc3fde07145e027b25f148afcb0de62..411d895544ee1fdebdfc6dd1552dfc1f
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 4527c36960b0d0b6fdcacde121b312017f9246f7..3dca39c494088232a16b53975d06f4da66b479c9 100644
+index 0ca0af74cf86b2754c7c246d1eb4d9f73f3be628..48c82ae3f3ba23c6fda029d76ca2a22ff0dce1b2 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1215,7 +1215,7 @@ public final class CraftServer implements Server {
+@@ -1216,7 +1216,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              holder = console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolder(DimensionType.OVERWORLD_LOCATION);

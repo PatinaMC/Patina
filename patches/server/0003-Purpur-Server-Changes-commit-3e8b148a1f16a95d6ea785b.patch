@@ -137,7 +137,7 @@ index b16287a47870978706734b928b87f2357e91e3a1..048413655ef636b3dae687452fc5a957
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 568cc931329dadd416fe93a08ce87c953cd5c3ad..1a4a928a7587a46dcf9cc714b123e8a1f58f6297 100644
+index 87ae62ff4fcfd1459c833e0426d8d809ba4337ed..9355155699f2f6a23fb703211e2307961fbcb085 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -231,6 +231,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -157,10 +157,10 @@ index 568cc931329dadd416fe93a08ce87c953cd5c3ad..1a4a928a7587a46dcf9cc714b123e8a1
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index e74c13e7aaa144fcd07036de70e80bebf0be698a..9a25a0088c2c5ba1e73f5e99778f49e1b27a9fee 100644
+index 22452aa7eefa350c3b0d0d19a23c76c8ec811de3..c98e03fd081c804c3c5efa6434ca3f042f47067e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1457,6 +1457,7 @@ public class ServerPlayer extends Player {
+@@ -1464,6 +1464,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -181,7 +181,7 @@ index 1e656438d9ee89b97c660f3b3ec671be6546c6b7..346320acbbab260dbb41190e6b24178b
              hasSetFarWarned = true;
              if (this.getServer() != null && this.getServer().isDebugging()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 5bc9c51cdfd1f9d1f15d0717575899e2f038c95c..ab3ffb714cf944944eae0e839d3b46b38ed6f03a 100644
+index cc6ba95f01b82c42b4e5a0a70721ef00dd335e57..696cef46cb53ade1bc2ac67dd1be76de224689d6 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -227,6 +227,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -214,7 +214,7 @@ index 5bc9c51cdfd1f9d1f15d0717575899e2f038c95c..ab3ffb714cf944944eae0e839d3b46b3
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3104,11 +3120,15 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3109,11 +3125,15 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  }
                  // Paper end
  
@@ -235,7 +235,7 @@ index 5bc9c51cdfd1f9d1f15d0717575899e2f038c95c..ab3ffb714cf944944eae0e839d3b46b3
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3130,6 +3150,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3135,6 +3155,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -265,7 +265,7 @@ index 4fa79d37ff4e70c61672cce7c55257c46232c026..df43d0a0f3d1e34baabae150cbf01a00
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index fc535087cb8aeba620927a29fe751484788a1fd6..406d88083549bbe6992fadd7736f6bee2d873c76 100644
+index e3e15a708e37a447485b5fe54bb2f8a9c2b41d18..c83a261e162a0ee79cc04828551e37a1c7ec7729 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1173,6 +1173,7 @@ public abstract class PlayerList {
@@ -289,10 +289,10 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                  } else {
                      handler.accept((Recipe) optional.get());
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 59ec3d56e88cf6cee218422481457b944ff25998..b6cfc7929f3a0fca9c095f54f684b5ab7a9a084f 100644
+index 570a9f1a3387ac42a3c935519aa1656f9d016504..7ed881639e235d15c26f84bccd170180227d81c0 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1775,6 +1775,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, i
+@@ -1775,6 +1775,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();
          this.setYHeadRot(yaw); // Paper - Update head rotation
@@ -301,7 +301,7 @@ index 59ec3d56e88cf6cee218422481457b944ff25998..b6cfc7929f3a0fca9c095f54f684b5ab
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 29f07ff73b0ca68249e4960959143f2903d2717c..3e0b4a840b3afaa36b9705d275f88b9add6b9fdc 100644
+index 6e48472606a04c937a2e4d61267e406f92816054..14c33294aa53f8b60271433e48fbefe7f33d8d96 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2935,7 +2935,7 @@ public abstract class LivingEntity extends Entity {
@@ -469,10 +469,10 @@ index 6371176fba41218a209ea59b4cafe5b2d4a685fd..7666bca74f4f68bb4e902ec2eb7c4895
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 73215ce87dfc4ece97e0e3e80181fd6ff46c597e..19d47c56aa8184acef8aae2a6ecb2e40290e456a 100644
+index 03e370e557356bf2620d0684679e6a49b7f4aaea..2e9aa7c1bfd83715685af56c0dfe04eb32d9a0fc 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -956,6 +956,7 @@ public final class CraftServer implements Server {
+@@ -957,6 +957,7 @@ public final class CraftServer implements Server {
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
          me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
@@ -480,7 +480,7 @@ index 73215ce87dfc4ece97e0e3e80181fd6ff46c597e..19d47c56aa8184acef8aae2a6ecb2e40
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -972,6 +973,7 @@ public final class CraftServer implements Server {
+@@ -973,6 +974,7 @@ public final class CraftServer implements Server {
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
@@ -488,7 +488,7 @@ index 73215ce87dfc4ece97e0e3e80181fd6ff46c597e..19d47c56aa8184acef8aae2a6ecb2e40
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -987,6 +989,7 @@ public final class CraftServer implements Server {
+@@ -988,6 +990,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          com.destroystokyo.paper.PaperConfig.registerCommands(); // Paper
@@ -496,7 +496,7 @@ index 73215ce87dfc4ece97e0e3e80181fd6ff46c597e..19d47c56aa8184acef8aae2a6ecb2e40
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2700,6 +2703,18 @@ public final class CraftServer implements Server {
+@@ -2707,6 +2710,18 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -515,7 +515,7 @@ index 73215ce87dfc4ece97e0e3e80181fd6ff46c597e..19d47c56aa8184acef8aae2a6ecb2e40
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2864,4 +2879,11 @@ public final class CraftServer implements Server {
+@@ -2879,4 +2894,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -961,7 +961,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 59a6cb575e40465275184cb816c862c79995c729..a14ff6087fd2291d8bc9950a228580dc23e3638e 100644
+index 9bccf9ae5f7a38eb5792697700f6d17cd5969cbe..f4569eb42436ef3edc798a20e56d796491e92ea0 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
@@ -972,7 +972,7 @@ index 59a6cb575e40465275184cb816c862c79995c729..a14ff6087fd2291d8bc9950a228580dc
  import net.minecraft.world.entity.animal.WaterAnimal;
  import net.minecraft.world.entity.animal.horse.Llama;
  import net.minecraft.world.entity.boss.EnderDragonPart;
-@@ -384,6 +385,7 @@ public class ActivationRange
+@@ -390,6 +391,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

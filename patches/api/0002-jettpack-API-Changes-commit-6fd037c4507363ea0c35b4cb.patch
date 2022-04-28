@@ -7,10 +7,10 @@ Subject: [PATCH] jettpack API Changes commit
 skip event if no listeners
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 16d0e517afd3fae21f2666c6b4e1e38dcf5ea64b..b7e032bbb55cabe4cb020a49135b495411614222 100644
+index dba9041784e7d3051b5248cbc24e4879e60103c1..7618076d47bf3b8e6173574303c8deb33b29a182 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -612,6 +612,14 @@ public final class SimplePluginManager implements PluginManager {
+@@ -652,6 +652,14 @@ public final class SimplePluginManager implements PluginManager {
       */
      @Override
      public void callEvent(@NotNull Event event) {
@@ -25,7 +25,7 @@ index 16d0e517afd3fae21f2666c6b4e1e38dcf5ea64b..b7e032bbb55cabe4cb020a49135b4954
          // Paper - replace callEvent by merging to below method
          if (event.isAsynchronous() && server.isPrimaryThread()) {
              throw new IllegalStateException(event.getEventName() + " may only be triggered asynchronously.");
-@@ -619,8 +627,8 @@ public final class SimplePluginManager implements PluginManager {
+@@ -659,8 +667,8 @@ public final class SimplePluginManager implements PluginManager {
              throw new IllegalStateException(event.getEventName() + " may only be triggered synchronously.");
          }
  

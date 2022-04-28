@@ -2667,7 +2667,7 @@ index 896a4237f871d46cf39b0721e909c2cc3b5fc728..e2a0a7fd5afd8cd3467dab049695956c
              this.writeByte(value & 127 | 128);
              value >>>= 7;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 27e90ca03275a42271bbe97ee1a63a355b098ede..568cc931329dadd416fe93a08ce87c953cd5c3ad 100644
+index 6afd7c8b3a0db90dbab14b4405ae4c750e5b0ef1..87ae62ff4fcfd1459c833e0426d8d809ba4337ed 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -238,6 +238,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -2687,7 +2687,7 @@ index 27e90ca03275a42271bbe97ee1a63a355b098ede..568cc931329dadd416fe93a08ce87c95
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 1b6d32d8720f66908b9f1b872115fcff081f5378..466a957cbfde871917b9e968dae8d1f911ea6785 100644
+index c63ee396e990d11e2f613f3b5a478b486076ed56..6d868392348c0de1ff8dd7655fe23c780df9255f 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -162,9 +162,14 @@ import org.bukkit.event.weather.LightningStrikeEvent;
@@ -2719,7 +2719,7 @@ index 1b6d32d8720f66908b9f1b872115fcff081f5378..466a957cbfde871917b9e968dae8d1f9
      public final boolean areChunksLoadedForMove(AABB axisalignedbb) {
          // copied code from collision methods, so that we can guarantee that they wont load chunks (we don't override
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 02dc93c394d37c9a84aa4a58d80615c403c54fb9..fc535087cb8aeba620927a29fe751484788a1fd6 100644
+index 188c68d4ae46bc05c6d9c901b5c6ab883fa05ea4..e3e15a708e37a447485b5fe54bb2f8a9c2b41d18 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -494,7 +494,13 @@ public abstract class PlayerList {
@@ -2794,7 +2794,7 @@ index da725ee77c9e3fd7d9ee89763792ecd31c773037..a4640d98aac3a03032c9c6188f6031bd
      @Override
      public Iterator<T> iterator() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 6a31e29bce673e698922da3c3ba8fd4d8b0adedb..29f07ff73b0ca68249e4960959143f2903d2717c 100644
+index bf896f821b88415691312d5c725ed21bb2e3f024..6e48472606a04c937a2e4d61267e406f92816054 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -567,11 +567,11 @@ public abstract class LivingEntity extends Entity {
@@ -4248,10 +4248,10 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index acd57ba592e7331a0b3271b2df67b67ced2e9ef3..73215ce87dfc4ece97e0e3e80181fd6ff46c597e 100644
+index 11aa989a370aefbea923e4cab9d60852ce844bc8..03e370e557356bf2620d0684679e6a49b7f4aaea 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -955,6 +955,7 @@ public final class CraftServer implements Server {
+@@ -956,6 +956,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
