@@ -157,7 +157,7 @@ index 87ae62ff4fcfd1459c833e0426d8d809ba4337ed..9355155699f2f6a23fb703211e230796
          io.papermc.paper.util.ObfHelper.INSTANCE.getClass(); // load mappings for stacktrace deobf and etc.
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 22452aa7eefa350c3b0d0d19a23c76c8ec811de3..c98e03fd081c804c3c5efa6434ca3f042f47067e 100644
+index a6edf5117d4ae03d8294e7bb74dd2d77048895a5..4b608400abf60d7e517688784c7689af4580be0e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1464,6 +1464,7 @@ public class ServerPlayer extends Player {
@@ -181,7 +181,7 @@ index 1e656438d9ee89b97c660f3b3ec671be6546c6b7..346320acbbab260dbb41190e6b24178b
              hasSetFarWarned = true;
              if (this.getServer() != null && this.getServer().isDebugging()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index cc6ba95f01b82c42b4e5a0a70721ef00dd335e57..696cef46cb53ade1bc2ac67dd1be76de224689d6 100644
+index f115aabaf67976a503a76f5213dd52b7b7dfab4e..b006d5444b5a6eaf20f1e1d5980906955f4d45a7 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -227,6 +227,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -265,7 +265,7 @@ index 4fa79d37ff4e70c61672cce7c55257c46232c026..df43d0a0f3d1e34baabae150cbf01a00
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e3e15a708e37a447485b5fe54bb2f8a9c2b41d18..c83a261e162a0ee79cc04828551e37a1c7ec7729 100644
+index 88564df439136c84f7b042391a41c5006d8c3a59..ba0a60a6e183c640b42dbdbb70f31f7a9b40d546 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1173,6 +1173,7 @@ public abstract class PlayerList {
@@ -289,7 +289,7 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                  } else {
                      handler.accept((Recipe) optional.get());
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 570a9f1a3387ac42a3c935519aa1656f9d016504..7ed881639e235d15c26f84bccd170180227d81c0 100644
+index 3f032a510e741d52c4c7fc701df65c77c30362ed..478872f30c1ccf51bd7203600578579d2f5973c1 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1775,6 +1775,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -301,7 +301,7 @@ index 570a9f1a3387ac42a3c935519aa1656f9d016504..7ed881639e235d15c26f84bccd170180
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 6e48472606a04c937a2e4d61267e406f92816054..14c33294aa53f8b60271433e48fbefe7f33d8d96 100644
+index 01d776427ba6d9b35a7cf63b7941e28dd94e1d1a..9e14a9cf8e1867535ca5ebf4acaa49d072334953 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2935,7 +2935,7 @@ public abstract class LivingEntity extends Entity {
@@ -345,7 +345,7 @@ index 63903bd02c6f31d3190a20d106997d4f7b777df8..9909ff96f2803c0d62b1cf4a3b26e26e
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index ef6ac13300ecff50cac98167bef5a5f747bed250..861ee8f112776f1115a1416eeaaad273a20d06a5 100644
+index 93d3e4daf430525dc551b7c2212be23b42cbdc37..c2730baa86e07a47b7adec91fbc9ec8e5840130c 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -164,6 +164,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -441,10 +441,10 @@ index 45d5133ff2303b9b44ccacbfb7919708cb50edd6..b1846a5c73f5be800ab1e4efe81e110e
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
-index 6371176fba41218a209ea59b4cafe5b2d4a685fd..7666bca74f4f68bb4e902ec2eb7c4895adbb9373 100644
+index d5bcc81a809e3c733c6fc11309bcf0913860edf6..96b70ae604695fbe651f8640be5c6d0e1a3109df 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
-@@ -184,6 +184,23 @@ public class SignBlockEntity extends BlockEntity implements CommandSource { // C
+@@ -186,6 +186,23 @@ public class SignBlockEntity extends BlockEntity implements CommandSource { // C
          return ClientboundBlockEntityDataPacket.create(this);
      }
  
@@ -961,7 +961,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 9bccf9ae5f7a38eb5792697700f6d17cd5969cbe..f4569eb42436ef3edc798a20e56d796491e92ea0 100644
+index 8643df8d81714edf60eebd6984bac2c933d1fbd6..1f74d782afe05e48f1919e602a881f0e5cf471cb 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;

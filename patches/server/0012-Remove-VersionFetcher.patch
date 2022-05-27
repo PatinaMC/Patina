@@ -6,7 +6,7 @@ Subject: [PATCH] Remove VersionFetcher
 
 diff --git a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java b/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 deleted file mode 100644
-index ece77f5ea4b14bbed7c070131b3251ea86764538..0000000000000000000000000000000000000000
+index bf42969859545a8a520923ef1836ffa4a5cc24a0..0000000000000000000000000000000000000000
 --- a/src/main/java/com/destroystokyo/paper/PaperVersionFetcher.java
 +++ /dev/null
 @@ -1,149 +0,0 @@
@@ -97,7 +97,7 @@ index ece77f5ea4b14bbed7c070131b3251ea86764538..00000000000000000000000000000000
 -        if (siteApiVersion == null) { return -1; }
 -        try {
 -            try (BufferedReader reader = Resources.asCharSource(
--                new URL("https://papermc.io/api/v2/projects/paper/versions/" + siteApiVersion),
+-                new URL("https://api.papermc.io/v2/projects/paper/versions/" + siteApiVersion),
 -                Charsets.UTF_8
 -            ).openBufferedStream()) {
 -                JsonObject json = new Gson().fromJson(reader, JsonObject.class);

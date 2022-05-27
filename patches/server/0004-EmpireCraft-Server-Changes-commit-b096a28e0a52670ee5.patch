@@ -34,7 +34,7 @@ index a60a84d5df0b05cf35668df8c5f08b811bc42a9f..89db70ab1b34d842f7531a085ba2d495
  
                      if (flag && itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index ab3ffb714cf944944eae0e839d3b46b38ed6f03a..f6dd05250346f41ed0fe4c242ed3dcd7b1355901 100644
+index b006d5444b5a6eaf20f1e1d5980906955f4d45a7..eeaa5fdc380b378260ba3c65a27cbc218ca0c06c 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2122,6 +2122,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -61,7 +61,7 @@ index 5a062a19bb2fc427c9391bb4731f071719b72c52..bb67097c5c635aa602372c67a6dbf432
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 861ee8f112776f1115a1416eeaaad273a20d06a5..f504b2a4de27efd213573ec4694d0defccf5a046 100644
+index c2730baa86e07a47b7adec91fbc9ec8e5840130c..d3e6af98ca97d58d1681d2d6e35fceb511e583a2 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -857,7 +857,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -87,10 +87,10 @@ index da00f75ccc9f8c2e2174d4450479202a50844245..fe8d0a0a25b244530b0c56f1bdb085e9
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-index 61590f2f04a797235299f1bd6b78a08f5bfe4a33..d7688e8398792a17329565cf92152285dd9f0ec4 100644
+index 7f83c9390823b42fc30d04e1d3222e2825eaad50..a1231d2347de63db9e607519328063dbed62b4c9 100644
 --- a/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
 +++ b/src/main/java/net/minecraft/world/level/block/state/BlockBehaviour.java
-@@ -967,7 +967,8 @@ public abstract class BlockBehaviour {
+@@ -987,7 +987,8 @@ public abstract class BlockBehaviour {
                  Direction enumdirection = aenumdirection[l];
  
                  blockposition_mutableblockposition.setWithOffset(pos, enumdirection);
@@ -101,10 +101,10 @@ index 61590f2f04a797235299f1bd6b78a08f5bfe4a33..d7688e8398792a17329565cf92152285
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 028663b86970b8a1ae3e5275429516ee00ef0a04..524daf4250479b487c8ce643896bb707b35c0773 100644
+index b6770f6dbd88990151513c44259d926381983cff..ebc9fc46eed80b9d9d3b5e0fd13efc78dde302df 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -407,7 +407,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -409,7 +409,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

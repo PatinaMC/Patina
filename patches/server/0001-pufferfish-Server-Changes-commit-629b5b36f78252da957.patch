@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 28 Apr 2022 13:49:22 +0000
+Date: Thu, 26 May 2022 13:14:39 +0000
 Subject: [PATCH] pufferfish Server Changes commit
- 65a83aab5e253df62a30ec9cfbf1b987a1ee4660
+ 629b5b36f78252da957d67efb1ace3f6634a3c3f
 
 Pufferfish Utils
 
@@ -365,7 +365,7 @@ index 5ba64e1083b7cb1eec64d1925095c6ca5865ff07..a5e4467382422df6cff2b9f61f44feab
  
          new TimingsExport(listeners, parent, history).start();
 diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
-index c9c08e20f729b40b1d90f3ac144f5245f4f35230..9f0e4bfed860b7e1dbf73ff188013e235baa46e0 100644
+index 1ac6cf51f2682d5eb14fe19646e79f6617d492dd..5ffc636329029ae070e7a79ab9c822c17c0c5fa6 100644
 --- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
 +++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
 @@ -241,6 +241,15 @@ public class PaperConfig {
@@ -2472,10 +2472,10 @@ index f91e1a876ad4c46a7c92cead18947a941b4d9e68..d52072ab126f2fdee30bb114f3058338
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 50fd3419deb668dda64b1056f03fb66da55e6960..c63ee396e990d11e2f613f3b5a478b486076ed56 100644
+index 98209532ad3e692d7e459640123f78bbd9a65889..93c1f9e3e9d62cc993fedb93fe43cbeed7d39542 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -670,7 +670,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -671,7 +671,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
                              }
  
                              gameprofilerfiller.push("tick");
@@ -2497,7 +2497,7 @@ index 50fd3419deb668dda64b1056f03fb66da55e6960..c63ee396e990d11e2f613f3b5a478b48
                              gameprofilerfiller.pop();
                          }
                      }
-@@ -735,9 +748,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -736,9 +749,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
      // Paper start - optimise random block ticking
      private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
@@ -2510,7 +2510,7 @@ index 50fd3419deb668dda64b1056f03fb66da55e6960..c63ee396e990d11e2f613f3b5a478b48
      public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
          ChunkPos chunkcoordintpair = chunk.getPos();
          boolean flag = this.isRaining();
-@@ -748,7 +763,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -749,7 +764,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          gameprofilerfiller.push("thunder");
          final BlockPos.MutableBlockPos blockposition = this.chunkTickMutablePosition; // Paper - use mutable to reduce allocation rate, final to force compile fail on change
  
@@ -2519,7 +2519,7 @@ index 50fd3419deb668dda64b1056f03fb66da55e6960..c63ee396e990d11e2f613f3b5a478b48
              blockposition.set(this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15))); // Paper
              if (this.isRainingAt(blockposition)) {
                  DifficultyInstance difficultydamagescaler = this.getCurrentDifficultyAt(blockposition);
-@@ -772,7 +787,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -773,7 +788,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
  
          gameprofilerfiller.popPush("iceandsnow");
@@ -2529,7 +2529,7 @@ index 50fd3419deb668dda64b1056f03fb66da55e6960..c63ee396e990d11e2f613f3b5a478b48
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 1a87f61d534ed531132fb43a9d2a45a4b604a6fc..cc6ba95f01b82c42b4e5a0a70721ef00dd335e57 100644
+index 1a1f3664554ae1f2b0110f615e79fa0568407d17..f115aabaf67976a503a76f5213dd52b7b7dfab4e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1116,6 +1116,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -2653,7 +2653,7 @@ index 7437f01ca8f416e2c9150250e324af4725a4efb6..7ac51dbfce18a2bc52faa7a915abeccc
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 49cf3601df7b145d49b1fe9a71ba0bc60c5394b3..570a9f1a3387ac42a3c935519aa1656f9d016504 100644
+index 86a2eddf344503cbe75a5243a114f6fe1578185f..3f032a510e741d52c4c7fc701df65c77c30362ed 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -230,7 +230,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -2725,7 +2725,7 @@ index 49cf3601df7b145d49b1fe9a71ba0bc60c5394b3..570a9f1a3387ac42a3c935519aa1656f
  
          return chunkMap.playerEntityTrackerTrackMaps[type.ordinal()].getObjectsInRange(MCUtil.getCoordinateKey(this));
      }
-@@ -3891,16 +3918,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -3886,16 +3913,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      }
  
      public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
@@ -2751,7 +2751,7 @@ index 49cf3601df7b145d49b1fe9a71ba0bc60c5394b3..570a9f1a3387ac42a3c935519aa1656f
              double d1 = 0.0D;
              boolean flag = this.isPushedByFluid();
              boolean flag1 = false;
-@@ -3908,14 +3937,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -3903,14 +3932,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              int k1 = 0;
              BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
@@ -2819,7 +2819,7 @@ index 49cf3601df7b145d49b1fe9a71ba0bc60c5394b3..570a9f1a3387ac42a3c935519aa1656f
  
                              if (d2 >= axisalignedbb.minY) {
                                  flag1 = true;
-@@ -3937,9 +4013,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -3932,9 +4008,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                                  // CraftBukkit end
                              }
                          }
@@ -2845,7 +2845,7 @@ index 79abd84696ef099f6b12ddeaa6e398f18c53316a..29169f9819ebbe0b90d87ed1e5833a3a
      public final String id;
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 1521f53ee1bd85ca44a68b2c9d969eaf63fa342e..bf896f821b88415691312d5c725ed21bb2e3f024 100644
+index bd5825c5b5c81e0694a3635b981588f0d2ba83cb..2fe2307a10cb2e4e2b055cbe615b3750bf8fd310 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -141,7 +141,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2916,10 +2916,10 @@ index 1521f53ee1bd85ca44a68b2c9d969eaf63fa342e..bf896f821b88415691312d5c725ed21b
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index b1ae9b0d8b229e2a6797a173cb11ecc0f43e2592..d7a0fb4727e263932846a67c584da2c8d6d4e275 100644
+index e3227a806d9e19923783122ea94ae19e7dbe71da..8ee0a80e3427ecef9fa15b7388a8287e26a25fd6 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -206,14 +206,16 @@ public abstract class Mob extends LivingEntity {
+@@ -205,14 +205,16 @@ public abstract class Mob extends LivingEntity {
          return this.lookControl;
      }
  
@@ -2938,7 +2938,7 @@ index b1ae9b0d8b229e2a6797a173cb11ecc0f43e2592..d7a0fb4727e263932846a67c584da2c8
              this.targetSelector.tick();
          }
      }
-@@ -844,16 +846,20 @@ public abstract class Mob extends LivingEntity {
+@@ -843,16 +845,20 @@ public abstract class Mob extends LivingEntity {
  
          if (i % 2 != 0 && this.tickCount > 1) {
              this.level.getProfiler().push("targetSelector");
@@ -3103,10 +3103,10 @@ index ed617223942b410fb6f799be7db2001909db67ed..f11eb6df9f095109378caaf0fd16575b
      @Override
      protected float getStandingEyeHeight(Pose pose, EntityDimensions dimensions) {
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-index d54fc22639bb67a977c27585aac46e9d3dcafa6d..fb800bf3fc198c1aee9a8bdc8d33e5e76f6a8746 100644
+index e5617c013f1bd6f89dfbb2ccd404489180cd0573..bdc65bf098fd3107e36d3738583455e87af82cf4 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
-@@ -284,9 +284,11 @@ public class Axolotl extends Animal implements LerpingModel, Bucketable {
+@@ -283,9 +283,11 @@ public class Axolotl extends Animal implements LerpingModel, Bucketable {
          return true;
      }
  
@@ -3135,10 +3135,10 @@ index 78f1082b0a3bad923c1e142d15bc7dad2ae5ff15..042e852cd440e62003b5e72d92728e2d
          this.level.getProfiler().pop();
          this.level.getProfiler().push("goatActivityUpdate");
 diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index f7d29950644a5cf12da0d31246d9f5fcbcc201bb..e5b8bcfe0d69cc0deecdf54662d553f16550fd2a 100644
+index 9ca37cbf829ff4240ae79fc283bcf9e7f2c728d2..820ddcbc1547e2b9da3475a13d039e0cd8bc2c2a 100644
 --- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-@@ -242,10 +242,16 @@ public class ItemEntity extends Entity {
+@@ -243,10 +243,16 @@ public class ItemEntity extends Entity {
                  if (entityitem.isMergable()) {
                      // Paper Start - Fix items merging through walls
                          if (this.level.paperConfig.fixItemsMergingThroughWalls) {
@@ -3180,7 +3180,7 @@ index 411eb4d495907aa1d646673bf07d56ff01e52eee..1d9c542f3fe7da7bb9ea8b13496651a7
          boolean flag1 = iblockdata.getFluidState().is(FluidTags.WATER);
  
 diff --git a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
-index 373ec915412899e4893aa182abd6fb63f3dff0aa..fc43b1d5dcb53456bb24ae46ea08b97b14403c86 100644
+index 49ca4f6a9e33fdb5295dae2b059d071551353c24..127c839c4f9b0ade39065588e275984ea639380b 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/hoglin/Hoglin.java
 @@ -126,9 +126,11 @@ public class Hoglin extends Animal implements Enemy, HoglinBase {
@@ -3196,7 +3196,7 @@ index 373ec915412899e4893aa182abd6fb63f3dff0aa..fc43b1d5dcb53456bb24ae46ea08b97b
          this.level.getProfiler().pop();
          HoglinAi.updateActivity(this);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
-index 84c129fd931596a4cd3aa5b9caa7da1c309b71a7..3ff720ff67938be3efc0412a7a17c4d5b8eab763 100644
+index 63cfda124b5bad20af3050a0b62d73883b6abf7d..05e05793b1fd10cceb4b19ac60c8a10b0c5b7d45 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 +++ b/src/main/java/net/minecraft/world/entity/monster/piglin/Piglin.java
 @@ -288,9 +288,11 @@ public class Piglin extends AbstractPiglin implements CrossbowAttackMob, Invento
@@ -3493,7 +3493,7 @@ index 22feab6477bad023c2d6cc9ac99d392d0afe0a31..fb2626d2a6babe531dd1849333b119ab
          final String id;
          private final GameRules.Category category;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 160c0f37aa3aaf7598f852acf9bd444f79444c97..8026e8ca528071bf80fecb5e96370d1d2ae799db 100644
+index fee8996f35b38fd79946cdfd677763e0201eb57d..b830c2199a22252116619520f407fd84eddb28f3 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -261,6 +261,15 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -3643,10 +3643,10 @@ index 160c0f37aa3aaf7598f852acf9bd444f79444c97..8026e8ca528071bf80fecb5e96370d1d
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 13eded53a64d0f36f8c9bce2077de4f1c1ed2d56..303ad9eab2e0a9b73597ca4ee9d70bea1979c5dd 100644
+index d87900e2a9559a34ee66e3cffab851a578c0278e..6e24b86ce315510133b6294f5d348e5c4e7f547f 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-@@ -414,12 +414,12 @@ public final class NaturalSpawner {
+@@ -413,12 +413,12 @@ public final class NaturalSpawner {
          }
      }
  
@@ -3925,7 +3925,7 @@ index ed3518fe7c841d9e1a9c97626acaa3d765a6d76f..da00f75ccc9f8c2e2174d4450479202a
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index c8fb4b2bc86c9aa2e7c2e9ee10208cf9598b39ef..74882f89f32b14ff8cd44f0e4eb1f350f52d636d 100644
+index f667dafd44b6652788d3367cbbc76eef3bead23b..ec727ff5318f90e6241dc423a3156504c6e20c1d 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -94,6 +94,18 @@ public class LevelChunk extends ChunkAccess {
@@ -4300,7 +4300,7 @@ index d752720f2f234b9dbd2117333fee1bfad663ec02..f1be8a98c49a63d09c838a85eb580417
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 5bffc9a0f6ef9d54abb359565d07509b177c2b82..9bccf9ae5f7a38eb5792697700f6d17cd5969cbe 100644
+index 1a1a1f4d0ac025daccc2d3f84faf6592819f4d5c..8643df8d81714edf60eebd6984bac2c933d1fbd6 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -38,6 +38,10 @@ import co.aikar.timings.MinecraftTimings;
