@@ -18,7 +18,7 @@ index 4830e668f25771066e46cf6c2739d44651f67352..4297f75c68e2413271c9dfa6838e4820
                  holder = worlddimension.typeHolder();
                  chunkgenerator = worlddimension.generator();
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index c98e03fd081c804c3c5efa6434ca3f042f47067e..15e5c5bf3864ea8a7d64e00116aa034df3b014e4 100644
+index 4b608400abf60d7e517688784c7689af4580be0e..083a4aa6ef66832b1c59a93d98e705537c925d43 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -367,7 +367,7 @@ public class ServerPlayer extends Player {
@@ -40,7 +40,7 @@ index c98e03fd081c804c3c5efa6434ca3f042f47067e..15e5c5bf3864ea8a7d64e00116aa034d
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
 diff --git a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
-index 000918fe0cc3fde07145e027b25f148afcb0de62..411d895544ee1fdebdfc6dd1552dfc1f3d712ec5 100644
+index 61e4fe91ac8648edafd39a952939c667c2838207..584aa36a3c32d780e30595c6b37fa54c6d1346e9 100644
 --- a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
 +++ b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
 @@ -348,7 +348,7 @@ public class QueryThreadGs4 extends GenericThread {
@@ -53,10 +53,10 @@ index 000918fe0cc3fde07145e027b25f148afcb0de62..411d895544ee1fdebdfc6dd1552dfc1f
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 0ca0af74cf86b2754c7c246d1eb4d9f73f3be628..48c82ae3f3ba23c6fda029d76ca2a22ff0dce1b2 100644
+index a6f331b74a2391af6d8f93a26d447c9c9836dcc6..552bef6612682897b3f29ee57ece2ff03b5a3a48 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1216,7 +1216,7 @@ public final class CraftServer implements Server {
+@@ -1222,7 +1222,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              holder = console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolder(DimensionType.OVERWORLD_LOCATION);

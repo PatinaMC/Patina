@@ -181,7 +181,7 @@ index 1e656438d9ee89b97c660f3b3ec671be6546c6b7..346320acbbab260dbb41190e6b24178b
              hasSetFarWarned = true;
              if (this.getServer() != null && this.getServer().isDebugging()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index f115aabaf67976a503a76f5213dd52b7b7dfab4e..b006d5444b5a6eaf20f1e1d5980906955f4d45a7 100644
+index 676f2cd4b152984aa76903fcf4377c745775bfc8..845cd7484a1e62d3dde01cef89e3b67b537c6891 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -227,6 +227,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -214,7 +214,7 @@ index f115aabaf67976a503a76f5213dd52b7b7dfab4e..b006d5444b5a6eaf20f1e1d598090695
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3109,11 +3125,15 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3110,11 +3126,15 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
                  }
                  // Paper end
  
@@ -235,7 +235,7 @@ index f115aabaf67976a503a76f5213dd52b7b7dfab4e..b006d5444b5a6eaf20f1e1d598090695
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3135,6 +3155,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3136,6 +3156,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -265,7 +265,7 @@ index 4fa79d37ff4e70c61672cce7c55257c46232c026..df43d0a0f3d1e34baabae150cbf01a00
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 88564df439136c84f7b042391a41c5006d8c3a59..ba0a60a6e183c640b42dbdbb70f31f7a9b40d546 100644
+index 3d0e6ae3024c4b5dfb4b0adce76967810d8869c5..8ff3dd47fc2b4aae4e3c92bfdacc17e472e17034 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1173,6 +1173,7 @@ public abstract class PlayerList {
@@ -289,10 +289,10 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                  } else {
                      handler.accept((Recipe) optional.get());
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 3f032a510e741d52c4c7fc701df65c77c30362ed..478872f30c1ccf51bd7203600578579d2f5973c1 100644
+index c9e23c09bc9db25a813e703817d51e1763b0b3b6..b348c1e217f328d089a9f4481e8d49cfa85a4ece 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1775,6 +1775,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1782,6 +1782,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          this.yRotO = this.getYRot();
          this.xRotO = this.getXRot();
          this.setYHeadRot(yaw); // Paper - Update head rotation
@@ -469,7 +469,7 @@ index d5bcc81a809e3c733c6fc11309bcf0913860edf6..96b70ae604695fbe651f8640be5c6d0e
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 03e370e557356bf2620d0684679e6a49b7f4aaea..2e9aa7c1bfd83715685af56c0dfe04eb32d9a0fc 100644
+index b6bd7c532f750fc5ad3b54358d9b9dc869201b19..6d36c0e9cbaef630dca290111c749fbfbf9c1aeb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -957,6 +957,7 @@ public final class CraftServer implements Server {
@@ -496,7 +496,7 @@ index 03e370e557356bf2620d0684679e6a49b7f4aaea..2e9aa7c1bfd83715685af56c0dfe04eb
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2707,6 +2710,18 @@ public final class CraftServer implements Server {
+@@ -2713,6 +2716,18 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -515,7 +515,7 @@ index 03e370e557356bf2620d0684679e6a49b7f4aaea..2e9aa7c1bfd83715685af56c0dfe04eb
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2879,4 +2894,11 @@ public final class CraftServer implements Server {
+@@ -2885,4 +2900,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

@@ -34,10 +34,10 @@ index a60a84d5df0b05cf35668df8c5f08b811bc42a9f..89db70ab1b34d842f7531a085ba2d495
  
                      if (flag && itemstack.isEmpty()) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b006d5444b5a6eaf20f1e1d5980906955f4d45a7..eeaa5fdc380b378260ba3c65a27cbc218ca0c06c 100644
+index 845cd7484a1e62d3dde01cef89e3b67b537c6891..cf30c7ee33b3c16724adc93cddd5d68ba49b9b4d 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2122,6 +2122,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2123,6 +2123,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
      private void handleChat(TextFilter.FilteredText message) {
          if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundChatPacket((new TranslatableComponent("chat.disabled.options")).withStyle(ChatFormatting.RED), ChatType.SYSTEM, Util.NIL_UUID));
@@ -101,7 +101,7 @@ index 7f83c9390823b42fc30d04e1d3222e2825eaad50..a1231d2347de63db9e607519328063db
  
                  Block.updateOrDestroy(iblockdata, iblockdata1, world, blockposition_mutableblockposition, flags, maxUpdateDepth);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index b6770f6dbd88990151513c44259d926381983cff..ebc9fc46eed80b9d9d3b5e0fd13efc78dde302df 100644
+index 15d740a605c7257bcc7117c7dfb3612b472ba664..015dd092ec1ba4b6564b11c7a3767cd7b010f116 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -409,7 +409,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {

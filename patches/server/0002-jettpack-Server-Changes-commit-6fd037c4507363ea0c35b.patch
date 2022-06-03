@@ -537,7 +537,7 @@ index 0000000000000000000000000000000000000000..0a2d2349f4e3fbde700c0f80ef89f291
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
-index 6d883db5c04cbcf454952c0f361029ecbfe4f037..b0136e72d7e12f7a2ea6f7e4aacb71095e95ecdc 100644
+index 6b71d9433846eb4464177f09d7bfdea82200b189..26a9148b5bf7eae80761e12f348c4d869f8bcab5 100644
 --- a/src/main/java/net/minecraft/core/Direction.java
 +++ b/src/main/java/net/minecraft/core/Direction.java
 @@ -41,7 +41,7 @@ public enum Direction implements StringRepresentable {
@@ -646,7 +646,7 @@ index 6afd7c8b3a0db90dbab14b4405ae4c750e5b0ef1..87ae62ff4fcfd1459c833e0426d8d809
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
          this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 95fe4240f3e1174ec36598f24d63f0073c13b376..88564df439136c84f7b042391a41c5006d8c3a59 100644
+index 624946f48f0811c94d05174f28d0b1fc6d5e6a00..3d0e6ae3024c4b5dfb4b0adce76967810d8869c5 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -494,7 +494,13 @@ public abstract class PlayerList {
@@ -665,12 +665,12 @@ index 95fe4240f3e1174ec36598f24d63f0073c13b376..88564df439136c84f7b042391a41c500
  
      public void updateEntireScoreboard(ServerScoreboard scoreboard, ServerPlayer player) {
 diff --git a/src/main/java/net/minecraft/util/ClassInstanceMultiMap.java b/src/main/java/net/minecraft/util/ClassInstanceMultiMap.java
-index da725ee77c9e3fd7d9ee89763792ecd31c773037..a4640d98aac3a03032c9c6188f6031bdfc57581e 100644
+index 50a9f33aa31e9273c7c52d4bb2b02f0f884f7ba5..56790ba75174e63ae82aadf5d2ec0e31e0c62fe3 100644
 --- a/src/main/java/net/minecraft/util/ClassInstanceMultiMap.java
 +++ b/src/main/java/net/minecraft/util/ClassInstanceMultiMap.java
-@@ -12,9 +12,10 @@ import java.util.List;
+@@ -11,9 +11,10 @@ import java.util.Iterator;
+ import java.util.List;
  import java.util.Map;
- import java.util.Map.Entry;
  import java.util.stream.Collectors;
 +import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap; // JettPack
  
@@ -680,7 +680,7 @@ index da725ee77c9e3fd7d9ee89763792ecd31c773037..a4640d98aac3a03032c9c6188f6031bd
      private final Class<T> baseClass;
      private final List<T> allInstances = Lists.newArrayList();
  
-@@ -56,15 +57,32 @@ public class ClassInstanceMultiMap<T> extends AbstractCollection<T> {
+@@ -55,15 +56,32 @@ public class ClassInstanceMultiMap<T> extends AbstractCollection<T> {
      }
  
      public <S> Collection<S> find(Class<S> type) {
@@ -780,31 +780,31 @@ index 8ee0a80e3427ecef9fa15b7388a8287e26a25fd6..050d5e1f19d2e7a60497b6ee0b8295fa
  
          } else {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-index 32456644dfd2e45dfc02cd1fa77d7afd9e1db1e9..98d810d318724432e45858f00adb467d998e5c19 100644
+index 1730adf15b897fb066f20c51fb97e31e229d361e..57d8dbdd67bd371a45692e8b00f6750c1bbd1fc0 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-@@ -73,16 +73,16 @@ public class Brain<E extends LivingEntity> {
+@@ -71,16 +71,16 @@ public class Brain<E extends LivingEntity> {
              }
  
              public <T> DataResult<Brain<E>> decode(DynamicOps<T> dynamicOps, MapLike<T> mapLike) {
--                MutableObject<DataResult<Builder<Brain.MemoryValue<?>>>> mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder()));
+-                MutableObject<DataResult<ImmutableList.Builder<Brain.MemoryValue<?>>>> mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder()));
 +                MutableObject<DataResult<Builder<Brain.MemoryValue<?>>>> decode_mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder())); // JettPack - decomp fix
                  mapLike.entries().forEach((pair) -> {
                      DataResult<MemoryModuleType<?>> dataResult = Registry.MEMORY_MODULE_TYPE.byNameCodec().parse(dynamicOps, pair.getFirst());
                      DataResult<? extends Brain.MemoryValue<?>> dataResult2 = dataResult.flatMap((memoryModuleType) -> {
                          return this.captureRead(memoryModuleType, dynamicOps, (T)pair.getSecond());
                      });
--                    mutableObject.setValue(mutableObject.getValue().apply2(Builder::add, dataResult2));
+-                    mutableObject.setValue(mutableObject.getValue().apply2(ImmutableList.Builder::add, dataResult2));
 +                    decode_mutableObject.setValue(decode_mutableObject.getValue().apply2(Builder::add, dataResult2)); // JettPack - decomp fix
                  });
--                ImmutableList<Brain.MemoryValue<?>> immutableList = mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(Builder::build).orElseGet(ImmutableList::of);
+-                ImmutableList<Brain.MemoryValue<?>> immutableList = mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(ImmutableList.Builder::build).orElseGet(ImmutableList::of);
 -                return DataResult.success(new Brain<>(memoryModules, sensors, immutableList, mutableObject::getValue));
 +                ImmutableList<Brain.MemoryValue<?>> immutableList = decode_mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(Builder::build).orElseGet(ImmutableList::of); // JettPack - decomp fix
 +                return DataResult.success(new Brain<E>(memoryModules, sensors, immutableList, mutableObject::getValue)); // JettPack - decomp fix
              }
  
              private <T, U> DataResult<Brain.MemoryValue<U>> captureRead(MemoryModuleType<U> memoryModuleType, DynamicOps<T> dynamicOps, T object) {
-@@ -134,7 +134,7 @@ public class Brain<E extends LivingEntity> {
+@@ -132,7 +132,7 @@ public class Brain<E extends LivingEntity> {
  
      Stream<Brain.MemoryValue<?>> memories() {
          return this.memories.entrySet().stream().map((entry) -> {
@@ -813,7 +813,7 @@ index 32456644dfd2e45dfc02cd1fa77d7afd9e1db1e9..98d810d318724432e45858f00adb467d
          });
      }
  
-@@ -170,7 +170,7 @@ public class Brain<E extends LivingEntity> {
+@@ -168,7 +168,7 @@ public class Brain<E extends LivingEntity> {
      }
  
      public <U> Optional<U> getMemory(MemoryModuleType<U> type) {
@@ -822,16 +822,16 @@ index 32456644dfd2e45dfc02cd1fa77d7afd9e1db1e9..98d810d318724432e45858f00adb467d
      }
  
      public <U> long getTimeUntilExpiry(MemoryModuleType<U> type) {
-@@ -353,7 +353,7 @@ public class Brain<E extends LivingEntity> {
+@@ -351,7 +351,7 @@ public class Brain<E extends LivingEntity> {
      }
  
      public Brain<E> copyWithoutBehaviors() {
 -        Brain<E> brain = new Brain<>(this.memories.keySet(), this.sensors.keySet(), ImmutableList.of(), this.codec);
 +        Brain<E> brain = new Brain<E>(this.memories.keySet(), this.sensors. keySet(), ImmutableList.of(), this.codec); // JettPack - decomp fix
  
-         for(Entry<MemoryModuleType<?>, Optional<? extends ExpirableValue<?>>> entry : this.memories.entrySet()) {
+         for(Map.Entry<MemoryModuleType<?>, Optional<? extends ExpirableValue<?>>> entry : this.memories.entrySet()) {
              MemoryModuleType<?> memoryModuleType = entry.getKey();
-@@ -463,8 +463,8 @@ public class Brain<E extends LivingEntity> {
+@@ -461,8 +461,8 @@ public class Brain<E extends LivingEntity> {
          private final MemoryModuleType<U> type;
          private final Optional<? extends ExpirableValue<U>> value;
  
@@ -843,10 +843,10 @@ index 32456644dfd2e45dfc02cd1fa77d7afd9e1db1e9..98d810d318724432e45858f00adb467d
  
          MemoryValue(MemoryModuleType<U> type, Optional<? extends ExpirableValue<U>> data) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
-index 8229001df0a901d9016fb16e4ddc81b5a0f51452..f9fd8d173b8bc42409de98fb163a6119531d1afb 100644
+index 0cc0d719e95e108263683b7a40f4ce3a8ca9465b..d6fcc514d17a42861e6cc6ba72be73211f495629 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
-@@ -13,6 +13,7 @@ import java.util.function.Supplier;
+@@ -12,6 +12,7 @@ import java.util.function.Supplier;
  import java.util.stream.Stream;
  import net.minecraft.util.profiling.ProfilerFiller;
  import org.slf4j.Logger;
@@ -854,7 +854,7 @@ index 8229001df0a901d9016fb16e4ddc81b5a0f51452..f9fd8d173b8bc42409de98fb163a6119
  
  public class GoalSelector {
      private static final Logger LOGGER = LogUtils.getLogger();
-@@ -28,7 +29,7 @@ public class GoalSelector {
+@@ -27,7 +28,7 @@ public class GoalSelector {
          }
      };
      private final Map<Goal.Flag, WrappedGoal> lockedFlags = new EnumMap<>(Goal.Flag.class);
@@ -1076,7 +1076,7 @@ index ec727ff5318f90e6241dc423a3156504c6e20c1d..38f2d97c2ffb6911c5020274b0a853dd
      public boolean loaded;
      private boolean clientLightReady;
 diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-index 74210dc2eef63da7360b1f833bb59b278419fb2b..859d2e82f21efa1232e7e69f787840b16ed4bd4b 100644
+index 2e873762530e8f50158886436bd76b35d91953af..e7e8784f5e6b57daf15734eca888a088e83eb652 100644
 --- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 +++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
 @@ -32,33 +32,66 @@ public class EntitySectionStorage<T extends EntityAccess> {
@@ -1636,7 +1636,7 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 11aa989a370aefbea923e4cab9d60852ce844bc8..03e370e557356bf2620d0684679e6a49b7f4aaea 100644
+index c73f4da90f3eb584158a0c20b5c58b7a3b30d676..b6bd7c532f750fc5ad3b54358d9b9dc869201b19 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -956,6 +956,7 @@ public final class CraftServer implements Server {

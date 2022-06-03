@@ -5,14 +5,14 @@ Subject: [PATCH] Purpur Silk-touch-spawners.patch
 
 
 diff --git a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-index 85c9056f92711b985e251f0f06ed551d03deb562..14c84b18b4b0c1cd84d02e0f2d7757bc731755f8 100644
+index 3f25a9b1a74cfa0c9a4d0379ecda109d99f33db3..2ff3e02565a2cb7cb8752815cb793bd8813c4697 100644
 --- a/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
 +++ b/src/main/java/io/papermc/paper/adventure/PaperAdventure.java
-@@ -94,6 +94,7 @@ public final class PaperAdventure {
-     public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
-     @Deprecated
-     public static final PlainComponentSerializer PLAIN_COMPONENT = PlainComponentSerializer.builder().flattener(FLATTENER).build();
-+    public static final LegacyComponentSerializer LEGACY_AMPERSAND = LegacyComponentSerializer.builder().character(LegacyComponentSerializer.AMPERSAND_CHAR).hexColors().build(); // Purpur
-     public static final PlainTextComponentSerializer PLAIN = PlainTextComponentSerializer.builder().flattener(FLATTENER).build();
-     public static final GsonComponentSerializer GSON = GsonComponentSerializer.builder()
-         .legacyHoverEventSerializer(NBTLegacyHoverEventSerializer.INSTANCE)
+@@ -92,6 +92,7 @@ public final class PaperAdventure {
+         })
+         .build();
+     @Deprecated public static final PlainComponentSerializer PLAIN = PlainComponentSerializer.builder().flattener(FLATTENER).build();
++    public static final LegacyComponentSerializer LEGACY_SECTION_UXRC = LegacyComponentSerializer.builder().flattener(FLATTENER).hexColors().useUnusualXRepeatedCharacterHexFormat().build();
+     private static final Codec<CompoundTag, String, IOException, IOException> NBT_CODEC = new Codec<CompoundTag, String, IOException, IOException>() {
+         @Override
+         public @NotNull CompoundTag decode(final @NotNull String encoded) throws IOException {
