@@ -301,7 +301,7 @@ index c9e23c09bc9db25a813e703817d51e1763b0b3b6..b348c1e217f328d089a9f4481e8d49cf
  
      public void absMoveTo(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 01d776427ba6d9b35a7cf63b7941e28dd94e1d1a..9e14a9cf8e1867535ca5ebf4acaa49d072334953 100644
+index 7ecc4b1c90f5b5a3663df1109ef2d34bfa147303..9982e45d8d6f4ce0f3cf042e9783594438c6cabd 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -2935,7 +2935,7 @@ public abstract class LivingEntity extends Entity {
@@ -469,7 +469,7 @@ index d5bcc81a809e3c733c6fc11309bcf0913860edf6..96b70ae604695fbe651f8640be5c6d0e
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b6bd7c532f750fc5ad3b54358d9b9dc869201b19..6d36c0e9cbaef630dca290111c749fbfbf9c1aeb 100644
+index a3da9ade4a0275b10e92124bf1cacf62bc6997c5..564665e9443b42a33c824cc88e2c86749735f5c0 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -957,6 +957,7 @@ public final class CraftServer implements Server {
@@ -496,7 +496,7 @@ index b6bd7c532f750fc5ad3b54358d9b9dc869201b19..6d36c0e9cbaef630dca290111c749fbf
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2713,6 +2716,18 @@ public final class CraftServer implements Server {
+@@ -2719,6 +2722,18 @@ public final class CraftServer implements Server {
              return com.destroystokyo.paper.PaperConfig.config;
          }
  
@@ -515,7 +515,7 @@ index b6bd7c532f750fc5ad3b54358d9b9dc869201b19..6d36c0e9cbaef630dca290111c749fbf
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2885,4 +2900,11 @@ public final class CraftServer implements Server {
+@@ -2891,4 +2906,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
