@@ -5,10 +5,10 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 9057d1a9cb93d2680a2393d3511757d75f002348..4830e668f25771066e46cf6c2739d44651f67352 100644
+index db06a52add65a7fbf5ae6b7b10779298003a3c49..3387da1a59d96a3524cda5433162a073a15a6495 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -185,7 +185,7 @@ import org.bukkit.event.server.ServerLoadEvent;
+@@ -180,7 +180,7 @@ import org.bukkit.event.server.ServerLoadEvent;
  
  import co.aikar.timings.MinecraftTimings; // Paper
  
@@ -17,7 +17,7 @@ index 9057d1a9cb93d2680a2393d3511757d75f002348..4830e668f25771066e46cf6c2739d446
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogUtils.getLogger();
-@@ -1360,19 +1360,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1319,19 +1319,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      @Override
@@ -41,7 +41,7 @@ index 9057d1a9cb93d2680a2393d3511757d75f002348..4830e668f25771066e46cf6c2739d446
  
      @Override
      public boolean pollTask() {
-@@ -1404,10 +1406,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1363,10 +1365,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
@@ -55,10 +55,10 @@ index 9057d1a9cb93d2680a2393d3511757d75f002348..4830e668f25771066e46cf6c2739d446
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index b42e32bd1a6a669f498b577ec04661c4ba651198..fed79d31c36b9fafbdc71461e27b1f4e1ca0385a 100644
+index 378cc1f9e19eb9b18037ab8af92f65897e15a405..998a1faa9f7ea2fb0d522c941c5e2cf90cb1c6da 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1257,10 +1257,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1262,10 +1262,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  

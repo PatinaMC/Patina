@@ -537,7 +537,7 @@ index 0000000000000000000000000000000000000000..0a2d2349f4e3fbde700c0f80ef89f291
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/core/Direction.java b/src/main/java/net/minecraft/core/Direction.java
-index 6b71d9433846eb4464177f09d7bfdea82200b189..26a9148b5bf7eae80761e12f348c4d869f8bcab5 100644
+index a3bbebcdaea9e0dfddd9825272f84fc76cd13e89..2be91171213d17b57957dd188beed54c619fe4ce 100644
 --- a/src/main/java/net/minecraft/core/Direction.java
 +++ b/src/main/java/net/minecraft/core/Direction.java
 @@ -41,7 +41,7 @@ public enum Direction implements StringRepresentable {
@@ -546,10 +546,10 @@ index 6b71d9433846eb4464177f09d7bfdea82200b189..26a9148b5bf7eae80761e12f348c4d86
      private final Vec3i normal;
 -    private static final Direction[] VALUES = values();
 +    public static final Direction[] VALUES = values(); // JettPack
-     private static final Map<String, Direction> BY_NAME = Arrays.stream(VALUES).collect(Collectors.toMap(Direction::getName, (direction) -> {
-         return direction;
-     }));
-@@ -191,7 +191,7 @@ public enum Direction implements StringRepresentable {
+     private static final Direction[] BY_3D_DATA = Arrays.stream(VALUES).sorted(Comparator.comparingInt((direction) -> {
+         return direction.data3d;
+     })).toArray((i) -> {
+@@ -196,7 +196,7 @@ public enum Direction implements StringRepresentable {
      }
  
      public Direction getOpposite() {
@@ -558,23 +558,23 @@ index 6b71d9433846eb4464177f09d7bfdea82200b189..26a9148b5bf7eae80761e12f348c4d86
      }
  
      public Direction getClockWise(Direction.Axis axis) {
-@@ -441,7 +441,7 @@ public enum Direction implements StringRepresentable {
+@@ -446,7 +446,7 @@ public enum Direction implements StringRepresentable {
      }
  
-     public static Direction getRandom(Random random) {
+     public static Direction getRandom(RandomSource random) {
 -        return Util.getRandom(VALUES, random);
 +        return VALUES[random.nextInt(VALUES.length)]; // JettPack - lithium: fast_util        
      }
  
      public static Direction getNearest(double x, double y, double z) {
 diff --git a/src/main/java/net/minecraft/network/FriendlyByteBuf.java b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
-index 896a4237f871d46cf39b0721e909c2cc3b5fc728..e2a0a7fd5afd8cd3467dab049695956c381fb3cd 100644
+index 35377576ed182814051c11f902e02e8e921e84e3..f6714abe0c8ef7a794ff497daf9760891410f175 100644
 --- a/src/main/java/net/minecraft/network/FriendlyByteBuf.java
 +++ b/src/main/java/net/minecraft/network/FriendlyByteBuf.java
-@@ -65,19 +65,22 @@ public class FriendlyByteBuf extends ByteBuf {
-     public java.util.Locale adventure$locale; // Paper
-     public static final short MAX_STRING_LENGTH = 32767;
-     public static final int MAX_COMPONENT_STRING_LENGTH = 262144;
+@@ -82,19 +82,22 @@ public class FriendlyByteBuf extends ByteBuf {
+     private static final int PUBLIC_KEY_SIZE = 256;
+     private static final int MAX_PUBLIC_KEY_HEADER_SIZE = 256;
+     private static final int MAX_PUBLIC_KEY_LENGTH = 512;
 +    // Paper start - Optimize VarInts
 +    private static final int[] VARINT_EXACT_BYTE_LENGTHS = new int[33];
 +    static {
@@ -601,7 +601,7 @@ index 896a4237f871d46cf39b0721e909c2cc3b5fc728..e2a0a7fd5afd8cd3467dab049695956c
      }
  
      public static int getVarLongSize(long value) {
-@@ -420,7 +423,23 @@ public class FriendlyByteBuf extends ByteBuf {
+@@ -503,7 +506,23 @@ public class FriendlyByteBuf extends ByteBuf {
          return new UUID(this.readLong(), this.readLong());
      }
  
@@ -626,10 +626,10 @@ index 896a4237f871d46cf39b0721e909c2cc3b5fc728..e2a0a7fd5afd8cd3467dab049695956c
              this.writeByte(value & 127 | 128);
              value >>>= 7;
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6afd7c8b3a0db90dbab14b4405ae4c750e5b0ef1..87ae62ff4fcfd1459c833e0426d8d809ba4337ed 100644
+index 5d6ceeecfbb55a1bfe77a1f1ac39b02993e714e3..ebe7baf5c1072bdec96f40379be24c5c6f13cbec 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-@@ -238,6 +238,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -229,6 +229,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
          gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
  
@@ -644,12 +644,12 @@ index 6afd7c8b3a0db90dbab14b4405ae4c750e5b0ef1..87ae62ff4fcfd1459c833e0426d8d809
 +
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
-         this.setResourcePack(dedicatedserverproperties.resourcePack, this.getPackHash());
+         this.setMotd(dedicatedserverproperties.motd);
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 624946f48f0811c94d05174f28d0b1fc6d5e6a00..3d0e6ae3024c4b5dfb4b0adce76967810d8869c5 100644
+index 20cdfdb3b9351f74e89bc45b3ab972384165659a..da8c38d8d57b8cee029cdaf38be83c716df34cff 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -494,7 +494,13 @@ public abstract class PlayerList {
+@@ -497,7 +497,13 @@ public abstract class PlayerList {
          }
          // Paper end
          // CraftBukkit - Moved from above, added world
@@ -721,15 +721,15 @@ index 50a9f33aa31e9273c7c52d4bb2b02f0f884f7ba5..56790ba75174e63ae82aadf5d2ec0e31
      @Override
      public Iterator<T> iterator() {
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 2fe2307a10cb2e4e2b055cbe615b3750bf8fd310..01d776427ba6d9b35a7cf63b7941e28dd94e1d1a 100644
+index 39fab6a5195e32ae6ffc9988e6fcecfe96be2f76..46a26cfab177c7df730f1432ac4b0cffc53ece53 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -567,11 +567,11 @@ public abstract class LivingEntity extends Entity {
+@@ -569,11 +569,11 @@ public abstract class LivingEntity extends Entity {
      }
  
      protected void tryAddFrost() {
--        if (!this.getBlockStateOn().isAir()) {
-+        // if (!this.getBlockStateOn().isAir()) { // JettPack - lithium: entity.fast_powder_snow_check
+-        if (!this.getBlockStateOnLegacy().isAir()) {
++        // if (!this.getBlockStateOnLegacy().isAir()) { // JettPack - lithium: entity.fast_powder_snow_check
              int i = this.getTicksFrozen();
  
              if (i > 0) {
@@ -738,7 +738,7 @@ index 2fe2307a10cb2e4e2b055cbe615b3750bf8fd310..01d776427ba6d9b35a7cf63b7941e28d
  
                  if (attributemodifiable == null) {
                      return;
-@@ -581,8 +581,7 @@ public abstract class LivingEntity extends Entity {
+@@ -583,8 +583,7 @@ public abstract class LivingEntity extends Entity {
  
                  attributemodifiable.addTransientModifier(new AttributeModifier(LivingEntity.SPEED_MODIFIER_POWDER_SNOW_UUID, "Powder snow slow", (double) f, AttributeModifier.Operation.ADDITION));
              }
@@ -748,7 +748,7 @@ index 2fe2307a10cb2e4e2b055cbe615b3750bf8fd310..01d776427ba6d9b35a7cf63b7941e28d
      }
  
      protected void onChangedBlock(BlockPos pos) {
-@@ -2431,6 +2430,7 @@ public abstract class LivingEntity extends Entity {
+@@ -2463,6 +2462,7 @@ public abstract class LivingEntity extends Entity {
      }
  
      protected void updateSwingTime() {
@@ -757,20 +757,20 @@ index 2fe2307a10cb2e4e2b055cbe615b3750bf8fd310..01d776427ba6d9b35a7cf63b7941e28d
  
          if (this.swinging) {
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 8ee0a80e3427ecef9fa15b7388a8287e26a25fd6..050d5e1f19d2e7a60497b6ee0b8295fa21af16e5 100644
+index e8e60ea8b9e97ed87be78752f398ab25ba8e9a1b..a9d8527c26e4b5f43bce060f52f042abca518d5b 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
-@@ -795,9 +795,6 @@ public abstract class Mob extends LivingEntity {
+@@ -806,9 +806,6 @@ public abstract class Mob extends LivingEntity {
          } else if (!this.isPersistenceRequired() && !this.requiresCustomPersistence()) {
              // Paper start - optimise checkDespawn
-             Player entityhuman = this.level.findNearbyPlayer(this, level.paperConfig.hardDespawnDistances.getInt(this.getType().getCategory()) + 1, EntitySelector.affectsSpawning); // Paper
+             Player entityhuman = this.level.findNearbyPlayer(this, level.paperConfig().entities.spawning.despawnRanges.get(this.getType().getCategory()).hard() + 1, EntitySelector.affectsSpawning); // Paper
 -            if (entityhuman == null) {
 -                entityhuman = ((ServerLevel)this.level).playersAffectingSpawning.isEmpty() ? null : ((ServerLevel)this.level).playersAffectingSpawning.get(0);
 -            }
              // Paper end - optimise checkDespawn
  
              if (entityhuman != null) {
-@@ -817,6 +814,8 @@ public abstract class Mob extends LivingEntity {
+@@ -828,6 +825,8 @@ public abstract class Mob extends LivingEntity {
                  } else if (d0 < (double) l) {
                      this.noActionTime = 0;
                  }
@@ -780,7 +780,7 @@ index 8ee0a80e3427ecef9fa15b7388a8287e26a25fd6..050d5e1f19d2e7a60497b6ee0b8295fa
  
          } else {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-index 1730adf15b897fb066f20c51fb97e31e229d361e..57d8dbdd67bd371a45692e8b00f6750c1bbd1fc0 100644
+index 1a4db35de5a37658427f35942fdc2b546ab21dd2..fa3d2f6197d7b92c279f8cf0b0b88c3d42b18c44 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
 @@ -71,16 +71,16 @@ public class Brain<E extends LivingEntity> {
@@ -813,16 +813,7 @@ index 1730adf15b897fb066f20c51fb97e31e229d361e..57d8dbdd67bd371a45692e8b00f6750c
          });
      }
  
-@@ -168,7 +168,7 @@ public class Brain<E extends LivingEntity> {
-     }
- 
-     public <U> Optional<U> getMemory(MemoryModuleType<U> type) {
--        return this.memories.get(type).map(ExpirableValue::getValue);
-+        return ((Optional)this.memories.get(type)).map(object -> ((ExpirableValue)object).getValue()); // JettPack - decomp fix    
-     }
- 
-     public <U> long getTimeUntilExpiry(MemoryModuleType<U> type) {
-@@ -351,7 +351,7 @@ public class Brain<E extends LivingEntity> {
+@@ -356,7 +356,7 @@ public class Brain<E extends LivingEntity> {
      }
  
      public Brain<E> copyWithoutBehaviors() {
@@ -831,7 +822,7 @@ index 1730adf15b897fb066f20c51fb97e31e229d361e..57d8dbdd67bd371a45692e8b00f6750c
  
          for(Map.Entry<MemoryModuleType<?>, Optional<? extends ExpirableValue<?>>> entry : this.memories.entrySet()) {
              MemoryModuleType<?> memoryModuleType = entry.getKey();
-@@ -461,8 +461,8 @@ public class Brain<E extends LivingEntity> {
+@@ -467,8 +467,8 @@ public class Brain<E extends LivingEntity> {
          private final MemoryModuleType<U> type;
          private final Optional<? extends ExpirableValue<U>> value;
  
@@ -864,7 +855,7 @@ index 0cc0d719e95e108263683b7a40f4ce3a8ca9465b..d6fcc514d17a42861e6cc6ba72be7321
      private final EnumSet<Goal.Flag> disabledFlags = EnumSet.noneOf(Goal.Flag.class); // Paper unused, but dummy to prevent plugins from crashing as hard. Theyll need to support paper in a special case if this is super important, but really doesn't seem like it would be.
      private final com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<net.minecraft.world.entity.ai.goal.Goal.Flag> goalTypes = new com.destroystokyo.paper.util.set.OptimizedSmallEnumSet<>(Goal.Flag.class); // Paper - remove streams from pathfindergoalselector
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
-index 3789a0db398766f0fbc9e5ac5bf4228a0a0dac88..07810a1da6f8ad310e50d1b2d37b1b67878d4596 100644
+index f5886a88fd98ede5e85a91eccccb05ac33eb40e2..5c56c101028cb939a3cab27c065cd648148b4838 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FishingHook.java
 @@ -146,7 +146,7 @@ public class FishingHook extends Projectile {
@@ -895,7 +886,7 @@ index 3789a0db398766f0fbc9e5ac5bf4228a0a0dac88..07810a1da6f8ad310e50d1b2d37b1b67
          } else {
              this.discard();
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raid.java b/src/main/java/net/minecraft/world/entity/raid/Raid.java
-index f50abfd058e3adf1cf8c0f4468a60bc04e8541e7..a078f637ed005dfad5c2c2f601e4ba5964ba7f8d 100644
+index 6a0a1731fd6804eb69d3641213712d31bce085b2..5f4bb589474ce7d4f214e32ab0bc4b9cb71638d0 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raid.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raid.java
 @@ -269,7 +269,16 @@ public class Raid {
@@ -915,7 +906,7 @@ index f50abfd058e3adf1cf8c0f4468a60bc04e8541e7..a078f637ed005dfad5c2c2f601e4ba59
          if (!this.isStopped()) {
              if (this.status == Raid.RaidStatus.ONGOING) {
                  boolean flag = this.active;
-@@ -625,7 +634,7 @@ public class Raid {
+@@ -626,7 +635,7 @@ public class Raid {
      }
  
      public void updateBossbar() {
@@ -925,7 +916,7 @@ index f50abfd058e3adf1cf8c0f4468a60bc04e8541e7..a078f637ed005dfad5c2c2f601e4ba59
  
      public float getHealthOfLivingRaiders() {
 diff --git a/src/main/java/net/minecraft/world/entity/raid/Raider.java b/src/main/java/net/minecraft/world/entity/raid/Raider.java
-index c5611465b1f9228a994c462c093cec94d7d08c2f..dfffbf47b58e16c9b5b750ccdb9717eacf414a64 100644
+index 4bb9730b6a42702e91467f980b9f045585039db3..7ba9c7f995c2bacc8f9a86a78747ea30f45eb59a 100644
 --- a/src/main/java/net/minecraft/world/entity/raid/Raider.java
 +++ b/src/main/java/net/minecraft/world/entity/raid/Raider.java
 @@ -46,8 +46,9 @@ import net.minecraft.world.phys.Vec3;
@@ -966,25 +957,26 @@ index c5611465b1f9228a994c462c093cec94d7d08c2f..dfffbf47b58e16c9b5b750ccdb9717ea
  
                  if (entityraider == null || !entityraider.isAlive()) {
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b830c2199a22252116619520f407fd84eddb28f3..93d3e4daf430525dc551b7c2212be23b42cbdc37 100644
+index e845d4af797b8eeb75ab094e1cb1062c7ab2d8b9..9ae56cfca09b57db780200dbafa1e08f48347f70 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -115,8 +115,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -117,9 +117,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public static final int TICKS_PER_DAY = 24000;
      public static final int MAX_ENTITY_SPAWN_Y = 20000000;
      public static final int MIN_ENTITY_SPAWN_Y = -20000000;
 -    protected final List<TickingBlockEntity> blockEntityTickers = Lists.newArrayList(); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper
--    private final List<TickingBlockEntity> pendingBlockEntityTickers = Lists.newArrayList();
 +    protected final List<TickingBlockEntity> blockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper // Jettpack - lithium: hashed_list
+     protected final NeighborUpdater neighborUpdater;
+-    private final List<TickingBlockEntity> pendingBlockEntityTickers = Lists.newArrayList();
 +    private final List<TickingBlockEntity> pendingBlockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); // Jettpack - lithium: hashed_list
      private boolean tickingBlockEntities;
      public final Thread thread;
      private final boolean isDebug;
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index a80f4dc0a642c744223a155232291ace6e007636..f5f40589f53ac4696507699037df1ae4738e1637 100644
+index 224ce424b9a22548212ac157ec273c6dd80d6cfb..8986eb0cfb151a05a0450d2d46aca1837d3c1152 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -597,11 +597,18 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -612,11 +612,18 @@ public class Block extends BlockBehaviour implements ItemLike {
          private final BlockState first;
          private final BlockState second;
          private final Direction direction;
@@ -1003,7 +995,7 @@ index a80f4dc0a642c744223a155232291ace6e007636..f5f40589f53ac4696507699037df1ae4
          }
  
          public boolean equals(Object object) {
-@@ -617,11 +624,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -632,11 +639,7 @@ public class Block extends BlockBehaviour implements ItemLike {
          }
  
          public int hashCode() {
@@ -1017,7 +1009,7 @@ index a80f4dc0a642c744223a155232291ace6e007636..f5f40589f53ac4696507699037df1ae4
      }
  }
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index ec727ff5318f90e6241dc423a3156504c6e20c1d..38f2d97c2ffb6911c5020274b0a853ddc7d1589d 100644
+index ec23064d5a6d70508fad7cffc6126cfd6f7a62cb..055de40d30062bc0e13b288b72809b4e2e175290 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -76,6 +76,54 @@ public class LevelChunk extends ChunkAccess {
@@ -1075,99 +1067,8 @@ index ec727ff5318f90e6241dc423a3156504c6e20c1d..38f2d97c2ffb6911c5020274b0a853dd
      private final Map<BlockPos, LevelChunk.RebindableTickingBlockEntityWrapper> tickersInLevel;
      public boolean loaded;
      private boolean clientLightReady;
-diff --git a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-index 2e873762530e8f50158886436bd76b35d91953af..e7e8784f5e6b57daf15734eca888a088e83eb652 100644
---- a/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-+++ b/src/main/java/net/minecraft/world/level/entity/EntitySectionStorage.java
-@@ -32,33 +32,66 @@ public class EntitySectionStorage<T extends EntityAccess> {
-         this.intialSectionVisibility = chunkStatusDiscriminator;
-     }
- 
-+    // JettPack start - lithium: entity.fast_retrieval
-     public void forEachAccessibleNonEmptySection(AABB box, Consumer<EntitySection<T>> action) {
--        int i = SectionPos.posToSectionCoord(box.minX - 2.0D);
--        int j = SectionPos.posToSectionCoord(box.minY - 2.0D);
--        int k = SectionPos.posToSectionCoord(box.minZ - 2.0D);
--        int l = SectionPos.posToSectionCoord(box.maxX + 2.0D);
--        int m = SectionPos.posToSectionCoord(box.maxY + 2.0D);
--        int n = SectionPos.posToSectionCoord(box.maxZ + 2.0D);
--
--        for(int o = i; o <= l; ++o) {
--            long p = SectionPos.asLong(o, 0, 0);
--            long q = SectionPos.asLong(o, -1, -1);
--            LongIterator longIterator = this.sectionIds.subSet(p, q + 1L).iterator();
--
--            while(longIterator.hasNext()) {
--                long r = longIterator.nextLong();
--                int s = SectionPos.y(r);
--                int t = SectionPos.z(r);
--                if (s >= j && s <= m && t >= k && t <= n) {
--                    EntitySection<T> entitySection = this.sections.get(r);
--                    if (entitySection != null && !entitySection.isEmpty() && entitySection.getStatus().isAccessible()) {
--                        action.accept(entitySection);
-+        int minX = SectionPos.posToSectionCoord(box.minX - 2.0D);
-+        int minY = SectionPos.posToSectionCoord(box.minY - 2.0D);
-+        int minZ = SectionPos.posToSectionCoord(box.minZ - 2.0D);
-+        int maxX = SectionPos.posToSectionCoord(box.maxX + 2.0D);
-+        int maxY = SectionPos.posToSectionCoord(box.maxY + 2.0D);
-+        int maxZ = SectionPos.posToSectionCoord(box.maxZ + 2.0D);
-+
-+        if (maxX >= minX + 4 || maxZ >= minZ + 4) {
-+            // [VanillaCopy]
-+            for(int o = minX; o <= maxX; ++o) {
-+                long p = SectionPos.asLong(o, 0, 0);
-+                long q = SectionPos.asLong(o, -1, -1);
-+                LongIterator longIterator = this.sectionIds.subSet(p, q + 1L).iterator();
-+
-+                while(longIterator.hasNext()) {
-+                    long r = longIterator.nextLong();
-+                    int s = SectionPos.y(r);
-+                    int t = SectionPos.z(r);
-+                    if (s >= minY && s <= maxY && t >= minZ && t <= maxZ) {
-+                        EntitySection<T> entitySection = this.sections.get(r);
-+                        if (entitySection != null && !entitySection.isEmpty() && entitySection.getStatus().isAccessible()) {
-+                            action.accept(entitySection);
-+                        }
-                     }
-                 }
-             }
-+        } else {
-+            for (int x = minX; x <= maxX; x++) {
-+                for (int z = Math.max(minZ, 0); z <= maxZ; z++) {
-+                    this.forEachInColumn(x, minY, maxY, z, action);
-+                }
-+
-+                int bound = Math.min(-1, maxZ);
-+                for (int z = minZ; z <= bound; z++) {
-+                    this.forEachInColumn(x, minY, maxY, z, action);
-+                }
-+            }
-         }
-+    }
- 
-+    private void forEachInColumn(int x, int minY, int maxY, int z, Consumer<EntitySection<T>> action) {
-+        //y from negative to positive, but y is treated as unsigned
-+        for (int y = Math.max(minY, 0); y <= maxY; y++) {
-+            this.consumeSection(SectionPos.asLong(x, y, z), action);
-+        }
-+        int bound = Math.min(-1, maxY);
-+        for (int y = minY; y <= bound; y++) {
-+            this.consumeSection(SectionPos.asLong(x, y, z), action);
-+        }
-+    }
-+
-+    private void consumeSection(long pos, Consumer<EntitySection<T>> action) {
-+        EntitySection<T> section = this.getSection(pos);
-+        if (section != null && 0 != section.size() && section.getStatus().isAccessible()) {
-+            action.accept(section);
-+        }
-     }
-+    // JettPack end
- 
-     public LongStream getExistingSectionPositionsInChunk(long chunkPos) {
-         int i = ChunkPos.getX(chunkPos);
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
-index 765b56776e457109ddea9f7dbfd0b17beefee51e..3a83c357f1a244f61c429ad5c34e3aed7b80449f 100644
+index fb84d703b4461343d50510d7c9be32fc1f09ed22..8e6c4b16e517faff60f5605b8757896f18b11451 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
 @@ -11,14 +11,35 @@ public final class ImprovedNoise {
@@ -1260,34 +1161,25 @@ index 765b56776e457109ddea9f7dbfd0b17beefee51e..3a83c357f1a244f61c429ad5c34e3aed
  
      public double noiseWithDerivative(double x, double y, double z, double[] ds) {
          double d = x + this.xo;
-@@ -84,26 +109,140 @@ public final class ImprovedNoise {
-         return this.p[hash & 255] & 255;
+@@ -84,6 +109,7 @@ public final class ImprovedNoise {
+         return this.p[input & 255] & 255;
      }
  
++<<<<<<< HEAD
+     private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalY) {
+         int i = this.p(sectionX);
+         int j = this.p(sectionX + 1);
+@@ -103,7 +129,142 @@ public final class ImprovedNoise {
+         double s = Mth.smoothstep(fadeLocalY);
+         double t = Mth.smoothstep(localZ);
+         return Mth.lerp3(r, s, t, d, e, f, g, h, o, p, q);
++=======
 +    // JettPack start - C2ME math optimizations
 +    /**
 +     * @author ishland
 +     * @reason inline math & small optimization: remove frequent type conversions and redundant ops
 +     */
-     private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalX) {
--        int i = this.p(sectionX);
--        int j = this.p(sectionX + 1);
--        int k = this.p(i + sectionY);
--        int l = this.p(i + sectionY + 1);
--        int m = this.p(j + sectionY);
--        int n = this.p(j + sectionY + 1);
--        double d = gradDot(this.p(k + sectionZ), localX, localY, localZ);
--        double e = gradDot(this.p(m + sectionZ), localX - 1.0D, localY, localZ);
--        double f = gradDot(this.p(l + sectionZ), localX, localY - 1.0D, localZ);
--        double g = gradDot(this.p(n + sectionZ), localX - 1.0D, localY - 1.0D, localZ);
--        double h = gradDot(this.p(k + sectionZ + 1), localX, localY, localZ - 1.0D);
--        double o = gradDot(this.p(m + sectionZ + 1), localX - 1.0D, localY, localZ - 1.0D);
--        double p = gradDot(this.p(l + sectionZ + 1), localX, localY - 1.0D, localZ - 1.0D);
--        double q = gradDot(this.p(n + sectionZ + 1), localX - 1.0D, localY - 1.0D, localZ - 1.0D);
--        double r = Mth.smoothstep(localX);
--        double s = Mth.smoothstep(fadeLocalX);
--        double t = Mth.smoothstep(localZ);
--        return Mth.lerp3(r, s, t, d, e, f, g, h, o, p, q);
++    private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalX) {
 +        final int var0 = sectionX & 0xFF;
 +        final int var1 = (sectionX + 1) & 0xFF;
 +        final int var2 = this.p[var0] & 0xFF;
@@ -1414,13 +1306,14 @@ index 765b56776e457109ddea9f7dbfd0b17beefee51e..3a83c357f1a244f61c429ad5c34e3aed
 +        final double var120 = var113 + var118;
 +        final double var121 = var115 + var119;
 +        return var120 + (var103 * (var121 - var120));
++>>>>>>> jettpack Server Changes commit 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
      }
 +    // JettPack end
  
      private double sampleWithDerivative(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double[] ds) {
          int i = this.p(sectionX);
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
-index 1966b9588c9f77874a5f9f33cb9350ade7547ee7..e7ac692e98ca5311a1010474d7cb6598e1605166 100644
+index 02d176dd374b806cb004056964c1c4ee9e73072b..cbc54d013415aa8233c2f04464087cff0306f951 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/synth/PerlinNoise.java
 @@ -190,9 +190,15 @@ public class PerlinNoise {
@@ -1636,22 +1529,27 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c73f4da90f3eb584158a0c20b5c58b7a3b30d676..b6bd7c532f750fc5ad3b54358d9b9dc869201b19 100644
+index 8a2a766208187d0c8645b1535115baeeac38e621..c8a0aaef41c37662954ee9ba02d8a38eada86148 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -956,6 +956,7 @@ public final class CraftServer implements Server {
+@@ -949,7 +949,12 @@ public final class CraftServer implements Server {
+         }
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-         com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
++<<<<<<< HEAD
+         this.console.paperConfigurations.reloadConfigs(this.console);
++=======
++        com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
 +        me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
++>>>>>>> jettpack Server Changes commit 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index fbe68bd4739d9a0e7d9bc4c3d5ba8ecfd2d13954..268f90f5ba27a89f15691d6b083d8dbb414926a3 100644
+index fbd604602024522bdd73aa1bde6fe2ccec63e442..b8d67351f73286da1933b97390905e8405ff6083 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -153,6 +153,14 @@ public class Main {
+@@ -158,6 +158,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  

@@ -6,10 +6,10 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 7618076d47bf3b8e6173574303c8deb33b29a182..a0304d63663a3cc3fd3ae8f6c132239fe48d322f 100644
+index 04f22d40091c74e4357d1b51dbb9f1c906bb4ca7..c96aa0937ddadfff7325005e4c409da383b5adf7 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -623,7 +623,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -618,7 +618,11 @@ public final class SimplePluginManager implements PluginManager {
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
          gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -20,9 +20,9 @@ index 7618076d47bf3b8e6173574303c8deb33b29a182..a0304d63663a3cc3fd3ae8f6c132239f
 +        server.getLogger().log(Level.SEVERE, org.yatopiamc.yatopia.api.internal.StackTraceUtils.EXCEPTION_DETAILS_BELOW, ex);
 +        // Yatopia end
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
-         callEvent(new ServerExceptionEvent(new ServerPluginEnableDisableException(msg, ex, plugin)));
+         callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -694,7 +698,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -689,7 +693,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -33,9 +33,9 @@ index 7618076d47bf3b8e6173574303c8deb33b29a182..a0304d63663a3cc3fd3ae8f6c132239f
 +                server.getLogger().log(Level.SEVERE, org.yatopiamc.yatopia.api.internal.StackTraceUtils.EXCEPTION_DETAILS_BELOW, ex);
 +                // Yatopia end
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
-                 if (!(event instanceof ServerExceptionEvent)) { // We don't want to cause an endless event loop
-                     callEvent(new ServerExceptionEvent(new ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -980,4 +988,10 @@ public final class SimplePluginManager implements PluginManager {
+                 if (!(event instanceof com.destroystokyo.paper.event.server.ServerExceptionEvent)) { // We don't want to cause an endless event loop
+                     callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
+@@ -975,4 +983,10 @@ public final class SimplePluginManager implements PluginManager {
      }
      // Paper end
  
@@ -47,7 +47,7 @@ index 7618076d47bf3b8e6173574303c8deb33b29a182..a0304d63663a3cc3fd3ae8f6c132239f
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-index c943bd801b54519ba6cf5d45aec593d7b7438f99..a350580b006c5ab45704e2a8a09850282d8b0c93 100644
+index 3bea5dd67ad0393160ccede4ac99a3c7baa1803b..65f1aa94652d0efacb0184bf41b519adc26bef50 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 @@ -112,7 +112,7 @@ public abstract class JavaPlugin extends PluginBase {
@@ -60,7 +60,7 @@ index c943bd801b54519ba6cf5d45aec593d7b7438f99..a350580b006c5ab45704e2a8a0985028
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 2b9218ddd262e89180588c3014dad328317dd8db..0c27011e6b2ff254057204084cd2f44861b4a860 100644
+index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd31254704a9588cb 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 @@ -370,7 +370,11 @@ public final class JavaPluginLoader implements PluginLoader {
@@ -110,7 +110,7 @@ index 2b9218ddd262e89180588c3014dad328317dd8db..0c27011e6b2ff254057204084cd2f448
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index dc76cdbe93a0229a8ff552e4048613e3d8e050ce..fc930eab2a0b3f61af5bbcf01cb651c33d8505e4 100644
+index 4f736a267eb4c8a3bedb2d02fb30468484b991d5..c6102c9b40a05eb8ddaef40ce1c9bb8e14371389 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -251,4 +251,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
@@ -239,7 +239,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 57cf9fab2501da6f1abd12e14697630ca82b0a6d..808df94e9e73e6af78d177661e47723580b7e720 100644
+index bbe81f7a420f913ffdcad913a3c43ff41ead41f5..971e83db3e1439528df485171ba65455ba17e128 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {

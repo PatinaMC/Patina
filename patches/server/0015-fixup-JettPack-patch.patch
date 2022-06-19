@@ -5,7 +5,7 @@ Subject: [PATCH] fixup JettPack patch
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-index 57d8dbdd67bd371a45692e8b00f6750c1bbd1fc0..e2446dffd3b4425457503bd4f40ccc5aa9a1e826 100644
+index fa3d2f6197d7b92c279f8cf0b0b88c3d42b18c44..aae42551529e1d912e0a79aa33463cbbdf9ea0d9 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
 @@ -2,6 +2,7 @@ package net.minecraft.world.entity.ai;

@@ -5,7 +5,7 @@ Subject: [PATCH] Remove VersionFetcher
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/VersionCommand.java b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce863ddfd4a 100644
+index e40f017f87d6b6b4770501b106c76dc69ec69abb..f3abb861f4f120049ffc81bfeb91371a9c29e3fb 100644
 --- a/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 @@ -1,6 +1,6 @@
@@ -14,9 +14,9 @@ index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce8
 -import com.destroystokyo.paper.util.VersionFetcher; // Paper - version supplier
 +// Patina - remove
  import com.google.common.base.Charsets;
+ import com.google.common.base.Preconditions;
  import com.google.common.collect.ImmutableList;
- import com.google.common.io.Resources;
-@@ -28,14 +28,7 @@ import org.bukkit.util.StringUtil;
+@@ -27,14 +27,7 @@ import org.bukkit.util.StringUtil;
  import org.jetbrains.annotations.NotNull;
  
  public class VersionCommand extends BukkitCommand {
@@ -32,24 +32,24 @@ index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce8
  
      public VersionCommand(@NotNull String name) {
          super(name);
-@@ -51,8 +44,8 @@ public class VersionCommand extends BukkitCommand {
+@@ -50,8 +43,8 @@ public class VersionCommand extends BukkitCommand {
          if (!testPermission(sender)) return true;
  
          if (args.length == 0) {
 -            //sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")"); // Paper - moved to setVersionMessage
 -            sendVersion(sender);
-+            sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")"); // Patina
-+            //sendVersion(sender); // Patina
++            sender.sendMessage("This server is running " + Bukkit.getName() + " version " + Bukkit.getVersion() + " (Implementing API version " + Bukkit.getBukkitVersion() + ")"); // Paper - moved to setVersionMessage
++            //sendVersion(sender);
          } else {
              StringBuilder name = new StringBuilder();
  
-@@ -155,133 +148,5 @@ public class VersionCommand extends BukkitCommand {
+@@ -154,133 +147,5 @@ public class VersionCommand extends BukkitCommand {
          return ImmutableList.of();
      }
  
 -    private final ReentrantLock versionLock = new ReentrantLock();
 -    private boolean hasVersion = false;
--    private Component versionMessage = null; // Paper
+-    private net.kyori.adventure.text.Component versionMessage = null; // Paper
 -    private final Set<CommandSender> versionWaiters = new HashSet<CommandSender>();
 -    private boolean versionTaskStarted = false;
 -    private long lastCheck = 0;
@@ -71,7 +71,7 @@ index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce8
 -                return;
 -            }
 -            versionWaiters.add(sender);
--            sender.sendMessage(Component.text("Checking version, please wait...", net.kyori.adventure.text.format.NamedTextColor.WHITE, net.kyori.adventure.text.format.TextDecoration.ITALIC)); // Paper
+-            sender.sendMessage(net.kyori.adventure.text.Component.text("Checking version, please wait...", net.kyori.adventure.text.format.NamedTextColor.WHITE, net.kyori.adventure.text.format.TextDecoration.ITALIC)); // Paper
 -            if (!versionTaskStarted) {
 -                versionTaskStarted = true;
 -                new Thread(new Runnable() {
@@ -91,7 +91,7 @@ index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce8
 -        String version = Bukkit.getVersion();
 -        // Paper start
 -        if (version.startsWith("null")) { // running from ide?
--            setVersionMessage(Component.text("Unknown version, custom build?", net.kyori.adventure.text.format.NamedTextColor.YELLOW));
+-            setVersionMessage(net.kyori.adventure.text.Component.text("Unknown version, custom build?", net.kyori.adventure.text.format.NamedTextColor.YELLOW));
 -            return;
 -        }
 -        setVersionMessage(getVersionFetcher().getVersionMessage(version));
@@ -130,16 +130,16 @@ index 57a21495843f3a144cd73473cdc8781d6129b7ca..aac4c30197b2347f7e6e6c5cd0d0bce8
 -    }
 -
 -    // Paper start
--    private void setVersionMessage(final @NotNull Component msg) {
+-    private void setVersionMessage(final @NotNull net.kyori.adventure.text.Component msg) {
 -        lastCheck = System.currentTimeMillis();
--        final Component message = net.kyori.adventure.text.TextComponent.ofChildren(
--            Component.text(Bukkit.getVersionMessage(), net.kyori.adventure.text.format.NamedTextColor.WHITE),
--            Component.newline(),
+-        final net.kyori.adventure.text.Component message = net.kyori.adventure.text.TextComponent.ofChildren(
+-            net.kyori.adventure.text.Component.text(Bukkit.getVersionMessage(), net.kyori.adventure.text.format.NamedTextColor.WHITE),
+-            net.kyori.adventure.text.Component.newline(),
 -            msg
 -        );
--        this.versionMessage = Component.text()
+-        this.versionMessage = net.kyori.adventure.text.Component.text()
 -            .append(message)
--            .hoverEvent(Component.text("Click to copy to clipboard", net.kyori.adventure.text.format.NamedTextColor.WHITE))
+-            .hoverEvent(net.kyori.adventure.text.Component.text("Click to copy to clipboard", net.kyori.adventure.text.format.NamedTextColor.WHITE))
 -            .clickEvent(net.kyori.adventure.text.event.ClickEvent.copyToClipboard(net.kyori.adventure.text.serializer.plain.PlainComponentSerializer.plain().serialize(message)))
 -            .build();
 -        // Paper end

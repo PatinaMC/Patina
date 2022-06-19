@@ -1,0 +1,85 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sun, 19 Jun 2022 09:31:27 +0000
+Subject: [PATCH] EmpireCraft Server Changes commit
+ e8032720a6be255257a86fcbded6348d12200b3f
+
+Don't save Fireworks
+
+Fireworks can bug out and not detonate, and an automated
+launcher can very easily fill a chunk.
+
+Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
+
+Do not drop items from Give command
+
+Don't use force unload for keep spawn setting change
+
+Don't trigger Lootable Refresh for non player interaction
+
+Do not process chat/commands before player has joined
+
+diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
+index 06e3a868e922f1b7a586d0ca28f64a67ae463b68..00c481ebf012efa5424e32521e7aecf4b36f24c0 100644
+--- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
++++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
+@@ -58,6 +58,7 @@ public class GiveCommand {
+                     boolean flag = entityplayer.getInventory().add(itemstack);
+                     ItemEntity entityitem;
+ 
++                    if (true) { continue; } // EMC - never drop items
+                     if (flag && itemstack.isEmpty()) {
+                         itemstack.setCount(1);
+                         entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
+diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+index e720a078282b8b46e0d8f98af0383f55ea16ac22..9190a39ba38120657f8b260e5ce2a4a8a080c5b7 100644
+--- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -2226,6 +2226,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+ 
+             this.send(new ClientboundSystemChatPacket(Component.translatable("chat.disabled.options").withStyle(ChatFormatting.RED), i));
+             return false;
++        } else if (!player.didPlayerJoinEvent) { return false; // EMC - do not handle chat messages before they joined
+         } else {
+             this.player.resetLastActionTime();
+             return true;
+diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
+index 5406925cd66f46ab8744123c670d72cea7bfc3a1..04894c0083a4b8d5d6a0dd63cdf6b741761ff0f4 100644
+--- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
++++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
+@@ -358,4 +358,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
+     public boolean isAttackable() {
+         return false;
+     }
++    // EMC start
++    @Override
++    public boolean shouldBeSaved() {
++        return false;
++    }
++    // EMC end
+ }
+diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
+index 13e749a3c40f0b2cc002f13675a9a56eedbefdac..e50c5bcc66b348322770cb90237d2bca934393f0 100644
+--- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
++++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
+@@ -69,6 +69,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
+     }
+ 
+     public void unpackLootTable(@Nullable Player player) {
++        if (player == null) return; // EMC
+         if (this.lootableData.shouldReplenish(player) && this.level.getServer() != null) { // Paper
+             LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
+             if (player instanceof ServerPlayer) {
+diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+index 25e56be9055c5c432e1180d45341f4e9d9fcb7ca..ab1371e54cd1f33be2da5bb4cdc63be309697e11 100644
+--- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
++++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
+@@ -391,7 +391,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+ 
+     @Override
+     public boolean unloadChunk(int x, int z) {
+-        return this.unloadChunk(x, z, true);
++        return this.unloadChunkRequest(x, z); // Paper
+     }
+ 
+     @Override

@@ -5,23 +5,24 @@ Subject: [PATCH] (Akarin) Swaps the predicate order of collision
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index b348c1e217f328d089a9f4481e8d49cfa85a4ece..65d033e2b3d051466847423d98a5c49d48ac13c8 100644
+index d57e7e5b274048bf0f2e70d3d7e80b313cf6c179..527aec9459b51095ec5b8848c6c147323fe10a35 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1870,8 +1870,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1953,8 +1953,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      public void playerTouch(Player player) {}
  
      public void push(Entity entity) {
 -        if (!this.isPassengerOfSameVehicle(entity)) {
 -            if (!entity.noPhysics && !this.noPhysics) {
 +        if (!entity.noPhysics && !this.noPhysics && !this.isPassengerOfSameVehicle(entity)) { // Patina - (Akarin) Swaps the predicate order of collision
-                 if (this.level.paperConfig.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper
+                 if (this.level.paperConfig().collisions.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper
                  double d0 = entity.getX() - this.getX();
                  double d1 = entity.getZ() - this.getZ();
-@@ -1900,7 +1899,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1982,8 +1981,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+                         entity.push(d0, 0.0D, d1);
                      }
                  }
- 
+-
 -            }
          }
      }

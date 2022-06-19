@@ -1,18 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sun, 6 Mar 2022 13:32:54 +0000
-Subject: [PATCH] Purpur API Changes commit
- 3e8b148a1f16a95d6ea785b3cbf9e6567ca55538
+Date: Sun, 19 Jun 2022 08:27:39 +0000
+Subject: [PATCH] purpur API Changes commit
+ 17cdc539e58e8befe8a12a17bfdd4670cb502f9c
 
 Purpur config files
 
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index d8666481f9a407403d0114ff02024fd3c50c27c4..ef0640ab0d26bed1544e54fa8a0303325d9b8394 100644
+index fc16e897f4ebaf9d79e49774e15a1cded33ef725..e072092f70cf3d2326ec04776d9859fbfdc3e0eb 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2368,4 +2368,15 @@ public final class Bukkit {
+@@ -2381,4 +2381,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -29,7 +29,7 @@ index d8666481f9a407403d0114ff02024fd3c50c27c4..ef0640ab0d26bed1544e54fa8a030332
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 79b26045a68ebb9b01e5bd06abbccaaef5489777..aeee9c2d525889e70b2565f797bc6b23e8b7c026 100644
+index 30b49aed62fa67276e8964922ea3f84458d854bb..d9d4d780a710f2e2f51a39fdf86b0512482f494b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -1897,6 +1897,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -51,7 +51,7 @@ index 79b26045a68ebb9b01e5bd06abbccaaef5489777..aeee9c2d525889e70b2565f797bc6b23
          /**
           * Sends the component to the player
           *
-@@ -2055,4 +2067,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2065,4 +2077,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end
