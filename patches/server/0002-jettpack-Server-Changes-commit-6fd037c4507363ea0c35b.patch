@@ -779,60 +779,6 @@ index e8e60ea8b9e97ed87be78752f398ab25ba8e9a1b..a9d8527c26e4b5f43bce060f52f042ab
              }
  
          } else {
-diff --git a/src/main/java/net/minecraft/world/entity/ai/Brain.java b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-index 1a4db35de5a37658427f35942fdc2b546ab21dd2..fa3d2f6197d7b92c279f8cf0b0b88c3d42b18c44 100644
---- a/src/main/java/net/minecraft/world/entity/ai/Brain.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/Brain.java
-@@ -71,16 +71,16 @@ public class Brain<E extends LivingEntity> {
-             }
- 
-             public <T> DataResult<Brain<E>> decode(DynamicOps<T> dynamicOps, MapLike<T> mapLike) {
--                MutableObject<DataResult<ImmutableList.Builder<Brain.MemoryValue<?>>>> mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder()));
-+                MutableObject<DataResult<Builder<Brain.MemoryValue<?>>>> decode_mutableObject = new MutableObject<>(DataResult.success(ImmutableList.builder())); // JettPack - decomp fix
-                 mapLike.entries().forEach((pair) -> {
-                     DataResult<MemoryModuleType<?>> dataResult = Registry.MEMORY_MODULE_TYPE.byNameCodec().parse(dynamicOps, pair.getFirst());
-                     DataResult<? extends Brain.MemoryValue<?>> dataResult2 = dataResult.flatMap((memoryModuleType) -> {
-                         return this.captureRead(memoryModuleType, dynamicOps, (T)pair.getSecond());
-                     });
--                    mutableObject.setValue(mutableObject.getValue().apply2(ImmutableList.Builder::add, dataResult2));
-+                    decode_mutableObject.setValue(decode_mutableObject.getValue().apply2(Builder::add, dataResult2)); // JettPack - decomp fix
-                 });
--                ImmutableList<Brain.MemoryValue<?>> immutableList = mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(ImmutableList.Builder::build).orElseGet(ImmutableList::of);
--                return DataResult.success(new Brain<>(memoryModules, sensors, immutableList, mutableObject::getValue));
-+                ImmutableList<Brain.MemoryValue<?>> immutableList = decode_mutableObject.getValue().resultOrPartial(Brain.LOGGER::error).map(Builder::build).orElseGet(ImmutableList::of); // JettPack - decomp fix
-+                return DataResult.success(new Brain<E>(memoryModules, sensors, immutableList, mutableObject::getValue)); // JettPack - decomp fix
-             }
- 
-             private <T, U> DataResult<Brain.MemoryValue<U>> captureRead(MemoryModuleType<U> memoryModuleType, DynamicOps<T> dynamicOps, T object) {
-@@ -132,7 +132,7 @@ public class Brain<E extends LivingEntity> {
- 
-     Stream<Brain.MemoryValue<?>> memories() {
-         return this.memories.entrySet().stream().map((entry) -> {
--            return Brain.MemoryValue.createUnchecked(entry.getKey(), entry.getValue());
-+            return Brain.MemoryValue.createUnchecked((MemoryModuleType)entry.getKey(), (Optional)entry.getValue()); // JettPack - decomp fix
-         });
-     }
- 
-@@ -356,7 +356,7 @@ public class Brain<E extends LivingEntity> {
-     }
- 
-     public Brain<E> copyWithoutBehaviors() {
--        Brain<E> brain = new Brain<>(this.memories.keySet(), this.sensors.keySet(), ImmutableList.of(), this.codec);
-+        Brain<E> brain = new Brain<E>(this.memories.keySet(), this.sensors. keySet(), ImmutableList.of(), this.codec); // JettPack - decomp fix
- 
-         for(Map.Entry<MemoryModuleType<?>, Optional<? extends ExpirableValue<?>>> entry : this.memories.entrySet()) {
-             MemoryModuleType<?> memoryModuleType = entry.getKey();
-@@ -467,8 +467,8 @@ public class Brain<E extends LivingEntity> {
-         private final MemoryModuleType<U> type;
-         private final Optional<? extends ExpirableValue<U>> value;
- 
--        static <U> Brain.MemoryValue<U> createUnchecked(MemoryModuleType<U> type, Optional<? extends ExpirableValue<?>> data) {
--            return new Brain.MemoryValue<>(type, data);
-+        static <U> Brain.MemoryValue<U> createUnchecked(MemoryModuleType<U> type, Optional<? extends ExpirableValue<U>> data) { // JettPack - decomp fix
-+            return new Brain.MemoryValue<U>(type, data); // JettPack - decomp fix
-         }
- 
-         MemoryValue(MemoryModuleType<U> type, Optional<? extends ExpirableValue<U>> data) {
 diff --git a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java b/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
 index 0cc0d719e95e108263683b7a40f4ce3a8ca9465b..d6fcc514d17a42861e6cc6ba72be73211f495629 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/goal/GoalSelector.java
@@ -1068,7 +1014,7 @@ index ec23064d5a6d70508fad7cffc6126cfd6f7a62cb..055de40d30062bc0e13b288b72809b4e
      public boolean loaded;
      private boolean clientLightReady;
 diff --git a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
-index fb84d703b4461343d50510d7c9be32fc1f09ed22..8e6c4b16e517faff60f5605b8757896f18b11451 100644
+index fb84d703b4461343d50510d7c9be32fc1f09ed22..136426bb1370a5caf444f279c04362bb39772aad 100644
 --- a/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
 +++ b/src/main/java/net/minecraft/world/level/levelgen/synth/ImprovedNoise.java
 @@ -11,14 +11,35 @@ public final class ImprovedNoise {
@@ -1161,19 +1107,29 @@ index fb84d703b4461343d50510d7c9be32fc1f09ed22..8e6c4b16e517faff60f5605b8757896f
  
      public double noiseWithDerivative(double x, double y, double z, double[] ds) {
          double d = x + this.xo;
-@@ -84,6 +109,7 @@ public final class ImprovedNoise {
+@@ -84,26 +109,140 @@ public final class ImprovedNoise {
          return this.p[input & 255] & 255;
      }
  
-+<<<<<<< HEAD
-     private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalY) {
-         int i = this.p(sectionX);
-         int j = this.p(sectionX + 1);
-@@ -103,7 +129,142 @@ public final class ImprovedNoise {
-         double s = Mth.smoothstep(fadeLocalY);
-         double t = Mth.smoothstep(localZ);
-         return Mth.lerp3(r, s, t, d, e, f, g, h, o, p, q);
-+=======
+-    private double sampleAndLerp(int sectionX, int sectionY, int sectionZ, double localX, double localY, double localZ, double fadeLocalY) {
+-        int i = this.p(sectionX);
+-        int j = this.p(sectionX + 1);
+-        int k = this.p(i + sectionY);
+-        int l = this.p(i + sectionY + 1);
+-        int m = this.p(j + sectionY);
+-        int n = this.p(j + sectionY + 1);
+-        double d = gradDot(this.p(k + sectionZ), localX, localY, localZ);
+-        double e = gradDot(this.p(m + sectionZ), localX - 1.0D, localY, localZ);
+-        double f = gradDot(this.p(l + sectionZ), localX, localY - 1.0D, localZ);
+-        double g = gradDot(this.p(n + sectionZ), localX - 1.0D, localY - 1.0D, localZ);
+-        double h = gradDot(this.p(k + sectionZ + 1), localX, localY, localZ - 1.0D);
+-        double o = gradDot(this.p(m + sectionZ + 1), localX - 1.0D, localY, localZ - 1.0D);
+-        double p = gradDot(this.p(l + sectionZ + 1), localX, localY - 1.0D, localZ - 1.0D);
+-        double q = gradDot(this.p(n + sectionZ + 1), localX - 1.0D, localY - 1.0D, localZ - 1.0D);
+-        double r = Mth.smoothstep(localX);
+-        double s = Mth.smoothstep(fadeLocalY);
+-        double t = Mth.smoothstep(localZ);
+-        return Mth.lerp3(r, s, t, d, e, f, g, h, o, p, q);
 +    // JettPack start - C2ME math optimizations
 +    /**
 +     * @author ishland
@@ -1306,7 +1262,6 @@ index fb84d703b4461343d50510d7c9be32fc1f09ed22..8e6c4b16e517faff60f5605b8757896f
 +        final double var120 = var113 + var118;
 +        final double var121 = var115 + var119;
 +        return var120 + (var103 * (var121 - var120));
-+>>>>>>> jettpack Server Changes commit 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
      }
 +    // JettPack end
  
@@ -1529,19 +1484,14 @@ index 68e89dbd79171627046e89699057964e44c40e7d..959588962acb0196ec9f1cc2502e6211
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8a2a766208187d0c8645b1535115baeeac38e621..c8a0aaef41c37662954ee9ba02d8a38eada86148 100644
+index 8a2a766208187d0c8645b1535115baeeac38e621..824ab28d767ee6dd779a7dc62ab8949e0396a7b1 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -949,7 +949,12 @@ public final class CraftServer implements Server {
-         }
+@@ -950,6 +950,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
-+<<<<<<< HEAD
          this.console.paperConfigurations.reloadConfigs(this.console);
-+=======
-+        com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
 +        me.titaniumtown.JettPackConfig.init((File) console.options.valueOf("jettpack-settings")); // JettPack
-+>>>>>>> jettpack Server Changes commit 6fd037c4507363ea0c35b4cb9727a1b2c33242b9
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
