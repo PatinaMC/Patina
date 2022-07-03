@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 18 Jun 2022 10:41:58 +0000
+Date: Sun, 3 Jul 2022 09:39:21 +0800
 Subject: [PATCH] pufferfish API Changes commit
- fdfb10688f854d6ae236b22e0cb56648fc95d454
+ cf5e9bac5f634a6fd6bad13c4bb2d3a09ba0ad76
 
 Add Sentry
 
@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 435db1ffe47476bcb7067802faad7aee7e4c3f54..b8fa29c4e39c4587855e6c8be3f5b373bd841ba3 100644
+index 0660174a8c543b3e8ef317cfabcda88a6a53d844..fa06125f095bd099d595ddb3cb5871d90ae1ccf7 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -41,6 +41,7 @@ dependencies {
@@ -391,17 +391,18 @@ index 0000000000000000000000000000000000000000..ae2464920c9412ac90b819a540ee58be
 +	
 +}
 diff --git a/src/main/java/org/bukkit/map/MapPalette.java b/src/main/java/org/bukkit/map/MapPalette.java
-index b937441d2fb46b108644c49fcf073859765aa02e..d95b01bfd0657cf089c0f5412453cca08e36c02f 100644
+index 8e6ad6ffb6918742d47b58d6cb1ad646d5e3df5f..331adbaf782c00d801a36c0c9551451a817daf6d 100644
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
-@@ -1,5 +1,6 @@
+@@ -1,6 +1,7 @@
  package org.bukkit.map;
  
-+import gg.pufferfish.pufferfish.simd.SIMDDetection;
+ import com.google.common.base.Preconditions;
++import gg.pufferfish.pufferfish.simd.SIMDDetection; // Pufferfish
  import java.awt.Color;
  import java.awt.Graphics2D;
  import java.awt.Image;
-@@ -34,7 +35,7 @@ public final class MapPalette {
+@@ -35,7 +36,7 @@ public final class MapPalette {
      }
  
      @NotNull
@@ -410,7 +411,7 @@ index b937441d2fb46b108644c49fcf073859765aa02e..d95b01bfd0657cf089c0f5412453cca0
          c(0, 0, 0), c(0, 0, 0), c(0, 0, 0), c(0, 0, 0),
          c(89, 125, 39), c(109, 153, 48), c(127, 178, 56), c(67, 94, 29),
          c(174, 164, 115), c(213, 201, 140), c(247, 233, 163), c(130, 123, 86),
-@@ -205,9 +206,15 @@ public final class MapPalette {
+@@ -206,9 +207,15 @@ public final class MapPalette {
          temp.getRGB(0, 0, temp.getWidth(), temp.getHeight(), pixels, 0, temp.getWidth());
  
          byte[] result = new byte[temp.getWidth() * temp.getHeight()];
