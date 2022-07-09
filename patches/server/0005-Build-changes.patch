@@ -20,7 +20,7 @@ index c6ddefd2ecebc96fcab18464812281791a8412c0..e5effd193ef4eef1d8f5584ccdd15de7
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 5569f2ea58bc80fb1b563e9742de1d337572f540..d31ece1b577ca90bb607abaaedd7839e41864be7 100644
+index 63ee6a28cb2afd15879e98468e926ee7d4632973..b1580974b03ffccca93b68cbcb568ade53e88090 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -1664,7 +1664,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -33,10 +33,10 @@ index 5569f2ea58bc80fb1b563e9742de1d337572f540..d31ece1b577ca90bb607abaaedd7839e
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c5e50794e444dd3ef665ea519a853a5ee74a7f41..6b929e8962fab2dfb862ea5e10f8c7aa5f8f86d0 100644
+index 02de039633eeb95a6a7e42c2fc5d45ff34ac469d..07b99311cd449abe24b8d2f450e32757c2aa03cf 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -245,7 +245,7 @@ import javax.annotation.Nullable; // Paper
+@@ -246,7 +246,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {

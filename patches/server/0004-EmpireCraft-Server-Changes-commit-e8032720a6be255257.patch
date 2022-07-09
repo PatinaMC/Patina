@@ -32,7 +32,7 @@ index 06e3a868e922f1b7a586d0ca28f64a67ae463b68..00c481ebf012efa5424e32521e7aecf4
                          itemstack.setCount(1);
                          entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index e720a078282b8b46e0d8f98af0383f55ea16ac22..9190a39ba38120657f8b260e5ce2a4a8a080c5b7 100644
+index 54cd75c624abcfb7a88611c98238bcb956400600..bcde1409277d2768e6546b717a84fc5446930d8f 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -2226,6 +2226,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -71,10 +71,10 @@ index 13e749a3c40f0b2cc002f13675a9a56eedbefdac..e50c5bcc66b348322770cb90237d2bca
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 25e56be9055c5c432e1180d45341f4e9d9fcb7ca..ab1371e54cd1f33be2da5bb4cdc63be309697e11 100644
+index 00fbf9ffdfa1c0d821ff86108c33e8b62a3d1268..250b7031bf5d821328d1e24597390da4019258bb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -391,7 +391,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -397,7 +397,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {
