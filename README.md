@@ -1,5 +1,7 @@
 # Patina
 
+**NOTICE: A serious issue of 1.18 and 1.19 was reported (#18 #23). Usage in production is not recommended until the issue is resolved. **
+
 [![Discord](https://img.shields.io/discord/833269599449382913?label=Discord)](https://discord.gg/4cVWCyBrDs)
 
 A distribution of performance-oriented Minecraft Server patches based on PaperMC.
