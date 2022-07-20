@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 20 Jul 2022 18:11:32 +0800
+Subject: [PATCH] Tweak default settings
+
+
+diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
+index 09827eaa9f6adf49385a33aa60b3a6bf4005a982..debfb674977598922507b1b843d3aa5765b953d6 100644
+--- a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
++++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
+@@ -216,7 +216,7 @@ public class PufferfishConfig {
+ 	public static boolean enableAsyncEntityTracker;
+ 	public static boolean enableAsyncEntityTrackerInitialized;
+ 	private static void asyncEntityTracker() {
+-		boolean temp = getBoolean("enable-async-entity-tracker", false,
++		boolean temp = getBoolean("enable-async-entity-tracker", true, // Patina - defaulted to true
+ 				"Whether or not async entity tracking should be enabled.");
+ 		if (!enableAsyncEntityTrackerInitialized) {
+ 			enableAsyncEntityTrackerInitialized = true;
+@@ -227,7 +227,7 @@ public class PufferfishConfig {
+ 	public static boolean enableAsyncPathfinding;
+ 	public static boolean enableAsyncPathfindingInitialized;
+ 	private static void asyncPathfinding() {
+-		boolean temp = getBoolean("enable-async-pathfinding", false,
++		boolean temp = getBoolean("enable-async-pathfinding", true, // Patina - defaulted to true
+ 				"Whether or not async pathfinding should be enabled.");
+ 		if (!enableAsyncPathfindingInitialized) {
+ 			enableAsyncPathfindingInitialized = true;
