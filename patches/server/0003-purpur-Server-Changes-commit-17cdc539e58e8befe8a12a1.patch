@@ -137,7 +137,7 @@ index de0513b38e5fa0138f1cee6bb633561be12449fc..161a2b122843318a1bc411ea09ef83bc
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index ebe7baf5c1072bdec96f40379be24c5c6f13cbec..aa885b5fd0570fd18b8419939eda1ce5ed3b4564 100644
+index b652c8b5feefc22404269788328359b505b7450f..8acbb5c8c066de76781a64a80e7104c64b635f8d 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -181,7 +181,7 @@ index f000c822ed4563b5b840936852bc7d8e030763e3..0c48e877a0dba9fba3295d1740527fa4
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index e6213b6924f611bfb85e43fe5a4c4582639b7abc..54cd75c624abcfb7a88611c98238bcb956400600 100644
+index 0960025c64fe2e8c055fcbf6e695ff90c1f41cd9..aa9d8be62c107e3560774259d403d0c0c521fb5b 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -245,6 +245,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
@@ -345,19 +345,19 @@ index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d91
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 862b244aee82cfa888c857c83feea912c6fe5fbb..3f91c961ff87d224544c37e322f73ad237d99bc2 100644
+index 9892add20a272461a107e957af5d3700c14e2570..cf73a56955314605b265bbb56a708c9f6dbc3c0d 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -175,6 +175,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
- 
-     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
+@@ -173,6 +173,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+     }
+     // Paper end
  
 +    public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
 +
+     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
-     private org.spigotmc.TickLimiter entityLimiter;
-@@ -286,6 +288,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -285,6 +287,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, int j, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper
