@@ -1,6 +1,6 @@
 # Patina
 
-**NOTICE: A serious issue of 1.18 and 1.19 was reported (#18 #23). Usage in production is not recommended until the issue is resolved. **
+**NOTICE: A serious issue of 1.18 and 1.19 was reported ([#18](https://github.com/PatinaMC/Patina/issues/18), [#23](https://github.com/PatinaMC/Patina/issues/23)). Usage in production is not recommended until the issue is resolved. **
 
 [![Discord](https://img.shields.io/discord/833269599449382913?label=Discord)](https://discord.gg/4cVWCyBrDs)
 
