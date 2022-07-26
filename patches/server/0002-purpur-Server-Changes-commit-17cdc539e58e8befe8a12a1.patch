@@ -157,10 +157,10 @@ index ad166788225841927bedc5243dbe94863c270425..2bae46ce042961fbbab5347dd223f348
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 353463084d90eb684717e65c56da52cd25a1e375..e0fe1c8d9ab7e00e3a5ce1c482e2663e7ddfd0cf 100644
+index 5f0d934399991ae94795ad0a94da689c242ffeba..0a84d99dac3683d42a21fa525c49fbb5455e1e81 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1479,6 +1479,7 @@ public class ServerPlayer extends Player {
+@@ -1480,6 +1480,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -289,7 +289,7 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                  } else {
                      handler.accept((Recipe) optional.get());
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 1ea1b51ceb0f90d30ca92a1b790bb7674ccef4b4..0bc3e489706118766b60054020ad2e181e6cb3af 100644
+index 3cb33e63a06a7baa013dbb0038debd7f683a6f4a..e64d08599430933a8c828f239668aea804ca843a 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -1871,6 +1871,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
