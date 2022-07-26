@@ -32,10 +32,10 @@ index 06e3a868e922f1b7a586d0ca28f64a67ae463b68..00c481ebf012efa5424e32521e7aecf4
                          itemstack.setCount(1);
                          entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index aa9d8be62c107e3560774259d403d0c0c521fb5b..c90a94d7eb3ad428a801f16833450dd80f9360ae 100644
+index 74c790ea9415da9f2962486b4d08bce7bef2e77d..9f33a05d130049d241b1c8d9ad21aeea0c2a372f 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2226,6 +2226,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -2232,6 +2232,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
  
              this.send(new ClientboundSystemChatPacket(Component.translatable("chat.disabled.options").withStyle(ChatFormatting.RED), i));
              return false;
@@ -71,7 +71,7 @@ index 13e749a3c40f0b2cc002f13675a9a56eedbefdac..e50c5bcc66b348322770cb90237d2bca
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 00fbf9ffdfa1c0d821ff86108c33e8b62a3d1268..250b7031bf5d821328d1e24597390da4019258bb 100644
+index a5d8dfc77475845be7c6d37eed04fb19eeef1c0c..df19ef8c4816639c69fc99c4e0a89116e425144f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -397,7 +397,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {

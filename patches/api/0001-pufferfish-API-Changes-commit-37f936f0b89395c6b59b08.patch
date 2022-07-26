@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 20 Jul 2022 10:22:40 +0800
+Date: Tue, 26 Jul 2022 10:38:50 +0800
 Subject: [PATCH] pufferfish API Changes commit
- f6aa872dbfbb7c36c81d2043f4997c41fc0d065d
+ 37f936f0b89395c6b59b08f4695525096c9a888b
 
 Add Sentry
 
@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 0660174a8c543b3e8ef317cfabcda88a6a53d844..fa06125f095bd099d595ddb3cb5871d90ae1ccf7 100644
+index e950bce5047552bdd3f5664eb24ce290b0a06225..10716b2c866631badb99b1fb79b66c62b117b038 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -41,6 +41,7 @@ dependencies {
@@ -428,10 +428,10 @@ index 8e6ad6ffb6918742d47b58d6cb1ad646d5e3df5f..331adbaf782c00d801a36c0c9551451a
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 5270e43c629fe63f42691d10c6f77dc1cc987457..6aba652af2b2f054ad22c77e4e59f0ed3eddc685 100644
+index 9db611841b73fed8dc8a71f4d7fdef95af3cf89d..49a4611ed4891cce10fd6e01b4062740ad18ee6f 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -622,7 +622,9 @@ public final class SimplePluginManager implements PluginManager {
+@@ -623,7 +623,9 @@ public final class SimplePluginManager implements PluginManager {
  
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
@@ -441,7 +441,7 @@ index 5270e43c629fe63f42691d10c6f77dc1cc987457..6aba652af2b2f054ad22c77e4e59f0ed
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
      // Paper end
-@@ -681,9 +683,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -682,9 +684,11 @@ public final class SimplePluginManager implements PluginManager {
                              ));
                  }
              } catch (Throwable ex) {

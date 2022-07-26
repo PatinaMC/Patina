@@ -5,7 +5,7 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b1580974b03ffccca93b68cbcb568ade53e88090..8c06be1c8d1cfc2c5c33023af82c4585ae6a0e86 100644
+index c232a589b00b33de87a63eb7ebd275613e7449d6..0d1b27190bcc22018e97f3417c9d508269b2550d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -180,7 +180,7 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -17,7 +17,7 @@ index b1580974b03ffccca93b68cbcb568ade53e88090..8c06be1c8d1cfc2c5c33023af82c4585
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogUtils.getLogger();
-@@ -1319,19 +1319,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1320,19 +1320,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      @Override
@@ -41,7 +41,7 @@ index b1580974b03ffccca93b68cbcb568ade53e88090..8c06be1c8d1cfc2c5c33023af82c4585
  
      @Override
      public boolean pollTask() {
-@@ -1363,10 +1365,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1364,10 +1366,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
