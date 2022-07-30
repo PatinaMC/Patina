@@ -5,10 +5,10 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index c232a589b00b33de87a63eb7ebd275613e7449d6..0d1b27190bcc22018e97f3417c9d508269b2550d 100644
+index 78716628bf00529b734844b0884a7c6a99ba237b..5408bae5530e609484fb53a7860c25862cc7d255 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -180,7 +180,7 @@ import org.bukkit.event.server.ServerLoadEvent;
+@@ -182,7 +182,7 @@ import org.bukkit.event.server.ServerLoadEvent;
  
  import co.aikar.timings.MinecraftTimings; // Paper
  

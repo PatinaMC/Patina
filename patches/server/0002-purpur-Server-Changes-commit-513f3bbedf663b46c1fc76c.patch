@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sun, 19 Jun 2022 08:27:38 +0000
+Date: Sat, 30 Jul 2022 23:49:27 +0800
 Subject: [PATCH] purpur Server Changes commit
- 17cdc539e58e8befe8a12a17bfdd4670cb502f9c
+ 513f3bbedf663b46c1fc76cef469e804c4afc073
 
 Purpur config files
 
@@ -22,8 +22,6 @@ Fix 'outdated server' showing in ping before server fully boots
 
 Signs editable on right click
 
-Fix the dead lagging the server
-
 Skip events if there's no listeners
 
 Add permission for F3+N debug
@@ -34,12 +32,71 @@ Squid EAR immunity
 
 Signs allow color codes
 
+Fix legacy colors in console
+
+diff --git a/src/main/java/io/papermc/paper/console/HexFormattingConverter.java b/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
+index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160b14e04ce 100644
+--- a/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
++++ b/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
+@@ -38,6 +38,7 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+     private static final String ANSI_RESET = "\u001B[m";
+ 
+     private static final char COLOR_CHAR = 0x7f;
++    private static final char LEGACY_CHAR = 0xa7; // Purpur
+     public static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.builder()
+         .hexColors()
+         .flattener(PaperAdventure.FLATTENER)
+@@ -48,6 +49,8 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+     private static final String RGB_ANSI = "\u001B[38;2;%d;%d;%dm";
+     private static final Pattern NAMED_PATTERN = Pattern.compile(COLOR_CHAR + "[0-9a-fk-orA-FK-OR]");
+     private static final Pattern RGB_PATTERN = Pattern.compile(COLOR_CHAR + "#([0-9a-fA-F]){6}");
++    private static final Pattern LEGACY_RGB_PATTERN = Pattern.compile(LEGACY_CHAR + "x((" + LEGACY_CHAR + "[0-9a-fA-F]){6})"); // Purpur
++    private static final Pattern LEGACY_PATTERN = Pattern.compile(LEGACY_CHAR + "([0-9a-fk-orxA-FK-ORX])"); // Purpur
+ 
+     private static final String[] RGB_ANSI_CODES = new String[]{
+         formatHexAnsi(NamedTextColor.BLACK),         // Black §0
+@@ -133,7 +136,21 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+     }
+ 
+     private static String convertRGBColors(final String input) {
+-        return RGB_PATTERN.matcher(input).replaceAll(result -> {
++        // Purpur start - lets just shove this back in place
++        Matcher matcher = LEGACY_RGB_PATTERN.matcher(input);
++        StringBuilder buffer = new StringBuilder();
++        while (matcher.find()) {
++            String s = matcher.group().replace(String.valueOf(LEGACY_CHAR), "").replace('x', '#');
++            int hex = Integer.decode(s);
++            int red = (hex >> 16) & 0xFF;
++            int green = (hex >> 8) & 0xFF;
++            int blue = hex & 0xFF;
++            String replacement = String.format(RGB_ANSI, red, green, blue);
++            matcher.appendReplacement(buffer, replacement);
++        }
++        matcher.appendTail(buffer);
++        return RGB_PATTERN.matcher(buffer.toString()).replaceAll(result -> {
++            // Purpur end
+             final int hex = Integer.decode(result.group().substring(1));
+             return formatHexAnsi(hex);
+         });
+@@ -151,10 +168,11 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+     }
+ 
+     private static String stripRGBColors(final String input) {
+-        return RGB_PATTERN.matcher(input).replaceAll("");
++        return LEGACY_RGB_PATTERN.matcher(RGB_PATTERN.matcher(input).replaceAll("")).replaceAll(""); // Purpur
+     }
+ 
+     static void format(String content, StringBuilder result, int start, boolean ansi) {
++        content = LEGACY_PATTERN.matcher(content).replaceAll(COLOR_CHAR + "$1"); // Purpur
+         int next = content.indexOf(COLOR_CHAR);
+         int last = content.length() - 1;
+         if (next == -1 || next == last) {
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index 8762a5d88e80bb68872652a4490e76a669e17c22..a01d283ffcef2d4a608c42e230fa557563fe8179 100644
+index e0dd0fc1638377f4d4226d4b2976b901d635dff0..3673697ac563263ef2dce013e136bc4c141f8783 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-@@ -273,6 +273,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
-         return this.signingContext;
+@@ -318,6 +318,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
+         }
      }
  
 +    // Purpur start
@@ -70,10 +127,10 @@ index 8762a5d88e80bb68872652a4490e76a669e17c22..a01d283ffcef2d4a608c42e230fa5575
          if (this.source.acceptsSuccess() && !this.silent) {
              this.source.sendSystemMessage(message);
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index ea5f0600d47b0f7c08b96eed91e5de255114637b..02add91d477dfef1bafa39c28b23dfc09418c939 100644
+index a0f5aa8c3cfce63af9cb286278a7fdebd7aa3642..91bb48f66aad86c76b2e7d2e70e84ca0e1a50212 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -393,6 +393,7 @@ public class Commands {
+@@ -404,6 +404,7 @@ public class Commands {
      }
  
      private void runSync(ServerPlayer player, Collection<String> bukkit, RootCommandNode<SharedSuggestionProvider> rootcommandnode) {
@@ -81,7 +138,7 @@ index ea5f0600d47b0f7c08b96eed91e5de255114637b..02add91d477dfef1bafa39c28b23dfc0
          // Paper end - Async command map building
          new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent<CommandSourceStack>(player.getBukkitEntity(), (RootCommandNode) rootcommandnode, false).callEvent(); // Paper
          PlayerCommandSendEvent event = new PlayerCommandSendEvent(player.getBukkitEntity(), new LinkedHashSet<>(bukkit));
-@@ -405,6 +406,7 @@ public class Commands {
+@@ -416,6 +417,7 @@ public class Commands {
              }
          }
          // CraftBukkit end
@@ -90,10 +147,10 @@ index ea5f0600d47b0f7c08b96eed91e5de255114637b..02add91d477dfef1bafa39c28b23dfc0
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 448f1c6a9da1be4b96de3f0fd3179e75e1a07b06..61800228396d4f9020952bc05b1f60332cf2d014 100644
+index 6eecd0af95704cbe40f4016121ecf2f2e8861a51..044741e8a377ef43d6519c7c9a2713f3aab74506 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -292,6 +292,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -294,6 +294,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations;
      public static long currentTickLong = 0L; // Paper
@@ -101,7 +158,7 @@ index 448f1c6a9da1be4b96de3f0fd3179e75e1a07b06..61800228396d4f9020952bc05b1f6033
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1173,6 +1174,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1176,6 +1177,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
                      // Paper end
@@ -109,7 +166,7 @@ index 448f1c6a9da1be4b96de3f0fd3179e75e1a07b06..61800228396d4f9020952bc05b1f6033
                      tickSection = curTime;
                  }
                  // Spigot end
-@@ -1190,7 +1192,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1193,7 +1195,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.tickServer(this::haveTime);
                  this.profiler.popPush("nextTickWait");
                  this.mayHaveDelayedTasks = true;
@@ -125,10 +182,10 @@ index 448f1c6a9da1be4b96de3f0fd3179e75e1a07b06..61800228396d4f9020952bc05b1f6033
                  this.profiler.pop();
                  this.endMetricsRecordingTick();
 diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-index de0513b38e5fa0138f1cee6bb633561be12449fc..161a2b122843318a1bc411ea09ef83bc56bff0d1 100644
+index a0c19503aabab5378d672a30163d35a5ba05b6c1..897e761be8c1f79562f54101173fbba7656a37ec 100644
 --- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
 +++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-@@ -185,6 +185,7 @@ public class PlayerAdvancements {
+@@ -183,6 +183,7 @@ public class PlayerAdvancements {
                          if (advancement == null) {
                              // CraftBukkit start
                              if (entry.getKey().getNamespace().equals("minecraft")) {
@@ -137,7 +194,7 @@ index de0513b38e5fa0138f1cee6bb633561be12449fc..161a2b122843318a1bc411ea09ef83bc
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index ad166788225841927bedc5243dbe94863c270425..2bae46ce042961fbbab5347dd223f3487ceaf99c 100644
+index 519883c5549744e047a8a96afee142746fcb49cd..b1cbff63993ede9d05d958a3e8569bb1150e0aec 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -157,10 +214,10 @@ index ad166788225841927bedc5243dbe94863c270425..2bae46ce042961fbbab5347dd223f348
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5f0d934399991ae94795ad0a94da689c242ffeba..0a84d99dac3683d42a21fa525c49fbb5455e1e81 100644
+index 94944ba458178f9e5b772224da329bb5d85f4394..cc93673c6bfacf84f1903ca22c8d51485c8e963e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1480,6 +1480,7 @@ public class ServerPlayer extends Player {
+@@ -1478,6 +1478,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -169,10 +226,10 @@ index 5f0d934399991ae94795ad0a94da689c242ffeba..0a84d99dac3683d42a21fa525c49fbb5
          this.connection.send(new ClientboundBlockUpdatePacket(this.level, sign.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos()));
 diff --git a/src/main/java/net/minecraft/server/level/WorldGenRegion.java b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
-index f000c822ed4563b5b840936852bc7d8e030763e3..0c48e877a0dba9fba3295d1740527fa418b5e26c 100644
+index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e24019fed5ec 100644
 --- a/src/main/java/net/minecraft/server/level/WorldGenRegion.java
 +++ b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
-@@ -294,6 +294,7 @@ public class WorldGenRegion implements WorldGenLevel {
+@@ -295,6 +295,7 @@ public class WorldGenRegion implements WorldGenLevel {
              return true;
          } else {
              // Paper start
@@ -181,10 +238,10 @@ index f000c822ed4563b5b840936852bc7d8e030763e3..0c48e877a0dba9fba3295d1740527fa4
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 1581215f7e8348e40d248c8e3d5ef43143e69579..74c790ea9415da9f2962486b4d08bce7bef2e77d 100644
+index 86c91ba9ddf1042f832c7a7379533040624fff44..47b4730ae973a8d16cba2135960783b8d34d24ff 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -245,6 +245,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -258,6 +258,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      private long keepAliveTime = Util.getMillis();
      private boolean keepAlivePending;
      private long keepAliveChallenge;
@@ -192,7 +249,7 @@ index 1581215f7e8348e40d248c8e3d5ef43143e69579..74c790ea9415da9f2962486b4d08bce7
      // CraftBukkit start - multithreaded fields
      private final AtomicInteger chatSpamTickCount = new AtomicInteger();
      private final java.util.concurrent.atomic.AtomicInteger tabSpamLimiter = new java.util.concurrent.atomic.AtomicInteger(); // Paper - configurable tab spam limits
-@@ -382,6 +383,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -410,6 +411,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
          long currentTime = Util.getMillis();
          long elapsedTime = currentTime - this.keepAliveTime;
  
@@ -201,7 +258,7 @@ index 1581215f7e8348e40d248c8e3d5ef43143e69579..74c790ea9415da9f2962486b4d08bce7
 +            if (elapsedTime >= 1000L) { // 1 second
 +                if (!processedDisconnect && keepAlives.size() > KEEPALIVE_LIMIT) {
 +                    LOGGER.warn("{} was kicked due to keepalive timeout!", player.getName());
-+                    disconnect(Component.translatable("disconnect.timeout"));
++                    disconnect(Component.translatable("disconnect.timeout"), org.bukkit.event.player.PlayerKickEvent.Cause.TIMEOUT);
 +                } else {
 +                    keepAliveTime = currentTime; // hijack this field for 1 second intervals
 +                    keepAlives.add(currentTime); // currentTime is ID
@@ -214,28 +271,28 @@ index 1581215f7e8348e40d248c8e3d5ef43143e69579..74c790ea9415da9f2962486b4d08bce7
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3305,11 +3321,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3518,11 +3534,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
-                 FilteredText<Component> filteredtext = (signText.get(i)).map(Component::literal); // CraftBukkit - decompile error
+                 FilteredText filteredtext = (FilteredText) signText.get(i);
  
 -                if (this.player.isTextFilteringEnabled()) {
--                    lines.add(net.kyori.adventure.text.Component.text(SharedConstants.filterText(filteredtext.filteredOrElse(CommonComponents.EMPTY).getString()))); // Paper - adventure
+-                    lines.add(net.kyori.adventure.text.Component.text(SharedConstants.filterText(filteredtext.filteredOrEmpty()))); // Paper - adventure
 +                // Purpur start
-+                String line = SharedConstants.filterText(this.player.isTextFilteringEnabled() ? filteredtext.filteredOrElse(CommonComponents.EMPTY).getString() : filteredtext.raw().getString());
++                String line = SharedConstants.filterText(this.player.isTextFilteringEnabled() ? filteredtext.filteredOrEmpty() : filteredtext.raw());
 +                if (worldserver.purpurConfig.signAllowColors) {
 +                    if (player.hasPermission("purpur.sign.color")) line = line.replaceAll("(?i)&([0-9a-fr])", "\u00a7$1");
 +                    if (player.hasPermission("purpur.sign.style")) line = line.replaceAll("(?i)&([l-or])", "\u00a7$1");
 +                    if (player.hasPermission("purpur.sign.magic")) line = line.replaceAll("(?i)&([kr])", "\u00a7$1");
 +                    lines.add(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacySection().deserialize(line));
                  } else {
--                    lines.add(net.kyori.adventure.text.Component.text(SharedConstants.filterText(filteredtext.raw().getString()))); // Paper - adventure
+-                    lines.add(net.kyori.adventure.text.Component.text(SharedConstants.filterText(filteredtext.raw()))); // Paper - adventure
 +                    lines.add(net.kyori.adventure.text.Component.text(line));
                  }
 +                // Purpur end
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3331,6 +3353,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Ser
+@@ -3544,6 +3566,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -265,10 +322,10 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 20cdfdb3b9351f74e89bc45b3ab972384165659a..3a62e303e90bd425485aec2ba50bb5c7b87bd44a 100644
+index 37d8a797bb590c30bf42ab04128489a9390684d3..f1fb913d1f8f84fb8a011f43137d8fda3f124423 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1170,6 +1170,7 @@ public abstract class PlayerList {
+@@ -1171,6 +1171,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -288,31 +345,6 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                      ServerRecipeBook.LOGGER.error("Tried to load unrecognized recipe: {} removed now.", minecraftkey);
                  } else {
                      handler.accept((Recipe) optional.get());
-diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 3cb33e63a06a7baa013dbb0038debd7f683a6f4a..e64d08599430933a8c828f239668aea804ca843a 100644
---- a/src/main/java/net/minecraft/world/entity/Entity.java
-+++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1871,6 +1871,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
-         this.yRotO = this.getYRot();
-         this.xRotO = this.getXRot();
-         this.setYHeadRot(yaw); // Paper - Update head rotation
-+        if (valid && !this.isRemoved()) level.getChunk((int) Math.floor(this.getX()) >> 4, (int) Math.floor(this.getZ()) >> 4); // CraftBukkit // Paper // Purpur
-     }
- 
-     public void absMoveTo(double x, double y, double z) {
-diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 8a9b6cacfb87d4ba825f3386894c25631ecbb1f7..f4f35d0fa81e622a7c056debe6d398d8d8b76b8e 100644
---- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
-+++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -2967,7 +2967,7 @@ public abstract class LivingEntity extends Entity {
-             }
-         }
- 
--        this.aiStep();
-+        if (!this.isRemoved()) this.aiStep(); // Purpur
-         double d0 = this.getX() - this.xo;
-         double d1 = this.getZ() - this.zo;
-         float f = (float) (d0 * d0 + d1 * d1);
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d915d97d5c3 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
@@ -345,18 +377,18 @@ index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d91
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index a2a0bc4874a031c964a5cdb5bc26494cd01351eb..4e733b52aa71cac819c9cb78c3598b514b3ca00a 100644
+index a2a0bc4874a031c964a5cdb5bc26494cd01351eb..efad8c61711bab6263192ed82d308d11a824843e 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -173,6 +173,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-     }
+@@ -174,6 +174,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      // Paper end
  
+     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
 +    public final org.purpurmc.purpur.PurpurWorldConfig purpurConfig; // Purpur
 +
-     public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
+     private org.spigotmc.TickLimiter entityLimiter;
 @@ -285,6 +287,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, int j, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator, java.util.concurrent.Executor executor) { // Paper - Async-Anti-Xray - Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
@@ -469,7 +501,7 @@ index def4fdd2c7e4f925fa128692a744e5d10ae0203a..73382580cc23cbc868a6003e74826a55
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index c281ad50f5d011213e34f8939d24c19daa5d6115..c3589aefe66f2cf454268c4c635f663e075327a0 100644
+index c281ad50f5d011213e34f8939d24c19daa5d6115..3ad49066d9684ab2171549758689f9bf3ec6b8b4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -959,6 +959,7 @@ public final class CraftServer implements Server {
@@ -515,11 +547,10 @@ index c281ad50f5d011213e34f8939d24c19daa5d6115..c3589aefe66f2cf454268c4c635f663e
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2904,4 +2919,12 @@ public final class CraftServer implements Server {
+@@ -2904,4 +2919,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
-+
 +
 +    // Purpur start
 +    @Override
@@ -529,7 +560,7 @@ index c281ad50f5d011213e34f8939d24c19daa5d6115..c3589aefe66f2cf454268c4c635f663e
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index c55ae77807e0ec3698f0d0443caaf18928b41017..164ad4d292c69380eb1e06b648875d9d9548c8c0 100644
+index 5b48047242e20c216b110502935763ea433c55cd..5199e59c606833f90610f7360121e9628abafe2e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -158,6 +158,14 @@ public class Main {
@@ -551,8 +582,8 @@ index c55ae77807e0ec3698f0d0443caaf18928b41017..164ad4d292c69380eb1e06b648875d9d
                      System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
                  }
  
--                if (false && Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
-+                if (false && Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {  // Purpur
+-                if (Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) {
++                if (false && Main.class.getPackage().getImplementationVendor() != null && System.getProperty("IReallyKnowWhatIAmDoingISwear") == null) { // Purpur
                      Date buildDate = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z").parse(Main.class.getPackage().getImplementationVendor()); // Paper
  
                      Calendar deadline = Calendar.getInstance();
@@ -570,7 +601,7 @@ index b2a15c986c7500a0ce227a54cb61ec3f5378f6f3..14600a7bc01bf61e8ffb736816d23df6
              new Exception().printStackTrace();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..266e00b8a068aef4234edc862f7771fd959fc1ed
+index 0000000000000000000000000000000000000000..fa307c97c929e20e715ba153e677376981f70a8e
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -0,0 +1,195 @@
@@ -647,8 +678,8 @@ index 0000000000000000000000000000000000000000..266e00b8a068aef4234edc862f7771fd
 +        commands = new HashMap<>();
 +        commands.put("purpur", new PurpurCommand("purpur"));
 +
-+        version = getInt("config-version", 29);
-+        set("config-version", 29);
++        version = getInt("config-version", 30);
++        set("config-version", 30);
 +
 +        readConfig(PurpurConfig.class, null);
 +    }
@@ -730,16 +761,6 @@ index 0000000000000000000000000000000000000000..266e00b8a068aef4234edc862f7771fd
 +        return toMap(config.getConfigurationSection(path));
 +    }
 +
-+    public static double laggingThreshold = 19.0D;
-+    private static void tickLoopSettings() {
-+        laggingThreshold = getDouble("settings.lagging-threshold", laggingThreshold);
-+    }
-+
-+    public static boolean useAlternateKeepAlive = false;
-+    private static void useAlternateKeepAlive() {
-+        useAlternateKeepAlive = getBoolean("settings.use-alternate-keepalive", useAlternateKeepAlive);
-+    }
-+
 +    private static Map<String, Object> toMap(ConfigurationSection section) {
 +        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
 +        if (section != null) {
@@ -751,6 +772,16 @@ index 0000000000000000000000000000000000000000..266e00b8a068aef4234edc862f7771fd
 +            }
 +        }
 +        return builder.build();
++    }
++
++    public static double laggingThreshold = 19.0D;
++    private static void tickLoopSettings() {
++        laggingThreshold = getDouble("settings.lagging-threshold", laggingThreshold);
++    }
++
++    public static boolean useAlternateKeepAlive = false;
++    private static void useAlternateKeepAlive() {
++        useAlternateKeepAlive = getBoolean("settings.use-alternate-keepalive", useAlternateKeepAlive);
 +    }
 +
 +    public static boolean loggerSuppressInitLegacyMaterialError = false;
@@ -771,10 +802,10 @@ index 0000000000000000000000000000000000000000..266e00b8a068aef4234edc862f7771fd
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..272ff5923ce70a0536d9f405e63f8e6517c84328
+index 0000000000000000000000000000000000000000..fed791c1841ceb889f00b8b57eb187452cf567a9
 --- /dev/null
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -0,0 +1,119 @@
+@@ -0,0 +1,118 @@
 +package org.purpurmc.purpur;
 +
 +import gg.pufferfish.pufferfish.PufferfishConfig;
@@ -892,7 +923,6 @@ index 0000000000000000000000000000000000000000..272ff5923ce70a0536d9f405e63f8e65
 +        villagerBrainTicks = getInt("mobs.villager.brain-ticks", villagerBrainTicks);
 +        villagerUseBrainTicksOnlyWhenLagging = getBoolean("mobs.villager.use-brain-ticks-only-when-lagging", villagerUseBrainTicksOnlyWhenLagging);
 +    }
-+
 +}
 diff --git a/src/main/java/org/purpurmc/purpur/command/PurpurCommand.java b/src/main/java/org/purpurmc/purpur/command/PurpurCommand.java
 new file mode 100644
