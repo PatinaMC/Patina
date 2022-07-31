@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 30 Jul 2022 22:05:08 +0800
+Date: Sun, 31 Jul 2022 17:38:35 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- 002f54176d05fcfb4531b34ab8bdd3adfd27eb26
+ 9c5fcfdcf8af1d8e04ed4c2e25f2b134a9e02abe
 
 Pufferfish Utils
 
@@ -343,6 +343,8 @@ concurrent accesses everywhere, as well as being much simpler to maintain
 
 Some things are too unsafe to run off the main thread so we don't attempt to do
 that. This multithreaded tracker remains accurate, non-breaking and fast.
+
+Add option to disable out-of-order chat
 
 diff --git a/build.gradle.kts b/build.gradle.kts
 index 2374cc9bab5039d0a0dc11d4b2ec573ab75778a7..c6ddefd2ecebc96fcab18464812281791a8412c0 100644
@@ -891,10 +893,10 @@ index 0000000000000000000000000000000000000000..020368da69b9a492155f6de6297f7473
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..09827eaa9f6adf49385a33aa60b3a6bf4005a982
+index 0000000000000000000000000000000000000000..38cb29c646ff496ffaa6553f98a565b71155c464
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
-@@ -0,0 +1,335 @@
+@@ -0,0 +1,337 @@
 +package gg.pufferfish.pufferfish;
 +
 +import gg.pufferfish.pufferfish.simd.SIMDDetection;
@@ -1224,8 +1226,10 @@ index 0000000000000000000000000000000000000000..09827eaa9f6adf49385a33aa60b3a6bf
 +
 +
 +    public static boolean disableMethodProfiler;
++	public static boolean disableOutOfOrderChat;
 +    private static void miscSettings() {
-+        disableMethodProfiler = getBoolean("misc.disable-method-profiler", true);
++		disableMethodProfiler = getBoolean("misc.disable-method-profiler", true);
++		disableOutOfOrderChat = getBoolean("misc.disable-out-of-order-chat", false);
 +        setComment("misc", "Settings for things that don't belong elsewhere");
 +    }
 +
@@ -3323,7 +3327,7 @@ index 083349794d5ceb50322c5a645dd33fbfcc1c8155..f58873ef4362bfcc618ead099be94ba2
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index adb9cde74295830e74241e522ae5766d436aadb1..86c91ba9ddf1042f832c7a7379533040624fff44 100644
+index ff7df8026f85b7ad51458a0b720a8baf71cd9bd1..8da76daecef969f452960df5577c7bc408ac7acb 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1215,6 +1215,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -3334,6 +3338,14 @@ index adb9cde74295830e74241e522ae5766d436aadb1..86c91ba9ddf1042f832c7a7379533040
          // Paper start
          if (!this.cserver.isPrimaryThread()) {
              List<String> pageList = packet.getPages();
+@@ -2349,6 +2350,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+     }
+ 
+     private boolean updateChatOrder(Instant timestamp) {
++        if (gg.pufferfish.pufferfish.PufferfishConfig.disableOutOfOrderChat) return true;
+         Instant instant1;
+ 
+         do {
 diff --git a/src/main/java/net/minecraft/world/CompoundContainer.java b/src/main/java/net/minecraft/world/CompoundContainer.java
 index 241fec02e6869c638d3a160819b32173a081467b..6a8f9e8f5bf108674c47018def28906e2d0a729c 100644
 --- a/src/main/java/net/minecraft/world/CompoundContainer.java
@@ -4901,7 +4913,7 @@ index 468c635d31cfa8051666bbefce8df4b448e9ed93..17e869074b8cf29a8c3280499a27e951
          final String id;
          private final GameRules.Category category;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 9467ccaa1d73e1913495a46919aee530e749977d..a2a0bc4874a031c964a5cdb5bc26494cd01351eb 100644
+index 5a2a1d394852d39ea576624586f7fa736dec807c..0681a7499755b573c191804b38ac8783eb7d0f32 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -271,6 +271,17 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -5852,7 +5864,7 @@ index e948ec5a573b22645664eb53bc3e9932246544e4..e3845dc3357bbb74885ae3a1a08525ad
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 1a1a1f4d0ac025daccc2d3f84faf6592819f4d5c..8643df8d81714edf60eebd6984bac2c933d1fbd6 100644
+index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..70b5b307193dc288a6257d90ca96762cb4a8345a 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -38,6 +38,10 @@ import co.aikar.timings.MinecraftTimings;
@@ -5866,7 +5878,7 @@ index 1a1a1f4d0ac025daccc2d3f84faf6592819f4d5c..8643df8d81714edf60eebd6984bac2c9
  
  public class ActivationRange
  {
-@@ -215,6 +219,21 @@ public class ActivationRange
+@@ -216,6 +220,21 @@ public class ActivationRange
              for (int i = 0; i < entities.size(); i++) {
                  Entity entity = entities.get(i);
                  ActivationRange.activateEntity(entity);
@@ -5888,7 +5900,7 @@ index 1a1a1f4d0ac025daccc2d3f84faf6592819f4d5c..8643df8d81714edf60eebd6984bac2c9
              }
              // Paper end
          }
-@@ -231,12 +250,12 @@ public class ActivationRange
+@@ -232,12 +251,12 @@ public class ActivationRange
          if ( MinecraftServer.currentTick > entity.activatedTick )
          {
              if ( entity.defaultActivationState )
@@ -5903,7 +5915,7 @@ index 1a1a1f4d0ac025daccc2d3f84faf6592819f4d5c..8643df8d81714edf60eebd6984bac2c9
                  entity.activatedTick = MinecraftServer.currentTick;
              }
          }
-@@ -290,7 +309,7 @@ public class ActivationRange
+@@ -291,7 +310,7 @@ public class ActivationRange
          if ( entity instanceof LivingEntity )
          {
              LivingEntity living = (LivingEntity) entity;

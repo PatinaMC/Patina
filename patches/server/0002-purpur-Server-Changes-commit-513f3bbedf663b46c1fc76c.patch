@@ -238,7 +238,7 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 86c91ba9ddf1042f832c7a7379533040624fff44..47b4730ae973a8d16cba2135960783b8d34d24ff 100644
+index 8da76daecef969f452960df5577c7bc408ac7acb..d450eaf0a6e69ea36ece4161337880fc860a0df2 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -258,6 +258,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -271,7 +271,7 @@ index 86c91ba9ddf1042f832c7a7379533040624fff44..47b4730ae973a8d16cba2135960783b8
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3518,11 +3534,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3539,11 +3555,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 86c91ba9ddf1042f832c7a7379533040624fff44..47b4730ae973a8d16cba2135960783b8
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3544,6 +3566,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3565,6 +3587,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -377,7 +377,7 @@ index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d91
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index a2a0bc4874a031c964a5cdb5bc26494cd01351eb..efad8c61711bab6263192ed82d308d11a824843e 100644
+index 0681a7499755b573c191804b38ac8783eb7d0f32..e839fb466f65bf00f371a6e8db724af9b4878544 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -996,7 +996,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 8643df8d81714edf60eebd6984bac2c933d1fbd6..1f74d782afe05e48f1919e602a881f0e5cf471cb 100644
+index 70b5b307193dc288a6257d90ca96762cb4a8345a..c0cf489c2c41d6d4043cf857494619fbf9aebaea 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
@@ -1007,7 +1007,7 @@ index 8643df8d81714edf60eebd6984bac2c933d1fbd6..1f74d782afe05e48f1919e602a881f0e
  import net.minecraft.world.entity.animal.WaterAnimal;
  import net.minecraft.world.entity.animal.horse.Llama;
  import net.minecraft.world.entity.boss.EnderDragonPart;
-@@ -390,6 +391,7 @@ public class ActivationRange
+@@ -391,6 +392,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
