@@ -92,7 +92,7 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
          int last = content.length() - 1;
          if (next == -1 || next == last) {
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index e0dd0fc1638377f4d4226d4b2976b901d635dff0..3673697ac563263ef2dce013e136bc4c141f8783 100644
+index dd0143f319d4adef8834c513af34b1cce7a94a84..40f6d9845d2405c6e54c5213618e1b21016e3d3f 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
 @@ -318,6 +318,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
@@ -127,7 +127,7 @@ index e0dd0fc1638377f4d4226d4b2976b901d635dff0..3673697ac563263ef2dce013e136bc4c
          if (this.source.acceptsSuccess() && !this.silent) {
              this.source.sendSystemMessage(message);
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index a0f5aa8c3cfce63af9cb286278a7fdebd7aa3642..91bb48f66aad86c76b2e7d2e70e84ca0e1a50212 100644
+index fcc75660a69122eefc100e4de0a62f587bf97d7b..1ea357efcb8cdc275dabe3cb6b2c1a37aee45620 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
 @@ -404,6 +404,7 @@ public class Commands {
@@ -147,7 +147,7 @@ index a0f5aa8c3cfce63af9cb286278a7fdebd7aa3642..91bb48f66aad86c76b2e7d2e70e84ca0
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6eecd0af95704cbe40f4016121ecf2f2e8861a51..044741e8a377ef43d6519c7c9a2713f3aab74506 100644
+index cbe2f2a09e665dfd64768c5f497f83fbb0e30771..cd5bfe7050143b859f7898181a66d616a4df01cc 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -294,6 +294,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -214,7 +214,7 @@ index 519883c5549744e047a8a96afee142746fcb49cd..b1cbff63993ede9d05d958a3e8569bb1
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 94944ba458178f9e5b772224da329bb5d85f4394..cc93673c6bfacf84f1903ca22c8d51485c8e963e 100644
+index 3615576c24d5d6790a6894a91180de25fa0e5a9c..fa965f97f631ea1785c8bc711c6e322e00d21c91 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1478,6 +1478,7 @@ public class ServerPlayer extends Player {
@@ -238,7 +238,7 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 8da76daecef969f452960df5577c7bc408ac7acb..d450eaf0a6e69ea36ece4161337880fc860a0df2 100644
+index d18b82f1f66cd10250a12222dfb983ef57629738..f0059482758a82f21395d8c3720b6f51fce60a0a 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -258,6 +258,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -271,7 +271,7 @@ index 8da76daecef969f452960df5577c7bc408ac7acb..d450eaf0a6e69ea36ece4161337880fc
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3539,11 +3555,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3569,11 +3585,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 8da76daecef969f452960df5577c7bc408ac7acb..d450eaf0a6e69ea36ece4161337880fc
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3565,6 +3587,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3595,6 +3617,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -322,7 +322,7 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 37d8a797bb590c30bf42ab04128489a9390684d3..f1fb913d1f8f84fb8a011f43137d8fda3f124423 100644
+index 71623c84a5b15023189c14a6bf36e1b08f935fc1..3507beb4825c5b555dbe36751a083ddbf5bed19f 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1171,6 +1171,7 @@ public abstract class PlayerList {
