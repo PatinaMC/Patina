@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index cc93673c6bfacf84f1903ca22c8d51485c8e963e..dfd9ca5d3509674afeff4000f756a22dbab008ce 100644
+index fa965f97f631ea1785c8bc711c6e322e00d21c91..97d006c5c37e79b889ea9ff8deabf045237d6804 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -376,7 +376,7 @@ public class ServerPlayer extends Player {

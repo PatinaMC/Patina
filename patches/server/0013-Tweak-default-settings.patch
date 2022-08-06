@@ -5,7 +5,7 @@ Subject: [PATCH] Tweak default settings
 
 
 diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
-index 09827eaa9f6adf49385a33aa60b3a6bf4005a982..debfb674977598922507b1b843d3aa5765b953d6 100644
+index 38cb29c646ff496ffaa6553f98a565b71155c464..df1148b60a1a8758c9e69a63a28ebda82160300d 100644
 --- a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 +++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 @@ -216,7 +216,7 @@ public class PufferfishConfig {
