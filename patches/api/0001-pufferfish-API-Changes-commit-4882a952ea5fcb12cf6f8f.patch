@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 6 Aug 2022 22:30:38 +0800
+Date: Fri, 12 Aug 2022 11:02:30 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 31d0ff3eee3ed271b73848084b65d63f535e14cc
+ 4882a952ea5fcb12cf6f8f164a8010fc2f85a25c
 
 Add Sentry
 
@@ -478,7 +478,7 @@ index 8ff78fad47f6086aa289e32590f4fbec24b3d500..a16c841751bc44e46d27fc4efbfc2ab2
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 345394132df70593800127d34a38f8f8a4dafe00..4f736a267eb4c8a3bedb2d02fb30468484b991d5 100644
+index 345394132df70593800127d34a38f8f8a4dafe00..8f778e7d1b8508414ed47c6c6071cae9ebf2d986 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -46,6 +46,8 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
@@ -507,7 +507,15 @@ index 345394132df70593800127d34a38f8f8a4dafe00..4f736a267eb4c8a3bedb2d02fb304684
              String path = name.replace('.', '/').concat(".class");
              JarEntry entry = jar.getJarEntry(path);
  
-@@ -213,6 +216,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+@@ -205,6 +208,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+             classes.put(name, result);
+         }
+ 
++        if (result == null) throw new ClassNotFoundException(name); // Pufferfish
+         return result;
+     }
+ 
+@@ -213,6 +217,7 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
          try {
              super.close();
          } finally {

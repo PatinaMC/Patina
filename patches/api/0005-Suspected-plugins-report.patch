@@ -110,10 +110,10 @@ index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd3125470
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 4f736a267eb4c8a3bedb2d02fb30468484b991d5..c6102c9b40a05eb8ddaef40ce1c9bb8e14371389 100644
+index 8f778e7d1b8508414ed47c6c6071cae9ebf2d986..f238a124f15d1211911e25e05f4a88498f8a87f4 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -251,4 +251,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+@@ -252,4 +252,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
                     '}';
      }
      // Paper end
