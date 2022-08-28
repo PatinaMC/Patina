@@ -147,7 +147,7 @@ index 7c96f7fc5997761426a0c62cad0cab5cc668f282..98664c95331cee4139711c402dfaf406
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 73bf9de9e55232a57257c9246e9d4a98ea929c13..994a96d14a7f6880bcd0c61819c7736594f2c9b0 100644
+index 3baf8f5a03456204fefa029cc11bdf3ef06c9b4b..bb5e86aceeb823cc36b5163f4eadd8ec8e4bec3d 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -294,6 +294,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -158,7 +158,7 @@ index 73bf9de9e55232a57257c9246e9d4a98ea929c13..994a96d14a7f6880bcd0c61819c77365
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1177,6 +1178,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1178,6 +1179,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
                      // Paper end
@@ -166,7 +166,7 @@ index 73bf9de9e55232a57257c9246e9d4a98ea929c13..994a96d14a7f6880bcd0c61819c77365
                      tickSection = curTime;
                  }
                  // Spigot end
-@@ -1194,7 +1196,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1195,7 +1197,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.tickServer(this::haveTime);
                  this.profiler.popPush("nextTickWait");
                  this.mayHaveDelayedTasks = true;
@@ -322,10 +322,10 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 71623c84a5b15023189c14a6bf36e1b08f935fc1..3507beb4825c5b555dbe36751a083ddbf5bed19f 100644
+index 8326775a4005b03468fba1ec556f951dc740c302..308d9e964d06f57914999e9c309a38c311193c27 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1171,6 +1171,7 @@ public abstract class PlayerList {
+@@ -1173,6 +1173,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -501,7 +501,7 @@ index def4fdd2c7e4f925fa128692a744e5d10ae0203a..73382580cc23cbc868a6003e74826a55
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index bada38ff3f7227c16d026a4da99c02a568c6c532..a0121af4e8793e88edda587b24e7a098b60e3fe5 100644
+index 58bf584946ebaba8b8aaff7bd0191f664c7695df..aa12ab6fd7187b270b63f4072389b6f07640025a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -961,6 +961,7 @@ public final class CraftServer implements Server {
@@ -560,10 +560,10 @@ index bada38ff3f7227c16d026a4da99c02a568c6c532..a0121af4e8793e88edda587b24e7a098
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 5b48047242e20c216b110502935763ea433c55cd..5199e59c606833f90610f7360121e9628abafe2e 100644
+index 56a784e943cb5d8b15b41e3e66545ebf166c221c..420300ce19d01f36f071eae44efd4cb32beb0ed6 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -158,6 +158,14 @@ public class Main {
+@@ -164,6 +164,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  
@@ -578,7 +578,7 @@ index 5b48047242e20c216b110502935763ea433c55cd..5199e59c606833f90610f7360121e962
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
-@@ -262,7 +270,7 @@ public class Main {
+@@ -268,7 +276,7 @@ public class Main {
                      System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
                  }
  

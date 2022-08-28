@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 15 Aug 2022 10:41:33 +0800
+Date: Sun, 28 Aug 2022 23:50:25 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- 254c00275d81d8b94956f1729c8bbdc8319244f3
+ 3888607ea6f8424c4a8e393d93cd21932e4500ea
 
 Pufferfish Utils
 
@@ -2921,7 +2921,7 @@ index 7034af8ad42940c5af6b9032b9873ce36c55a2a7..c0fdc5a79107f8694a514a12d5526bd4
  
      public static long getCoordinateKey(final ChunkPos pair) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index dd9ab51e904be2f2f2a2981d4f0f6638a6895e8d..73bf9de9e55232a57257c9246e9d4a98ea929c13 100644
+index d2161a3c3b9a2b2d463ac778656c95167c10a49d..3baf8f5a03456204fefa029cc11bdf3ef06c9b4b 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -298,6 +298,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -2933,7 +2933,7 @@ index dd9ab51e904be2f2f2a2981d4f0f6638a6895e8d..73bf9de9e55232a57257c9246e9d4a98
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
          AtomicReference<S> atomicreference = new AtomicReference();
-@@ -2251,6 +2253,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2252,6 +2254,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public ProfilerFiller getProfiler() {
@@ -2963,7 +2963,7 @@ index bdd6560fe85950b0a857a949cb38c044da44ca6b..519883c5549744e047a8a96afee14274
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9bcaa36f9 100644
+index 649355158ed435e242a48f4aaa4578bcc2a808dd..df4a6288e23df19706112cea5058d682eb02f820 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -471,7 +471,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -3012,7 +3012,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
          this.level.timings.tracker1.startTiming();
          try {
              for (TrackedEntity tracker : this.entityMap.values()) {
-@@ -2272,11 +2300,11 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2351,11 +2379,11 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
  
      public class TrackedEntity {
  
@@ -3027,7 +3027,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
  
          public TrackedEntity(Entity entity, int i, int j, boolean flag) {
              this.serverEntity = new ServerEntity(ChunkMap.this.level, entity, j, flag, this::broadcast, this.seenBy); // CraftBukkit
-@@ -2288,7 +2316,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2367,7 +2395,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
          // Paper start - use distance map to optimise tracker
          com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer> lastTrackerCandidates;
  
@@ -3036,7 +3036,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
              com.destroystokyo.paper.util.misc.PooledLinkedHashSets.PooledObjectLinkedOpenHashSet<ServerPlayer> oldTrackerCandidates = this.lastTrackerCandidates;
              this.lastTrackerCandidates = newTrackerCandidates;
  
-@@ -2360,7 +2388,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2439,7 +2467,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
          }
  
          public void removePlayer(ServerPlayer player) {
@@ -3045,7 +3045,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
              if (this.seenBy.remove(player.connection)) {
                  this.serverEntity.removePairing(player);
              }
-@@ -2368,7 +2396,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2447,7 +2475,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
          }
  
          public void updatePlayer(ServerPlayer player) {
@@ -3054,7 +3054,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
              if (player != this.entity) {
                  // Paper start - remove allocation of Vec3D here
                  // Vec3 vec3d = player.position().subtract(this.entity.position());
-@@ -2400,8 +2428,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2479,8 +2507,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
              return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
          }
  
@@ -3083,7 +3083,7 @@ index 77c89376495d90d0e7cbf6cd02c9a1c8d9a4340b..87518f6ff223ca211727c3002d107bc9
              Iterator iterator = this.entity.getIndirectPassengers().iterator();
  
              while (iterator.hasNext()) {
-@@ -2413,6 +2461,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -2492,6 +2540,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
                      i = j;
                  }
              }
@@ -3274,10 +3274,10 @@ index 3b144c820531122eb37d41be06c182b5f5dc0724..88152988425b7b02ec5ce229ba4c24b4
  
              set.clear();
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index a030762ea9888b5fab04c5c80acdacccb76f0e46..e3ba1f8f90b5cb8c8bf315f43dae63cd5ba0d77e 100644
+index 3d986805c89d22330d6ad1e09760940b2f399214..0c71d72fb04eb00e159ddd456df82376fc912b4e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -690,7 +690,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -693,7 +693,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
                              }
  
                              gameprofilerfiller.push("tick");
@@ -3299,7 +3299,7 @@ index a030762ea9888b5fab04c5c80acdacccb76f0e46..e3ba1f8f90b5cb8c8bf315f43dae63cd
                              gameprofilerfiller.pop();
                          }
                      }
-@@ -757,9 +770,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -760,9 +773,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
      // Paper start - optimise random block ticking
      private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
@@ -3312,7 +3312,7 @@ index a030762ea9888b5fab04c5c80acdacccb76f0e46..e3ba1f8f90b5cb8c8bf315f43dae63cd
      public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
          ChunkPos chunkcoordintpair = chunk.getPos();
          boolean flag = this.isRaining();
-@@ -770,7 +785,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -773,7 +788,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          gameprofilerfiller.push("thunder");
          final BlockPos.MutableBlockPos blockposition = this.chunkTickMutablePosition; // Paper - use mutable to reduce allocation rate, final to force compile fail on change
  
@@ -3321,7 +3321,7 @@ index a030762ea9888b5fab04c5c80acdacccb76f0e46..e3ba1f8f90b5cb8c8bf315f43dae63cd
              blockposition.set(this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15))); // Paper
              if (this.isRainingAt(blockposition)) {
                  DifficultyInstance difficultydamagescaler = this.getCurrentDifficultyAt(blockposition);
-@@ -794,7 +809,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -797,7 +812,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
  
          gameprofilerfiller.popPush("iceandsnow");
@@ -4480,6 +4480,22 @@ index a9cdf9034ad269f7a71358443acc053288cfbe6d..dbeb70913d3933164e997ce5d662b489
              }
          }
      }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
+index 2d87b740e84435ef9bd3eee3d3e2af9f707a0826..d38d1e3692e093d6707b6bd80cd56ec4afcf093b 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
++++ b/src/main/java/net/minecraft/world/entity/animal/allay/Allay.java
+@@ -228,9 +228,11 @@ public class Allay extends PathfinderMob implements InventoryCarrier {
+         return 0.4F;
+     }
+ 
++    private int behaviorTick = 0; // Pufferfish
+     @Override
+     protected void customServerAiStep() {
+         this.level.getProfiler().push("allayBrain");
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
+         this.getBrain().tick((ServerLevel) this.level, this);
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("allayActivityUpdate");
 diff --git a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java b/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
 index da5e6141f548539cac720aba558e1b6f3a87e474..fdd2c63ff0017bafa544a3cff2ee6d2d62c92cb3 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/axolotl/Axolotl.java
@@ -4497,10 +4513,22 @@ index da5e6141f548539cac720aba558e1b6f3a87e474..fdd2c63ff0017bafa544a3cff2ee6d2d
          this.level.getProfiler().pop();
          this.level.getProfiler().push("axolotlActivityUpdate");
 diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
-index bb6063ae7f4438916306ce876057f7488537b444..9a2d1285c207290946ae664915a77b8f9dc00ad7 100644
+index bb6063ae7f4438916306ce876057f7488537b444..4c3fd27bff777139e29905e8684f6e92a44decfe 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
 +++ b/src/main/java/net/minecraft/world/entity/animal/frog/Frog.java
-@@ -411,6 +411,14 @@ public class Frog extends Animal {
+@@ -174,9 +174,11 @@ public class Frog extends Animal {
+         return this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6D && this.isInWaterOrBubble();
+     }
+ 
++    private int behaviorTick = 0; // Pufferfish
+     @Override
+     protected void customServerAiStep() {
+         this.level.getProfiler().push("frogBrain");
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
+         this.getBrain().tick((ServerLevel)this.level, this);
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("frogActivityUpdate");
+@@ -411,6 +413,14 @@ public class Frog extends Animal {
      }
  
      static class FrogPathNavigation extends AmphibiousPathNavigation {
@@ -4515,7 +4543,7 @@ index bb6063ae7f4438916306ce876057f7488537b444..9a2d1285c207290946ae664915a77b8f
          FrogPathNavigation(Frog frog, Level world) {
              super(frog, world);
          }
-@@ -419,7 +427,13 @@ public class Frog extends Animal {
+@@ -419,7 +429,13 @@ public class Frog extends Animal {
          protected PathFinder createPathFinder(int range) {
              this.nodeEvaluator = new Frog.FrogNodeEvaluator(true);
              this.nodeEvaluator.setCanPassDoors(true);
@@ -4530,6 +4558,22 @@ index bb6063ae7f4438916306ce876057f7488537b444..9a2d1285c207290946ae664915a77b8f
          }
      }
  }
+diff --git a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+index 3dd4e6d622a6daafa00ae971edd88a147e34beef..32cca29fd622d18030931e1f330791491e7f9fa0 100644
+--- a/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
++++ b/src/main/java/net/minecraft/world/entity/animal/frog/Tadpole.java
+@@ -76,9 +76,11 @@ public class Tadpole extends AbstractFish {
+         return SoundEvents.TADPOLE_FLOP;
+     }
+ 
++    private int behaviorTick = 0; // Pufferfish
+     @Override
+     protected void customServerAiStep() {
+         this.level.getProfiler().push("tadpoleBrain");
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
+         this.getBrain().tick((ServerLevel) this.level, this);
+         this.level.getProfiler().pop();
+         this.level.getProfiler().push("tadpoleActivityUpdate");
 diff --git a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java b/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
 index 31be36e6b7b6bd0c0d7fda4e1b03ecd38947f3a5..362f952888f63a453a4352a9f1dc7df799244a3c 100644
 --- a/src/main/java/net/minecraft/world/entity/animal/goat/Goat.java
@@ -4636,6 +4680,24 @@ index 793576928dad6752dddd86e62d4c0800d8515fc4..9bde52b723237b1f0f945bc564009e35
          this.getBrain().tick((ServerLevel) this.level, this);
          this.level.getProfiler().pop();
          PiglinAi.updateActivity(this);
+diff --git a/src/main/java/net/minecraft/world/entity/monster/warden/Warden.java b/src/main/java/net/minecraft/world/entity/monster/warden/Warden.java
+index 27bd70dc30c8472e5a80f3273f9233a0392f831d..b3158b1a7772f1254dd081ff6d3278a92192e896 100644
+--- a/src/main/java/net/minecraft/world/entity/monster/warden/Warden.java
++++ b/src/main/java/net/minecraft/world/entity/monster/warden/Warden.java
+@@ -270,11 +270,13 @@ public class Warden extends Monster implements VibrationListener.VibrationListen
+ 
+     }
+ 
++    private int behaviorTick = 0; // Pufferfish
+     @Override
+     protected void customServerAiStep() {
+         ServerLevel worldserver = (ServerLevel) this.level;
+ 
+         worldserver.getProfiler().push("wardenBrain");
++        if (this.behaviorTick++ % this.activatedPriority == 0) // Pufferfish
+         this.getBrain().tick(worldserver, this);
+         this.level.getProfiler().pop();
+         super.customServerAiStep();
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 index 10b45ec24a5a0867106d1694312385ad1e267f43..93077e8c6b5a35adc6febb749d1d08be172402f1 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
@@ -5793,7 +5855,7 @@ index b1992ed5136cc7dcf04219868b94b3c37ae36b4b..5b5339cba819368f4d6b7eaf404fa59b
  
      @Nullable
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index b777c1294370bdc68bc6265b039e2a405d89f2f5..bada38ff3f7227c16d026a4da99c02a568c6c532 100644
+index b443aba38258f501f8f00be6b055f07b709277c4..58bf584946ebaba8b8aaff7bd0191f664c7695df 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1047,6 +1047,11 @@ public final class CraftServer implements Server {
