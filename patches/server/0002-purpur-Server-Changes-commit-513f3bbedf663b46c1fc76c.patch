@@ -238,10 +238,10 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9aab29dd7a09c306d6c0e1e8143daf005d611d65..1788dae3b8c10307b45a2d864f683aa1ee67be53 100644
+index 3d4e0be647f48a33d1afcdbec62c6624f2086294..5baccd162961e8f0024f6c49acfb231f7eb33a1e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -261,6 +261,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -260,6 +260,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      private long keepAliveTime = Util.getMillis();
      private boolean keepAlivePending;
      private long keepAliveChallenge;
@@ -249,7 +249,7 @@ index 9aab29dd7a09c306d6c0e1e8143daf005d611d65..1788dae3b8c10307b45a2d864f683aa1
      // CraftBukkit start - multithreaded fields
      private final AtomicInteger chatSpamTickCount = new AtomicInteger();
      private final java.util.concurrent.atomic.AtomicInteger tabSpamLimiter = new java.util.concurrent.atomic.AtomicInteger(); // Paper - configurable tab spam limits
-@@ -413,6 +414,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -407,6 +408,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
          long currentTime = Util.getMillis();
          long elapsedTime = currentTime - this.keepAliveTime;
  
@@ -271,7 +271,7 @@ index 9aab29dd7a09c306d6c0e1e8143daf005d611d65..1788dae3b8c10307b45a2d864f683aa1
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3577,11 +3593,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3571,11 +3587,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 9aab29dd7a09c306d6c0e1e8143daf005d611d65..1788dae3b8c10307b45a2d864f683aa1
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3603,6 +3625,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3597,6 +3619,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -322,10 +322,10 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 8326775a4005b03468fba1ec556f951dc740c302..308d9e964d06f57914999e9c309a38c311193c27 100644
+index e1b6017953edffcea0be81b70cf7b22ce8c0570d..43796f02805e9180411e2c02c39c6dfeadf5f182 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1173,6 +1173,7 @@ public abstract class PlayerList {
+@@ -1180,6 +1180,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }

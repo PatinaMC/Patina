@@ -3331,10 +3331,10 @@ index 3d986805c89d22330d6ad1e09760940b2f399214..0c71d72fb04eb00e159ddd456df82376
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index c3a5aa2cbfeef1d2841ef85d135a2f6e0a7a2f61..9aab29dd7a09c306d6c0e1e8143daf005d611d65 100644
+index 325def3149693f64b2b21e0e655b5b3e888fd9a0..3d4e0be647f48a33d1afcdbec62c6624f2086294 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1222,6 +1222,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -1216,6 +1216,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleEditBook(ServerboundEditBookPacket packet) {
@@ -3342,7 +3342,7 @@ index c3a5aa2cbfeef1d2841ef85d135a2f6e0a7a2f61..9aab29dd7a09c306d6c0e1e8143daf00
          // Paper start
          if (!this.cserver.isPrimaryThread()) {
              List<String> pageList = packet.getPages();
-@@ -2368,6 +2369,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -2362,6 +2363,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      }
  
      private boolean updateChatOrder(Instant timestamp) {

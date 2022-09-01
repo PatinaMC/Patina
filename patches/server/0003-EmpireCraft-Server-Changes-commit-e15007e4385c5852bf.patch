@@ -32,10 +32,10 @@ index 06e3a868e922f1b7a586d0ca28f64a67ae463b68..00c481ebf012efa5424e32521e7aecf4
                          itemstack.setCount(1);
                          entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 1788dae3b8c10307b45a2d864f683aa1ee67be53..952559ac7770a3f664764942325bc277a1b80408 100644
+index 5baccd162961e8f0024f6c49acfb231f7eb33a1e..93790e5c01e7dcee27cea6235e9ebad09002713c 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2366,6 +2366,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -2360,6 +2360,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
          } else if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
              this.send(new ClientboundSystemChatPacket(Component.translatable("chat.disabled.options").withStyle(ChatFormatting.RED), false));
              return false;
