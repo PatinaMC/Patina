@@ -238,7 +238,7 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 3d4e0be647f48a33d1afcdbec62c6624f2086294..5baccd162961e8f0024f6c49acfb231f7eb33a1e 100644
+index cc55cb14f2d0f656213be25a1e428132871ac5dd..f5c622c3723bef1ad5fdc2f7840d6e1acfe56056 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -260,6 +260,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -271,7 +271,7 @@ index 3d4e0be647f48a33d1afcdbec62c6624f2086294..5baccd162961e8f0024f6c49acfb231f
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3571,11 +3587,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3569,11 +3585,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 3d4e0be647f48a33d1afcdbec62c6624f2086294..5baccd162961e8f0024f6c49acfb231f
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3597,6 +3619,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3595,6 +3617,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -322,10 +322,10 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e1b6017953edffcea0be81b70cf7b22ce8c0570d..43796f02805e9180411e2c02c39c6dfeadf5f182 100644
+index 5999d85e38951503fc83b40cfe39671921ae5088..3c58cab5ade2989e492b69cefe60167f7aafcd35 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1180,6 +1180,7 @@ public abstract class PlayerList {
+@@ -1177,6 +1177,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -377,7 +377,7 @@ index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d91
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 0681a7499755b573c191804b38ac8783eb7d0f32..e839fb466f65bf00f371a6e8db724af9b4878544 100644
+index 388a153113d87ba99515828c6d535110b4413c7c..00fb070ebefa81f418b83088416f9e079029f513 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -560,10 +560,10 @@ index 58bf584946ebaba8b8aaff7bd0191f664c7695df..aa12ab6fd7187b270b63f4072389b6f0
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 56a784e943cb5d8b15b41e3e66545ebf166c221c..420300ce19d01f36f071eae44efd4cb32beb0ed6 100644
+index f30621be24c6c3a4f173436fce1ad1c13507c84f..f42d75f326bc26e4ab15f12a1a3e0cfc68ce91db 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
-@@ -164,6 +164,14 @@ public class Main {
+@@ -166,6 +166,14 @@ public class Main {
                          .describedAs("Jar file");
                  // Paper end
  
@@ -578,7 +578,7 @@ index 56a784e943cb5d8b15b41e3e66545ebf166c221c..420300ce19d01f36f071eae44efd4cb3
                  // Paper start
                  acceptsAll(asList("server-name"), "Name of the server")
                          .withRequiredArg()
-@@ -268,7 +276,7 @@ public class Main {
+@@ -270,7 +278,7 @@ public class Main {
                      System.setProperty(TerminalConsoleAppender.JLINE_OVERRIDE_PROPERTY, "false"); // Paper
                  }
  
