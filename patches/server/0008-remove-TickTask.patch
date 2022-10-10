@@ -5,7 +5,7 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 51e641595201ce6ff41db624fdbb28ed84c6281b..b18815b5b93e88876e46964719887ce45aa726cb 100644
+index b1a265a4bd6ba4f7e52169a38b4a06dc397a5d0a..959135bf9a22694d0df28135f662aeef4be420ab 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -182,7 +182,7 @@ import org.bukkit.event.server.ServerLoadEvent;
@@ -17,7 +17,7 @@ index 51e641595201ce6ff41db624fdbb28ed84c6281b..b18815b5b93e88876e46964719887ce4
  
      private static MinecraftServer SERVER; // Paper
      public static final Logger LOGGER = LogUtils.getLogger();
-@@ -1322,19 +1322,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1302,19 +1302,21 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      @Override
@@ -41,7 +41,7 @@ index 51e641595201ce6ff41db624fdbb28ed84c6281b..b18815b5b93e88876e46964719887ce4
  
      @Override
      public boolean pollTask() {
-@@ -1366,10 +1368,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1346,10 +1348,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
          }
      }
  
@@ -55,10 +55,10 @@ index 51e641595201ce6ff41db624fdbb28ed84c6281b..b18815b5b93e88876e46964719887ce4
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 795691bcb61a7c2b4f903d8db3b6714908c78ac2..2bb545b505aa726b7ed7c757caed84bf0538782e 100644
+index 7266e6703d5cd0fea90ec88c74a7d4567f2420ae..16ee24bef4eb2184d821565665f3c1ddf0f3bb39 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1085,10 +1085,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1007,10 +1007,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  

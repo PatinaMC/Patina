@@ -92,7 +92,7 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
          int last = content.length() - 1;
          if (next == -1 || next == last) {
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index dd0143f319d4adef8834c513af34b1cce7a94a84..40f6d9845d2405c6e54c5213618e1b21016e3d3f 100644
+index 0d140dd7d55407b57fc3394ceb2eba5136e4fcaf..ed64b78bc8510fbe8fda9a10b779e91d99313676 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
 @@ -318,6 +318,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
@@ -147,7 +147,7 @@ index 7c96f7fc5997761426a0c62cad0cab5cc668f282..98664c95331cee4139711c402dfaf406
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index a1d90531bb13d1e7dc444d318657ce04857bd137..15c51bd610fd74b61820ef9f71e742415620c2cc 100644
+index 55ade69576f9b7da7b1de9416f63747c4f82db09..8a72ec56f7e887421e9317ecdb0c1eeeba095e10 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -294,6 +294,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -158,7 +158,7 @@ index a1d90531bb13d1e7dc444d318657ce04857bd137..15c51bd610fd74b61820ef9f71e74241
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1178,6 +1179,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1158,6 +1159,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
                      // Paper end
@@ -166,7 +166,7 @@ index a1d90531bb13d1e7dc444d318657ce04857bd137..15c51bd610fd74b61820ef9f71e74241
                      tickSection = curTime;
                  }
                  // Spigot end
-@@ -1195,7 +1197,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1175,7 +1177,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.tickServer(this::haveTime);
                  this.profiler.popPush("nextTickWait");
                  this.mayHaveDelayedTasks = true;
@@ -194,7 +194,7 @@ index a0c19503aabab5378d672a30163d35a5ba05b6c1..897e761be8c1f79562f54101173fbba7
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 519883c5549744e047a8a96afee142746fcb49cd..b1cbff63993ede9d05d958a3e8569bb1150e0aec 100644
+index d4efadbc87ee0b6cb8564c57fc9dcbb48367a767..4b33116afe4af1ae61c7981d0b1fd29fa1e1cd24 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -223,6 +223,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -214,10 +214,10 @@ index 519883c5549744e047a8a96afee142746fcb49cd..b1cbff63993ede9d05d958a3e8569bb1
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index a6fe628eb56833e79a05ce192a3848fc66db93c9..8c99f3383dda391feeeb12e4cb9587afa428ee77 100644
+index af7acb628b84539b1ee5ef1934f75f091c4cd91e..abb553d6ede78a5ae822c29a66d50471b6457970 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1479,6 +1479,7 @@ public class ServerPlayer extends Player {
+@@ -1464,6 +1464,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -322,7 +322,7 @@ index 29a22da1b94d51300481c071aa16bfd8cd02178f..f67cbb1badc007987e62872bb0160ad6
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 5999d85e38951503fc83b40cfe39671921ae5088..3c58cab5ade2989e492b69cefe60167f7aafcd35 100644
+index 06eda955f96b5fe2d08ed0d39229c7a6ebb88931..9b91a1fd44c4eddd1227a15303afe26c40f8eb17 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1177,6 +1177,7 @@ public abstract class PlayerList {
@@ -377,7 +377,7 @@ index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d91
              this.getBrain().tick((ServerLevel) this.level, this); // Paper
           }
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 388a153113d87ba99515828c6d535110b4413c7c..00fb070ebefa81f418b83088416f9e079029f513 100644
+index 0277633fd328ef9993fea4ac29df83b5b00c0f42..70c033d49f433f82843d33f8a44573ae43100775 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -174,6 +174,8 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -501,7 +501,7 @@ index def4fdd2c7e4f925fa128692a744e5d10ae0203a..73382580cc23cbc868a6003e74826a55
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 5863e73fb1164016d00563c3c10fa4c2cedd2fc4..bf605172be93ce41ec20d6b347204b6fee13dbfd 100644
+index 3f0355ce3adea792d1b4e1509be73d7e976dcf8a..940e469affd6de95c65710822dccb796e0482f83 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -966,6 +966,7 @@ public final class CraftServer implements Server {

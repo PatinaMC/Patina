@@ -110,10 +110,10 @@ index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd3125470
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 2003a5fdf4cb3710f7b76ee435275cd13a50fe86..f48ab702656ed85be07ecabcaaef7dd966515f31 100644
+index 0011c228b10316b09a62579dfc3d37794ee8e61a..3108ada037215f189cbd5d7dcd2ef498901e888b 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -273,4 +273,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
+@@ -278,4 +278,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
                     '}';
      }
      // Paper end
@@ -239,7 +239,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index bbe81f7a420f913ffdcad913a3c43ff41ead41f5..971e83db3e1439528df485171ba65455ba17e128 100644
+index 4bca64b2a44ae032730575ecba39f9737a5a1ec7..5bc629dd396c6366b9e2292f7e2abf16d255b399 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {
