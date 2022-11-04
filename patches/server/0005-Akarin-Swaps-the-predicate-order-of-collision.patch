@@ -5,10 +5,10 @@ Subject: [PATCH] (Akarin) Swaps the predicate order of collision
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index fc4bd8ad4836aa6bdd228885f0aeb22500782af5..39403c094d2f61b1f80f35592d7ff46cc6efef09 100644
+index 26b42474a94ccabd8cfcca39e4c37fb14852cbb8..a3adf2867055953001a18ef5deb11ef67ab47497 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -1968,8 +1968,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1967,8 +1967,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      public void playerTouch(Player player) {}
  
      public void push(Entity entity) {
@@ -18,7 +18,7 @@ index fc4bd8ad4836aa6bdd228885f0aeb22500782af5..39403c094d2f61b1f80f35592d7ff46c
                  if (this.level.paperConfig().collisions.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper
                  double d0 = entity.getX() - this.getX();
                  double d1 = entity.getZ() - this.getZ();
-@@ -1997,8 +1996,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -1996,8 +1995,6 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                          entity.push(d0, 0.0D, d1);
                      }
                  }

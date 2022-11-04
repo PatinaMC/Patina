@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 11 Oct 2022 00:34:17 +0800
+Date: Fri, 4 Nov 2022 02:16:37 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 9d9a0e1a32466455cd3c3eff5b673a9e177491d6
+ dda277afae92068b2b462e498ae819fbdcd3962b
 
 Add Sentry
 
@@ -478,7 +478,7 @@ index 8ff78fad47f6086aa289e32590f4fbec24b3d500..a16c841751bc44e46d27fc4efbfc2ab2
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 06daf7e7b9f177256a7a15b91e72ff53f89ccb68..0011c228b10316b09a62579dfc3d37794ee8e61a 100644
+index cb3c25ef46b279ffdde87f47f729eb8aa7549c1c..6fb179c4d420eac3a6399fbff104b5af6ba448ba 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -46,6 +46,8 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot
