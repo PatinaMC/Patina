@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 4 Nov 2022 02:16:37 +0800
+Date: Tue, 22 Nov 2022 18:20:12 +0000
 Subject: [PATCH] pufferfish Server Changes commit
- dda277afae92068b2b462e498ae819fbdcd3962b
+ 5e6e1adeaeea640f097b826ca092130991e52d47
 
 Pufferfish Utils
 
@@ -2098,29 +2098,30 @@ index 0000000000000000000000000000000000000000..1b29210ad0bbb4ada150f23357f0c80d
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..9d6dc2c80945bec9bea74714c657c7a2e0bdde9e
+index 0000000000000000000000000000000000000000..8e5323d5d9af25c8a85c4b34a6be76cfc54384cf
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/util/AsyncExecutor.java
-@@ -0,0 +1,51 @@
+@@ -0,0 +1,73 @@
 +package gg.pufferfish.pufferfish.util;
 +
 +import com.google.common.collect.Queues;
 +import gg.pufferfish.pufferfish.PufferfishLogger;
 +import java.util.Queue;
-+import java.util.concurrent.locks.LockSupport;
-+import java.util.function.BooleanSupplier;
++import java.util.concurrent.locks.Condition;
++import java.util.concurrent.locks.Lock;
++import java.util.concurrent.locks.ReentrantLock;
 +import java.util.logging.Level;
 +
 +public class AsyncExecutor implements Runnable {
 +	
-+	private Queue<Runnable> jobs = Queues.newConcurrentLinkedQueue();
++	private final Queue<Runnable> jobs = Queues.newArrayDeque();
++	private final Lock mutex = new ReentrantLock();
++	private final Condition cond = mutex.newCondition();
 +	private final Thread thread;
-+	private final BooleanSupplier shouldRun;
 +	private volatile boolean killswitch = false;
 +	
-+	public AsyncExecutor(String threadName, BooleanSupplier shouldRun) {
++	public AsyncExecutor(String threadName) {
 +		this.thread = new Thread(this, threadName);
-+		this.shouldRun = shouldRun;
 +	}
 +	
 +	public void start() {
@@ -2129,26 +2130,47 @@ index 0000000000000000000000000000000000000000..9d6dc2c80945bec9bea74714c657c7a2
 +	
 +	public void kill() {
 +		killswitch = true;
++		cond.signalAll();
 +	}
 +	
 +	public void submit(Runnable runnable) {
-+		jobs.offer(runnable);
++		mutex.lock();
++		try {
++			jobs.offer(runnable);
++			cond.signalAll();
++		} finally {
++			mutex.unlock();
++		}
 +	}
 +	
 +	@Override
 +	public void run() {
 +		while (!killswitch) {
-+			if (shouldRun.getAsBoolean()) {
-+				try {
-+					Runnable runnable;
-+					while ((runnable = jobs.poll()) != null) {
-+						runnable.run();
-+					}
-+				} catch (Exception e) {
-+					PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread " + thread.getName());
++			try {
++				Runnable runnable = takeRunnable();
++				if (runnable != null) {
++					runnable.run();
 +				}
++			} catch (InterruptedException e) {
++				Thread.currentThread().interrupt();
++			} catch (Exception e) {
++				PufferfishLogger.LOGGER.log(Level.SEVERE, e, () -> "Failed to execute async job for thread " + thread.getName());
 +			}
-+			LockSupport.parkNanos("executing tasks", 1000L);
++		}
++	}
++	
++	private Runnable takeRunnable() throws InterruptedException {
++		mutex.lock();
++		try {
++			while (jobs.isEmpty() && !killswitch) {
++				cond.await();
++			}
++			
++			if (jobs.isEmpty()) return null; // We've set killswitch
++			
++			return jobs.remove();
++		} finally {
++			mutex.unlock();
 +		}
 +	}
 +	
@@ -2319,7 +2341,7 @@ index e63dc33250831428c2cef34e02238600231fb815..c8f7aa9e0794713724e1053581c220aa
  
      public static long getCoordinateKey(final ChunkPos pair) {
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..8b74f9dd7a1c5f2890b5d36bd651dfee78a1a82a 100644
+index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..984edc4c9a5705d76aa978ae802d4224b0f34b19 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -298,6 +298,8 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -2327,7 +2349,7 @@ index 6dc6c3bccb4ba34268a87b0754c87eb1e0df4135..8b74f9dd7a1c5f2890b5d36bd651dfee
      public volatile boolean abnormalExit = false; // Paper
      public boolean isIteratingOverLevels = false; // Paper
 +    
-+    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("MobSpawning", () -> true); // Pufferfish - optimize mob spawning
++    public gg.pufferfish.pufferfish.util.AsyncExecutor mobSpawnExecutor = new gg.pufferfish.pufferfish.util.AsyncExecutor("MobSpawning"); // Pufferfish - optimize mob spawning
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
          AtomicReference<S> atomicreference = new AtomicReference();
@@ -2361,7 +2383,7 @@ index ff3eced0e20c39b825586897ee2fed01dd471d88..5c54a5da7fb50cd97799c5fa280a24d5
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 9ad7c417616e68b1d14a702aca38b2582feb896c..2e811de518dbc63e791508d060c9db64de48fdbb 100644
+index d1edafb3e44a4d17586e0e9c4fca30389b529074..bf2998947f4165f9a661c8fc5f6b846ab9852370 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -334,7 +334,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -2509,10 +2531,10 @@ index be97d38f45046a7f6d2337d879651f04cf9ff825..0b75caca3f77980505d0689601d920fb
  
      private void getFullChunk(long pos, Consumer<LevelChunk> chunkConsumer) {
 diff --git a/src/main/java/net/minecraft/server/level/ServerEntity.java b/src/main/java/net/minecraft/server/level/ServerEntity.java
-index 3b144c820531122eb37d41be06c182b5f5dc0724..1eb912ad97f9663bf6bd336ad739f2552b0a5c9b 100644
+index 2358bb1788cfb902bac9b3b7588954af2d2cd823..163f14b4e1ca99d75e5d8e14190f7b91cb58e8f3 100644
 --- a/src/main/java/net/minecraft/server/level/ServerEntity.java
 +++ b/src/main/java/net/minecraft/server/level/ServerEntity.java
-@@ -165,6 +165,7 @@ public class ServerEntity {
+@@ -166,6 +166,7 @@ public class ServerEntity {
                      boolean flag4 = k < -32768L || k > 32767L || l < -32768L || l > 32767L || i1 < -32768L || i1 > 32767L;
  
                      if (!flag4 && this.teleportDelay <= 400 && !this.wasRiding && this.wasOnGround == this.entity.isOnGround() && !(io.papermc.paper.configuration.GlobalConfiguration.get().collisions.sendFullPosForHardCollidingEntities && this.entity.hardCollides())) { // Paper - send full pos for hard colliding entities to prevent collision problems due to desync
@@ -2520,7 +2542,7 @@ index 3b144c820531122eb37d41be06c182b5f5dc0724..1eb912ad97f9663bf6bd336ad739f255
                          if ((!flag2 || !flag3) && !(this.entity instanceof AbstractArrow)) {
                              if (flag2) {
                                  packet1 = new ClientboundMoveEntityPacket.Pos(this.entity.getId(), (short) ((int) k), (short) ((int) l), (short) ((int) i1), this.entity.isOnGround());
-@@ -174,6 +175,7 @@ public class ServerEntity {
+@@ -175,6 +176,7 @@ public class ServerEntity {
                          } else {
                              packet1 = new ClientboundMoveEntityPacket.PosRot(this.entity.getId(), (short) ((int) k), (short) ((int) l), (short) ((int) i1), (byte) i, (byte) j, this.entity.isOnGround());
                          }
@@ -2529,10 +2551,18 @@ index 3b144c820531122eb37d41be06c182b5f5dc0724..1eb912ad97f9663bf6bd336ad739f255
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 8b3e703ebb497b9166bd211b4247a78891b61aeb..94f4a5bfd2af8389a99f80bab4eceac1f075512e 100644
+index a8cdb261c0f8c9a377bb4a6d39afbe5ef6f0d146..5f7e1a431dfafcbe6319816dfcaa44c87cb50b88 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
-@@ -727,7 +727,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -708,6 +708,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+             org.spigotmc.ActivationRange.activateEntities(this); // Spigot
+             timings.entityTick.startTiming(); // Spigot
+             this.entityTickList.forEach((entity) -> {
++                entity.activatedPriorityReset = false; // Pufferfish - DAB
+                 if (!entity.isRemoved()) {
+                     if (false && this.shouldDiscardEntity(entity)) { // CraftBukkit - We prevent spawning in general, so this butchering is not needed
+                         entity.discard();
+@@ -727,7 +728,20 @@ public class ServerLevel extends Level implements WorldGenLevel {
                              }
  
                              gameprofilerfiller.push("tick");
@@ -2554,7 +2584,7 @@ index 8b3e703ebb497b9166bd211b4247a78891b61aeb..94f4a5bfd2af8389a99f80bab4eceac1
                              gameprofilerfiller.pop();
                          }
                      }
-@@ -794,9 +807,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -794,9 +808,11 @@ public class ServerLevel extends Level implements WorldGenLevel {
      }
      // Paper start - optimise random block ticking
      private final BlockPos.MutableBlockPos chunkTickMutablePosition = new BlockPos.MutableBlockPos();
@@ -2567,7 +2597,7 @@ index 8b3e703ebb497b9166bd211b4247a78891b61aeb..94f4a5bfd2af8389a99f80bab4eceac1
      public void tickChunk(LevelChunk chunk, int randomTickSpeed) {
          ChunkPos chunkcoordintpair = chunk.getPos();
          boolean flag = this.isRaining();
-@@ -807,7 +822,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -807,7 +823,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          gameprofilerfiller.push("thunder");
          final BlockPos.MutableBlockPos blockposition = this.chunkTickMutablePosition; // Paper - use mutable to reduce allocation rate, final to force compile fail on change
  
@@ -2576,7 +2606,7 @@ index 8b3e703ebb497b9166bd211b4247a78891b61aeb..94f4a5bfd2af8389a99f80bab4eceac1
              blockposition.set(this.findLightningTargetAround(this.getBlockRandomPos(j, 0, k, 15))); // Paper
              if (this.isRainingAt(blockposition)) {
                  DifficultyInstance difficultydamagescaler = this.getCurrentDifficultyAt(blockposition);
-@@ -831,7 +846,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
+@@ -831,7 +847,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
          }
  
          gameprofilerfiller.popPush("iceandsnow");
@@ -2586,7 +2616,7 @@ index 8b3e703ebb497b9166bd211b4247a78891b61aeb..94f4a5bfd2af8389a99f80bab4eceac1
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 9ad36447e82a3504576f6c10cb297514a2f69289..4e615e5d5b8d79f6eaac2136be03961415fd093e 100644
+index 33dd46022be9a4b70ec05c202d9f27b43d09467f..42862061cbd6ca8c34d3fc6ff90145f418becbb9 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1216,6 +1216,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -2718,7 +2748,7 @@ index 540bc9500c35c0db719b00aa26f6fb3a1b08ed9f..806cb760822a99316b08ad95ff8922df
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb14852cbb8 100644
+index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..249305f0fc4f525fe2d109ecc96900ce3680b1b1 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -291,7 +291,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -2730,11 +2760,12 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
      private ChunkPos chunkPosition;
      private Vec3 deltaMovement;
      private float yRot;
-@@ -413,6 +413,11 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -413,6 +413,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          return this.originWorld;
      }
      // Paper end
 +    // Pufferfish start
++    public boolean activatedPriorityReset = false; // DAB
 +    public int activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio; // golf score
 +    public final BlockPos.MutableBlockPos cachedBlockPos = new BlockPos.MutableBlockPos(); // used where needed
 +    // Pufferfish end
@@ -2742,7 +2773,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
      public float getBukkitYaw() {
          return this.yRot;
      }
-@@ -487,17 +492,36 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -487,17 +493,36 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
          this.isLegacyTrackingEntity = isLegacyTrackingEntity;
      }
  
@@ -2780,7 +2811,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
          for (Entity passenger : passengers) {
              org.spigotmc.TrackingRange.TrackingRangeType passengerType = passenger.trackingRangeType;
              int passengerRange = chunkMap.getEntityTrackerRange(passengerType.ordinal());
-@@ -506,6 +530,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -506,6 +531,9 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                  range = passengerRange;
              }
          }
@@ -2790,7 +2821,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
  
          return chunkMap.playerEntityTrackerTrackMaps[type.ordinal()].getObjectsInRange(MCUtil.getCoordinateKey(this));
      }
-@@ -787,6 +814,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -787,6 +815,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      // CraftBukkit end
  
      public void baseTick() {
@@ -2803,7 +2834,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
          this.level.getProfiler().push("entityBaseTick");
          if (firstTick && this instanceof net.minecraft.world.entity.NeutralMob neutralMob) neutralMob.tickInitialPersistentAnger(level); // Paper - Update last hurt when ticking
          this.feetBlockState = null;
-@@ -4019,16 +4052,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4019,16 +4053,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      }
  
      public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
@@ -2829,7 +2860,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
              double d1 = 0.0D;
              boolean flag = this.isPushedByFluid();
              boolean flag1 = false;
-@@ -4036,14 +4071,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4036,14 +4072,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              int k1 = 0;
              BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
@@ -2897,7 +2928,7 @@ index 6fa47becd0f83ac4273ef3a10c314aa27b08184b..26b42474a94ccabd8cfcca39e4c37fb1
  
                              if (d2 >= axisalignedbb.minY) {
                                  flag1 = true;
-@@ -4065,9 +4147,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4065,9 +4148,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                                  // CraftBukkit end
                              }
                          }
@@ -2924,7 +2955,7 @@ index 72516335570d7137a62ec8667a6e8f06f024692f..b44322c337bcded94c60e1761a389101
      public final String id;
  
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 0318c9483a4d96eb39ff4df9054a9e6398186bc3..26efc49b4530112c8bd3f580ce375ab4203c9609 100644
+index c6cbf02c784d4b0a39c61cd65e777fe04e3c3772..88ebf53d3a5d93d6aa40152d55e83cb1f25443b3 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2982,7 +3013,7 @@ index 0318c9483a4d96eb39ff4df9054a9e6398186bc3..26efc49b4530112c8bd3f580ce375ab4
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3586,7 +3607,10 @@ public abstract class LivingEntity extends Entity {
+@@ -3588,7 +3609,10 @@ public abstract class LivingEntity extends Entity {
              Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
  
              // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
@@ -2995,7 +3026,7 @@ index 0318c9483a4d96eb39ff4df9054a9e6398186bc3..26efc49b4530112c8bd3f580ce375ab4
      }
  
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index fffa6ba329b38433a1df51df339df652d3fda828..e89b88eb3d4202ea7ff043dc9e92163332cd10d3 100644
+index 12fcc84e9de914657409142dc70ced7015cf5533..235db1306573c25a101265c8f88dad0fbe06ca59 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -210,14 +210,16 @@ public abstract class Mob extends LivingEntity {
@@ -3039,7 +3070,7 @@ index fffa6ba329b38433a1df51df339df652d3fda828..e89b88eb3d4202ea7ff043dc9e921633
              this.level.getProfiler().pop();
          }
 diff --git a/src/main/java/net/minecraft/world/entity/ai/attributes/AttributeMap.java b/src/main/java/net/minecraft/world/entity/ai/attributes/AttributeMap.java
-index c770ee21b7b699522941f6a1584d532001c04082..9bce290eb0c2cfef4896a3f2076c80bf3d76bd56 100644
+index 692524a69d43dcf52ae1b0f7f593fc53f3878137..59ca3a0a70c68263495ae9972215b76554d3fb83 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/attributes/AttributeMap.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/attributes/AttributeMap.java
 @@ -22,9 +22,11 @@ public class AttributeMap {
@@ -3577,7 +3608,7 @@ index d1eefa6ef3e9abfe7af4d8310aa64465fa2d5463..0f4aa330e5b179bb706a31917c671f16
      default BlockHitResult clip(ClipContext raytrace1, BlockPos blockposition) {
              // Paper start - Prevent raytrace from loading chunks
 diff --git a/src/main/java/net/minecraft/world/level/GameRules.java b/src/main/java/net/minecraft/world/level/GameRules.java
-index 468c635d31cfa8051666bbefce8df4b448e9ed93..17e869074b8cf29a8c3280499a27e95179896750 100644
+index 2c500cfdd594e24b039d698bced1f9f9537722e3..9fa0758c0a8c74dec6cfe8a16585ace1cf45df96 100644
 --- a/src/main/java/net/minecraft/world/level/GameRules.java
 +++ b/src/main/java/net/minecraft/world/level/GameRules.java
 @@ -91,6 +91,7 @@ public class GameRules {
@@ -3789,7 +3820,7 @@ index 596fb8ee21ba8450db13a11890d241ef3974d81d..791411866cabc2c237f40d54250d5a34
      }
  
 diff --git a/src/main/java/net/minecraft/world/level/NaturalSpawner.java b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
-index 272bdc088f440cf94850dff6e626331b4b5d6539..eceae1230e672d95491405f3f7c550c90ea9b138 100644
+index 7c7408b9686c8ff945c30892d45914c60f6c5e4a..a182b3c804cf56855e15290f826fdebdc289a552 100644
 --- a/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 +++ b/src/main/java/net/minecraft/world/level/NaturalSpawner.java
 @@ -415,12 +415,12 @@ public final class NaturalSpawner {
@@ -4071,7 +4102,7 @@ index d559f93a9a09bac414dd5d58afccad42c127f09b..13e749a3c40f0b2cc002f13675a9a56e
  
      @Override
 diff --git a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
-index 7350b73f4af4ae347532dc579ab151447c298e09..05f9a828e7c243520b87a77fb34598709aa3525b 100644
+index 5e54cf312160e537d2fe6e6fedc618160359330e..39684720c5ee2bb36b8d12cc10e05b7ab8d06172 100644
 --- a/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 +++ b/src/main/java/net/minecraft/world/level/chunk/LevelChunk.java
 @@ -88,6 +88,18 @@ public class LevelChunk extends ChunkAccess {
@@ -4257,7 +4288,7 @@ index 35f9b11a3a61976c952a2c1c64bb2a932538f54f..9e9ac64764cf0a84e25e75d8d6f516cd
  
      public boolean hasParam(LootContextParam<?> parameter) {
 diff --git a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java b/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
-index b1992ed5136cc7dcf04219868b94b3c37ae36b4b..5b5339cba819368f4d6b7eaf404fa59bca4c0518 100644
+index ebe65474a4a05ff1637d7f37ebcfe690af59def5..42142c512b12e5b269c19f1e821c50e7496a5f25 100644
 --- a/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
 +++ b/src/main/java/net/minecraft/world/phys/shapes/EntityCollisionContext.java
 @@ -19,47 +19,66 @@ public class EntityCollisionContext implements CollisionContext {
@@ -4318,12 +4349,12 @@ index b1992ed5136cc7dcf04219868b94b3c37ae36b4b..5b5339cba819368f4d6b7eaf404fa59b
      }
  
      @Override
-     public boolean canStandOnFluid(FluidState state, FluidState fluidState) {
--        return this.canStandOnFluid.test(fluidState) && !state.getType().isSame(fluidState.getType());
+     public boolean canStandOnFluid(FluidState stateAbove, FluidState state) {
+-        return this.canStandOnFluid.test(state) && !stateAbove.getType().isSame(state.getType());
 +        // Pufferfish start
 +        Entity entity = this.entity;
 +        if (entity instanceof LivingEntity livingEntity) {
-+            return livingEntity.canStandOnFluid(fluidState) && !state.getType().isSame(fluidState.getType());
++            return livingEntity.canStandOnFluid(state) && !stateAbove.getType().isSame(state.getType());
 +        }
 +        return false;
 +        // Pufferfish end
@@ -4420,7 +4451,7 @@ index e948ec5a573b22645664eb53bc3e9932246544e4..e3845dc3357bbb74885ae3a1a08525ad
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..70b5b307193dc288a6257d90ca96762cb4a8345a 100644
+index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..5af3c3f341239d0c0519ad219a2b5b87ada61651 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -38,6 +38,10 @@ import co.aikar.timings.MinecraftTimings;
@@ -4434,19 +4465,23 @@ index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..70b5b307193dc288a6257d90ca96762c
  
  public class ActivationRange
  {
-@@ -216,6 +220,21 @@ public class ActivationRange
+@@ -216,6 +220,25 @@ public class ActivationRange
              for (int i = 0; i < entities.size(); i++) {
                  Entity entity = entities.get(i);
                  ActivationRange.activateEntity(entity);
 +
 +                // Pufferfish start
 +                if (gg.pufferfish.pufferfish.PufferfishConfig.dearEnabled && entity.getType().dabEnabled) {
++                    if (!entity.activatedPriorityReset) {
++                        entity.activatedPriorityReset = true;
++                        entity.activatedPriority = gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio;
++                    }
 +                    Vec3 playerVec = player.position();
 +                    Vec3 entityVec = entity.position();
 +                    double diffX = playerVec.x - entityVec.x, diffY = playerVec.y - entityVec.y, diffZ = playerVec.z - entityVec.z;
 +                    int squaredDistance = (int) (diffX * diffX + diffY * diffY + diffZ * diffZ);
 +                    entity.activatedPriority = squaredDistance > gg.pufferfish.pufferfish.PufferfishConfig.startDistanceSquared ?
-+                      Math.max(1, Math.min(squaredDistance >> gg.pufferfish.pufferfish.PufferfishConfig.activationDistanceMod, gg.pufferfish.pufferfish.PufferfishConfig.maximumActivationPrio)) :
++                      Math.max(1, Math.min(squaredDistance >> gg.pufferfish.pufferfish.PufferfishConfig.activationDistanceMod, entity.activatedPriority)) :
 +                      1;
 +                } else {
 +                    entity.activatedPriority = 1;
@@ -4456,7 +4491,7 @@ index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..70b5b307193dc288a6257d90ca96762c
              }
              // Paper end
          }
-@@ -232,12 +251,12 @@ public class ActivationRange
+@@ -232,12 +255,12 @@ public class ActivationRange
          if ( MinecraftServer.currentTick > entity.activatedTick )
          {
              if ( entity.defaultActivationState )
@@ -4471,7 +4506,7 @@ index 40b382c2e0e33fe5c24a51b211cd2f9557a60c5e..70b5b307193dc288a6257d90ca96762c
                  entity.activatedTick = MinecraftServer.currentTick;
              }
          }
-@@ -291,7 +310,7 @@ public class ActivationRange
+@@ -291,7 +314,7 @@ public class ActivationRange
          if ( entity instanceof LivingEntity )
          {
              LivingEntity living = (LivingEntity) entity;

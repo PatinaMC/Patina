@@ -147,7 +147,7 @@ index 7c96f7fc5997761426a0c62cad0cab5cc668f282..98664c95331cee4139711c402dfaf406
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 8b74f9dd7a1c5f2890b5d36bd651dfee78a1a82a..66ce0669b5ca3b3a9468371e3fdb4e769d8f9408 100644
+index 984edc4c9a5705d76aa978ae802d4224b0f34b19..6d9752496055fca03b97b4baf0236a35d018112c 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -294,6 +294,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -214,10 +214,10 @@ index 5c54a5da7fb50cd97799c5fa280a24d5c6117244..43a7e790ba7a3feb30f2376100f262be
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 5819e8e5e3c6f87eb123cf16091ea74357d53b3b..62b9092cb134cae16df070e9d43ea93ac058ce94 100644
+index 3b122f521c166253f20d233c0fcebdede6660be5..c7241cd60b93abe2c2e7327aff63d7a2d3cafbf7 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1483,6 +1483,7 @@ public class ServerPlayer extends Player {
+@@ -1485,6 +1485,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -238,7 +238,7 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 4e615e5d5b8d79f6eaac2136be03961415fd093e..82f5f73b123a17bb96f98a50f0c4b18857c2df1e 100644
+index 42862061cbd6ca8c34d3fc6ff90145f418becbb9..d7c2ef93d59abbbc7a29e20c5cb8c3c6912407f6 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -260,6 +260,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -271,7 +271,7 @@ index 4e615e5d5b8d79f6eaac2136be03961415fd093e..82f5f73b123a17bb96f98a50f0c4b188
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3571,11 +3587,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3572,11 +3588,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 4e615e5d5b8d79f6eaac2136be03961415fd093e..82f5f73b123a17bb96f98a50f0c4b188
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3597,6 +3619,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3598,6 +3620,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -996,7 +996,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 70b5b307193dc288a6257d90ca96762cb4a8345a..c0cf489c2c41d6d4043cf857494619fbf9aebaea 100644
+index 5af3c3f341239d0c0519ad219a2b5b87ada61651..c6b9d3a0ec7d59d92eb435035828e34ed257e7af 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
@@ -1007,7 +1007,7 @@ index 70b5b307193dc288a6257d90ca96762cb4a8345a..c0cf489c2c41d6d4043cf857494619fb
  import net.minecraft.world.entity.animal.WaterAnimal;
  import net.minecraft.world.entity.animal.horse.Llama;
  import net.minecraft.world.entity.boss.EnderDragonPart;
-@@ -391,6 +392,7 @@ public class ActivationRange
+@@ -395,6 +396,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {
