@@ -35,7 +35,7 @@ Signs allow color codes
 Fix legacy colors in console
 
 diff --git a/src/main/java/io/papermc/paper/console/HexFormattingConverter.java b/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
-index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160b14e04ce 100644
+index b9922b07cb105618390187d98acdf89e728e1f5a..6a1eda942aa33fc0802066416f8bc64f5f15d011 100644
 --- a/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
 +++ b/src/main/java/io/papermc/paper/console/HexFormattingConverter.java
 @@ -38,6 +38,7 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
@@ -46,8 +46,8 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
      public static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.builder()
          .hexColors()
          .flattener(PaperAdventure.FLATTENER)
-@@ -48,6 +49,8 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
-     private static final String RGB_ANSI = "\u001B[38;2;%d;%d;%dm";
+@@ -49,6 +50,8 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+     private static final String RESET_RGB_ANSI = ANSI_RESET + RGB_ANSI;
      private static final Pattern NAMED_PATTERN = Pattern.compile(COLOR_CHAR + "[0-9a-fk-orA-FK-OR]");
      private static final Pattern RGB_PATTERN = Pattern.compile(COLOR_CHAR + "#([0-9a-fA-F]){6}");
 +    private static final Pattern LEGACY_RGB_PATTERN = Pattern.compile(LEGACY_CHAR + "x((" + LEGACY_CHAR + "[0-9a-fA-F]){6})"); // Purpur
@@ -55,7 +55,7 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
  
      private static final String[] RGB_ANSI_CODES = new String[]{
          formatHexAnsi(NamedTextColor.BLACK),         // Black §0
-@@ -133,7 +136,21 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+@@ -134,7 +137,21 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
      }
  
      private static String convertRGBColors(final String input) {
@@ -78,7 +78,7 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
              final int hex = Integer.decode(result.group().substring(1));
              return formatHexAnsi(hex);
          });
-@@ -151,10 +168,11 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
+@@ -152,10 +169,11 @@ public final class HexFormattingConverter extends LogEventPatternConverter {
      }
  
      private static String stripRGBColors(final String input) {
@@ -92,10 +92,10 @@ index b4d0b7ecd56ab952319946854168c1299cb0b1be..8054b8da82ca455d23b26a53cc568160
          int last = content.length() - 1;
          if (next == -1 || next == last) {
 diff --git a/src/main/java/net/minecraft/commands/CommandSourceStack.java b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-index 0d140dd7d55407b57fc3394ceb2eba5136e4fcaf..ed64b78bc8510fbe8fda9a10b779e91d99313676 100644
+index 81f4e3c869623b6dd2d80886652fa41791fe7032..901edaae2230c48fa0584991ed82498d568d5fc0 100644
 --- a/src/main/java/net/minecraft/commands/CommandSourceStack.java
 +++ b/src/main/java/net/minecraft/commands/CommandSourceStack.java
-@@ -318,6 +318,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
+@@ -319,6 +319,30 @@ public class CommandSourceStack implements SharedSuggestionProvider, com.destroy
          }
      }
  
@@ -214,10 +214,10 @@ index 5c54a5da7fb50cd97799c5fa280a24d5c6117244..43a7e790ba7a3feb30f2376100f262be
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 3b122f521c166253f20d233c0fcebdede6660be5..c7241cd60b93abe2c2e7327aff63d7a2d3cafbf7 100644
+index 9c9b4d7e0637348a94befce9377fdb69c1239694..b770d2c10eff08465bb3c542d004d6367308bed8 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1485,6 +1485,7 @@ public class ServerPlayer extends Player {
+@@ -1492,6 +1492,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -226,10 +226,10 @@ index 3b122f521c166253f20d233c0fcebdede6660be5..c7241cd60b93abe2c2e7327aff63d7a2
          this.connection.send(new ClientboundBlockUpdatePacket(this.level, sign.getBlockPos()));
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos()));
 diff --git a/src/main/java/net/minecraft/server/level/WorldGenRegion.java b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
-index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e24019fed5ec 100644
+index 0d3587e2d454fb0994ecff930b5e496a3999746a..6a3538feee986daf186a09156629d3916e993557 100644
 --- a/src/main/java/net/minecraft/server/level/WorldGenRegion.java
 +++ b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
-@@ -295,6 +295,7 @@ public class WorldGenRegion implements WorldGenLevel {
+@@ -296,6 +296,7 @@ public class WorldGenRegion implements WorldGenLevel {
              return true;
          } else {
              // Paper start
@@ -238,7 +238,7 @@ index 80c1e0e47818486a68e0114b063395290365346b..c677a55db62b4d197eeb1bf5d929e240
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 42862061cbd6ca8c34d3fc6ff90145f418becbb9..d7c2ef93d59abbbc7a29e20c5cb8c3c6912407f6 100644
+index 187791ff8197be015856fdfa9159fb26558f95cf..28af38de30381dc8583aafe692ed322ec2853c3e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -260,6 +260,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -346,7 +346,7 @@ index d13ed3069e944d138442ea440ac3eaf8d44c18d3..29ac7f202aa23f7e6fcdc9829af3d598
                  } else {
                      handler.accept((Recipe) optional.get());
 diff --git a/src/main/java/net/minecraft/world/entity/npc/Villager.java b/src/main/java/net/minecraft/world/entity/npc/Villager.java
-index 93077e8c6b5a35adc6febb749d1d08be172402f1..5da0a1253dc82ba29ac8640ca8092d915d97d5c3 100644
+index fa7cede4a0b59efde4949dba4a010aed5cd0a960..51716d0a34649c19374ba865961aa37d836e9477 100644
 --- a/src/main/java/net/minecraft/world/entity/npc/Villager.java
 +++ b/src/main/java/net/minecraft/world/entity/npc/Villager.java
 @@ -139,6 +139,7 @@ public class Villager extends AbstractVillager implements ReputationEventHandler
@@ -501,7 +501,7 @@ index 58599ead28c25a76d9f41d2d29ee8024c9afdccd..375d449be2ada2b31dafb51cb79c034c
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 8ed50dd059fb84ac2794745d2b082a679b5bb9c0..77167f1edaf9826a7c538d082de5bdaa88e4b10a 100644
+index 9c9557362172028131b9087a47f8e35929643d84..2e9163330b0040e14914122d41483af85109f140 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -966,6 +966,7 @@ public final class CraftServer implements Server {
@@ -996,7 +996,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 5af3c3f341239d0c0519ad219a2b5b87ada61651..c6b9d3a0ec7d59d92eb435035828e34ed257e7af 100644
+index b87756d9a7b04ea2613208984b2583eca3f32af6..00e9e9868f093f17f18b14547cbf36a5c105ee54 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
