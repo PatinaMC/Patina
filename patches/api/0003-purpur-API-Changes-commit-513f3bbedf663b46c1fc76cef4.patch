@@ -9,10 +9,10 @@ Purpur config files
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 232c08c9a588d957d90f198ce479e57615c6e650..54fa24b5531424a011a194b606c3548819ee52b2 100644
+index ac9b690fcccb60b587e5345f12f1383afd0a73a1..0a4320b32485db84a0be16535b406f043e3177a2 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2462,4 +2462,15 @@ public final class Bukkit {
+@@ -2464,4 +2464,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -29,10 +29,10 @@ index 232c08c9a588d957d90f198ce479e57615c6e650..54fa24b5531424a011a194b606c35488
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index e43fef0152468944d8a33036344a43e95fe58476..634e35dc9e075a7e1e4fe2e42464668ff188babf 100644
+index 2204336d8800311b65e894739ab1b27273e7c6f2..1be22e02f65cb219c1b2d87c98411a7392b8c44b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1969,6 +1969,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -1971,6 +1971,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -51,7 +51,7 @@ index e43fef0152468944d8a33036344a43e95fe58476..634e35dc9e075a7e1e4fe2e42464668f
          /**
           * Sends the component to the player
           *
-@@ -2137,4 +2149,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2139,4 +2151,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end

@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 9f5694204091e23c4771657127a06f98e27ad8f1..780c9b40f69c247592c1fe469c05fd12e984b633 100644
+index 3c4dd6ebc2289c44c2f5723e7920aadffdc51884..a995ecc3b1d6181c58d5b4a0a6a893178bdc40aa 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -41,6 +41,7 @@ dependencies {
@@ -428,10 +428,10 @@ index 3a9aaca2e76411a9c27f9f5e0f22d060d5a66d06..9584e245144b561b4f6745b2f26a4f69
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 9db611841b73fed8dc8a71f4d7fdef95af3cf89d..49a4611ed4891cce10fd6e01b4062740ad18ee6f 100644
+index b012ce40d82389c29d1b841ff685425ac10a7f9e..c077e7c883613fcb6e559b4e4776e794caa3b363 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -623,7 +623,9 @@ public final class SimplePluginManager implements PluginManager {
+@@ -625,7 +625,9 @@ public final class SimplePluginManager implements PluginManager {
  
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
@@ -441,7 +441,7 @@ index 9db611841b73fed8dc8a71f4d7fdef95af3cf89d..49a4611ed4891cce10fd6e01b4062740
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
      // Paper end
-@@ -682,9 +684,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -684,9 +686,11 @@ public final class SimplePluginManager implements PluginManager {
                              ));
                  }
              } catch (Throwable ex) {
@@ -454,10 +454,10 @@ index 9db611841b73fed8dc8a71f4d7fdef95af3cf89d..49a4611ed4891cce10fd6e01b4062740
                      callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
                  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 8ff78fad47f6086aa289e32590f4fbec24b3d500..a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7 100644
+index 7e5149a21b6747f64425a277c142e69f0ef43b3f..bf93183aa76af005d5daf8cf533f908d535166e8 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -369,7 +369,9 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -370,7 +370,9 @@ public final class JavaPluginLoader implements PluginLoader {
              try {
                  jPlugin.setEnabled(true);
              } catch (Throwable ex) {
@@ -467,7 +467,7 @@ index 8ff78fad47f6086aa289e32590f4fbec24b3d500..a16c841751bc44e46d27fc4efbfc2ab2
                  // Paper start - Disable plugins that fail to load
                  this.server.getPluginManager().disablePlugin(jPlugin);
                  return;
-@@ -398,7 +400,9 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -399,7 +401,9 @@ public final class JavaPluginLoader implements PluginLoader {
              try {
                  jPlugin.setEnabled(false);
              } catch (Throwable ex) {

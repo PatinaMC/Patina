@@ -31,20 +31,8 @@ index 06e3a868e922f1b7a586d0ca28f64a67ae463b68..00c481ebf012efa5424e32521e7aecf4
                      if (flag && itemstack.isEmpty()) {
                          itemstack.setCount(1);
                          entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
-diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 82f5f73b123a17bb96f98a50f0c4b18857c2df1e..d4d2f2cf438fca4e4bdcdde2ad9340350acbd0f9 100644
---- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-+++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -2362,6 +2362,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
-         } else if (this.player.isRemoved() || this.player.getChatVisibility() == ChatVisiblity.HIDDEN) { // CraftBukkit - dead men tell no tales
-             this.send(new ClientboundSystemChatPacket(Component.translatable("chat.disabled.options").withStyle(ChatFormatting.RED), false));
-             return false;
-+        } else if (!player.didPlayerJoinEvent) { return false; // EMC - do not handle chat messages before they joined
-         } else {
-             LastSeenMessagesValidator lastseenmessagesvalidator = this.lastSeenMessagesValidator;
-             Set set;
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index 61252ef8a79bac0ea2d3d231ec6b12166f39d072..26fb3de6de44a9551b2530bdaea55a9702a03598 100644
+index 5406925cd66f46ab8744123c670d72cea7bfc3a1..04894c0083a4b8d5d6a0dd63cdf6b741761ff0f4 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 @@ -358,4 +358,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
@@ -71,10 +59,10 @@ index 13e749a3c40f0b2cc002f13675a9a56eedbefdac..e50c5bcc66b348322770cb90237d2bca
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 55d83a9a691d11c9408d2c3260c3e77dfb51b97e..6f62f216b447e9e2a5f688b777165af44387fdd7 100644
+index f8d321e925bf2708e51590542325c1bdc67d5964..56446e92bb574904227412098af8feb244fdeec4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -400,7 +400,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -399,7 +399,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

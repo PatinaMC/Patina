@@ -6,10 +6,10 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 9934d1902d0dbee9c824acc695f1bd259e3125e9..0e7c2efb0e808dba684b5e94b1e2d3c07626ece8 100644
+index d70bce8b9f25a581ca619cc7dfb7e7c8a63683f2..409bc6c62c68c31e0d2b04826bea4558dfaf7eb8 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -624,7 +624,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -626,7 +626,11 @@ public final class SimplePluginManager implements PluginManager {
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
          gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -22,7 +22,7 @@ index 9934d1902d0dbee9c824acc695f1bd259e3125e9..0e7c2efb0e808dba684b5e94b1e2d3c0
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -695,7 +699,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -697,7 +701,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -35,7 +35,7 @@ index 9934d1902d0dbee9c824acc695f1bd259e3125e9..0e7c2efb0e808dba684b5e94b1e2d3c0
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
                  if (!(event instanceof com.destroystokyo.paper.event.server.ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -986,4 +994,10 @@ public final class SimplePluginManager implements PluginManager {
+@@ -988,4 +996,10 @@ public final class SimplePluginManager implements PluginManager {
      }
      // Paper end
  
@@ -60,10 +60,10 @@ index 3bea5dd67ad0393160ccede4ac99a3c7baa1803b..65f1aa94652d0efacb0184bf41b519ad
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd31254704a9588cb 100644
+index bf93183aa76af005d5daf8cf533f908d535166e8..251f2a6faa3f54ac6c66f7525b143b94f9dde2e1 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -370,7 +370,11 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -371,7 +371,11 @@ public final class JavaPluginLoader implements PluginLoader {
                  jPlugin.setEnabled(true);
              } catch (Throwable ex) {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -76,7 +76,7 @@ index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd3125470
                  gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
                  // Paper start - Disable plugins that fail to load
                  this.server.getPluginManager().disablePlugin(jPlugin);
-@@ -401,7 +405,11 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -402,7 +406,11 @@ public final class JavaPluginLoader implements PluginLoader {
                  jPlugin.setEnabled(false);
              } catch (Throwable ex) {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -89,7 +89,7 @@ index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd3125470
                  gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
              }
  
-@@ -418,10 +426,18 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -419,10 +427,18 @@ public final class JavaPluginLoader implements PluginLoader {
                  try {
                      loader.close();
                  } catch (IOException ex) {
@@ -110,7 +110,7 @@ index a16c841751bc44e46d27fc4efbfc2ab23cc7b0d7..d1ba0d556edf6675952cb74dd3125470
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 0011c228b10316b09a62579dfc3d37794ee8e61a..3108ada037215f189cbd5d7dcd2ef498901e888b 100644
+index 6fb179c4d420eac3a6399fbff104b5af6ba448ba..bbdbaa3bad9f22a702bdcdc720fe20a391526f7d 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -278,4 +278,13 @@ public final class PluginClassLoader extends URLClassLoader { // Spigot

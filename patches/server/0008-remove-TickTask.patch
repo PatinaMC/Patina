@@ -5,10 +5,10 @@ Subject: [PATCH] remove TickTask
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index b1a265a4bd6ba4f7e52169a38b4a06dc397a5d0a..959135bf9a22694d0df28135f662aeef4be420ab 100644
+index a37e6bf9f833b2ea17107914e6a40d752f87ec17..940baaee6883a6d81ce7a49c657abd1626bf8248 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -182,7 +182,7 @@ import org.bukkit.event.server.ServerLoadEvent;
+@@ -194,7 +194,7 @@ import org.bukkit.event.server.ServerLoadEvent;
  
  import co.aikar.timings.MinecraftTimings; // Paper
  
@@ -55,10 +55,10 @@ index b1a265a4bd6ba4f7e52169a38b4a06dc397a5d0a..959135bf9a22694d0df28135f662aeef
      private void updateStatusIcon(ServerStatus metadata) {
          Optional<File> optional = Optional.of(this.getFile("server-icon.png")).filter(File::isFile);
 diff --git a/src/main/java/net/minecraft/server/level/ServerChunkCache.java b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-index 7266e6703d5cd0fea90ec88c74a7d4567f2420ae..16ee24bef4eb2184d821565665f3c1ddf0f3bb39 100644
+index c6f5d6756fa0e068a462d9c0ded12e0771abba37..6b8b99f32629c0b4a6db3f7c808430dd88249f8e 100644
 --- a/src/main/java/net/minecraft/server/level/ServerChunkCache.java
 +++ b/src/main/java/net/minecraft/server/level/ServerChunkCache.java
-@@ -1007,10 +1007,12 @@ public class ServerChunkCache extends ChunkSource {
+@@ -1012,10 +1012,12 @@ public class ServerChunkCache extends ChunkSource {
              return runnable;
          }
  
@@ -72,7 +72,7 @@ index 7266e6703d5cd0fea90ec88c74a7d4567f2420ae..16ee24bef4eb2184d821565665f3c1dd
          @Override
          protected boolean scheduleExecutables() {
 diff --git a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
-index 7a4ade1a4190bf4fbb048919ae2be230f7b80fff..70ad8f83a08bdebebae5073a88792125e1c96a6a 100644
+index 83701fbfaa56a232593ee8f11a3afb8941238bfa..fba6e6861ba420be23a0f733d3477b13324763fe 100644
 --- a/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
 +++ b/src/main/java/net/minecraft/util/thread/BlockableEventLoop.java
 @@ -29,7 +29,9 @@ public abstract class BlockableEventLoop<R extends Runnable> implements Profiler
