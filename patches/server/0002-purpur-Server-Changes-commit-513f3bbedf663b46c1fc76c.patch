@@ -238,7 +238,7 @@ index 877498729c66de9aa6a27c9148f7494d7895615c..acd7468ee3c86d3456e96e4ec3d7e6a4
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index b5408858f8049a9188521b92ddb19280178884f8..2a49fb998d17199570797339b1faaf9d1e1bd544 100644
+index aa23559719357f2678e3aa759d58ba4bde18bdd4..d5e36ab521d6fe833d86f6e1f4e74f99b7aab5c9 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -259,6 +259,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -428,7 +428,7 @@ index aface9a9697095a29edaf73c9cdabc2c1414b9d7..140d79a4b54084c85bb07b1bca87a894
                  } else {
                      return InteractionResult.PASS;
 diff --git a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
-index 68f122cdfb546a9d0d826bc2ef88549b81de4ab8..d54a46fc8d78df54777e4a7a250a8d0ae74e9831 100644
+index 70d46aafa9c16921e5c5bed3d97b8f402e25038a..7edbe55556d3072690d535575e8704c617465770 100644
 --- a/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 +++ b/src/main/java/net/minecraft/world/level/block/TurtleEggBlock.java
 @@ -9,11 +9,15 @@ import net.minecraft.tags.BlockTags;
@@ -501,7 +501,7 @@ index 4da4edae517a0efec6e03a719ec47b700509dab1..9e760a8e8244b15daaf0abdfc5f8a51d
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 59965068cd08eabe52120de63a18ff30e895c178..6e01bf4c5398ddaeec5007da37460c1e393281c2 100644
+index 1b0ec38815a9c1b96dacf02daa2b4e786137d857..1afa042db40da7f1b48e93b06741644ef7dab565 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -979,6 +979,7 @@ public final class CraftServer implements Server {
@@ -528,7 +528,7 @@ index 59965068cd08eabe52120de63a18ff30e895c178..6e01bf4c5398ddaeec5007da37460c1e
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2765,6 +2768,18 @@ public final class CraftServer implements Server {
+@@ -2768,6 +2771,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -547,7 +547,7 @@ index 59965068cd08eabe52120de63a18ff30e895c178..6e01bf4c5398ddaeec5007da37460c1e
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -2940,4 +2955,11 @@ public final class CraftServer implements Server {
+@@ -2943,4 +2958,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
@@ -560,7 +560,7 @@ index 59965068cd08eabe52120de63a18ff30e895c178..6e01bf4c5398ddaeec5007da37460c1e
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index e072a5475a64d110f25ebcc871aa7703c2fc1e70..7b6063bede6771eb15bc5b01dc8bce7c2949c6b4 100644
+index 119d9bb5e41038704654e248bf168d22af246b7f..c2c5c560165eb9ac9920727aaf730a5280107782 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -166,6 +166,14 @@ public class Main {
@@ -588,15 +588,15 @@ index e072a5475a64d110f25ebcc871aa7703c2fc1e70..7b6063bede6771eb15bc5b01dc8bce7c
  
                      Calendar deadline = Calendar.getInstance();
 diff --git a/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java b/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java
-index 6a083e269b828ef53f943cae56b029f2e0021ef1..05ce90801ede9d7a764791f8729c72644fc51345 100644
+index 110503062b3043cffa082a1cda6b8d57152869aa..3e7e06bd5e9e4ed45c9e3452eb04e946fac817d8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java
 +++ b/src/main/java/org/bukkit/craftbukkit/legacy/CraftLegacy.java
-@@ -255,6 +255,7 @@ public final class CraftLegacy {
+@@ -256,6 +256,7 @@ public final class CraftLegacy {
      }
  
      static {
 +        if (!org.purpurmc.purpur.PurpurConfig.loggerSuppressInitLegacyMaterialError) // Purpur
-         System.err.println("Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!");
+         LOGGER.warn("Initializing Legacy Material Support. Unless you have legacy plugins and/or data this is a bug!"); // Paper - doesn't need to be an error
          if (MinecraftServer.getServer() != null && MinecraftServer.getServer().isDebugging()) {
              new Exception().printStackTrace();
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java

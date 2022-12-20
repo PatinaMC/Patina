@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 10 Dec 2022 21:57:18 +0800
+Date: Tue, 20 Dec 2022 21:26:59 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- 9b8cdc74a4bed029a68682a6f0b6ec039b5c2707
+ 9771bd7e692b5f4133e5846123c2f3a9c315e75f
 
 Pufferfish Utils
 
@@ -330,7 +330,7 @@ Entity TTL
 Add option to disable out-of-order chat
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..b3a273af8e328ab79d3bc47654d3fc59ee2f2536 100644
+index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..807ef69a9cc4000ca23dedb4f57ec373d361e85c 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -41,6 +41,14 @@ dependencies {
@@ -348,10 +348,11 @@ index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..b3a273af8e328ab79d3bc47654d3fc59
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("junit:junit:4.13.2")
      testImplementation("org.hamcrest:hamcrest-library:1.3")
-@@ -49,6 +57,13 @@ dependencies {
+@@ -49,6 +57,14 @@ dependencies {
  }
  
  val craftbukkitPackageVersion = "1_19_R2" // Paper
++
 +// Pufferfish Start
 +tasks.withType<JavaCompile> {
 +    val compilerArgs = options.compilerArgs
@@ -875,23 +876,23 @@ index 0000000000000000000000000000000000000000..020368da69b9a492155f6de6297f7473
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..34eb43ca2bf446504c372f98dfbe6dbfd0a81369
+index 0000000000000000000000000000000000000000..e0076044d0a29e33ee297fe6180a041436075297
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/PufferfishConfig.java
-@@ -0,0 +1,315 @@
+@@ -0,0 +1,317 @@
 +package gg.pufferfish.pufferfish;
 +
 +import gg.pufferfish.pufferfish.simd.SIMDDetection;
 +import java.io.File;
 +import java.io.IOException;
 +import java.util.Collections;
++import net.minecraft.core.registries.BuiltInRegistries;
 +import java.util.Locale;
 +import java.util.Map;
 +import net.minecraft.server.MinecraftServer;
 +import net.minecraft.tags.TagKey;
 +import org.apache.logging.log4j.Level;
 +import org.bukkit.configuration.ConfigurationSection;
-+import net.minecraft.core.Registry;
 +import net.minecraft.world.entity.EntityType;
 +import java.lang.reflect.Method;
 +import java.lang.reflect.Modifier;
@@ -975,13 +976,15 @@ index 0000000000000000000000000000000000000000..34eb43ca2bf446504c372f98dfbe6dbf
 +		// Attempt to detect vectorization
 +		try {
 +			SIMDDetection.isEnabled = SIMDDetection.canEnable(PufferfishLogger.LOGGER);
-+			SIMDDetection.versionLimited = SIMDDetection.getJavaVersion() != 17 && SIMDDetection.getJavaVersion() != 18;
-+		} catch (NoClassDefFoundError | Exception ignored) {}
++			SIMDDetection.versionLimited = SIMDDetection.getJavaVersion() != 17 && SIMDDetection.getJavaVersion() != 18 && SIMDDetection.getJavaVersion() != 19;
++		} catch (NoClassDefFoundError | Exception ignored) {
++			ignored.printStackTrace();
++		}
 +		
 +		if (SIMDDetection.isEnabled) {
 +			PufferfishLogger.LOGGER.info("SIMD operations detected as functional. Will replace some operations with faster versions.");
 +		} else if (SIMDDetection.versionLimited) {
-+			PufferfishLogger.LOGGER.warning("Will not enable SIMD! These optimizations are only safely supported on Java 17 and Java 18.");
++			PufferfishLogger.LOGGER.warning("Will not enable SIMD! These optimizations are only safely supported on Java 17, Java 18, and Java 19.");
 +		} else {
 +			PufferfishLogger.LOGGER.warning("SIMD operations are available for your server, but are not configured!");
 +			PufferfishLogger.LOGGER.warning("To enable additional optimizations, add \"--add-modules=jdk.incubator.vector\" to your startup flags, BEFORE the \"-jar\".");
@@ -1125,7 +1128,7 @@ index 0000000000000000000000000000000000000000..34eb43ca2bf446504c372f98dfbe6dbf
 +                "If you want further away entities to tick less often, use 7.",
 +                "If you want further away entities to tick more often, try 9.");
 +
-+        for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
++        for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
 +            entityType.dabEnabled = true; // reset all, before setting the ones to true
 +        }
 +        getStringList("dab.blacklisted-entities", "activation-range.blacklisted-entities", Collections.emptyList(), "A list of entities to ignore for activation")
@@ -1147,7 +1150,7 @@ index 0000000000000000000000000000000000000000..34eb43ca2bf446504c372f98dfbe6dbf
 +				"that number of ticks, then it will be removed. Setting a value to",
 +				"-1 disables this feature.");
 +		
-+		for (EntityType<?> entityType : Registry.ENTITY_TYPE) {
++		for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
 +			String type = EntityType.getKey(entityType).getPath().toUpperCase(Locale.ROOT);
 +			entityType.ttl = config.getInt("entity_timeouts." + type, -1);
 +		}
@@ -2327,7 +2330,7 @@ index 63ec2ebb71aa0e0dbb64bbce7cd3c9494e9ce2e7..d03551e81e3ef37935cb1d963aba3df3
          }
      }
 diff --git a/src/main/java/io/papermc/paper/util/MCUtil.java b/src/main/java/io/papermc/paper/util/MCUtil.java
-index dacb00c7cb2702ae8e9c6be61ca08e41bd6009e4..b5d4c53bf1046fa52da5398491258b94f1e0fcd0 100644
+index d1a59c2af0557a816c094983ec60097fb4de060c..9cbc6e0350c982e7b7a58a32ab34ff2446c4fd1b 100644
 --- a/src/main/java/io/papermc/paper/util/MCUtil.java
 +++ b/src/main/java/io/papermc/paper/util/MCUtil.java
 @@ -209,7 +209,7 @@ public final class MCUtil {
@@ -2550,7 +2553,7 @@ index 190e9761087baec5827d722a8281f0ffb6798341..50cf4d200bc2892f2140c9929193b4b2
                          this.wasOnGround = this.entity.isOnGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index f3a19d00f78e19aa98c57461efb90d79f656a992..3c9bac982a16376d13d0e68868799ed87747534f 100644
+index f3a19d00f78e19aa98c57461efb90d79f656a992..54a51fc23563ca7843c72c169b1e0d7f51c42412 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -711,6 +711,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -2610,12 +2613,12 @@ index f3a19d00f78e19aa98c57461efb90d79f656a992..3c9bac982a16376d13d0e68868799ed8
          int l;
  
 -        if (!this.paperConfig().environment.disableIceAndSnow && this.random.nextInt(16) == 0) { // Paper - Disable ice and snow
-+        if (!this.paperConfig().environment.disableIceAndSnow && (this.currentIceAndSnowTick++ & 15)  == 0) { // Paper - Disable ice and snow  // Pufferfish - optimize further random ticking
++        if (!this.paperConfig().environment.disableIceAndSnow && (this.currentIceAndSnowTick++ & 15) == 0) { // Paper - Disable ice and snow // Paper - optimise random ticking  // Pufferfish - optimize further random ticking
              // Paper start - optimise chunk ticking
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 0c2255b6e2fb7752f85b0f83d4f84732758bd14d..b5408858f8049a9188521b92ddb19280178884f8 100644
+index 57a62a5d6e05b6e05214b5aef96c5f2411e9f424..aa23559719357f2678e3aa759d58ba4bde18bdd4 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1208,6 +1208,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -2747,7 +2750,7 @@ index 540bc9500c35c0db719b00aa26f6fb3a1b08ed9f..806cb760822a99316b08ad95ff8922df
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7f94da8059147760cbdc2476d0e8beda4a105f40..caa4d38d620717e78df9ad29fe9752213f1cda1b 100644
+index be54a70b47433c2abaeb8632ffe55d0762f619d6..374b46c344ca868cab7c47be69cb005eb90319e8 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -291,7 +291,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -2833,7 +2836,7 @@ index 7f94da8059147760cbdc2476d0e8beda4a105f40..caa4d38d620717e78df9ad29fe975221
          this.level.getProfiler().push("entityBaseTick");
          if (firstTick && this instanceof net.minecraft.world.entity.NeutralMob neutralMob) neutralMob.tickInitialPersistentAnger(level); // Paper - Update last hurt when ticking
          this.feetBlockState = null;
-@@ -4075,16 +4109,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4082,16 +4116,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
      }
  
      public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
@@ -2859,7 +2862,7 @@ index 7f94da8059147760cbdc2476d0e8beda4a105f40..caa4d38d620717e78df9ad29fe975221
              double d1 = 0.0D;
              boolean flag = this.isPushedByFluid();
              boolean flag1 = false;
-@@ -4092,14 +4128,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4099,14 +4135,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
              int k1 = 0;
              BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
@@ -2927,7 +2930,7 @@ index 7f94da8059147760cbdc2476d0e8beda4a105f40..caa4d38d620717e78df9ad29fe975221
  
                              if (d2 >= axisalignedbb.minY) {
                                  flag1 = true;
-@@ -4121,9 +4204,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
+@@ -4128,9 +4211,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
                                  // CraftBukkit end
                              }
                          }
@@ -2941,20 +2944,20 @@ index 7f94da8059147760cbdc2476d0e8beda4a105f40..caa4d38d620717e78df9ad29fe975221
              if (vec3d.length() > 0.0D) {
                  if (k1 > 0) {
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index e5cd4b7609243669c9d84ff8a4988c209e6101aa..4897af95cd5b160d785029295306aacb12f5b231 100644
+index e5cd4b7609243669c9d84ff8a4988c209e6101aa..4f3708f5f5dcb6af8225bda1cc9204a6d974665f 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
-@@ -314,6 +314,8 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
-         return BuiltInRegistries.ENTITY_TYPE.getOptional(ResourceLocation.tryParse(id));
-     }
- 
+@@ -293,6 +293,8 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
+     private final boolean canSpawnFarFromPlayer;
+     private final int clientTrackingRange;
+     private final int updateInterval;
 +    public boolean dabEnabled = false; // Pufferfish
 +    public int ttl = -1; // Pufferfish
-     public EntityType(EntityType.EntityFactory<T> factory, MobCategory spawnGroup, boolean saveable, boolean summonable, boolean fireImmune, boolean spawnableFarFromPlayer, ImmutableSet<Block> canSpawnInside, EntityDimensions dimensions, int maxTrackDistance, int trackTickInterval, FeatureFlagSet requiredFeatures) {
-        // Paper start
-         this(factory, spawnGroup, saveable, summonable, fireImmune, spawnableFarFromPlayer, canSpawnInside, dimensions, maxTrackDistance, trackTickInterval, requiredFeatures, "custom");
+     @Nullable
+     private String descriptionId;
+     @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 9e075de3542bda8ae086c9ca68bcd00b16d565d0..d134e88ae9aa2bd0b2b51056bfcc37941c713002 100644
+index 864ab97b7a6c62c376ca38dbbc65bc9406dfd62b..cde8e5a5c2bd3e0bb7359d2638ebc9b5ca7a531d 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -143,7 +143,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -3098,19 +3101,19 @@ index dd1102d5291ef6f18e82400a6d8a0a376cc071e9..e283eb57c25f7de222f9d09dca851169
  
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
-index d4c91e0a0c64fcb7f1145de3f30134cb1f1f8ee6..618d915386b3a0d9cacb39822e03d064375b3ae8 100644
+index d4c91e0a0c64fcb7f1145de3f30134cb1f1f8ee6..fe502445a77afe7e3807afae48d7bf03f370e290 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
 @@ -47,6 +47,7 @@ public class AcquirePoi {
                          return false;
                      } else {
                          mutableLong.setValue(time + 20L + (long)world.getRandom().nextInt(20));
-+                        if (entity.getNavigation().isStuck()) mutableLong.setValue(mutableLong.getValue() + 200L); // Pufferfish - wait an additional 10s to check again if they're stuck
++                        if (entity.getNavigation().isStuck()) mutableLong.add(200); // Pufferfish - wait an additional 10s to check again if they're stuck
                          PoiManager poiManager = world.getPoiManager();
                          long2ObjectMap.long2ObjectEntrySet().removeIf((entry) -> {
                              return !entry.getValue().isStillValid(time);
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
-index 646d9a121d908a2fc3e4e302484dd5cd1bfc6804..2e331043434474cd09b09c74123e40b20e0deb5c 100644
+index 646d9a121d908a2fc3e4e302484dd5cd1bfc6804..e546ecdccde352502e26a8668eaaafe048d6e282 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
 +++ b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
 @@ -37,7 +37,11 @@ public class VillagerPanicTrigger extends Behavior<Villager> {
@@ -3119,9 +3122,9 @@ index 646d9a121d908a2fc3e4e302484dd5cd1bfc6804..2e331043434474cd09b09c74123e40b2
      protected void tick(ServerLevel world, Villager entity, long time) {
 -        if (time % 100L == 0L) {
 +        // Pufferfish start
-+        if (villager.nextGolemPanic < 0) villager.nextGolemPanic = time + 100;
-+        if (--villager.nextGolemPanic < time) {
-+            villager.nextGolemPanic = -1;
++        if (entity.nextGolemPanic < 0) entity.nextGolemPanic = time + 100;
++        if (--entity.nextGolemPanic < time) {
++            entity.nextGolemPanic = -1;
 +            // Pufferfish end
              entity.spawnGolemIfNeeded(world, time, 3);
          }
@@ -4372,7 +4375,7 @@ index ebe65474a4a05ff1637d7f37ebcfe690af59def5..42142c512b12e5b269c19f1e821c50e7
  
      @Nullable
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 47df6f4268a63118da8187f4102c876bd37d1680..59965068cd08eabe52120de63a18ff30e895c178 100644
+index 38e347b5e9911907235f794da87f56e1f26277ae..1b0ec38815a9c1b96dacf02daa2b4e786137d857 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1065,6 +1065,11 @@ public final class CraftServer implements Server {
