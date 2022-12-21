@@ -1,0 +1,21 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 21 Dec 2022 14:36:02 +0800
+Subject: [PATCH] fix decompile error
+
+
+diff --git a/src/main/java/net/minecraft/world/level/block/SignBlock.java b/src/main/java/net/minecraft/world/level/block/SignBlock.java
+index 140d79a4b54084c85bb07b1bca87a8947e8bfcdc..030219b8c1add766d3317dc953715e1f39b9db2a 100644
+--- a/src/main/java/net/minecraft/world/level/block/SignBlock.java
++++ b/src/main/java/net/minecraft/world/level/block/SignBlock.java
+@@ -82,8 +82,8 @@ public abstract class SignBlock extends BaseEntityBlock implements SimpleWaterlo
+                 return InteractionResult.PASS;
+             } else {
+                 SignBlockEntity signBlockEntity = (SignBlockEntity)bl5;
+-                boolean bl5 = signBlockEntity.hasGlowingText();
+-                if ((!bl2 || !bl5) && (!bl3 || bl5)) {
++                boolean bbl5 = signBlockEntity.hasGlowingText();
++                if ((!bl2 || !bbl5) && (!bl3 || bbl5)) {
+                     if (bl4) {
+                         boolean bl6;
+                         if (bl2) {

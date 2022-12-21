@@ -1,3 +1,5 @@
+import io.papermc.paperweight.util.constants.PAPERCLIP_CONFIG
+
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
@@ -7,7 +9,7 @@ plugins {
 repositories {
     mavenCentral()
     maven("https://papermc.io/repo/repository/maven-public/") {
-        content { onlyForConfigurations("paperclip") }
+        content { onlyForConfigurations(PAPERCLIP_CONFIG) }
     }
 }
 
