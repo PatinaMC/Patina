@@ -214,10 +214,10 @@ index 673fb3955291407be37dc78be4eec9bf2018128b..96ff1b53595f5008472c0bc29a608b97
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // init PaperBrigadierProvider
          // Paper end
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index c0b0a7fdb75266a7064d54bda6441953184ecc64..4dfecbc764d331d17ccad525fe781b8dcc69d0f2 100644
+index 7d6d3c8556033d289fdadc489e73fba478fce41a..5ade8170235550b7f9e49014cb435be512e72bad 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -1514,6 +1514,7 @@ public class ServerPlayer extends Player {
+@@ -1512,6 +1512,7 @@ public class ServerPlayer extends Player {
  
      @Override
      public void openTextEdit(SignBlockEntity sign) {
@@ -238,7 +238,7 @@ index 877498729c66de9aa6a27c9148f7494d7895615c..acd7468ee3c86d3456e96e4ec3d7e6a4
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index aa23559719357f2678e3aa759d58ba4bde18bdd4..d5e36ab521d6fe833d86f6e1f4e74f99b7aab5c9 100644
+index 34540b4ebad2ec430fa12e1e5d9d6e4a79df91de..e55a54b7fb13f4d99a999a07da29031bcbb4bf34 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -259,6 +259,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -249,7 +249,7 @@ index aa23559719357f2678e3aa759d58ba4bde18bdd4..d5e36ab521d6fe833d86f6e1f4e74f99
      // CraftBukkit start - multithreaded fields
      private final AtomicInteger chatSpamTickCount = new AtomicInteger();
      private final java.util.concurrent.atomic.AtomicInteger tabSpamLimiter = new java.util.concurrent.atomic.AtomicInteger(); // Paper - configurable tab spam limits
-@@ -400,6 +401,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -396,6 +397,21 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
          long currentTime = Util.getMillis();
          long elapsedTime = currentTime - this.keepAliveTime;
  
@@ -271,7 +271,7 @@ index aa23559719357f2678e3aa759d58ba4bde18bdd4..d5e36ab521d6fe833d86f6e1f4e74f99
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3431,11 +3447,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3427,11 +3443,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index aa23559719357f2678e3aa759d58ba4bde18bdd4..d5e36ab521d6fe833d86f6e1f4e74f99
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3457,6 +3479,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3453,6 +3475,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -322,10 +322,10 @@ index 0725c39d9cbec3282f93975a0ae76f060f70d86d..b1afe7d9fff390cc9668ce9bbb408d64
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index b348d33726b2b14ea2d12ce3430df2c0b94295f4..e6456d050a220b94b2713aa29836b443dec95df2 100644
+index f381bf9064be548a4a603e0042886d8a5e70ba5b..9f1bf76bd1ec4e122852cb2124e56f1ba05cbcae 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1187,6 +1187,7 @@ public abstract class PlayerList {
+@@ -1110,6 +1110,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -501,7 +501,7 @@ index 4da4edae517a0efec6e03a719ec47b700509dab1..9e760a8e8244b15daaf0abdfc5f8a51d
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1b0ec38815a9c1b96dacf02daa2b4e786137d857..1afa042db40da7f1b48e93b06741644ef7dab565 100644
+index f503e75befcf8fc128221b76cd5c5442f16bbde4..3df0df42f3feb678dd0c7e6c670c561b89c5a09c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -979,6 +979,7 @@ public final class CraftServer implements Server {
