@@ -53,10 +53,10 @@ index 61e4fe91ac8648edafd39a952939c667c2838207..584aa36a3c32d780e30595c6b37fa54c
          }
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index a6f331b74a2391af6d8f93a26d447c9c9836dcc6..552bef6612682897b3f29ee57ece2ff03b5a3a48 100644
+index 74245b29b6e8a77e5fa39c74840a2f12a32f8608..d29c2b669602280a6cf60f785190a9f4aa0448e5 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1222,7 +1222,7 @@ public final class CraftServer implements Server {
+@@ -1221,7 +1221,7 @@ public final class CraftServer implements Server {
  
          if (worlddimension == null) {
              holder = console.registryHolder.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolder(DimensionType.OVERWORLD_LOCATION);

@@ -5,7 +5,7 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 3857396c6f4e8db624fa2400dbf06c43ca9abfcb..6700e1b580d60483c1e534d3241edd33b102574f 100644
+index db3b3c91f4debc3c6ddee6b14f03a3b13829e4db..d6a91dfad95e282263a278b331ce992a58f0a34f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -9,8 +9,8 @@ plugins {
@@ -33,7 +33,7 @@ index 8b252571020d515547ed6344ff55e284cc23bf91..9057d1a9cb93d2680a2393d3511757d7
  
      public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 2e9aa7c1bfd83715685af56c0dfe04eb32d9a0fc..0ca0af74cf86b2754c7c246d1eb4d9f73f3be628 100644
+index d922652a4d135427b1c066009c45b4602b1e0441..74245b29b6e8a77e5fa39c74840a2f12a32f8608 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -249,7 +249,7 @@ import javax.annotation.Nullable; // Paper
