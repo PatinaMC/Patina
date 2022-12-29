@@ -5,10 +5,10 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 4830e668f25771066e46cf6c2739d44651f67352..4297f75c68e2413271c9dfa6838e4820d33f3264 100644
+index 9057d1a9cb93d2680a2393d3511757d75f002348..c7d84ae111e5ecde7c7ec7714fbec80193954e11 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -579,7 +579,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<Runnab
+@@ -579,7 +579,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
              if (worlddimension == null) {
                  holder = this.registryAccess().registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY).getOrCreateHolder(DimensionType.OVERWORLD_LOCATION);
