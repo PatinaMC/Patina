@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Thu, 29 Dec 2022 21:45:06 +0800
+Subject: [PATCH] update Simple-Yaml to fix build
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 6ea0fc8c00ab7eb7626f72c311ebe682bf76e08d..bb1480870f1ab48e71d696483bcf8b3f82f71198 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -44,7 +44,7 @@ dependencies {
+ 
+     // Pufferfish start
+     implementation("org.yaml:snakeyaml:1.30")
+-    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8") {
++    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.3") {
+         exclude(group="org.yaml", module="snakeyaml")
+     }
+     // Pufferfish end
