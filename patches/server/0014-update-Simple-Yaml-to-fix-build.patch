@@ -5,7 +5,7 @@ Subject: [PATCH] update Simple-Yaml to fix build
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 6ea0fc8c00ab7eb7626f72c311ebe682bf76e08d..bb1480870f1ab48e71d696483bcf8b3f82f71198 100644
+index 6ea0fc8c00ab7eb7626f72c311ebe682bf76e08d..80e90a90b4e268da9fffeb4632200dc7f1b33b59 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -44,7 +44,7 @@ dependencies {
@@ -13,7 +13,7 @@ index 6ea0fc8c00ab7eb7626f72c311ebe682bf76e08d..bb1480870f1ab48e71d696483bcf8b3f
      // Pufferfish start
      implementation("org.yaml:snakeyaml:1.30")
 -    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8") {
-+    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.3") {
++    implementation ("com.github.Carleslc:Simple-YAML:1.8.3") {
          exclude(group="org.yaml", module="snakeyaml")
      }
      // Pufferfish end
