@@ -238,7 +238,7 @@ index 877498729c66de9aa6a27c9148f7494d7895615c..acd7468ee3c86d3456e96e4ec3d7e6a4
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 34540b4ebad2ec430fa12e1e5d9d6e4a79df91de..e55a54b7fb13f4d99a999a07da29031bcbb4bf34 100644
+index a50af1f62661622f4a162c7dbad4e7ff056a64ef..c3e0895ca5a2580db7cfdc76b43a2fcc62ab65b0 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -259,6 +259,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -271,7 +271,7 @@ index 34540b4ebad2ec430fa12e1e5d9d6e4a79df91de..e55a54b7fb13f4d99a999a07da29031b
          if (this.keepAlivePending) {
              if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
                  ServerGamePacketListenerImpl.LOGGER.warn("{} was kicked due to keepalive timeout!", this.player.getScoreboardName()); // more info
-@@ -3427,11 +3443,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3429,11 +3445,17 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
              for (int i = 0; i < signText.size(); ++i) {
                  FilteredText filteredtext = (FilteredText) signText.get(i);
  
@@ -292,7 +292,7 @@ index 34540b4ebad2ec430fa12e1e5d9d6e4a79df91de..e55a54b7fb13f4d99a999a07da29031b
              }
              SignChangeEvent event = new SignChangeEvent((org.bukkit.craftbukkit.block.CraftBlock) player.getWorld().getBlockAt(x, y, z), this.player.getBukkitEntity(), lines);
              this.cserver.getPluginManager().callEvent(event);
-@@ -3453,6 +3475,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -3455,6 +3477,16 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -322,10 +322,10 @@ index 0725c39d9cbec3282f93975a0ae76f060f70d86d..b1afe7d9fff390cc9668ce9bbb408d64
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index f381bf9064be548a4a603e0042886d8a5e70ba5b..9f1bf76bd1ec4e122852cb2124e56f1ba05cbcae 100644
+index 4b754f6eae683248d7fe11d6d6cb168d5dd696a2..2181b4bb9f60c16e35f32de87d0f09b0ea5359b1 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1110,6 +1110,7 @@ public abstract class PlayerList {
+@@ -1116,6 +1116,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -560,7 +560,7 @@ index f503e75befcf8fc128221b76cd5c5442f16bbde4..3df0df42f3feb678dd0c7e6c670c561b
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/Main.java b/src/main/java/org/bukkit/craftbukkit/Main.java
-index 119d9bb5e41038704654e248bf168d22af246b7f..c2c5c560165eb9ac9920727aaf730a5280107782 100644
+index 190e17eb28d166aedee06e9578561ba402d1b6d2..8e706d752b6bbda353d85ce10cdb83a68a4f71d8 100644
 --- a/src/main/java/org/bukkit/craftbukkit/Main.java
 +++ b/src/main/java/org/bukkit/craftbukkit/Main.java
 @@ -166,6 +166,14 @@ public class Main {
@@ -996,7 +996,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index b87756d9a7b04ea2613208984b2583eca3f32af6..00e9e9868f093f17f18b14547cbf36a5c105ee54 100644
+index 63d3fcc45be732a4cd2dc8b5347d860fd6577bdd..994f42f4d518ccfb3f1b608fabadc4036c25777a 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;

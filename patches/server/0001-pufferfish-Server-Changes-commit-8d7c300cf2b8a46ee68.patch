@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 26 Dec 2022 04:15:06 +0800
+Date: Wed, 18 Jan 2023 22:48:43 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- 15538a9d3c71687c733c4c6dd94f4b9855917401
+ 8d7c300cf2b8a46ee6849716147401c5a1f10dbd
 
 Pufferfish Utils
 
@@ -330,7 +330,7 @@ Entity TTL
 Add option to disable out-of-order chat
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index d5d49bb2b47c889e12d17dc87b8c439a60b3fe67..807ef69a9cc4000ca23dedb4f57ec373d361e85c 100644
+index 781609605d25283009e5f3e61649ecde9ea9a4cb..77ce5cb52c230578317f2dfabd3add0815e9ce1a 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -41,6 +41,14 @@ dependencies {
@@ -2619,7 +2619,7 @@ index 54c2b7fba83d6f06dba95b1bb5b487a02048d6e6..53198ebfa30273c5ddc1bb4324f5174f
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 08cb3db28f13c352a162009deeb28ee637e98d2a..34540b4ebad2ec430fa12e1e5d9d6e4a79df91de 100644
+index 3472f7f9b98d6d9c9f6465872803ef17fa67486d..a50af1f62661622f4a162c7dbad4e7ff056a64ef 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1204,6 +1204,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -2630,7 +2630,7 @@ index 08cb3db28f13c352a162009deeb28ee637e98d2a..34540b4ebad2ec430fa12e1e5d9d6e4a
          // Paper start
          if (!this.cserver.isPrimaryThread()) {
              List<String> pageList = packet.getPages();
-@@ -2350,6 +2351,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
+@@ -2352,6 +2353,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
      }
  
      private boolean updateChatOrder(Instant timestamp) {
@@ -2751,7 +2751,7 @@ index 540bc9500c35c0db719b00aa26f6fb3a1b08ed9f..806cb760822a99316b08ad95ff8922df
      int LARGE_MAX_STACK_SIZE = 64;
  
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 7555b04dcf274bb624b89f2eb9ff80da0056de4e..6a9c0f0b4b749c5907a274d6a83254284d8763bb 100644
+index 1eaab1f6923e6aa34b643293347348e5cc19af3c..3073b34a0e0281b6b0330721bb0440147de28511 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -291,7 +291,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource {
@@ -2945,7 +2945,7 @@ index 7555b04dcf274bb624b89f2eb9ff80da0056de4e..6a9c0f0b4b749c5907a274d6a8325428
              if (vec3d.length() > 0.0D) {
                  if (k1 > 0) {
 diff --git a/src/main/java/net/minecraft/world/entity/EntityType.java b/src/main/java/net/minecraft/world/entity/EntityType.java
-index e5cd4b7609243669c9d84ff8a4988c209e6101aa..4f3708f5f5dcb6af8225bda1cc9204a6d974665f 100644
+index 41ff954010c11d524ffb90abd22c29a1d8d8f5a0..ac7ee31f2bfe5d4139b793a698317db50b39fe40 100644
 --- a/src/main/java/net/minecraft/world/entity/EntityType.java
 +++ b/src/main/java/net/minecraft/world/entity/EntityType.java
 @@ -293,6 +293,8 @@ public class EntityType<T extends Entity> implements FeatureElement, EntityTypeT
@@ -3495,7 +3495,7 @@ index 66476b33cede1e44db5ec166a0cea81f82ffe47a..5ccd7dc0a093277d3ea09c0fe8be03c0
          if (entity != null) {
              this.ownerUUID = entity.getUUID();
 diff --git a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
-index b8fb7b5a347298ada16bc8b818edf1863e3f6040..43b4c4f9630bfa451d135139236ac6fce034ec15 100644
+index cc74eeb45913fab03e85969957215d2811252a83..086feb19f11a6c646b5a1a06aef4df05a4beae8b 100644
 --- a/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
 +++ b/src/main/java/net/minecraft/world/entity/vehicle/AbstractMinecartContainer.java
 @@ -27,7 +27,10 @@ import org.bukkit.inventory.InventoryHolder;
@@ -4453,7 +4453,7 @@ index e948ec5a573b22645664eb53bc3e9932246544e4..e3845dc3357bbb74885ae3a1a08525ad
              // Paper start - try to shutdown on main
              server.safeShutdown(false, false);
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 1b42c98956342832c37f0aa266f85271daa4ba5b..b87756d9a7b04ea2613208984b2583eca3f32af6 100644
+index e881584d38dc354204479863f004e974a0ac6c07..63d3fcc45be732a4cd2dc8b5347d860fd6577bdd 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -38,6 +38,10 @@ import co.aikar.timings.MinecraftTimings;
