@@ -7,32 +7,20 @@ Subject: [PATCH] jettpack API Changes commit
 skip event if no listeners
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index c077e7c883613fcb6e559b4e4776e794caa3b363..d70bce8b9f25a581ca619cc7dfb7e7c8a63683f2 100644
+index bd4d1a40f53784662174d426533ef4b5433a15b7..1fb6fb86a7ea33a53a786f0ce441a3fff5eff67e 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -655,6 +655,14 @@ public final class SimplePluginManager implements PluginManager {
+@@ -614,6 +614,13 @@ public final class SimplePluginManager implements PluginManager {
       */
      @Override
      public void callEvent(@NotNull Event event) {
-+        // JettPack start
++        // JettPack start // TODO: move this to server
 +        HandlerList handlers = event.getHandlers();
 +        RegisteredListener[] listeners = handlers.getRegisteredListeners();
 +        if (listeners.length == 0) {
 +            return;
 +        }
 +        // JettPack end
-+
-         // Paper - replace callEvent by merging to below method
-         if (event.isAsynchronous() && server.isPrimaryThread()) {
-             throw new IllegalStateException(event.getEventName() + " may only be triggered asynchronously.");
-@@ -662,8 +670,8 @@ public final class SimplePluginManager implements PluginManager {
-             throw new IllegalStateException(event.getEventName() + " may only be triggered synchronously.");
-         }
- 
--        HandlerList handlers = event.getHandlers();
--        RegisteredListener[] listeners = handlers.getRegisteredListeners();
-+        // HandlerList handlers = event.getHandlers();
-+        // RegisteredListener[] listeners = handlers.getRegisteredListeners();
- 
-         for (RegisteredListener registration : listeners) {
-             if (!registration.getPlugin().isEnabled()) {
+         if (true) {this.paperPluginManager.callEvent(event); return;} // Paper
+         if (event.isAsynchronous()) {
+             if (Thread.holdsLock(this)) {

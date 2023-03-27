@@ -160,10 +160,10 @@ index bf42969859545a8a520923ef1836ffa4a5cc24a0..00000000000000000000000000000000
 -    }
 -}
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-index 17336102d37a5ab05c3b3c93fcf46961d0ffa7e2..a7e327156e75ebc2b243ede0210b28da1d55ca57 100644
+index 81ffcca62c2ebb15889d286bfe9138b86ccfe71e..0b3999d427713b6a214f874148e51199a0f3a29e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
-@@ -431,10 +431,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
+@@ -462,10 +462,12 @@ public final class CraftMagicNumbers implements UnsafeValues {
          return io.papermc.paper.configuration.GlobalConfiguration.get().timings.serverName;
      }
  
@@ -175,4 +175,4 @@ index 17336102d37a5ab05c3b3c93fcf46961d0ffa7e2..a7e327156e75ebc2b243ede0210b28da
 +    */
  
      @Override
-     public boolean isSupportedApiVersion(String apiVersion) {
+     public byte[] serializeItem(ItemStack item) {
