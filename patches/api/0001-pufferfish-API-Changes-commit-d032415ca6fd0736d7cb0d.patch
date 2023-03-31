@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 18 Mar 2023 22:23:35 +0800
+Date: Mon, 27 Mar 2023 11:39:40 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 47c34ca04781a2a9d26ba8818146341339d2414f
+ d032415ca6fd0736d7cb0da28e3134b957fb83a0
 
 Add Sentry
 
@@ -22,10 +22,10 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 9421e45653e68922a51cf0071792e6fa7999d0b8..181e9cd8623995f40e696ccfe49754dc340405d8 100644
+index cad12a2632b9ebb569280441c42869685db1f31a..b83e2c5a0a094002d12aee55ec0cf8d12bf33f3e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -41,6 +41,7 @@ dependencies {
+@@ -42,6 +42,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
      api("org.apache.logging.log4j:log4j-api:2.17.1")
      api("org.slf4j:slf4j-api:1.8.0-beta4")
@@ -33,7 +33,7 @@ index 9421e45653e68922a51cf0071792e6fa7999d0b8..181e9cd8623995f40e696ccfe49754dc
  
      implementation("org.ow2.asm:asm:9.4")
      implementation("org.ow2.asm:asm-commons:9.4")
-@@ -84,6 +85,13 @@ val generateApiVersioningFile by tasks.registering {
+@@ -85,6 +86,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  
@@ -482,7 +482,7 @@ index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..301e82369603f3dd6e6c1bd380da4bac
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 86771934c76dd63b219069b045dbb5511ee0f45d..24ab015fbab6ce789999872791f7ffe4cc64d6d6 100644
+index 1758e8a89c85eea8c2161ddcb5b0e745151a1f5e..fe21d31b463317eb90d58cbca5f098958ca93938 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -48,6 +48,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
