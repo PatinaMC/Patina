@@ -310,14 +310,14 @@ index 24d48fb4a63c2db19c7f957ad2260415fe1db9fe..31d7c9b98b08c5f7e390bfb8f7143545
          if (this.keepAlivePending && packet.getId() == this.keepAliveChallenge) {
              int i = (int) (Util.getMillis() - this.keepAliveTime);
 diff --git a/src/main/java/net/minecraft/server/network/ServerStatusPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerStatusPacketListenerImpl.java
-index 2c13147bc063a09bb7907d6f90c3a1e811a09eb1..fe0af6a76717d368a871d41adde1eb8f31a6c01b 100644
+index 2c13147bc063a09bb7907d6f90c3a1e811a09eb1..d82710033b850642588a938b5b8595f430464829 100644
 --- a/src/main/java/net/minecraft/server/network/ServerStatusPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerStatusPacketListenerImpl.java
 @@ -153,6 +153,7 @@ public class ServerStatusPacketListenerImpl implements ServerStatusPacketListene
              this.connection.send(new ClientboundStatusResponsePacket(ping));
              // CraftBukkit end
              */
-+            if (this.server.getStatus().getVersion() == null) return; // Purpur - do not respond to pings before we know the protocol version
++            //if (MinecraftServer.getServer().getStatus().getVersion() == null) return; // Purpur - do not respond to pings before we know the protocol version
              com.destroystokyo.paper.network.StandardPaperServerListPingEventImpl.processRequest(MinecraftServer.getServer(), this.connection);
              // Paper end
          }
