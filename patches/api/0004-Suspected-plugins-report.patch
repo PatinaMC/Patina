@@ -6,7 +6,7 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 1fb6fb86a7ea33a53a786f0ce441a3fff5eff67e..61945e73c4efecdfd56cfb92cb5f13e6b52c612d 100644
+index bd4d1a40f53784662174d426533ef4b5433a15b7..d943ebebff8d7a0cd68885f88b078002c23b033b 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -585,7 +585,11 @@ public final class SimplePluginManager implements PluginManager {
@@ -22,7 +22,7 @@ index 1fb6fb86a7ea33a53a786f0ce441a3fff5eff67e..61945e73c4efecdfd56cfb92cb5f13e6
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -666,7 +670,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -659,7 +663,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -35,7 +35,7 @@ index 1fb6fb86a7ea33a53a786f0ce441a3fff5eff67e..61945e73c4efecdfd56cfb92cb5f13e6
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
                  if (!(event instanceof com.destroystokyo.paper.event.server.ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -989,4 +997,10 @@ public final class SimplePluginManager implements PluginManager {
+@@ -982,4 +990,10 @@ public final class SimplePluginManager implements PluginManager {
          this.paperPluginManager.addPermissions(perm);
      }
      // Paper end
@@ -110,7 +110,7 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 24ab015fbab6ce789999872791f7ffe4cc64d6d6..cbb8b2da795691fcb851cdd5d81c06f84750a546 100644
+index fe21d31b463317eb90d58cbca5f098958ca93938..f2e178fdbf28e2d414801126ecd1e6f54138493c 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -310,4 +310,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
