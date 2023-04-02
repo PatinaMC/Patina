@@ -60,10 +60,10 @@ index 6d31f3a2569ae9c522a5e6cddd38ac8f252f1bfe..24f943810039eba20cd3c8f92d320dab
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8dfcfbcfcf4 100644
+index 0c6ca7588fb3d6b6497ddf032fe75e5c6c9719e5..5586e9d6f906aae9367fbc7cbe3c47637035e268 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPluginLoader.java
-@@ -337,7 +337,11 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -338,7 +338,11 @@ public final class JavaPluginLoader implements PluginLoader {
                  jPlugin.setEnabled(true);
              } catch (Throwable ex) {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -76,7 +76,7 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
                  gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
                  // Paper start - Disable plugins that fail to load
                  this.server.getPluginManager().disablePlugin(jPlugin);
-@@ -368,7 +372,11 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -369,7 +373,11 @@ public final class JavaPluginLoader implements PluginLoader {
                  jPlugin.setEnabled(false);
              } catch (Throwable ex) {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -89,7 +89,7 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
                  gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
              }
  
-@@ -385,9 +393,18 @@ public final class JavaPluginLoader implements PluginLoader {
+@@ -386,9 +394,18 @@ public final class JavaPluginLoader implements PluginLoader {
                  try {
                      loader.close();
                  } catch (IOException ex) {
@@ -239,10 +239,10 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 2cb81e6d253d70388da15c9d07b630277d486c70..f7be6b9be17acde05e6cdeafacc6977e3a6174e1 100644
+index 49bba9a7a02b9cf3a552583315eff2b7dbe060c0..cbdfc30d24bf2c509cb35538d9d9c594ff2f119e 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
-@@ -57,8 +57,11 @@ public class AnnotationTest {
+@@ -61,8 +61,11 @@ public class AnnotationTest {
          "co/aikar/timings/TimingHistory$2$1$2",
          "co/aikar/timings/TimingHistory$3",
          "co/aikar/timings/TimingHistory$4",

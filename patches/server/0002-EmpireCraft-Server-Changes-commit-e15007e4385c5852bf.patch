@@ -19,18 +19,6 @@ Don't trigger Lootable Refresh for non player interaction
 
 Do not process chat/commands before player has joined
 
-diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-index ee7d29d85c8b024c9b23cba8ecd4192aa7e8aa7b..e50d8c5f6c4f2aa672732d1d42c4995c9b377530 100644
---- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
-+++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-@@ -58,6 +58,7 @@ public class GiveCommand {
-                     boolean flag = entityplayer.getInventory().add(itemstack);
-                     ItemEntity entityitem;
- 
-+                    if (true) { continue; } // EMC - never drop items
-                     if (flag && itemstack.isEmpty()) {
-                         itemstack.setCount(1);
-                         entityitem = entityplayer.drop(itemstack, false, false, false); // SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index fca27f98989bf106060ba08196255fe32f850df5..bedaedecff2031c6215f8abced79e82015804921 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
@@ -59,7 +47,7 @@ index 6d62cc8fb347ccafd51df05896e616995990f005..ad106809dcc1abd2cf2cbb4508c16737
              LootTable lootTable = this.level.getServer().getLootTables().get(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5e9055fdf411029ea2fed91acd6b981f79156418..2b7b80162cb3c851e715e24000b8e6cccc73e8ff 100644
+index c6a3b59c65466f9f2b16cefe0059a6e5dd84044c..d789d66bd6a5f0589f38a8d4efe5d6c8d1ce522f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -399,7 +399,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {

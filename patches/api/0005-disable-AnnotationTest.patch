@@ -5,10 +5,10 @@ Subject: [PATCH] disable AnnotationTest
 
 
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index f7be6b9be17acde05e6cdeafacc6977e3a6174e1..0d11b005607b58df78e208029ef24097ac45274f 100644
+index cbdfc30d24bf2c509cb35538d9d9c594ff2f119e..788e21fe49b478723153b706a5d3ab6bdb9b4607 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
-@@ -66,6 +66,7 @@ public class AnnotationTest {
+@@ -70,6 +70,7 @@ public class AnnotationTest {
  
      @Test
      public void testAll() throws IOException, URISyntaxException {

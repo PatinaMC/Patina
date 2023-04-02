@@ -5,7 +5,7 @@ Subject: [PATCH] Remove VersionFetcher
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/VersionCommand.java b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-index e40f017f87d6b6b4770501b106c76dc69ec69abb..f3abb861f4f120049ffc81bfeb91371a9c29e3fb 100644
+index eac5830986cd0638950bbb1e6f10a30e246e09a7..f3abb861f4f120049ffc81bfeb91371a9c29e3fb 100644
 --- a/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 @@ -1,6 +1,6 @@
@@ -43,7 +43,7 @@ index e40f017f87d6b6b4770501b106c76dc69ec69abb..f3abb861f4f120049ffc81bfeb91371a
          } else {
              StringBuilder name = new StringBuilder();
  
-@@ -154,133 +147,5 @@ public class VersionCommand extends BukkitCommand {
+@@ -154,135 +147,5 @@ public class VersionCommand extends BukkitCommand {
          return ImmutableList.of();
      }
  
@@ -91,7 +91,7 @@ index e40f017f87d6b6b4770501b106c76dc69ec69abb..f3abb861f4f120049ffc81bfeb91371a
 -        String version = Bukkit.getVersion();
 -        // Paper start
 -        if (version.startsWith("null")) { // running from ide?
--            setVersionMessage(net.kyori.adventure.text.Component.text("Unknown version, custom build?", net.kyori.adventure.text.format.NamedTextColor.YELLOW));
+-            setVersionMessage(net.kyori.adventure.text.Component.text("* Unknown version, custom build?", net.kyori.adventure.text.format.NamedTextColor.RED)); // Purpur
 -            return;
 -        }
 -        setVersionMessage(getVersionFetcher().getVersionMessage(version));
@@ -132,9 +132,11 @@ index e40f017f87d6b6b4770501b106c76dc69ec69abb..f3abb861f4f120049ffc81bfeb91371a
 -    // Paper start
 -    private void setVersionMessage(final @NotNull net.kyori.adventure.text.Component msg) {
 -        lastCheck = System.currentTimeMillis();
--        final net.kyori.adventure.text.Component message = net.kyori.adventure.text.TextComponent.ofChildren(
--            net.kyori.adventure.text.Component.text(Bukkit.getVersionMessage(), net.kyori.adventure.text.format.NamedTextColor.WHITE),
--            net.kyori.adventure.text.Component.newline(),
+-        // Purpur start
+-        int distance = getVersionFetcher().distance();
+-        final net.kyori.adventure.text.Component message = net.kyori.adventure.text.Component.join(net.kyori.adventure.text.JoinConfiguration.separator(net.kyori.adventure.text.Component.newline()),
+-            ChatColor.parseMM("<grey>Current: %s%s*", distance == 0 ? "<green>" : distance > 0 ? "<yellow>" : "<red>", Bukkit.getVersion()),
+-            // Purpur end
 -            msg
 -        );
 -        this.versionMessage = net.kyori.adventure.text.Component.text()
