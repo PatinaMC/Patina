@@ -11,13 +11,9 @@ launcher can very easily fill a chunk.
 
 Prevent saving Fireworks so that chunk unloads will wipe a chunks fireworks in this case.
 
-Do not drop items from Give command
-
 Don't use force unload for keep spawn setting change
 
 Don't trigger Lootable Refresh for non player interaction
-
-Do not process chat/commands before player has joined
 
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index fca27f98989bf106060ba08196255fe32f850df5..bedaedecff2031c6215f8abced79e82015804921 100644
