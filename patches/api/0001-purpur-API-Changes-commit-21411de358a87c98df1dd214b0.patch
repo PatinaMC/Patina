@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 10 Apr 2023 21:09:33 +0800
+Date: Sat, 6 May 2023 10:47:46 +0800
 Subject: [PATCH] purpur API Changes commit
- f952106e1ba20e799dbe0e67c1d241e3f286b5f4
+ 21411de358a87c98df1dd214b0ec0c4b6ad81b58
 
 Pufferfish API Changes
 
@@ -2770,7 +2770,7 @@ index e4b6f278a811acbb0070e311c5c3bdaff7b00474..ee83ecb054099cb85168a9499dfe967a
              {
                  java.util.Objects.requireNonNullElseGet(desc.getPrefix(), desc::getName), file // Paper - use configured log prefix
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 1758e8a89c85eea8c2161ddcb5b0e745151a1f5e..fe21d31b463317eb90d58cbca5f098958ca93938 100644
+index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee1b8df621 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -48,6 +48,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
