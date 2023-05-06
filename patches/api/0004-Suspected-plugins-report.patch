@@ -6,7 +6,7 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index bd4d1a40f53784662174d426533ef4b5433a15b7..d943ebebff8d7a0cd68885f88b078002c23b033b 100644
+index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d9e4edd67 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 @@ -585,7 +585,11 @@ public final class SimplePluginManager implements PluginManager {
@@ -47,7 +47,7 @@ index bd4d1a40f53784662174d426533ef4b5433a15b7..d943ebebff8d7a0cd68885f88b078002
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-index 6d31f3a2569ae9c522a5e6cddd38ac8f252f1bfe..24f943810039eba20cd3c8f92d320dabdf436a37 100644
+index f35cbf369f3d1e1c0b62e6dbc62ea65d9d6ca04e..fd28c2e0ef558f49e4b07f694ed98f8ee994d55d 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 @@ -119,7 +119,7 @@ public abstract class JavaPlugin extends PluginBase {
@@ -110,10 +110,10 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index fe21d31b463317eb90d58cbca5f098958ca93938..f2e178fdbf28e2d414801126ecd1e6f54138493c 100644
+index 7572a0bf6614b02be3cbccc7b86e52ee1b8df621..222bdd3584e647c49c8dfe92cacc2f37905a82e0 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -310,4 +310,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -309,4 +309,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
      }
  
      // Paper end
@@ -239,7 +239,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 2cb81e6d253d70388da15c9d07b630277d486c70..f7be6b9be17acde05e6cdeafacc6977e3a6174e1 100644
+index 06e96e5c98f1a7a68c8b4b5e527314c1aa774e38..b7da259ab119bcb9e19bdd1a497a49381a4454ef 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {
