@@ -1,18 +1,18 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Sat, 30 Jul 2022 23:49:27 +0800
+Date: Wed, 21 Jun 2023 18:18:04 +0800
 Subject: [PATCH] purpur API Changes commit
- 513f3bbedf663b46c1fc76cef469e804c4afc073
+ fa3166a24d0dd49f41eb0257fc043ea02320fe38
 
 Purpur config files
 
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index b0bc2df41506770e2854a287813f1c53f003eda1..9ab21aa2a5b16520f144f31861a316ecb5649b79 100644
+index ef36d793ab77c7b7208f8f5994815599cff470d1..5c3c71fcbbd3cbc4f105ad172cdec51d0f3e215d 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2483,4 +2483,15 @@ public final class Bukkit {
+@@ -2500,4 +2500,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -29,10 +29,10 @@ index b0bc2df41506770e2854a287813f1c53f003eda1..9ab21aa2a5b16520f144f31861a316ec
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 1d1a1d087dabc9794e0062a064da2cced4062309..bde62244658d730d3c6e3674c720687a1465d0b6 100644
+index 5b225bbb128893d67251a96ab318035802a0cf76..7c094bab26d6eba174bec587cb36612e9daec864 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -1994,6 +1994,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2007,6 +2007,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -51,7 +51,7 @@ index 1d1a1d087dabc9794e0062a064da2cced4062309..bde62244658d730d3c6e3674c720687a
          /**
           * Sends the component to the player
           *
-@@ -2162,4 +2174,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2175,4 +2187,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
      // Paper end

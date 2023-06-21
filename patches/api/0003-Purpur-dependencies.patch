@@ -5,10 +5,10 @@ Subject: [PATCH] Purpur dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index b83e2c5a0a094002d12aee55ec0cf8d12bf33f3e..405e1980b721657560673fa3efa54ebe29e62506 100644
+index 1efb8043c5bd734643a91f29a338dd8256579f3d..da5140712bac01a2c133e972fa6f0f5fb08570d7 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -40,6 +40,7 @@ dependencies {
+@@ -42,6 +42,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-serializer-legacy")
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
