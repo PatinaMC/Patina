@@ -1,66 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
 Date: Wed, 21 Jun 2023 18:18:04 +0800
-Subject: [PATCH] purpur API Changes commit
- fa3166a24d0dd49f41eb0257fc043ea02320fe38
+Subject: [PATCH] Placehold patch - keep patch order the same
 
-Purpur config files
 
-Lagging threshold
-
-diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index f380a518bc444bfdfbbedf38805c7684e53a5629..1450916a38f185e1e5fcd5ac08bb6c36efd89bd8 100644
---- a/src/main/java/org/bukkit/Bukkit.java
-+++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2714,4 +2714,15 @@ public final class Bukkit {
-     public static Server.Spigot spigot() {
-         return server.spigot();
-     }
-+
-+    // Purpur start
-+    /**
-+     * Check if server is lagging according to laggy threshold setting
-+     *
-+     * @return True if lagging
-+     */
-+    public static boolean isLagging() {
-+        return server.isLagging();
-+    }
-+    // Purpur end
- }
-diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 68206cf0178c26c0f528a1e14a5fb4e9ad410369..9a9453939ca6aed3cce3d1ef74522512a44b905b 100644
---- a/src/main/java/org/bukkit/Server.java
-+++ b/src/main/java/org/bukkit/Server.java
-@@ -2081,6 +2081,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-         }
-         // Paper end
- 
-+        // Purpur start
-+        @NotNull
-+        public org.bukkit.configuration.file.YamlConfiguration getPurpurConfig() {
-+            throw new UnsupportedOperationException("Not supported yet.");
-+        }
-+
-+        @NotNull
-+        public java.util.Properties getServerProperties() {
-+            throw new UnsupportedOperationException("Not supported yet.");
-+        }
-+        // Purpur end
-+
-         /**
-          * Sends the component to the player
-          *
-@@ -2364,4 +2376,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
-      */
-     boolean isOwnedByCurrentRegion(@NotNull Entity entity);
-     // Paper end - Folia region threading API
-+    // Purpur start
-+    /**
-+     * Check if server is lagging according to laggy threshold setting
-+     *
-+     * @return True if lagging
-+     */
-+    boolean isLagging();
-+    // Purpur end
- }
+diff --git a/README.md b/README.md
+new file mode 100644
+index 00000000..e69de29b
