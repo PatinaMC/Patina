@@ -5,14 +5,14 @@ Subject: [PATCH] Purpur dependencies
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 1efb8043c5bd734643a91f29a338dd8256579f3d..da5140712bac01a2c133e972fa6f0f5fb08570d7 100644
+index 3676035ba011fb874ad6bb8995940d9bb2a0f0ae..82dadb8bf06013022e7a4a2d9078fa38f784f10b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -42,6 +42,7 @@ dependencies {
+@@ -44,6 +44,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-serializer-legacy")
      apiAndDocs("net.kyori:adventure-text-serializer-plain")
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
 +    api("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT") // Purpur
-     api("org.apache.logging.log4j:log4j-api:2.17.1")
-     api("org.slf4j:slf4j-api:1.8.0-beta4")
+     api("org.apache.logging.log4j:log4j-api:$log4jVersion")
+     api("org.slf4j:slf4j-api:$slf4jVersion")
      api("io.sentry:sentry:5.4.0") // Pufferfish

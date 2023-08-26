@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 15 Jun 2023 17:57:40 +0800
+Date: Sat, 26 Aug 2023 16:11:34 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 3128603a11b36864820529647da74642a5e881c9
+ 2bc9d4572dab8ef9106ba4fa77e519ba6ca9ede7
 
 Add Sentry
 
@@ -22,18 +22,18 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4b2330bac734cd07f8798ceeb6d9c67bd3f3521d..1efb8043c5bd734643a91f29a338dd8256579f3d 100644
+index 8045f92ffdfb4164bcbef99c41359590c45f9006..3676035ba011fb874ad6bb8995940d9bb2a0f0ae 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -44,6 +44,7 @@ dependencies {
+@@ -46,6 +46,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
-     api("org.apache.logging.log4j:log4j-api:2.17.1")
-     api("org.slf4j:slf4j-api:1.8.0-beta4")
+     api("org.apache.logging.log4j:log4j-api:$log4jVersion")
+     api("org.slf4j:slf4j-api:$slf4jVersion")
 +    api("io.sentry:sentry:5.4.0") // Pufferfish
  
      implementation("org.ow2.asm:asm:9.4")
      implementation("org.ow2.asm:asm-commons:9.4")
-@@ -87,6 +88,13 @@ val generateApiVersioningFile by tasks.registering {
+@@ -89,6 +90,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  

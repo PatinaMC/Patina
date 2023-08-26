@@ -9,10 +9,10 @@ Purpur config files
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index ef36d793ab77c7b7208f8f5994815599cff470d1..5c3c71fcbbd3cbc4f105ad172cdec51d0f3e215d 100644
+index f380a518bc444bfdfbbedf38805c7684e53a5629..1450916a38f185e1e5fcd5ac08bb6c36efd89bd8 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2500,4 +2500,15 @@ public final class Bukkit {
+@@ -2714,4 +2714,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -29,10 +29,10 @@ index ef36d793ab77c7b7208f8f5994815599cff470d1..5c3c71fcbbd3cbc4f105ad172cdec51d
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 5b225bbb128893d67251a96ab318035802a0cf76..7c094bab26d6eba174bec587cb36612e9daec864 100644
+index 68206cf0178c26c0f528a1e14a5fb4e9ad410369..9a9453939ca6aed3cce3d1ef74522512a44b905b 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2007,6 +2007,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2081,6 +2081,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -51,11 +51,10 @@ index 5b225bbb128893d67251a96ab318035802a0cf76..7c094bab26d6eba174bec587cb36612e
          /**
           * Sends the component to the player
           *
-@@ -2175,4 +2187,13 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2364,4 +2376,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
-     @NotNull org.bukkit.potion.PotionBrewer getPotionBrewer();
-     // Paper end
-+
+     boolean isOwnedByCurrentRegion(@NotNull Entity entity);
+     // Paper end - Folia region threading API
 +    // Purpur start
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
