@@ -5,43 +5,59 @@ Subject: [PATCH] Build changes
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index e1ef2329e2655c5a06ecae3b2023074ff4ec7dd9..dc0af43aee24a5216d2655dd0e1578e58ca77818 100644
+index 139e2b17b899da6f0147bb8b4412e2e54e817be4..2d4659a69dc07d66adfb2e772ddbf70fdd79b90a 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -13,8 +13,8 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+@@ -13,12 +13,8 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
  val alsoShade: Configuration by configurations.creating
  
  dependencies {
--    implementation(project(":paper-api"))
--    implementation(project(":paper-mojangapi"))
+-    // Purpur start
+-    implementation(project(":purpur-api"))
+-    implementation("io.papermc.paper:paper-mojangapi:${project.version}") {
+-        exclude("io.papermc.paper", "paper-api")
+-    }
+-    // Purpur end
 +    implementation(project(":patina-api")) // Patina
 +    implementation(project(":patina-mojangapi")) // Patina
      // Paper start
      implementation("org.jline:jline-terminal-jansi:3.21.0")
      implementation("net.minecrell:terminalconsoleappender:1.3.0")
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 361adc0b820166a5c4145054517fe15da439001e..a8101c84d0e04d4b8865ef43d83faa6b08fc9691 100644
+index 99fd775e7a564aaef327a62bb7742da07b2d2829..699e29c2e6ccaeaedf35306c7019cfb05f2ef451 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -1703,7 +1703,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1722,6 +1722,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
  
      @DontObfuscate
      public String getServerModName() {
--        return "Paper"; // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        return "Patina"; // Patina - Patina > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        // Changed the default settings - Patina
+         return org.purpurmc.purpur.PurpurConfig.serverModName; // Purpur - Purpur > // Pufferfish - Pufferfish > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
-     public SystemReport fillSystemReport(SystemReport details) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 1d6fcb16130f110e9c4a7108141f86c001b1c5d6..4a754404c67804777cc6273da6a5c3ce71d4d5ff 100644
+index b08d4a2a74392b1d59b1eeeab3108103d83ad96c..914d180c8c2a89a863547dcb93f60297c737d09e 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -265,7 +265,7 @@ import javax.annotation.Nullable; // Paper
  import javax.annotation.Nonnull; // Paper
  
  public final class CraftServer implements Server {
--    private final String serverName = "Paper"; // Paper
-+    private final String serverName = "Patina"; // Patina // Paper
+-    private final String serverName = "Purpur"; // Paper // Pufferfish // Purpur
++    private final String serverName = "Patina"; // Patina // Paper // Pufferfish // Purpur
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
+diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+index 3633574e112f217b412217dd243a631dc4e9c40c..3767262e5e90e3df4ae513e39a0aa6350911f08d 100644
+--- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
++++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
+@@ -231,7 +231,7 @@ public class PurpurConfig {
+         deathMessageOnlyBroadcastToAffectedPlayer = getBoolean("settings.broadcasts.death.only-broadcast-to-affected-player", deathMessageOnlyBroadcastToAffectedPlayer);
+     }
+ 
+-    public static String serverModName = "Purpur";
++    public static String serverModName = "Patina"; // Patina
+     private static void serverModName() {
+         serverModName = getString("settings.server-mod-name", serverModName);
+     }

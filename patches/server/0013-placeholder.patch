@@ -1,0 +1,10 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Sat, 26 Aug 2023 22:47:13 +0800
+Subject: [PATCH] placeholder
+
+
+diff --git a/README.md b/readme.md
+similarity index 100%
+rename from README.md
+rename to readme.md

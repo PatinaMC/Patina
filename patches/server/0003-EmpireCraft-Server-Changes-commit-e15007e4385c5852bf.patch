@@ -19,18 +19,6 @@ Don't trigger Lootable Refresh for non player interaction
 
 Do not process chat/commands before player has joined
 
-diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-index d601d287e94a59ff93b8a83a44dac02544d211df..ffa40e12d6750b982828cee38ccaeb14c7ab0ff5 100644
---- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
-+++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-@@ -59,6 +59,7 @@ public class GiveCommand {
-                     boolean flag = entityplayer.getInventory().add(itemstack1);
-                     ItemEntity entityitem;
- 
-+                    if (true) { continue; } // EMC - never drop items
-                     if (flag && itemstack1.isEmpty()) {
-                         itemstack1.setCount(1);
-                         entityitem = entityplayer.drop(itemstack1, false, false, false); // SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index 288910fb168ddc5d3a61971778b8038a56772fa8..8ebbf180f325162274b182d5bdb5a49d2cd48a48 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
@@ -59,7 +47,7 @@ index 765ee7f78532a363813286ef7db2a7e48605cb06..2a1c5b83e97028a7ac44b34c88bef838
              LootTable lootTable = this.level.getServer().getLootData().getLootTable(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 1a481fb4f4228f0fea8a7dc6132248c98b727c90..eae03f38cbcdd1222552524292efb47206c44e63 100644
+index 1392e483c363e25d1f16465d876cb7d7c70afa68..65464bd17d8cca691bb1f1f88eb8fafeda561373 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -407,7 +407,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {

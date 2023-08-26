@@ -5,14 +5,14 @@ Subject: [PATCH] fix building issue
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 381d0732acefc8c5b97492be7e7da1542c19c8af..d0a95abd40e3c474a47e96e7a73c936a4e6d0e17 100644
+index e867fe6eaa9ca2c747b1bd8da067d349fbc7fde1..eb732ca62da8c3de2673d8d97cf3794f21c8f9b5 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -54,7 +54,7 @@ dependencies {
+@@ -58,7 +58,7 @@ dependencies {
  
      // Pufferfish start
      implementation("org.yaml:snakeyaml:1.32")
--    implementation ("me.carleslc.Simple-YAML:Simple-Yaml:1.8.4") {
+-    implementation ("com.github.carleslc.Simple-YAML:Simple-Yaml:1.8.4") {
 +    implementation ("com.github.Carleslc:Simple-YAML:1.8.4") {
          exclude(group="org.yaml", module="snakeyaml")
      }

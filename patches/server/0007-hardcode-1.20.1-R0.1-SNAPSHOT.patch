@@ -5,7 +5,7 @@ Subject: [PATCH] hardcode 1.20.1-R0.1-SNAPSHOT
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
-index 774556a62eb240da42e84db4502e2ed43495be17..b3197e58806a8a2101f4682c11ab7232d5382e0f 100644
+index 99597258e8e88cd9e2c901c4ac3ff7faeeabee2b..b3197e58806a8a2101f4682c11ab7232d5382e0f 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
 @@ -9,21 +9,6 @@ import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ index 774556a62eb240da42e84db4502e2ed43495be17..b3197e58806a8a2101f4682c11ab7232
      public static String getBukkitVersion() {
 -        String result = "Unknown-Version";
 -
--        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/org.purpurmc.purpur/purpur-api/pom.properties"); // Pufferfish // Purpur
 -        Properties properties = new Properties();
 -
 -        if (stream != null) {
