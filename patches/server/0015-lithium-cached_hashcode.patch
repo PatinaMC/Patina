@@ -6,10 +6,10 @@ Subject: [PATCH] lithium: cached_hashcode
 Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
 
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index fdd9c61b7248e92dbcbec91cd6fe4c6310bba237..3ef481092b9d1c91e8edcbaee71d141a289a73be 100644
+index dc718efe054aaf36961514287c9cc48e2d28bc4c..8b399db5c35a4ea6e30f4c53b4bd536faa12bef9 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -598,11 +598,18 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -659,11 +659,18 @@ public class Block extends BlockBehaviour implements ItemLike {
          private final BlockState first;
          private final BlockState second;
          private final Direction direction;
@@ -28,7 +28,7 @@ index fdd9c61b7248e92dbcbec91cd6fe4c6310bba237..3ef481092b9d1c91e8edcbaee71d141a
          }
  
          public boolean equals(Object object) {
-@@ -618,11 +625,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -679,11 +686,7 @@ public class Block extends BlockBehaviour implements ItemLike {
          }
  
          public int hashCode() {

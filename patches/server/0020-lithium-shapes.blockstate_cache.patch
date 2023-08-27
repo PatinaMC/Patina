@@ -71,17 +71,18 @@ index 0000000000000000000000000000000000000000..5dc1b2da7adaf97cfd913b016cb5344f
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/level/block/Block.java b/src/main/java/net/minecraft/world/level/block/Block.java
-index 1743b92f9cc985e1aa29f7c5daf857cf324d1d6d..be6666b9dde4958ea02791f67f048d5dbcbb3162 100644
+index 8b399db5c35a4ea6e30f4c53b4bd536faa12bef9..f6a47a7706b3c879501fafe643638726da225bfc 100644
 --- a/src/main/java/net/minecraft/world/level/block/Block.java
 +++ b/src/main/java/net/minecraft/world/level/block/Block.java
-@@ -61,17 +61,19 @@ import net.minecraft.world.phys.shapes.BooleanOp;
+@@ -61,6 +61,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
  import net.minecraft.world.phys.shapes.Shapes;
  import net.minecraft.world.phys.shapes.VoxelShape;
  import org.slf4j.Logger;
 +import me.jellysquid.mods.lithium.common.util.collections.Object2BooleanCacheTable; // JettPack
  
- public class Block extends BlockBehaviour implements ItemLike {
- 
+ // Purpur start
+ import net.minecraft.nbt.CompoundTag;
+@@ -74,11 +75,12 @@ public class Block extends BlockBehaviour implements ItemLike {
      private static final Logger LOGGER = LogUtils.getLogger();
      private final Holder.Reference<Block> builtInRegistryHolder;
      public static final IdMapper<BlockState> BLOCK_STATE_REGISTRY = new IdMapper<>();
@@ -99,7 +100,7 @@ index 1743b92f9cc985e1aa29f7c5daf857cf324d1d6d..be6666b9dde4958ea02791f67f048d5d
      public static final int UPDATE_NEIGHBORS = 1;
      public static final int UPDATE_CLIENTS = 2;
      public static final int UPDATE_INVISIBLE = 4;
-@@ -277,7 +279,7 @@ public class Block extends BlockBehaviour implements ItemLike {
+@@ -288,7 +290,7 @@ public class Block extends BlockBehaviour implements ItemLike {
      }
  
      public static boolean isShapeFullBlock(VoxelShape shape) {
