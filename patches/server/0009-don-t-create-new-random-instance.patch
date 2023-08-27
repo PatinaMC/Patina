@@ -5,10 +5,10 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 9666a607b0eba36a419249fa42ae74a08922202f..655e785f7f2aef372e33228d0a2f114fec3abc44 100644
+index 4bd93429bdd8649247782d712c0b5f73b4a07384..a98f15123fb92fd2a9f7c4f98eeade4d49a46bfe 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-@@ -440,7 +440,7 @@ public class ServerPlayer extends Player {
+@@ -441,7 +441,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
@@ -17,7 +17,7 @@ index 9666a607b0eba36a419249fa42ae74a08922202f..655e785f7f2aef372e33228d0a2f114f
  
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
-@@ -477,7 +477,7 @@ public class ServerPlayer extends Player {
+@@ -478,7 +478,7 @@ public class ServerPlayer extends Player {
              long l = k * k;
              int i1 = l > 2147483647L ? Integer.MAX_VALUE : (int) l;
              int j1 = this.getCoprime(i1);
