@@ -82,10 +82,10 @@ index 80c2c8d565f03ae0ea24fbdecdbe2bc5b9aa4b82..147fcbdd784f06fe23138b20aef82f92
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 16f436a97075ddec800f4be82e4a8f55cca09c15..a0d68cef0389fd995197bc9a25d80f1a92306501 100644
+index ebd525f15a8b0955b88ea5f30be8f8b3c6590206..1f5a37099380bb23b347c7b905ad46b59dc083ed 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -307,6 +307,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -306,6 +306,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations;
      public static long currentTickLong = 0L; // Paper
@@ -93,7 +93,7 @@ index 16f436a97075ddec800f4be82e4a8f55cca09c15..a0d68cef0389fd995197bc9a25d80f1a
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1156,6 +1157,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1155,6 +1156,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
                      // Paper end
@@ -101,7 +101,7 @@ index 16f436a97075ddec800f4be82e4a8f55cca09c15..a0d68cef0389fd995197bc9a25d80f1a
                      tickSection = curTime;
                  }
                  // Spigot end
-@@ -1173,7 +1175,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1172,7 +1174,13 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.tickServer(this::haveTime);
                  this.profiler.popPush("nextTickWait");
                  this.mayHaveDelayedTasks = true;
@@ -129,7 +129,7 @@ index acc49f66bf34e2507d0ee6fec0a56b11bfc68f46..52891c4a4260d1938f2f4565b5219ad3
                              }
                              // CraftBukkit end
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 28af96ce4f9f1a83316b6fd9e1625c71b5874c3f..cf7c7b3cd4081e1be059647dca237ffd72c374df 100644
+index 10501842887c1ffdb6bb667480682b7174fd89c6..f8e39a8d6bb1b910ac71931a51d8a36d49d30d10 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -218,6 +218,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
