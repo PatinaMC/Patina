@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 4 Sep 2023 22:56:07 +0800
+Date: Tue, 19 Sep 2023 15:22:25 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- e32a780bcab6821e3804846a63a9153fdeee44f4
+ 0020a8bd30741675ac348af30cc50d19d3566cff
 
 Pufferfish Utils
 
@@ -337,6 +337,8 @@ an end crystal.
 Add option to suppress null ID disconnections
 
 This can help to hide annoying scanning bots from showing up in console.
+
+Add slot sanity checks in container clicks
 
 diff --git a/build.gradle.kts b/build.gradle.kts
 index fb98936bb8a5488db75d676c5bcb4060597fbbf8..e1ef2329e2655c5a06ecae3b2023074ff4ec7dd9 100644
@@ -3627,6 +3629,26 @@ index 272095d7a09ab41227d741172735f66fd2798ce1..47692d6db44b58bb724c87128279bd0d
          this.readChestVehicleSaveData(nbt);
      }
  
+diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
+index 706b354ac9a1a6a4a1e61b2a109180d1dd22bbbd..71b7a091e56dd68da280d13318a393170967b042 100644
+--- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
++++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
+@@ -423,6 +423,7 @@ public abstract class AbstractContainerMenu {
+                     this.resetQuickCraft();
+                 }
+             } else if (this.quickcraftStatus == 1) {
++                if (slotIndex < 0) return; // Paper
+                 slot = (Slot) this.slots.get(slotIndex);
+                 itemstack = this.getCarried();
+                 if (AbstractContainerMenu.canItemQuickReplace(slot, itemstack, true) && slot.mayPlace(itemstack) && (this.quickcraftType == 2 || itemstack.getCount() > this.quickcraftSlots.size()) && this.canDragTo(slot)) {
+@@ -598,6 +599,7 @@ public abstract class AbstractContainerMenu {
+                 int j2;
+ 
+                 if (actionType == ClickType.SWAP) {
++                    if (slotIndex < 0) return; // Paper
+                     slot2 = (Slot) this.slots.get(slotIndex);
+                     itemstack1 = playerinventory.getItem(button);
+                     itemstack = slot2.getItem();
 diff --git a/src/main/java/net/minecraft/world/item/EndCrystalItem.java b/src/main/java/net/minecraft/world/item/EndCrystalItem.java
 index 5a19875cbc603acea95193d969d2e1dc1e0bfd78..3688e9f8c6c6d1239095e3a87060ccca90386d0c 100644
 --- a/src/main/java/net/minecraft/world/item/EndCrystalItem.java
