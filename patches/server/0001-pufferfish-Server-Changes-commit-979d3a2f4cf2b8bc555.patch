@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 19 Sep 2023 15:22:25 +0800
+Date: Fri, 6 Oct 2023 21:51:09 +0800
 Subject: [PATCH] pufferfish Server Changes commit
- 0020a8bd30741675ac348af30cc50d19d3566cff
+ 979d3a2f4cf2b8bc555276b41ee6645218dc6e14
 
 Pufferfish Utils
 
@@ -61,31 +61,6 @@ and, in my opinion, worth the low risk of minor mob-spawning-related
 inconsistencies.
 
 Disable Paper timings by default
-
-Strip raytracing for EntityLiving#hasLineOfSight
-
-The IBlockAccess#rayTrace method is very wasteful in both allocations,
-and in logic. While EntityLiving#hasLineOfSight provides static
-parameters for collisions with blocks and fluids, the method still does
-a lot of dynamic checks for both of these, which result in extra work.
-As well, since the fluid collision option is set to NONE, the entire
-fluid collision system is completely unneeded, yet used anyways.
-
-Airplane
-Copyright (C) 2020 Technove LLC
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Simpler ShapelessRecipes comparison for Vanilla
 
@@ -226,24 +201,6 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-Skip POI finding if stuck in vehicle
-
-Airplane
-Copyright (C) 2020 Technove LLC
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
 Flare Profiler
 
 Airplane
@@ -291,8 +248,6 @@ Improve container checking with a bitset
 
 Better checking for useless move packets
 
-Patch Paper to use fast item merge raytracing
-
 Use aging cache for biome temperatures
 
 Ensure level height is inlined
@@ -338,10 +293,8 @@ Add option to suppress null ID disconnections
 
 This can help to hide annoying scanning bots from showing up in console.
 
-Add slot sanity checks in container clicks
-
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fb98936bb8a5488db75d676c5bcb4060597fbbf8..e1ef2329e2655c5a06ecae3b2023074ff4ec7dd9 100644
+index 7e0580bbd0a557c7bb269507a99d25db07bf31f1..3d56a06692266b8c9f965eb13a12000c4380e02f 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -52,6 +52,14 @@ dependencies {
@@ -2310,10 +2263,10 @@ index 0000000000000000000000000000000000000000..facd55463d44cb7e3d2ca6892982f549
 +	}
 +}
 diff --git a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-index 019d3bbd78fb0b06861979d223915fedb6c99442..2ba11c304ecea73ad3289b471ff304319a837d45 100644
+index 3bc7230ca62ebe3426da293e436a962bb0134f85..61f31094ae81fb11a2d5b866ae45637614661e6c 100644
 --- a/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
 +++ b/src/main/java/io/papermc/paper/configuration/GlobalConfiguration.java
-@@ -7,6 +7,7 @@ import net.kyori.adventure.text.Component;
+@@ -8,6 +8,7 @@ import net.kyori.adventure.text.Component;
  import net.kyori.adventure.text.format.NamedTextColor;
  import net.minecraft.network.protocol.Packet;
  import net.minecraft.network.protocol.game.ServerboundPlaceRecipePacket;
@@ -2321,7 +2274,7 @@ index 019d3bbd78fb0b06861979d223915fedb6c99442..2ba11c304ecea73ad3289b471ff30431
  import org.checkerframework.checker.nullness.qual.Nullable;
  import org.spongepowered.configurate.objectmapping.ConfigSerializable;
  import org.spongepowered.configurate.objectmapping.meta.Comment;
-@@ -16,6 +17,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
+@@ -17,6 +18,7 @@ import org.spongepowered.configurate.objectmapping.meta.Setting;
  import java.util.List;
  import java.util.Map;
  import java.util.Objects;
@@ -2329,7 +2282,7 @@ index 019d3bbd78fb0b06861979d223915fedb6c99442..2ba11c304ecea73ad3289b471ff30431
  
  @SuppressWarnings({"CanBeFinal", "FieldCanBeLocal", "FieldMayBeFinal", "NotNullFieldNotInitialized", "InnerClassMayBeStatic"})
  public class GlobalConfiguration extends ConfigurationPart {
-@@ -90,6 +92,7 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -91,6 +93,7 @@ public class GlobalConfiguration extends ConfigurationPart {
  
      public class Timings extends ConfigurationPart.Post {
          public boolean enabled = true;
@@ -2337,7 +2290,7 @@ index 019d3bbd78fb0b06861979d223915fedb6c99442..2ba11c304ecea73ad3289b471ff30431
          public boolean verbose = true;
          public String url = "https://timings.aikar.co/";
          public boolean serverNamePrivacy = false;
-@@ -103,6 +106,14 @@ public class GlobalConfiguration extends ConfigurationPart {
+@@ -104,6 +107,14 @@ public class GlobalConfiguration extends ConfigurationPart {
  
          @Override
          public void postProcess() {
@@ -2408,7 +2361,7 @@ index c49802c936ae8e3f4dc1badd98414d96714ecd60..10501842887c1ffdb6bb667480682b71
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 65d947df910d60f478e7a449eb161e5105e2c0c9..3770ced0b227f7eea1f04d6afd5c14331f6a1480 100644
+index fb6cbcc4839aef7dc4bd4a49613f892b07aab353..d60ae9f8d3afe3e996a66331ee510cfa5841388c 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -342,7 +342,7 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -2420,7 +2373,7 @@ index 65d947df910d60f478e7a449eb161e5105e2c0c9..3770ced0b227f7eea1f04d6afd5c1433
          // Paper start - use distance map to optimise entity tracker
          this.playerEntityTrackerTrackMaps = new com.destroystokyo.paper.util.misc.PlayerAreaMap[TRACKING_RANGE_TYPES.length];
          this.entityTrackerTrackRanges = new int[TRACKING_RANGE_TYPES.length];
-@@ -1593,8 +1593,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1596,8 +1596,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
              return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
          }
  
@@ -2449,7 +2402,7 @@ index 65d947df910d60f478e7a449eb161e5105e2c0c9..3770ced0b227f7eea1f04d6afd5c1433
              Iterator iterator = this.entity.getIndirectPassengers().iterator();
  
              while (iterator.hasNext()) {
-@@ -1606,6 +1626,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1609,6 +1629,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
                      i = j;
                  }
              }
@@ -2671,7 +2624,7 @@ index 18aac3da3c88f33b1a71a5920a8daa27e9723913..eac31c3fcc9161711328588ac852fcae
              this.getRandomBlockPosition(j, 0, k, 15, blockposition);
              int normalY = chunk.getHeight(Heightmap.Types.MOTION_BLOCKING, blockposition.getX() & 15, blockposition.getZ() & 15) + 1;
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 3c0651fa5a5db880202c9a3805a6455269c5f16d..776c7df81d2b71a5610fe90475f4e8044850beab 100644
+index ab58827001b3b42e44d7f701c390480fed1fa1f1..6cafc20ce006872bedd28a34db11204c3c1fef58 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1233,6 +1233,7 @@ public class ServerGamePacketListenerImpl implements ServerPlayerConnection, Tic
@@ -2738,7 +2691,7 @@ index 241fec02e6869c638d3a160819b32173a081467b..6a8f9e8f5bf108674c47018def28906e
      public int getContainerSize() {
          return this.container1.getContainerSize() + this.container2.getContainerSize();
 diff --git a/src/main/java/net/minecraft/world/Container.java b/src/main/java/net/minecraft/world/Container.java
-index 04b1531572e8fff1e46fe1c94e7fc863841e0f66..47ddc42f2b63d9d3fae5ae6ea93d418352d76c94 100644
+index aee02acd4b2f2fdcb574c37c077fb57013ccb596..5a1c2d62c0e55c5bf16ca3e208dc486bf3b064b2 100644
 --- a/src/main/java/net/minecraft/world/Container.java
 +++ b/src/main/java/net/minecraft/world/Container.java
 @@ -3,6 +3,8 @@ package net.minecraft.world;
@@ -3022,7 +2975,7 @@ index 9afc81ccb237c3655d64cdbe8a0db9a4d7791043..aa5cec6d56d7a8e80861aa4c9b4a74ca
      private String descriptionId;
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index e11d7283662834047b2ff81a2fd25a4263792deb..e07140ef2f4c5b0019550eb3100c724699e7a05c 100644
+index 78c98f38bc263664ea4cd344670243a7d372885c..d265a32bd273beed0e65e224e1c5f9c0bca7b3fb 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -3083,20 +3036,8 @@ index e11d7283662834047b2ff81a2fd25a4263792deb..e07140ef2f4c5b0019550eb3100c7246
      public boolean onClimbable() {
          if (this.isSpectator()) {
              return false;
-@@ -3651,7 +3677,10 @@ public abstract class LivingEntity extends Entity implements Attackable {
-             Vec3 vec3d1 = new Vec3(entity.getX(), entity.getEyeY(), entity.getZ());
- 
-             // Paper - diff on change - used in CraftLivingEntity#hasLineOfSight(Location) and CraftWorld#lineOfSightExists
--            return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level().clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
-+            // Pufferfish start
-+            //return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level().clip(new ClipContext(vec3d, vec3d1, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
-+            return vec3d1.distanceToSqr(vec3d) > 128D * 128D ? false : this.level().rayTraceDirect(vec3d, vec3d1, net.minecraft.world.phys.shapes.CollisionContext.of(this)) == net.minecraft.world.phys.BlockHitResult.Type.MISS;
-+            // Pufferfish end
-         }
-     }
- 
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index e2a25c29ec74147b3e66aa0b3deb85a8f6ee53a5..f6eb032897c6d5d16ab5c8c287e49e189c24571c 100644
+index a99d737f71277ea3082816c7a7fc47ab3a201d30..7e453b4c49975bb06cb080f3626545286b947ddc 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -218,14 +218,16 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -3169,18 +3110,6 @@ index dd1102d5291ef6f18e82400a6d8a0a376cc071e9..e283eb57c25f7de222f9d09dca851169
      }
  
      @Nullable
-diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
-index d4c91e0a0c64fcb7f1145de3f30134cb1f1f8ee6..fe502445a77afe7e3807afae48d7bf03f370e290 100644
---- a/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
-+++ b/src/main/java/net/minecraft/world/entity/ai/behavior/AcquirePoi.java
-@@ -47,6 +47,7 @@ public class AcquirePoi {
-                         return false;
-                     } else {
-                         mutableLong.setValue(time + 20L + (long)world.getRandom().nextInt(20));
-+                        if (entity.getNavigation().isStuck()) mutableLong.add(200); // Pufferfish - wait an additional 10s to check again if they're stuck
-                         PoiManager poiManager = world.getPoiManager();
-                         long2ObjectMap.long2ObjectEntrySet().removeIf((entry) -> {
-                             return !entry.getValue().isStillValid(time);
 diff --git a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java b/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
 index 646d9a121d908a2fc3e4e302484dd5cd1bfc6804..e546ecdccde352502e26a8668eaaafe048d6e282 100644
 --- a/src/main/java/net/minecraft/world/entity/ai/behavior/VillagerPanicTrigger.java
@@ -3380,27 +3309,6 @@ index 1e07febcf7a3dfb281728cc5e3e4f15dd776d7e0..c65ab566c6241dd6a44bd11a449ef0c4
      @Override
      protected SoundEvent getAmbientSound() {
          return SoundEvents.WITHER_AMBIENT;
-diff --git a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-index 52196431a6538872755344859a0454a0e50c3b6e..80fc7918cb294b0d88a293bd6a920441cb55c3ad 100644
---- a/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-+++ b/src/main/java/net/minecraft/world/entity/item/ItemEntity.java
-@@ -270,10 +270,16 @@ public class ItemEntity extends Entity implements TraceableEntity {
-                 if (entityitem.isMergable()) {
-                     // Paper Start - Fix items merging through walls
-                         if (this.level().paperConfig().fixes.fixItemsMergingThroughWalls) {
-+                            // Pufferfish start - skip the allocations
-+                            /*
-                             net.minecraft.world.level.ClipContext rayTrace = new net.minecraft.world.level.ClipContext(this.position(), entityitem.position(),
-                                 net.minecraft.world.level.ClipContext.Block.COLLIDER, net.minecraft.world.level.ClipContext.Fluid.NONE, this);
-                             net.minecraft.world.phys.BlockHitResult rayTraceResult = this.level().clip(rayTrace);
-                             if (rayTraceResult.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK) continue;
-+                             */
-+                            if (level().rayTraceDirect(this.position(), entityitem.position(), net.minecraft.world.phys.shapes.CollisionContext.of(this)) ==
-+                                net.minecraft.world.phys.HitResult.Type.BLOCK) continue;
-+                            // Pufferfish end
-                         }
-                     // Paper End
-                     this.tryToMerge(entityitem);
 diff --git a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java b/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
 index b62457313a1e30aad0c5313d608667b5d3811455..410f10ad93935d1c078447a4596023f367a8e9b7 100644
 --- a/src/main/java/net/minecraft/world/entity/monster/EnderMan.java
@@ -3542,7 +3450,7 @@ index 96d664c28738d6090f7067761c2978dd1aa0fd0e..b1c24a02b87aca7b180a6efbce177f23
          return false;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index 1b7cf6d06bdf36f146656727511a461f2520762e..459aee61b519a40d9136546c0d9356562f5757c8 100644
+index a90317100d32974e481e14476843f66997a2cf3a..cd0629581bae5f805842157af36c2d838e01bee3 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -44,6 +44,36 @@ public abstract class Projectile extends Entity implements TraceableEntity {
@@ -3629,26 +3537,6 @@ index 272095d7a09ab41227d741172735f66fd2798ce1..47692d6db44b58bb724c87128279bd0d
          this.readChestVehicleSaveData(nbt);
      }
  
-diff --git a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-index 706b354ac9a1a6a4a1e61b2a109180d1dd22bbbd..71b7a091e56dd68da280d13318a393170967b042 100644
---- a/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-+++ b/src/main/java/net/minecraft/world/inventory/AbstractContainerMenu.java
-@@ -423,6 +423,7 @@ public abstract class AbstractContainerMenu {
-                     this.resetQuickCraft();
-                 }
-             } else if (this.quickcraftStatus == 1) {
-+                if (slotIndex < 0) return; // Paper
-                 slot = (Slot) this.slots.get(slotIndex);
-                 itemstack = this.getCarried();
-                 if (AbstractContainerMenu.canItemQuickReplace(slot, itemstack, true) && slot.mayPlace(itemstack) && (this.quickcraftType == 2 || itemstack.getCount() > this.quickcraftSlots.size()) && this.canDragTo(slot)) {
-@@ -598,6 +599,7 @@ public abstract class AbstractContainerMenu {
-                 int j2;
- 
-                 if (actionType == ClickType.SWAP) {
-+                    if (slotIndex < 0) return; // Paper
-                     slot2 = (Slot) this.slots.get(slotIndex);
-                     itemstack1 = playerinventory.getItem(button);
-                     itemstack = slot2.getItem();
 diff --git a/src/main/java/net/minecraft/world/item/EndCrystalItem.java b/src/main/java/net/minecraft/world/item/EndCrystalItem.java
 index 5a19875cbc603acea95193d969d2e1dc1e0bfd78..3688e9f8c6c6d1239095e3a87060ccca90386d0c 100644
 --- a/src/main/java/net/minecraft/world/item/EndCrystalItem.java
@@ -3709,29 +3597,8 @@ index 2e60bdc44c33d434bfd9ca5bf8f75de799c6768c..565318c2afaa1661ed9963453a6354df
          StackedContents autorecipestackmanager = new StackedContents();
          autorecipestackmanager.initialize(this); // Paper - better exact choice recipes
          int i = 0;
-diff --git a/src/main/java/net/minecraft/world/level/BlockGetter.java b/src/main/java/net/minecraft/world/level/BlockGetter.java
-index 0e8746759752b692668886370181aa5db1fd0bb0..58e5ce2afabf480f5dfd9adf43f8fc12666861c6 100644
---- a/src/main/java/net/minecraft/world/level/BlockGetter.java
-+++ b/src/main/java/net/minecraft/world/level/BlockGetter.java
-@@ -68,6 +68,16 @@ public interface BlockGetter extends LevelHeightAccessor {
-         });
-     }
- 
-+    // Pufferfish start - broken down variant of below rayTraceBlock, used by World#rayTraceDirect
-+    default net.minecraft.world.phys.BlockHitResult.Type rayTraceBlockDirect(Vec3 vec3d, Vec3 vec3d1, BlockPos blockposition, BlockState iblockdata, net.minecraft.world.phys.shapes.CollisionContext voxelshapecoll) {
-+        if (iblockdata.isAir()) return null; // Tuinity - optimise air cases
-+        VoxelShape voxelshape = ClipContext.Block.COLLIDER.get(iblockdata, this, blockposition, voxelshapecoll);
-+        net.minecraft.world.phys.BlockHitResult movingobjectpositionblock = this.clipWithInteractionOverride(vec3d, vec3d1, blockposition, voxelshape, iblockdata);
-+
-+        return movingobjectpositionblock == null ? null : movingobjectpositionblock.getType();
-+    }
-+    // Pufferfish end
-+
-     // CraftBukkit start - moved block handling into separate method for use by Block#rayTrace
-     default BlockHitResult clip(ClipContext raytrace1, BlockPos blockposition) {
-             // Paper start - Prevent raytrace from loading chunks
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index f39ab10c5b0b8d86b579a5b683491204c51db70b..d8d4a1ca2eb062af8b2de4ab44503983587cdd77 100644
+index 7d54c79f46f99f5500e9cb1f486037cafb27ee3a..21c11ff8d5ae9bf97dfcf3118cabe678deb4c064 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -273,6 +273,17 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -3766,99 +3633,7 @@ index f39ab10c5b0b8d86b579a5b683491204c51db70b..d8d4a1ca2eb062af8b2de4ab44503983
          this.dimension = resourcekey;
          this.isClientSide = flag;
          if (dimensionmanager.coordinateScale() != 1.0D) {
-@@ -412,6 +430,91 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
-         return null;
-     }
- 
-+    // Pufferfish start - broken down method of raytracing for EntityLiving#hasLineOfSight, replaces IBlockAccess#rayTrace(RayTrace)
-+    public net.minecraft.world.phys.BlockHitResult.Type rayTraceDirect(net.minecraft.world.phys.Vec3 vec3d, net.minecraft.world.phys.Vec3 vec3d1, net.minecraft.world.phys.shapes.CollisionContext voxelshapecoll) {
-+        // most of this code comes from IBlockAccess#a(RayTrace, BiFunction, Function), but removes the needless functions
-+        if (vec3d.equals(vec3d1)) {
-+            return net.minecraft.world.phys.BlockHitResult.Type.MISS;
-+        }
-+
-+        double endX = Mth.lerp(-1.0E-7D, vec3d1.x, vec3d.x);
-+        double endY = Mth.lerp(-1.0E-7D, vec3d1.y, vec3d.y);
-+        double endZ = Mth.lerp(-1.0E-7D, vec3d1.z, vec3d.z);
-+
-+        double startX = Mth.lerp(-1.0E-7D, vec3d.x, vec3d1.x);
-+        double startY = Mth.lerp(-1.0E-7D, vec3d.y, vec3d1.y);
-+        double startZ = Mth.lerp(-1.0E-7D, vec3d.z, vec3d1.z);
-+
-+        int currentX = Mth.floor(startX);
-+        int currentY = Mth.floor(startY);
-+        int currentZ = Mth.floor(startZ);
-+
-+        BlockPos.MutableBlockPos currentBlock = new BlockPos.MutableBlockPos(currentX, currentY, currentZ);
-+
-+        LevelChunk chunk = this.getChunkIfLoaded(currentBlock);
-+        if (chunk == null) {
-+            return net.minecraft.world.phys.BlockHitResult.Type.MISS;
-+        }
-+
-+        net.minecraft.world.phys.BlockHitResult.Type initialCheck = this.rayTraceBlockDirect(vec3d, vec3d1, currentBlock, chunk.getBlockState(currentBlock), voxelshapecoll);
-+
-+        if (initialCheck != null) {
-+            return initialCheck;
-+        }
-+
-+        double diffX = endX - startX;
-+        double diffY = endY - startY;
-+        double diffZ = endZ - startZ;
-+
-+        int xDirection = Mth.sign(diffX);
-+        int yDirection = Mth.sign(diffY);
-+        int zDirection = Mth.sign(diffZ);
-+
-+        double normalizedX = xDirection == 0 ? Double.MAX_VALUE : (double) xDirection / diffX;
-+        double normalizedY = yDirection == 0 ? Double.MAX_VALUE : (double) yDirection / diffY;
-+        double normalizedZ = zDirection == 0 ? Double.MAX_VALUE : (double) zDirection / diffZ;
-+
-+        double normalizedXDirection = normalizedX * (xDirection > 0 ? 1.0D - Mth.frac(startX) : Mth.frac(startX));
-+        double normalizedYDirection = normalizedY * (yDirection > 0 ? 1.0D - Mth.frac(startY) : Mth.frac(startY));
-+        double normalizedZDirection = normalizedZ * (zDirection > 0 ? 1.0D - Mth.frac(startZ) : Mth.frac(startZ));
-+
-+        net.minecraft.world.phys.BlockHitResult.Type result;
-+
-+        do {
-+            if (normalizedXDirection > 1.0D && normalizedYDirection > 1.0D && normalizedZDirection > 1.0D) {
-+                return net.minecraft.world.phys.BlockHitResult.Type.MISS;
-+            }
-+
-+            if (normalizedXDirection < normalizedYDirection) {
-+                if (normalizedXDirection < normalizedZDirection) {
-+                    currentX += xDirection;
-+                    normalizedXDirection += normalizedX;
-+                } else {
-+                    currentZ += zDirection;
-+                    normalizedZDirection += normalizedZ;
-+                }
-+            } else if (normalizedYDirection < normalizedZDirection) {
-+                currentY += yDirection;
-+                normalizedYDirection += normalizedY;
-+            } else {
-+                currentZ += zDirection;
-+                normalizedZDirection += normalizedZ;
-+            }
-+
-+            currentBlock.set(currentX, currentY, currentZ);
-+            if (chunk.getPos().x != currentBlock.getX() >> 4 || chunk.getPos().z != currentBlock.getZ() >> 4) {
-+                chunk = this.getChunkIfLoaded(currentBlock);
-+                if (chunk == null) {
-+                    return net.minecraft.world.phys.BlockHitResult.Type.MISS;
-+                }
-+            }
-+            result = this.rayTraceBlockDirect(vec3d, vec3d1, currentBlock, chunk.getBlockState(currentBlock), voxelshapecoll);
-+        } while (result == null);
-+
-+        return result;
-+    }
-+    // Pufferfish end
-+
-     public boolean isInWorldBounds(BlockPos pos) {
-         return pos.isInsideBuildHeightAndWorldBoundsHorizontal(this); // Paper - use better/optimized check
-     }
-@@ -919,13 +1022,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1003,13 +1021,13 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
          try {
              tickConsumer.accept(entity);
              MinecraftServer.getServer().executeMidTickTasks(); // Paper - execute chunk tasks mid tick
@@ -3874,7 +3649,7 @@ index f39ab10c5b0b8d86b579a5b683491204c51db70b..d8d4a1ca2eb062af8b2de4ab44503983
              // Paper end
          }
      }
-@@ -1380,6 +1483,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -1464,6 +1482,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      }
  
      public ProfilerFiller getProfiler() {
@@ -4428,10 +4203,10 @@ index ebe65474a4a05ff1637d7f37ebcfe690af59def5..42142c512b12e5b269c19f1e821c50e7
  
      @Nullable
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index ec4b73321205b472f19fa5bd4ad95893020d1340..a2005f1fd4bc351e7f15674c7bb6257799dab1c0 100644
+index 74d06790de674cbd230a0b14ac9a6b614c9f84ef..c69421e2ff9c7686f5f7763779659bc162ab5615 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1140,6 +1140,11 @@ public final class CraftServer implements Server {
+@@ -1120,6 +1120,11 @@ public final class CraftServer implements Server {
                  plugin.getPluginMeta().getDisplayName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));
@@ -4493,7 +4268,7 @@ index d96399e9bf1a58db5a4a22e58abb99e7660e0694..eb19f679ee498e51d02fe9a961cf0269
  
      @Override
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
-index e948ec5a573b22645664eb53bc3e9932246544e4..e3845dc3357bbb74885ae3a1a08525adde581235 100644
+index e8e93538dfd71de86515d9405f728db1631e949a..3dff02fd97f001508e2f81192817bf1b0ef92446 100644
 --- a/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
 +++ b/src/main/java/org/bukkit/craftbukkit/util/ServerShutdownThread.java
 @@ -11,6 +11,7 @@ public class ServerShutdownThread extends Thread {

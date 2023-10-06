@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Fri, 6 Oct 2023 22:45:46 +0800
+Subject: [PATCH] fix rebuild issue (temporarily)
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 1e79dc8325cf352cb23edc5707c9c834cf66c3f2..77e16c3f86c18cfdaf21918f8725a15edb942542 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -223,7 +223,5 @@ val runtimeClasspathForRunDev = sourceSets.main.flatMap { src ->
+ }
+ tasks.registerRunTask("runDev") {
+     description = "Spin up a non-relocated Mojang-mapped test server"
+-    classpath(tasks.filterProjectDir.flatMap { it.outputJar })
+-    classpath(runtimeClasspathForRunDev)
+-    jvmArgs("-DPaper.isRunDev=true")
++    classpath(sourceSets.main.map { it.runtimeClasspath })
+ }
