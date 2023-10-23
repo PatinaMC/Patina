@@ -173,7 +173,7 @@ index 50ed7cfe1ecef6d075ba484804827cec83ba2bf2..54f9cd80ac925aa95ff4fdb4d52cbcc2
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + pos + ", status: " + this.generatingStatus + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
              hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index 20122bf191ebc74c223310aea1f004fdbb163e57..6f8e709d893157657663c725b7fd4692295f5bdf 100644
+index 20122bf191ebc74c223310aea1f004fdbb163e57..380de66e13d2964adf2acf8bd12ab1a5ea7355d1 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 @@ -51,6 +51,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
@@ -193,7 +193,7 @@ index 20122bf191ebc74c223310aea1f004fdbb163e57..6f8e709d893157657663c725b7fd4692
 +            long id = packet.getId();
 +            if (keepAlives.size() > 0 && keepAlives.contains(id)) {
 +                int ping = (int) (Util.getMillis() - id);
-+                player.latency = (player.latency * 3 + ping) / 4;
++                latency = (latency * 3 + ping) / 4;
 +                keepAlives.clear(); // we got a valid response, lets roll with it and forget the rest
 +            }
 +        } else
