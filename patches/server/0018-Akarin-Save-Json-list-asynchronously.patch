@@ -9,7 +9,7 @@ Original project: https://github.com/Akarin-project/Akarin
 Original project: https://github.com/Winds-Studio/Leaf
 
 diff --git a/src/main/java/net/minecraft/server/players/StoredUserList.java b/src/main/java/net/minecraft/server/players/StoredUserList.java
-index 9e8112fbc40a1d89c0f73ea4452e0fa1bb459bf4..84bdf3da547ffdae835967c25717d8da376f6683 100644
+index 09fc086548b9d0f97849f56f41e3a5be87f5091a..74812c63861e9f76339d3d267c6e2dd21ca5ff0f 100644
 --- a/src/main/java/net/minecraft/server/players/StoredUserList.java
 +++ b/src/main/java/net/minecraft/server/players/StoredUserList.java
 @@ -25,6 +25,7 @@ import java.util.Objects;
@@ -33,20 +33,27 @@ index 9e8112fbc40a1d89c0f73ea4452e0fa1bb459bf4..84bdf3da547ffdae835967c25717d8da
 +            JsonArray jsonarray = new JsonArray();
 +            Stream<JsonObject> stream = this.map.values().stream().map((jsonlistentry) -> { // CraftBukkit - decompile error
 +                JsonObject jsonobject = new JsonObject();
-+
+ 
+-            Objects.requireNonNull(jsonlistentry);
+-            return (JsonObject) Util.make(jsonobject, jsonlistentry::serialize);
+-        });
 +                Objects.requireNonNull(jsonlistentry);
 +                return (JsonObject) Util.make(jsonobject, jsonlistentry::serialize);
 +            });
-+
+ 
+-        Objects.requireNonNull(jsonarray);
+-        stream.forEach(jsonarray::add);
+-        BufferedWriter bufferedwriter = Files.newWriter(this.file, StandardCharsets.UTF_8);
 +            Objects.requireNonNull(jsonarray);
 +            stream.forEach(jsonarray::add);
 +            try {
 +                BufferedWriter bufferedwriter = Files.newWriter(this.file, StandardCharsets.UTF_8);
  
--            Objects.requireNonNull(jsonlistentry);
--            return (JsonObject) Util.make(jsonobject, jsonlistentry::serialize);
--        });
-+                try {
+-        try {
+-            StoredUserList.GSON.toJson(jsonarray, bufferedwriter);
+-        } catch (Throwable throwable) {
+-            if (bufferedwriter != null) {
+                 try {
 +                    StoredUserList.GSON.toJson(jsonarray, bufferedwriter);
 +                } catch (Throwable throwable) {
 +                    if (bufferedwriter != null) {
@@ -56,18 +63,10 @@ index 9e8112fbc40a1d89c0f73ea4452e0fa1bb459bf4..84bdf3da547ffdae835967c25717d8da
 +                            throwable.addSuppressed(throwable1);
 +                        }
 +                    }
- 
--        Objects.requireNonNull(jsonarray);
--        stream.forEach(jsonarray::add);
--        BufferedWriter bufferedwriter = Files.newWriter(this.file, StandardCharsets.UTF_8);
++
 +                    throw throwable;
 +                }
- 
--        try {
--            StoredUserList.GSON.toJson(jsonarray, bufferedwriter);
--        } catch (Throwable throwable) {
--            if (bufferedwriter != null) {
--                try {
++
 +                if (bufferedwriter != null) {
                      bufferedwriter.close();
 -                } catch (Throwable throwable1) {

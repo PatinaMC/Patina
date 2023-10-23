@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 6 Oct 2023 21:51:09 +0800
+Date: Mon, 23 Oct 2023 00:18:56 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 979d3a2f4cf2b8bc555276b41ee6645218dc6e14
+ 0ba7617d7efe39b7e15d5b080e9df2a512144fb0
 
 Add Sentry
 
@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index aed834334385ff3038ae69f3f34d129ad2507960..1ae1907f94a19c37b5820cfb3e9df3bd6bb1a49d 100644
+index 639651972fddce4dff63a0f0a7e566a15b9e2dd6..0b87f34c2bb5a2f72124912a62ea393b19b1f3a3 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -46,6 +46,7 @@ dependencies {
