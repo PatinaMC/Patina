@@ -10,6 +10,7 @@ You can find explanation of configuration files on the [wiki](https://github.com
 
 ## Download
 
++ [1.20.2](https://github.com/PatinaMC/Patina/raw/releases/1.20.2/patina-paperclip-1.20.2-R0.1-SNAPSHOT-reobf.jar)
 + [1.20.1](https://github.com/PatinaMC/Patina/raw/releases/1.20.1/patina-paperclip-1.20.1-R0.1-SNAPSHOT-reobf.jar)
 + [1.20.1, with all Purpur patches](https://github.com/PatinaMC/Patina/raw/releasespurpur/1.20.1/patina-paperclip-1.20.1-R0.1-SNAPSHOT-reobf.jar)
 
