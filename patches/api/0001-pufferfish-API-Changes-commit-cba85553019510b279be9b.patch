@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 23 Oct 2023 00:18:56 +0800
+Date: Mon, 6 Nov 2023 21:40:21 +0800
 Subject: [PATCH] pufferfish API Changes commit
- 0ba7617d7efe39b7e15d5b080e9df2a512144fb0
+ cba85553019510b279be9be037128b4f892098b8
 
 Add Sentry
 
@@ -482,10 +482,10 @@ index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..301e82369603f3dd6e6c1bd380da4bac
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee1b8df621 100644
+index f9b57b872780aa6b9b959494874b57c7a8ff0c53..90953bfc81168068a281be4d2d3942d5e7dd69ff 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -48,6 +48,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -50,6 +50,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
      private io.papermc.paper.plugin.provider.classloader.PluginClassLoaderGroup classLoaderGroup; // Paper
      public io.papermc.paper.plugin.provider.entrypoint.DependencyContext dependencyContext; // Paper
  
@@ -494,7 +494,7 @@ index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee
      static {
          ClassLoader.registerAsParallelCapable();
      }
-@@ -183,6 +185,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -197,6 +199,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
          throw new ClassNotFoundException(name);
      }
  
@@ -502,7 +502,7 @@ index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee
      @Override
      protected Class<?> findClass(String name) throws ClassNotFoundException {
          if (name.startsWith("org.bukkit.") || name.startsWith("net.minecraft.")) {
-@@ -190,7 +193,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -204,7 +207,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
          }
          Class<?> result = classes.get(name);
  
@@ -511,7 +511,7 @@ index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee
              String path = name.replace('.', '/').concat(".class");
              JarEntry entry = jar.getJarEntry(path);
  
-@@ -237,6 +240,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -251,6 +254,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
              this.setClass(name, result); // Paper
          }
  
@@ -519,7 +519,7 @@ index 13da387d3b59bc67c0d73e3fbd3a4034b1281527..7572a0bf6614b02be3cbccc7b86e52ee
          return result;
      }
  
-@@ -251,6 +255,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -265,6 +269,7 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
              // Paper end
              super.close();
          } finally {

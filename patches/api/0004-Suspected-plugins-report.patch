@@ -110,10 +110,10 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 7572a0bf6614b02be3cbccc7b86e52ee1b8df621..222bdd3584e647c49c8dfe92cacc2f37905a82e0 100644
+index 90953bfc81168068a281be4d2d3942d5e7dd69ff..74c01f29ac3d0a8fb5c047f1dea54d77425ce0a4 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-@@ -309,4 +309,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
+@@ -323,4 +323,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
      }
  
      // Paper end
@@ -239,7 +239,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 06e96e5c98f1a7a68c8b4b5e527314c1aa774e38..b7da259ab119bcb9e19bdd1a497a49381a4454ef 100644
+index 88f1ca89fa640a686231b8eec87e70419b2d73ef..bf20978ae3cbd436464b6db1137cfe195e843aa7 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {
