@@ -47,7 +47,7 @@ index b2f08889139dc447f7071f1c81456035bf8de31e..4317aee5a31627e48e1f759e653b9db4
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index 765ee7f78532a363813286ef7db2a7e48605cb06..2a1c5b83e97028a7ac44b34c88bef838d33977ca 100644
+index 02364a148b347e3669275553004391e31d77c0b5..c3b423fe8a12c1e9d4eccd24296a8cfa0b86f8dd 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -70,6 +70,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -55,11 +55,11 @@ index 765ee7f78532a363813286ef7db2a7e48605cb06..2a1c5b83e97028a7ac44b34c88bef838
  
      public void unpackLootTable(@Nullable Player player) {
 +        if (player == null) return; // EMC
-         if (this.lootableData.shouldReplenish(player) && this.level.getServer() != null) { // Paper
+         if (this.level != null && this.lootableData.shouldReplenish(player) && this.level.getServer() != null) { // Paper - don't unpack loot table if not in world
              LootTable lootTable = this.level.getServer().getLootData().getLootTable(this.lootTable);
              if (player instanceof ServerPlayer) {
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 5e350fa39f47d54f6048ea89c1317759f122b8ae..2897cb8a23dd481e54e43fe9ddc30b30cecf4bad 100644
+index c3060d1d4d0caf369c6ab516cb424f45eb851019..6bf3a0ea87af0be84c3b1e0bd2ccdd52a7caf5d4 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 @@ -407,7 +407,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
