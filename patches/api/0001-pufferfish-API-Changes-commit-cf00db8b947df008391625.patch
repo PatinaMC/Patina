@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Mon, 6 Nov 2023 21:40:21 +0800
+Date: Wed, 27 Dec 2023 00:32:40 +0800
 Subject: [PATCH] pufferfish API Changes commit
- cba85553019510b279be9be037128b4f892098b8
+ cf00db8b947df008391625a2fb559d8077afde6d
 
 Add Sentry
 
@@ -22,18 +22,18 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 639651972fddce4dff63a0f0a7e566a15b9e2dd6..0b87f34c2bb5a2f72124912a62ea393b19b1f3a3 100644
+index bf01892c248b988531d21d9fb0f74d0adf2205ac..80833c13a2d19e31d6f648e7ef5b3456025e767e 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -46,6 +46,7 @@ dependencies {
+@@ -51,6 +51,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
      api("org.apache.logging.log4j:log4j-api:$log4jVersion")
      api("org.slf4j:slf4j-api:$slf4jVersion")
 +    api("io.sentry:sentry:5.4.0") // Pufferfish
  
-     implementation("org.ow2.asm:asm:9.4")
-     implementation("org.ow2.asm:asm-commons:9.4")
-@@ -89,6 +90,13 @@ val generateApiVersioningFile by tasks.registering {
+     implementation("org.ow2.asm:asm:9.5")
+     implementation("org.ow2.asm:asm-commons:9.5")
+@@ -109,6 +110,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  
@@ -391,7 +391,7 @@ index 0000000000000000000000000000000000000000..ae2464920c9412ac90b819a540ee58be
 +	
 +}
 diff --git a/src/main/java/org/bukkit/map/MapPalette.java b/src/main/java/org/bukkit/map/MapPalette.java
-index 3a9aaca2e76411a9c27f9f5e0f22d060d5a66d06..9584e245144b561b4f6745b2f26a4f69a6f92891 100644
+index c80faa079eca1564847070f0338fc98024639829..e632d51d3487eb4807243b6705999ad124466bf5 100644
 --- a/src/main/java/org/bukkit/map/MapPalette.java
 +++ b/src/main/java/org/bukkit/map/MapPalette.java
 @@ -1,6 +1,7 @@
