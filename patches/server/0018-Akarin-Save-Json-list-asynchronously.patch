@@ -9,7 +9,7 @@ Original project: https://github.com/Akarin-project/Akarin
 Original project: https://github.com/Winds-Studio/Leaf
 
 diff --git a/src/main/java/net/minecraft/server/players/StoredUserList.java b/src/main/java/net/minecraft/server/players/StoredUserList.java
-index 665120a62525f56912263a3e1b6f12f6c3e15dec..96f43abadbfb96834945166a25a286564f6273b8 100644
+index 35f973cc2c0989256fa21abaf0327c2f36dbe4c9..e9fd7ef5365c051686896a2f986b02dfd110f2b3 100644
 --- a/src/main/java/net/minecraft/server/players/StoredUserList.java
 +++ b/src/main/java/net/minecraft/server/players/StoredUserList.java
 @@ -23,6 +23,7 @@ import java.util.Objects;
@@ -20,7 +20,7 @@ index 665120a62525f56912263a3e1b6f12f6c3e15dec..96f43abadbfb96834945166a25a28656
  import net.minecraft.util.GsonHelper;
  import org.slf4j.Logger;
  
-@@ -126,37 +127,43 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
+@@ -103,37 +104,43 @@ public abstract class StoredUserList<K, V extends StoredUserEntry<K>> {
      }
  
      public void save() throws IOException {

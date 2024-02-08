@@ -293,15 +293,15 @@ index 0000000000000000000000000000000000000000..2d79932dbd1fc386a94b8d6ea3526934
 +    }
 +}
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index b2b804e1763c1af6c6384364c205ff9fa440a014..0110a7fcaa2802dba5f0d11047adc4d86b60050e 100644
+index b34ec447a95e852fcc2cc3e8e2a890ddc8e5ff47..888913eff1a62b7f3b689ba64ce5630a20737897 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -120,9 +120,9 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      public static final int TICKS_PER_DAY = 24000;
      public static final int MAX_ENTITY_SPAWN_Y = 20000000;
      public static final int MIN_ENTITY_SPAWN_Y = -20000000;
--    protected final List<TickingBlockEntity> blockEntityTickers = Lists.newArrayList(); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper
-+    protected final List<TickingBlockEntity> blockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); public final int getTotalTileEntityTickers() { return this.blockEntityTickers.size(); } // Paper // Jettpack - lithium: hashed_list
+-    public final List<TickingBlockEntity> blockEntityTickers = Lists.newArrayList(); // Paper - public
++    public final List<TickingBlockEntity> blockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); // Paper - public // Jettpack - lithium: hashed_list
      protected final NeighborUpdater neighborUpdater;
 -    private final List<TickingBlockEntity> pendingBlockEntityTickers = Lists.newArrayList();
 +    private final List<TickingBlockEntity> pendingBlockEntityTickers = me.jellysquid.mods.lithium.common.util.collections.HashedList.wrapper(Lists.newArrayList()); // Jettpack - lithium: hashed_list

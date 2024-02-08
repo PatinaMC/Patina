@@ -20,7 +20,7 @@ Don't trigger Lootable Refresh for non player interaction
 Do not process chat/commands before player has joined
 
 diff --git a/src/main/java/net/minecraft/server/commands/GiveCommand.java b/src/main/java/net/minecraft/server/commands/GiveCommand.java
-index d601d287e94a59ff93b8a83a44dac02544d211df..ffa40e12d6750b982828cee38ccaeb14c7ab0ff5 100644
+index 1b459a8ee8a6bc039e742d65796bc76660a1c765..f459da26b77e8c10337730738ee878cba77501df 100644
 --- a/src/main/java/net/minecraft/server/commands/GiveCommand.java
 +++ b/src/main/java/net/minecraft/server/commands/GiveCommand.java
 @@ -59,6 +59,7 @@ public class GiveCommand {
@@ -30,7 +30,7 @@ index d601d287e94a59ff93b8a83a44dac02544d211df..ffa40e12d6750b982828cee38ccaeb14
 +                    if (true) { continue; } // EMC - never drop items
                      if (flag && itemstack1.isEmpty()) {
                          itemstack1.setCount(1);
-                         entityitem = entityplayer.drop(itemstack1, false, false, false); // SPIGOT-2942: Add boolean to call event
+                         entityitem = entityplayer.drop(itemstack1, false, false, false); // CraftBukkit - SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 index b2f08889139dc447f7071f1c81456035bf8de31e..4317aee5a31627e48e1f759e653b9db4b8f9b7e8 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
@@ -47,7 +47,7 @@ index b2f08889139dc447f7071f1c81456035bf8de31e..4317aee5a31627e48e1f759e653b9db4
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index 1436fdbe31c8cdf05ac56f20224fe91de4b1c0c3..909bc540bfb7b8f638613c070ac97d1eb4faa882 100644
+index b41635dd0569ff7df909df492d3e850aef7214be..cac943ffca45def34ac4d88e3bb975cdf2c471b7 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -68,6 +68,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -59,10 +59,10 @@ index 1436fdbe31c8cdf05ac56f20224fe91de4b1c0c3..909bc540bfb7b8f638613c070ac97d1e
          net.minecraft.world.level.Level level = this.getLevel();
          BlockPos blockPos = this.getBlockPos();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index e1fad381b861471a17529c246bb8a4a9c7646420..1fad4e8ccd73946fa5b17caba644354df37e7459 100644
+index a139601888b88e8580bdb9c2469386a94abae975..9977403dcc823bd8e637a47e1d01fdb474e787e3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -416,7 +416,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -415,7 +415,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 27 Dec 2023 00:32:40 +0800
+Date: Tue, 6 Feb 2024 15:43:40 +1100
 Subject: [PATCH] pufferfish API Changes commit
- cf00db8b947df008391625a2fb559d8077afde6d
+ f5fa99a04ddcc3424bb0fbeea74033f0e5e651a2
 
 Add Sentry
 
@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index bf01892c248b988531d21d9fb0f74d0adf2205ac..80833c13a2d19e31d6f648e7ef5b3456025e767e 100644
+index 50dd795c67557c7d2668068af0bba87a1ec8dc43..28a3ee2f2df6f93a894793abc03d357a9010a399 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -51,6 +51,7 @@ dependencies {
@@ -482,7 +482,7 @@ index eaefbb00e9993d54906cc8cf35cf753c0d6c7707..301e82369603f3dd6e6c1bd380da4bac
  
              if (cloader instanceof PluginClassLoader) {
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index f9b57b872780aa6b9b959494874b57c7a8ff0c53..90953bfc81168068a281be4d2d3942d5e7dd69ff 100644
+index 7e4f7cb2afbc145e532285c793573ad107bc3033..12449e18180d604e9cbbc744da74a8b222a18e1f 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -50,6 +50,8 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
