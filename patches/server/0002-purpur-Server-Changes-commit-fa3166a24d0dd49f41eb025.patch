@@ -82,7 +82,7 @@ index b7f338e982d0dcab99137ab6dc200b82ac6b7cba..32f355b1b33cf2b7b7a276fb0fd98314
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index cefc05ddb198bff00924f038b39195a5b9ccb05d..e8b77389e8766baabbe6c4ccb1befd95c388fc03 100644
+index 3f77a3fac2db453b9036597e4fdfee20a574b2b8..14d7deff0321890d29f5615bc5384e50b45da37e 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -308,6 +308,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -134,7 +134,7 @@ index c5f92c80d7ca1e1c7f5b9304a5a1173ebfd9c269..1fbfe61b3d7fc372f044d2e9f3500d66
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // Paper - init PaperBrigadierProvider
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 0dba30c41affafe7b1d585b515925043b37712fa..4b2fc6b8786524496455d13bca7260bdc75d66e4 100644
+index 58591bf2f63b9c5e97d9ce4188dff3366968a178..b19979b88db604d54a7f7255bbac65d1deb90dab 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1549,6 +1549,7 @@ public class ServerPlayer extends Player {
@@ -221,7 +221,7 @@ index e5006e7672ba79ed4bcf2c4173c5a9ed4c68395b..6338c52e0082d36d3b80038fdb44abf2
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index e0ee45036b9bf14a6e2013fe291cde0402b85b1f..a5342312274c7b1de695fabefa59c00a671450ae 100644
+index 91feb12732564c90656da487664dbc12e55397fc..6649c61416db1100a5e68356702b668a14fe08a6 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1166,6 +1166,7 @@ public abstract class PlayerList {
@@ -245,10 +245,10 @@ index 4103ddf16164e3992fef0765d368282572537e29..a0cb49233b1dbf53ce9d1bcc52b89678
                  } else {
                      handler.accept((RecipeHolder) optional.get());
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index c10efc14ca83f07b27a2f12776ab2fd2a953c5a1..b34ec447a95e852fcc2cc3e8e2a890ddc8e5ff47 100644
+index fe063e4c3ff0b20f3d0c2c92eebdaf0101bac7d7..dd35f4838fde1a5f2501549e18e60b4becba9a3b 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
-@@ -178,6 +178,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -173,6 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      // Paper end - add paper world config
  
      public final com.destroystokyo.paper.antixray.ChunkPacketBlockController chunkPacketBlockController; // Paper - Anti-Xray
@@ -256,7 +256,7 @@ index c10efc14ca83f07b27a2f12776ab2fd2a953c5a1..b34ec447a95e852fcc2cc3e8e2a890dd
      public final co.aikar.timings.WorldTimingsHandler timings; // Paper
      public static BlockPos lastPhysicsProblem; // Spigot
      private org.spigotmc.TickLimiter entityLimiter;
-@@ -217,6 +218,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
+@@ -212,6 +213,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
      protected Level(WritableLevelData worlddatamutable, ResourceKey<Level> resourcekey, RegistryAccess iregistrycustom, Holder<DimensionType> holder, Supplier<ProfilerFiller> supplier, boolean flag, boolean flag1, long i, int j, org.bukkit.generator.ChunkGenerator gen, org.bukkit.generator.BiomeProvider biomeProvider, org.bukkit.World.Environment env, java.util.function.Function<org.spigotmc.SpigotWorldConfig, io.papermc.paper.configuration.WorldConfiguration> paperWorldConfigCreator, java.util.concurrent.Executor executor) { // Paper - create paper world config; Async-Anti-Xray: Pass executor
          this.spigotConfig = new org.spigotmc.SpigotWorldConfig(((net.minecraft.world.level.storage.PrimaryLevelData) worlddatamutable).getLevelName()); // Spigot
          this.paperConfig = paperWorldConfigCreator.apply(this.spigotConfig); // Paper - create paper world config
@@ -265,7 +265,7 @@ index c10efc14ca83f07b27a2f12776ab2fd2a953c5a1..b34ec447a95e852fcc2cc3e8e2a890dd
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
-index 979a8f472f866130a3abb10f535df757eaa50c20..b4af974854ba9dfd52f3d0c2eca984c01a9ab892 100644
+index 927c7ea03560be0c86884cec70ee8e408e66cb07..86e137a2e55b43c65b45698b7c0cb797898e54d7 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 @@ -206,11 +206,18 @@ public class SignBlockEntity extends BlockEntity implements CommandSource { // C
@@ -315,10 +315,10 @@ index 979a8f472f866130a3abb10f535df757eaa50c20..b4af974854ba9dfd52f3d0c2eca984c0
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 970b25f6064da694b076a08a8bbcc01e03d354d8..e4d07599c2301bdaecd0e42b4a99081c74f23d37 100644
+index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f158656b07 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1037,6 +1037,7 @@ public final class CraftServer implements Server {
+@@ -1042,6 +1042,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
@@ -326,7 +326,7 @@ index 970b25f6064da694b076a08a8bbcc01e03d354d8..e4d07599c2301bdaecd0e42b4a99081c
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -1052,6 +1053,7 @@ public final class CraftServer implements Server {
+@@ -1057,6 +1058,7 @@ public final class CraftServer implements Server {
                  }
              }
              world.spigotConfig.init(); // Spigot
@@ -334,7 +334,7 @@ index 970b25f6064da694b076a08a8bbcc01e03d354d8..e4d07599c2301bdaecd0e42b4a99081c
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -1067,6 +1069,7 @@ public final class CraftServer implements Server {
+@@ -1072,6 +1074,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
@@ -342,7 +342,7 @@ index 970b25f6064da694b076a08a8bbcc01e03d354d8..e4d07599c2301bdaecd0e42b4a99081c
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -3001,6 +3004,18 @@ public final class CraftServer implements Server {
+@@ -3006,6 +3009,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -361,7 +361,7 @@ index 970b25f6064da694b076a08a8bbcc01e03d354d8..e4d07599c2301bdaecd0e42b4a99081c
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -3232,4 +3247,11 @@ public final class CraftServer implements Server {
+@@ -3237,4 +3252,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end

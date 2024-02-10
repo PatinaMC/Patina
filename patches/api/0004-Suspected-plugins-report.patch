@@ -47,10 +47,10 @@ index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-index 5cd236965de12392d8c7aa81307c0ff1cc8673b1..d91399ed743de3a3441f98c3c38a294c659dc0bc 100644
+index 34037d3da2c536bac088e0ff629ee8f1daccc65b..c946eb6d60f13c7f5eeac77ccace7fa26f710cf5 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-@@ -121,7 +121,7 @@ public abstract class JavaPlugin extends PluginBase {
+@@ -126,7 +126,7 @@ public abstract class JavaPlugin extends PluginBase {
       * @return File containing this plugin
       */
      @NotNull
@@ -110,7 +110,7 @@ index 301e82369603f3dd6e6c1bd380da4bacacd7ef6c..7573bda5d8a409d82bcd4baf77cff8df
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
-index 90953bfc81168068a281be4d2d3942d5e7dd69ff..74c01f29ac3d0a8fb5c047f1dea54d77425ce0a4 100644
+index 12449e18180d604e9cbbc744da74a8b222a18e1f..b7e94298f8d29d1a2ad0b7b79e4e601e51699e93 100644
 --- a/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 +++ b/src/main/java/org/bukkit/plugin/java/PluginClassLoader.java
 @@ -323,4 +323,13 @@ public final class PluginClassLoader extends URLClassLoader implements io.paperm
