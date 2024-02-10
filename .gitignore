@@ -50,4 +50,6 @@ Patina-Server
 Patina-API
 Patina-MojangAPI
 
+paper-api-generator
+
 !gradle/wrapper/gradle-wrapper.jar
