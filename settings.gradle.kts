@@ -10,7 +10,7 @@ pluginManagement {
 rootProject.name = "patina"
 
 
-for (name in listOf("Patina-API", "Patina-Server", "Patina-MojangAPI")) {
+for (name in listOf("Patina-API", "Patina-Server", "Patina-MojangAPI", "paper-api-generator")) {
     val projName = name.toLowerCase(Locale.ENGLISH)
     include(projName)
     findProject(":$projName")!!.projectDir = file(name)
