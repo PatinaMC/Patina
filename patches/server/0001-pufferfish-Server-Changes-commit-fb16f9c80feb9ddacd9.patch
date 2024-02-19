@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 6 Feb 2024 15:43:40 +1100
+Date: Tue, 20 Feb 2024 03:29:36 +1100
 Subject: [PATCH] pufferfish Server Changes commit
- f5fa99a04ddcc3424bb0fbeea74033f0e5e651a2
+ fb16f9c80feb9ddacd94b4b6b99d6ad903bcdf9a
 
 Pufferfish Utils
 
@@ -285,7 +285,7 @@ an end crystal.
 TPS catchup
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 376e8983fdfdbb6c3e5fd8ad0f6a05e655b622bf..368eddbcf2fbda9c2060e1a8d17f7d8474b16c73 100644
+index ce3747d8d2a8f4327766cf23d5aaa72cfcb380bc..fab8ed083a0661ecf1fbb163d47d9c62318bf4a6 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -50,6 +50,14 @@ dependencies {
@@ -303,7 +303,7 @@ index 376e8983fdfdbb6c3e5fd8ad0f6a05e655b622bf..368eddbcf2fbda9c2060e1a8d17f7d84
      testImplementation("io.github.classgraph:classgraph:4.8.47") // Paper - mob goal test
      testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
      testImplementation("org.hamcrest:hamcrest:2.2")
-@@ -57,6 +65,14 @@ dependencies {
+@@ -58,6 +66,14 @@ dependencies {
  }
  
  val craftbukkitPackageVersion = "1_20_R3" // Paper
@@ -2362,7 +2362,7 @@ index d06185566b447c432d4dc2e3ba04d121bcdbc71b..3f77a3fac2db453b9036597e4fdfee20
      }
  
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index 6de6dad36203479677a29ad61e21bc369d4e5513..c5f92c80d7ca1e1c7f5b9304a5a1173ebfd9c269 100644
+index 68d268b6fff126e8645b6deec3fb549ea2286b77..435b129c433704c24828d8fb57e14333c9423207 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -221,6 +221,8 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -2374,7 +2374,7 @@ index 6de6dad36203479677a29ad61e21bc369d4e5513..c5f92c80d7ca1e1c7f5b9304a5a1173e
  
          this.setPvpAllowed(dedicatedserverproperties.pvp);
          this.setFlightAllowed(dedicatedserverproperties.allowFlight);
-@@ -338,6 +340,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
+@@ -339,6 +341,7 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
                  DedicatedServer.LOGGER.info("JMX monitoring enabled");
              }
  
@@ -2561,7 +2561,7 @@ index 529ab44baaf573b97cf7e89560c548642733188f..db55ad9aaabfa1ea998754f3ac352d16
                          this.wasOnGround = this.entity.onGround();
                          this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 6934e9dac0d69c043b73b7c46d59f2d39b37c67f..1f1e1ec9c9ef05a48b9db1cf2c5613928d28ad81 100644
+index 6934e9dac0d69c043b73b7c46d59f2d39b37c67f..dbe612427b894df9da1335b94163ba9b89b090c0 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -894,6 +894,7 @@ public class ServerLevel extends Level implements WorldGenLevel {
@@ -2586,7 +2586,7 @@ index 6934e9dac0d69c043b73b7c46d59f2d39b37c67f..1f1e1ec9c9ef05a48b9db1cf2c561392
 +                            // Paper start - Prevent tile entity and entity crashes
 +                            final String msg = String.format("Entity threw exception at %s:%s,%s,%s", entity.level().getWorld().getName(), entity.getX(), entity.getY(), entity.getZ());
 +                            MinecraftServer.LOGGER.error(msg, throwable);
-+                            getCraftServer().getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerInternalException(msg, throwable))); // Paper - ServerExceptionEvent
++                            getCraftServer().getPluginManager().callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerInternalException(msg, throwable)));
 +                            entity.discard();
 +                            // Paper end
 +                        }
@@ -2617,10 +2617,10 @@ index 6934e9dac0d69c043b73b7c46d59f2d39b37c67f..1f1e1ec9c9ef05a48b9db1cf2c561392
  
              if (this.isRainingAt(blockposition)) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index a7e40f72a3b56916620a7f089410ec3a6db0cffc..e54816e2a5145b1ef1ca72b470498b419a659f48 100644
+index ab5b259d8f72022c875cae73be25fe2da346c6b3..90910646031a73e1254fb844efdb9c8e32ec4233 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -1139,6 +1139,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
+@@ -1135,6 +1135,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
  
      @Override
      public void handleEditBook(ServerboundEditBookPacket packet) {
@@ -2741,7 +2741,7 @@ index d6cbe98e67fdbf8db46338a88ab1356dd63b50a3..20dd3a63b2f955b05a75eb240e33ae4c
      int LARGE_MAX_STACK_SIZE = 64;
      int DEFAULT_DISTANCE_LIMIT = 8;
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 9ee1e3da1cb16291ff3e37829e25227a6b97a177..e987a9142b577ebe3fabcda87df8bc066e859122 100644
+index 906eded9a2ab61737a30cfe89292a71237ce4eb7..0f2af6968f6bb47f5ef7e3f63cbfdc2f6df53999 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -308,7 +308,7 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
@@ -2776,7 +2776,7 @@ index 9ee1e3da1cb16291ff3e37829e25227a6b97a177..e987a9142b577ebe3fabcda87df8bc06
          this.baseTick();
      }
  
-@@ -4402,16 +4411,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -4405,16 +4414,18 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
      }
  
      public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
@@ -2802,7 +2802,7 @@ index 9ee1e3da1cb16291ff3e37829e25227a6b97a177..e987a9142b577ebe3fabcda87df8bc06
              double d1 = 0.0D;
              boolean flag = this.isPushedByFluid();
              boolean flag1 = false;
-@@ -4419,14 +4430,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -4422,14 +4433,61 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
              int k1 = 0;
              BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
@@ -2870,7 +2870,7 @@ index 9ee1e3da1cb16291ff3e37829e25227a6b97a177..e987a9142b577ebe3fabcda87df8bc06
  
                              if (d2 >= axisalignedbb.minY) {
                                  flag1 = true;
-@@ -4448,9 +4506,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
+@@ -4451,9 +4509,12 @@ public abstract class Entity implements Nameable, EntityAccess, CommandSource, S
                                  // CraftBukkit end
                              }
                          }
@@ -2897,10 +2897,10 @@ index 09e8445a3f8c6b3ebc852a75a9a25b41a51ba659..dc11683ee4d8a6b7a1c42bcae36dc6e8
      private String descriptionId;
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 6523795e715e5d472739e9bc6433143115c3de8f..317ff325f0a30d9ed83d3049cf96c53838c050ee 100644
+index aceee33eebd4d5f89e62a42910ec51843f33843b..aa9696facf7780313c322d01928aab7e6c92cc99 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -141,7 +141,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
+@@ -142,7 +142,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
  import org.bukkit.event.player.PlayerItemConsumeEvent;
  // CraftBukkit end
  
@@ -2908,7 +2908,7 @@ index 6523795e715e5d472739e9bc6433143115c3de8f..317ff325f0a30d9ed83d3049cf96c538
  
  public abstract class LivingEntity extends Entity implements Attackable {
  
-@@ -412,7 +411,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -413,7 +412,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
              boolean flag = this instanceof net.minecraft.world.entity.player.Player;
  
              if (!this.level().isClientSide) {
@@ -2917,7 +2917,7 @@ index 6523795e715e5d472739e9bc6433143115c3de8f..317ff325f0a30d9ed83d3049cf96c538
                      this.hurt(this.damageSources().inWall(), 1.0F);
                  } else if (flag && !this.level().getWorldBorder().isWithinBounds(this.getBoundingBox())) {
                      double d0 = this.level().getWorldBorder().getDistanceToBorder(this) + this.level().getWorldBorder().getDamageSafeZone();
-@@ -1409,6 +1408,19 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -1410,6 +1409,19 @@ public abstract class LivingEntity extends Entity implements Attackable {
          return this.getHealth() <= 0.0F;
      }
  
@@ -2937,7 +2937,7 @@ index 6523795e715e5d472739e9bc6433143115c3de8f..317ff325f0a30d9ed83d3049cf96c538
      @Override
      public boolean hurt(DamageSource source, float amount) {
          if (this.isInvulnerableTo(source)) {
-@@ -2003,6 +2015,20 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -2016,6 +2028,20 @@ public abstract class LivingEntity extends Entity implements Attackable {
          return this.lastClimbablePos;
      }
  
@@ -2959,7 +2959,7 @@ index 6523795e715e5d472739e9bc6433143115c3de8f..317ff325f0a30d9ed83d3049cf96c538
          if (this.isSpectator()) {
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index 209090870e1a4aa2f59cfa2e29419dbcc9665635..195c86a52b1757c7aadf45babc52bfef58de1dc3 100644
+index fa0b78139fecc0245e168ebeb4172ea2531a3fec..4be5ae6bfc7bbb8c928e13208dfcd7f455c56cfe 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -221,14 +221,16 @@ public abstract class Mob extends LivingEntity implements Targeting {
@@ -3801,7 +3801,7 @@ index a61d7cd2b078fe511ff00344197b6ea11feebfb2..7041394d366e6145369d032a0a14f047
  
      public static void entityInside(Level world, BlockPos pos, BlockState state, Entity entity, HopperBlockEntity blockEntity) {
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index a94300a457b25f0e33a8eeabba6dd5720ca9ab1e..b41635dd0569ff7df909df492d3e850aef7214be 100644
+index f52ccd4f3e062af3c7cc6eaea5b074a3bbd21690..a5cd70b6ada2b44f64db0985483ee5eadc67003f 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -94,12 +94,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -4092,10 +4092,10 @@ index ebe65474a4a05ff1637d7f37ebcfe690af59def5..42142c512b12e5b269c19f1e821c50e7
  
      @Nullable
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 14d3986ae6ec721f07dc82b37d62d3bea484ad15..006b92521be9f24deccdae06b787746a004a6e42 100644
+index 9f7ed337463cc9bb370a5541d9de5cd8f9c1a78a..4b4449fbdb2ff58f2bc85831b7c5c5eb0deac21a 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1125,6 +1125,11 @@ public final class CraftServer implements Server {
+@@ -1137,6 +1137,11 @@ public final class CraftServer implements Server {
                  plugin.getPluginMeta().getDisplayName(),
                  "This plugin is not properly shutting down its async tasks when it is being shut down. This task may throw errors during the final shutdown logs and might not complete before process dies."
              ));

@@ -5,10 +5,10 @@ Subject: [PATCH] fix rebuild issue (temporarily)
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 57beb8a1c12e4935c37363bf62bd7ed6f45e829a..d87904ebc02dbc817d61224ead776b8cfedf2829 100644
+index 43414c00475c3273e1ce76986b89acbfba8d4e53..d6767d64931db9d99bd56c349b1c3976abecbf6a 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -227,7 +227,5 @@ val runtimeClasspathForRunDev = sourceSets.main.flatMap { src ->
+@@ -228,7 +228,5 @@ val runtimeClasspathForRunDev = sourceSets.main.flatMap { src ->
  }
  tasks.registerRunTask("runDev") {
      description = "Spin up a non-relocated Mojang-mapped test server"

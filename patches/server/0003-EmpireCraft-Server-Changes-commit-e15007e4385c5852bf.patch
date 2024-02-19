@@ -32,10 +32,10 @@ index 1b459a8ee8a6bc039e742d65796bc76660a1c765..f459da26b77e8c10337730738ee878cb
                          itemstack1.setCount(1);
                          entityitem = entityplayer.drop(itemstack1, false, false, false); // CraftBukkit - SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index b2f08889139dc447f7071f1c81456035bf8de31e..4317aee5a31627e48e1f759e653b9db4b8f9b7e8 100644
+index 7005b3a26e9b5d79064981a4a41bee21b65a9fc3..03666cafcdc995ad0e32513c01bbf289641f9238 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-@@ -357,4 +357,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
+@@ -352,4 +352,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
      public boolean isAttackable() {
          return false;
      }
@@ -47,7 +47,7 @@ index b2f08889139dc447f7071f1c81456035bf8de31e..4317aee5a31627e48e1f759e653b9db4
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index b41635dd0569ff7df909df492d3e850aef7214be..cac943ffca45def34ac4d88e3bb975cdf2c471b7 100644
+index a5cd70b6ada2b44f64db0985483ee5eadc67003f..2bae9f2e7cd0be8f1b9cf20c06b920d327989e36 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -68,6 +68,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -59,10 +59,10 @@ index b41635dd0569ff7df909df492d3e850aef7214be..cac943ffca45def34ac4d88e3bb975cd
          net.minecraft.world.level.Level level = this.getLevel();
          BlockPos blockPos = this.getBlockPos();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index a139601888b88e8580bdb9c2469386a94abae975..9977403dcc823bd8e637a47e1d01fdb474e787e3 100644
+index bfb178c69026e9759e9afaebb9da141b62d1f144..8a9839132af0c3f256442e0adf208b84603a7878 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -415,7 +415,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -421,7 +421,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

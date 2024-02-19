@@ -5,10 +5,10 @@ Subject: [PATCH] rebrand implementation version
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 71477aee902a90765d2417667c70d17d985304f2..57beb8a1c12e4935c37363bf62bd7ed6f45e829a 100644
+index e57f85f789f5ec33e0a97fdc4cfca6b1d36252bc..43414c00475c3273e1ce76986b89acbfba8d4e53 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -85,7 +85,7 @@ tasks.jar {
+@@ -86,7 +86,7 @@ tasks.jar {
          attributes(
              "Main-Class" to "org.bukkit.craftbukkit.Main",
              "Implementation-Title" to "CraftBukkit",

@@ -114,7 +114,7 @@ index 24e5993b281448734eb67c7a8439a349bbf9fd72..b20b88d76025e970e991c71dadde92fc
              } else {
                  this.startProgress(advancementholder, advancementprogress);
 diff --git a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
-index c5f92c80d7ca1e1c7f5b9304a5a1173ebfd9c269..1fbfe61b3d7fc372f044d2e9f3500d6665209973 100644
+index 435b129c433704c24828d8fb57e14333c9423207..aa47b0af34cff5eaa638d6c24c718d02a0a266cf 100644
 --- a/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 +++ b/src/main/java/net/minecraft/server/dedicated/DedicatedServer.java
 @@ -219,6 +219,15 @@ public class DedicatedServer extends MinecraftServer implements ServerInterface
@@ -315,10 +315,10 @@ index 927c7ea03560be0c86884cec70ee8e408e66cb07..86e137a2e55b43c65b45698b7c0cb797
      public CompoundTag getUpdateTag() {
          return this.saveWithoutMetadata();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f158656b07 100644
+index 4b4449fbdb2ff58f2bc85831b7c5c5eb0deac21a..a6d98fecaa93576846b15bb89eee7609b9ae27ac 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -1042,6 +1042,7 @@ public final class CraftServer implements Server {
+@@ -1054,6 +1054,7 @@ public final class CraftServer implements Server {
  
          org.spigotmc.SpigotConfig.init((File) this.console.options.valueOf("spigot-settings")); // Spigot
          this.console.paperConfigurations.reloadConfigs(this.console);
@@ -326,7 +326,7 @@ index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f1
          for (ServerLevel world : this.console.getAllLevels()) {
              // world.serverLevelData.setDifficulty(config.difficulty); // Paper - per level difficulty
              world.setSpawnSettings(world.serverLevelData.getDifficulty() != Difficulty.PEACEFUL && config.spawnMonsters, config.spawnAnimals); // Paper - per level difficulty (from MinecraftServer#setDifficulty(ServerLevel, Difficulty, boolean))
-@@ -1057,6 +1058,7 @@ public final class CraftServer implements Server {
+@@ -1069,6 +1070,7 @@ public final class CraftServer implements Server {
                  }
              }
              world.spigotConfig.init(); // Spigot
@@ -334,7 +334,7 @@ index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f1
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
-@@ -1072,6 +1074,7 @@ public final class CraftServer implements Server {
+@@ -1084,6 +1086,7 @@ public final class CraftServer implements Server {
          this.reloadData();
          org.spigotmc.SpigotConfig.registerCommands(); // Spigot
          io.papermc.paper.command.PaperCommands.registerCommands(this.console); // Paper
@@ -342,7 +342,7 @@ index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f1
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -3006,6 +3009,18 @@ public final class CraftServer implements Server {
+@@ -3018,6 +3021,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -361,7 +361,7 @@ index 006b92521be9f24deccdae06b787746a004a6e42..be0e7cde275255af45ec12725ba982f1
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -3237,4 +3252,11 @@ public final class CraftServer implements Server {
+@@ -3249,4 +3264,11 @@ public final class CraftServer implements Server {
      }
  
      // Paper end
