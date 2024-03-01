@@ -221,10 +221,10 @@ index e5006e7672ba79ed4bcf2c4173c5a9ed4c68395b..6338c52e0082d36d3b80038fdb44abf2
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 91feb12732564c90656da487664dbc12e55397fc..6649c61416db1100a5e68356702b668a14fe08a6 100644
+index 1e5f709115007ff19901c0a6c3cf884d9e4d3a6c..d4fb9ef829c64fb4d73220d8ea1a73c8297ec367 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1166,6 +1166,7 @@ public abstract class PlayerList {
+@@ -1167,6 +1167,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -245,7 +245,7 @@ index 4103ddf16164e3992fef0765d368282572537e29..a0cb49233b1dbf53ce9d1bcc52b89678
                  } else {
                      handler.accept((RecipeHolder) optional.get());
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index fe063e4c3ff0b20f3d0c2c92eebdaf0101bac7d7..dd35f4838fde1a5f2501549e18e60b4becba9a3b 100644
+index d23a21112d573b4064d3be2571638859153da277..f62d595aef6238cde15a79f1876775f5af2ed780 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -173,6 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {

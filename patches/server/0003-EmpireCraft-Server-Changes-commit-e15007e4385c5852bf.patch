@@ -32,10 +32,10 @@ index 1b459a8ee8a6bc039e742d65796bc76660a1c765..f459da26b77e8c10337730738ee878cb
                          itemstack1.setCount(1);
                          entityitem = entityplayer.drop(itemstack1, false, false, false); // CraftBukkit - SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index 7005b3a26e9b5d79064981a4a41bee21b65a9fc3..03666cafcdc995ad0e32513c01bbf289641f9238 100644
+index 5b3b59057b962438c6f4fc8a1507342865b3bc11..a8560006e55daccb58539be634f32a798d09ec96 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-@@ -352,4 +352,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
+@@ -355,4 +355,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
      public boolean isAttackable() {
          return false;
      }

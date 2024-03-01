@@ -9,10 +9,10 @@ Original project: https://github.com/Akarin-project/Akarin
 Original project: https://github.com/Winds-Studio/Leaf
 
 diff --git a/src/main/java/net/minecraft/server/players/StoredUserList.java b/src/main/java/net/minecraft/server/players/StoredUserList.java
-index 35f973cc2c0989256fa21abaf0327c2f36dbe4c9..e9fd7ef5365c051686896a2f986b02dfd110f2b3 100644
+index 7e133752ccb1ea7c0b4fa781feb1a88e2cfdcf6d..c06a0e8fe3f9a8f67e6a92e10ba9d8e47525bbfb 100644
 --- a/src/main/java/net/minecraft/server/players/StoredUserList.java
 +++ b/src/main/java/net/minecraft/server/players/StoredUserList.java
-@@ -23,6 +23,7 @@ import java.util.Objects;
+@@ -22,6 +22,7 @@ import java.util.Objects;
  import java.util.stream.Stream;
  import javax.annotation.Nullable;
  import net.minecraft.Util;
