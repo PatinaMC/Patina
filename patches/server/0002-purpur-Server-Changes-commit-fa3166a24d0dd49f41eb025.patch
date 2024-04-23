@@ -82,7 +82,7 @@ index b7f338e982d0dcab99137ab6dc200b82ac6b7cba..32f355b1b33cf2b7b7a276fb0fd98314
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 999cb0f049670415f6a2835247f4bfe825996034..487813b7f36c428be2781403f0698812f5775d26 100644
+index 2f4873bd9fcc14a9f6736f845834378641b894e9..95d108804dddf7da5a1c6c373b22d614df66019a 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -308,6 +308,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
@@ -134,7 +134,7 @@ index 435b129c433704c24828d8fb57e14333c9423207..aa47b0af34cff5eaa638d6c24c718d02
          io.papermc.paper.brigadier.PaperBrigadierProviderImpl.INSTANCE.getClass(); // Paper - init PaperBrigadierProvider
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 58591bf2f63b9c5e97d9ce4188dff3366968a178..b19979b88db604d54a7f7255bbac65d1deb90dab 100644
+index b3781efbd3edcf102fe1bda5d6149915dc1127c6..1c5b9b9743b6da7198e757898d0c4326beb90f2d 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1549,6 +1549,7 @@ public class ServerPlayer extends Player {
@@ -146,7 +146,7 @@ index 58591bf2f63b9c5e97d9ce4188dff3366968a178..b19979b88db604d54a7f7255bbac65d1
          this.connection.send(new ClientboundOpenSignEditorPacket(sign.getBlockPos(), front));
      }
 diff --git a/src/main/java/net/minecraft/server/level/WorldGenRegion.java b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
-index 5ece375eaf6bcc61864997a389bb5e24625e4505..aee4ab6c7ea09006bec4a1c6df0005718c6d86bd 100644
+index 9c3f8f79c2b3389a118dce9a1558edda52446833..01097e09c020fbe08d4fb467c02abc356657f768 100644
 --- a/src/main/java/net/minecraft/server/level/WorldGenRegion.java
 +++ b/src/main/java/net/minecraft/server/level/WorldGenRegion.java
 @@ -318,6 +318,7 @@ public class WorldGenRegion implements WorldGenLevel {
@@ -245,7 +245,7 @@ index 4103ddf16164e3992fef0765d368282572537e29..a0cb49233b1dbf53ce9d1bcc52b89678
                  } else {
                      handler.accept((RecipeHolder) optional.get());
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index 309dfe082459518448b3ca90e375587b0c358530..b372868416973351e39464c21ed13b2689794c5e 100644
+index a82de7111915b19cdc3f065910465a5e7e843aff..3e41081ab4e30aa6715126a54c8c94a61d7673c1 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -173,6 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable {
@@ -798,7 +798,7 @@ index 0000000000000000000000000000000000000000..afdf04f8b22ad0b7c0b41675e44687b4
 +    }
 +}
 diff --git a/src/main/java/org/spigotmc/ActivationRange.java b/src/main/java/org/spigotmc/ActivationRange.java
-index 41cddf7e42f0e8f80973e482a95e55d3bd19f659..e32cf1babe969da9c6863312a1f69d5f2bb0c456 100644
+index d7c7e12c0b8f77e59d94de130972f762ed227726..c63735c1e104177bd0f978374b979428289f93b9 100644
 --- a/src/main/java/org/spigotmc/ActivationRange.java
 +++ b/src/main/java/org/spigotmc/ActivationRange.java
 @@ -15,6 +15,7 @@ import net.minecraft.world.entity.ambient.AmbientCreature;
@@ -809,7 +809,7 @@ index 41cddf7e42f0e8f80973e482a95e55d3bd19f659..e32cf1babe969da9c6863312a1f69d5f
  import net.minecraft.world.entity.animal.WaterAnimal;
  import net.minecraft.world.entity.animal.horse.Llama;
  import net.minecraft.world.entity.boss.EnderDragonPart;
-@@ -400,6 +401,7 @@ public class ActivationRange
+@@ -402,6 +403,7 @@ public class ActivationRange
       */
      public static boolean checkIfActive(Entity entity)
      {

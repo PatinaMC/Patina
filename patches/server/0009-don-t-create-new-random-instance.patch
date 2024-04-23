@@ -5,7 +5,7 @@ Subject: [PATCH] don't create new random instance
 
 
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index b85aebef7deecfb732ddef35cae75498b98571ab..89914067eba72199da3440e1aa6c54a81f664c4f 100644
+index 1c5b9b9743b6da7198e757898d0c4326beb90f2d..f8272a613575af98f0d149df9625ff6394f471bb 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -452,7 +452,7 @@ public class ServerPlayer extends Player {
@@ -27,10 +27,10 @@ index b85aebef7deecfb732ddef35cae75498b98571ab..89914067eba72199da3440e1aa6c54a8
              for (int l1 = 0; l1 < i1; ++l1) {
                  int i2 = (k1 + j1 * l1) % i1;
 diff --git a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
-index 1ef089dbf83de35d875c00efdf468c397be56978..4083c519c14b733d6df186ecc668e89a4efdeac7 100644
+index 0e0867d7add9a024bbe9471f8ff92bbb25996a3d..b444e62018a7e76eb9de8a2b15553187eb339cdc 100644
 --- a/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
 +++ b/src/main/java/net/minecraft/server/rcon/thread/QueryThreadGs4.java
-@@ -349,7 +349,7 @@ public class QueryThreadGs4 extends GenericThread {
+@@ -341,7 +341,7 @@ public class QueryThreadGs4 extends GenericThread {
              this.identBytes[2] = bs[5];
              this.identBytes[3] = bs[6];
              this.ident = new String(this.identBytes, StandardCharsets.UTF_8);

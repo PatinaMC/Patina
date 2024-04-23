@@ -9,10 +9,10 @@ Purpur config files
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index db46e3233edf18bd91a6da8612ccc9f0080d5c17..f0cb983cfd0c1e1f437d26f72509eb3f414aae5b 100644
+index 9a428153f34291bdc026a71f7e60e285b7794b0c..c9048b799b38256ce61aef5c581479505b4a6894 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2878,4 +2878,15 @@ public final class Bukkit {
+@@ -2884,4 +2884,15 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
@@ -29,10 +29,10 @@ index db46e3233edf18bd91a6da8612ccc9f0080d5c17..f0cb983cfd0c1e1f437d26f72509eb3f
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 0eb61b090d6f8fa6d99735ff3680dac774c52c1f..9fba3c2083b3773acf34ee6657d01e4e52f9eb37 100644
+index 4ff1b38eb65f97344257204cf018f176f247ed36..124f12e3289540033891ab61b31594eb6b6d4ff3 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2229,6 +2229,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2235,6 +2235,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
          }
          // Paper end
  
@@ -51,7 +51,7 @@ index 0eb61b090d6f8fa6d99735ff3680dac774c52c1f..9fba3c2083b3773acf34ee6657d01e4e
          /**
           * Sends the component to the player
           *
-@@ -2512,4 +2524,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2518,4 +2530,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      boolean isOwnedByCurrentRegion(@NotNull Entity entity);
      // Paper end - Folia region threading API

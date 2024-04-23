@@ -32,7 +32,7 @@ index 1b459a8ee8a6bc039e742d65796bc76660a1c765..f459da26b77e8c10337730738ee878cb
                          itemstack1.setCount(1);
                          entityitem = entityplayer.drop(itemstack1, false, false, false); // CraftBukkit - SPIGOT-2942: Add boolean to call event
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
-index 5b3b59057b962438c6f4fc8a1507342865b3bc11..a8560006e55daccb58539be634f32a798d09ec96 100644
+index 813c4a52c8ddd70e252125ebfd3654346c71f13c..12c12b6bb388cf465b9fb585cf327ba459cbffa5 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/FireworkRocketEntity.java
 @@ -355,4 +355,10 @@ public class FireworkRocketEntity extends Projectile implements ItemSupplier {
@@ -47,7 +47,7 @@ index 5b3b59057b962438c6f4fc8a1507342865b3bc11..a8560006e55daccb58539be634f32a79
 +    // EMC end
  }
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
-index a5cd70b6ada2b44f64db0985483ee5eadc67003f..2bae9f2e7cd0be8f1b9cf20c06b920d327989e36 100644
+index fa64bf5ad13c278438039b663ea3134e72108411..b7fc014996be8e238919d9c3f58702f63af40145 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/RandomizableContainerBlockEntity.java
 @@ -68,6 +68,7 @@ public abstract class RandomizableContainerBlockEntity extends BaseContainerBloc
@@ -59,10 +59,10 @@ index a5cd70b6ada2b44f64db0985483ee5eadc67003f..2bae9f2e7cd0be8f1b9cf20c06b920d3
          net.minecraft.world.level.Level level = this.getLevel();
          BlockPos blockPos = this.getBlockPos();
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index bfb178c69026e9759e9afaebb9da141b62d1f144..8a9839132af0c3f256442e0adf208b84603a7878 100644
+index 01797d9791f19dfda4b168218eadeaae97f11eab..475a7e1ddbc9fc3540f5f5fe10214d105800f1d3 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -421,7 +421,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -422,7 +422,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {
