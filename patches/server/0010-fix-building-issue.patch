@@ -5,10 +5,10 @@ Subject: [PATCH] fix building issue
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 4cb116c3b2b353fe580cec29fb69b476c18d96f1..71477aee902a90765d2417667c70d17d985304f2 100644
+index 5dd1d9c1ef5e83801d1982d1f51aef8625a83815..f56cf962a04503618c34f6c904600fbe0147d21b 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -52,7 +52,7 @@ dependencies {
+@@ -49,7 +49,7 @@ dependencies {
  
      // Pufferfish start
      implementation("org.yaml:snakeyaml:1.32")

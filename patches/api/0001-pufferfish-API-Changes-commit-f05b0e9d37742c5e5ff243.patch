@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Fri, 31 May 2024 23:53:25 +0800
+Date: Tue, 20 Aug 2024 20:37:17 +1200
 Subject: [PATCH] pufferfish API Changes commit
- 1f3ad021d3cb996f499d627676d688aeb46ffef9
+ f05b0e9d37742c5e5ff2438b9fec8c870734342f
 
 Add Sentry
 
@@ -22,10 +22,10 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 04853c43b99951bf0d4c96ef73724625bdaf018f..9164120d299d062c62529a7ef74eac0ded367993 100644
+index 540fe7e2c110e79c3742f229b3ed8c54b101d260..07945418e95cbe07c45bfa815d828fa311c7f033 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -51,6 +51,7 @@ dependencies {
+@@ -52,6 +52,7 @@ dependencies {
      apiAndDocs("net.kyori:adventure-text-logger-slf4j")
      api("org.apache.logging.log4j:log4j-api:$log4jVersion")
      api("org.slf4j:slf4j-api:$slf4jVersion")
@@ -33,7 +33,7 @@ index 04853c43b99951bf0d4c96ef73724625bdaf018f..9164120d299d062c62529a7ef74eac0d
  
      implementation("org.ow2.asm:asm:9.7")
      implementation("org.ow2.asm:asm-commons:9.7")
-@@ -109,6 +110,13 @@ val generateApiVersioningFile by tasks.registering {
+@@ -130,6 +131,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  
@@ -216,7 +216,7 @@ index 0000000000000000000000000000000000000000..10310fdd53de28efb8a8250f6d3b0c8e
 +}
 diff --git a/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java
 new file mode 100644
-index 0000000000000000000000000000000000000000..ab5fea0b03224bf249352ce340e94704ff713345
+index 0000000000000000000000000000000000000000..3441cdad70da1bd523c5933b1a914688718c2657
 --- /dev/null
 +++ b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java
 @@ -0,0 +1,40 @@
@@ -237,7 +237,7 @@ index 0000000000000000000000000000000000000000..ab5fea0b03224bf249352ce340e94704
 +	@Deprecated
 +	public static boolean canEnable(Logger logger) {
 +		try {
-+			if (SIMDDetection.getJavaVersion() != 17 && SIMDDetection.getJavaVersion() != 18 && SIMDDetection.getJavaVersion() != 19) {
++			if (SIMDDetection.getJavaVersion() < 17 || SIMDDetection.getJavaVersion() > 21) {
 +				return false;
 +			} else {
 +				SIMDDetection.testRun = true;
@@ -428,10 +428,10 @@ index c80faa079eca1564847070f0338fc98024639829..e632d51d3487eb4807243b6705999ad1
      }
  
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index fc2dae69165776d08274e34a69962cc70445f411..899d67fa782fac639fe7fb096e05c551d75bd647 100644
+index 003bece642b682985625db93cad93026352bfc66..e8ba4f1108f2548a487877027e37d81fc150e042 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -584,7 +584,9 @@ public final class SimplePluginManager implements PluginManager {
+@@ -597,7 +597,9 @@ public final class SimplePluginManager implements PluginManager {
  
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
@@ -441,7 +441,7 @@ index fc2dae69165776d08274e34a69962cc70445f411..899d67fa782fac639fe7fb096e05c551
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
      // Paper end
-@@ -654,9 +656,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -667,9 +669,11 @@ public final class SimplePluginManager implements PluginManager {
                              ));
                  }
              } catch (Throwable ex) {

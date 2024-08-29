@@ -5,7 +5,7 @@ Subject: [PATCH] remove broken import on purpur
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 3e992515348a6d5e1d86381dd3b72aa2a5e16313..93818aad9bbd3f3ca4bbc0510b7adebf47c00720 100644
+index 98cc0b4bfe661879fd9b8f2eb7623e926ca82472..660aeeeb2caa8003550c8dca677a0e666baa91d3 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 @@ -22,8 +22,6 @@ import org.bukkit.command.Command;

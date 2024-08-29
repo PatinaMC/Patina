@@ -6,10 +6,10 @@ Subject: [PATCH] lithium: entity.fast_hand_swing
 Original code licensed under GNU Lesser General Public License v3.0 and created for the lithium project: https://github.com/CaffeineMC/lithium-fabric/
 
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 25e30408c964b5257f1cf945892bd668df38252b..4713f435d40b4d0475f27c9ccfd032ad04e82cec 100644
+index ce0d28cafcae0b7edc861749a1652ecc08d298b5..6ae9789f38137456076e8cec84d7d579af3d4016 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-@@ -2560,6 +2560,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
+@@ -2655,6 +2655,7 @@ public abstract class LivingEntity extends Entity implements Attackable {
      }
  
      protected void updateSwingTime() {

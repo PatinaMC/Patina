@@ -6,10 +6,10 @@ Subject: [PATCH] Suspected plugins report
 Added "Suspected Plugins" to Watchdog, crash reports and exception messages
 
 diff --git a/src/main/java/org/bukkit/plugin/SimplePluginManager.java b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d9e4edd67 100644
+index e8ba4f1108f2548a487877027e37d81fc150e042..3e8e5ddba87f11ac6ccfb6bedbc85ee0fd62fff2 100644
 --- a/src/main/java/org/bukkit/plugin/SimplePluginManager.java
 +++ b/src/main/java/org/bukkit/plugin/SimplePluginManager.java
-@@ -585,7 +585,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -598,7 +598,11 @@ public final class SimplePluginManager implements PluginManager {
      // Paper start
      private void handlePluginException(String msg, Throwable ex, Plugin plugin) {
          gg.pufferfish.pufferfish.sentry.SentryContext.setPluginContext(plugin); // Pufferfish
@@ -22,7 +22,7 @@ index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d
          gg.pufferfish.pufferfish.sentry.SentryContext.removePluginContext(); // Pufferfish
          callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerPluginEnableDisableException(msg, ex, plugin)));
      }
-@@ -659,7 +663,11 @@ public final class SimplePluginManager implements PluginManager {
+@@ -672,7 +676,11 @@ public final class SimplePluginManager implements PluginManager {
                  gg.pufferfish.pufferfish.sentry.SentryContext.setEventContext(event, registration); // Pufferfish
                  // Paper start - error reporting
                  String msg = "Could not pass event " + event.getEventName() + " to " + registration.getPlugin().getDescription().getFullName();
@@ -35,7 +35,7 @@ index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d
                  gg.pufferfish.pufferfish.sentry.SentryContext.removeEventContext(); // Pufferfish
                  if (!(event instanceof com.destroystokyo.paper.event.server.ServerExceptionEvent)) { // We don't want to cause an endless event loop
                      callEvent(new com.destroystokyo.paper.event.server.ServerExceptionEvent(new com.destroystokyo.paper.exception.ServerEventException(msg, ex, registration.getPlugin(), registration.getListener(), event)));
-@@ -982,4 +990,10 @@ public final class SimplePluginManager implements PluginManager {
+@@ -995,4 +1003,10 @@ public final class SimplePluginManager implements PluginManager {
          this.paperPluginManager.addPermissions(perm);
      }
      // Paper end
@@ -47,10 +47,10 @@ index 899d67fa782fac639fe7fb096e05c551d75bd647..0de79dca263c58f9a6a1c6707e90452d
 +    // Yatopia end
  }
 diff --git a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-index 34037d3da2c536bac088e0ff629ee8f1daccc65b..c946eb6d60f13c7f5eeac77ccace7fa26f710cf5 100644
+index e0203f199700c397961a0667a79792497da7f796..cc12da5066e56630784b4b770da5fa346f894761 100644
 --- a/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
 +++ b/src/main/java/org/bukkit/plugin/java/JavaPlugin.java
-@@ -126,7 +126,7 @@ public abstract class JavaPlugin extends PluginBase {
+@@ -127,7 +127,7 @@ public abstract class JavaPlugin extends PluginBase {
       * @return File containing this plugin
       */
      @NotNull
@@ -239,7 +239,7 @@ index 0000000000000000000000000000000000000000..0aa9bc6ad0a85d469b29201b9da29165
 +
 +}
 diff --git a/src/test/java/org/bukkit/AnnotationTest.java b/src/test/java/org/bukkit/AnnotationTest.java
-index 88f1ca89fa640a686231b8eec87e70419b2d73ef..bf20978ae3cbd436464b6db1137cfe195e843aa7 100644
+index b82f07a2879412f6b30643ca93a97439aa49a98a..5bee03091b047ddd6c856aa6d661f7abe8ae9f53 100644
 --- a/src/test/java/org/bukkit/AnnotationTest.java
 +++ b/src/test/java/org/bukkit/AnnotationTest.java
 @@ -57,8 +57,11 @@ public class AnnotationTest {

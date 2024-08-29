@@ -5,10 +5,10 @@ Subject: [PATCH] Remove VersionFetcher
 
 
 diff --git a/src/main/java/org/bukkit/command/defaults/VersionCommand.java b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-index fd5d9881abfd930bb883120f018f76dc78b62b14..6aef32f45dad083ac1221a8a4c57f2f0d4f11e7d 100644
+index e64bb57f74e6d6f78927be228825b3e0bdf41f48..b275d7ccc4fec941cbef605dd36dd01fd518a109 100644
 --- a/src/main/java/org/bukkit/command/defaults/VersionCommand.java
 +++ b/src/main/java/org/bukkit/command/defaults/VersionCommand.java
-@@ -25,7 +25,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
+@@ -26,7 +26,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
  import org.bukkit.util.StringUtil;
  import org.jetbrains.annotations.NotNull;
  // Paper start - version command 2.0
@@ -17,7 +17,7 @@ index fd5d9881abfd930bb883120f018f76dc78b62b14..6aef32f45dad083ac1221a8a4c57f2f0
  import net.kyori.adventure.text.Component;
  import net.kyori.adventure.text.format.NamedTextColor;
  import net.kyori.adventure.text.event.ClickEvent;
-@@ -34,14 +34,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+@@ -35,14 +35,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
  // Paper end - version command 2.0
  
  public class VersionCommand extends BukkitCommand {
@@ -33,7 +33,7 @@ index fd5d9881abfd930bb883120f018f76dc78b62b14..6aef32f45dad083ac1221a8a4c57f2f0
  
      public VersionCommand(@NotNull String name) {
          super(name);
-@@ -57,8 +50,8 @@ public class VersionCommand extends BukkitCommand {
+@@ -58,8 +51,8 @@ public class VersionCommand extends BukkitCommand {
          if (!testPermission(sender)) return true;
  
          if (args.length == 0) {
@@ -44,7 +44,7 @@ index fd5d9881abfd930bb883120f018f76dc78b62b14..6aef32f45dad083ac1221a8a4c57f2f0
          } else {
              StringBuilder name = new StringBuilder();
  
-@@ -170,133 +163,5 @@ public class VersionCommand extends BukkitCommand {
+@@ -171,133 +164,5 @@ public class VersionCommand extends BukkitCommand {
          return ImmutableList.of();
      }
  

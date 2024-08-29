@@ -3,7 +3,7 @@ import io.papermc.paperweight.util.constants.PAPERCLIP_CONFIG
 plugins {
     java
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
-    id("io.papermc.paperweight.patcher") version "1.5.15"
+    id("io.papermc.paperweight.patcher") version "1.7.1"
 }
 
 repositories {
@@ -14,8 +14,8 @@ repositories {
 }
 
 dependencies {
-    remapper("net.fabricmc:tiny-remapper:0.10.1:fat")
-    decompiler("org.vineflower:vineflower:1.11.0-20240412.144930-14")
+    remapper("net.fabricmc:tiny-remapper:0.10.3:fat")
+    decompiler("org.vineflower:vineflower:1.10.1")
     paperclip("io.papermc:paperclip:3.0.3")
 }
 
@@ -60,14 +60,6 @@ paperweight {
             serverOutputDir.set(layout.projectDirectory.dir("Patina-Server"))
         }
 
-        patchTasks {
-            register("mojangApi") {
-                isBareDirectory.set(true)
-                upstreamDirPath.set("Paper-MojangAPI")
-                patchDir.set(layout.projectDirectory.dir("patches/mojangapi"))
-                outputDir.set(layout.projectDirectory.dir("Patina-MojangAPI"))
-            }
-        }
         patchTasks.register("generatedApi") {
             isBareDirectory = true
             upstreamDirPath = "paper-api-generator/generated"
