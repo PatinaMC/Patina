@@ -5,10 +5,10 @@ Subject: [PATCH] remove broken import on purpur
 
 
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurConfig.java b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-index 98cc0b4bfe661879fd9b8f2eb7623e926ca82472..660aeeeb2caa8003550c8dca677a0e666baa91d3 100644
+index 28a65d2e40aee3f73a312785d396436df12cfcf2..2e1ad5aacbdf2211d2039889ee51480bdc3ee5fa 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurConfig.java
-@@ -22,8 +22,6 @@ import org.bukkit.command.Command;
+@@ -24,8 +24,6 @@ import org.bukkit.command.Command;
  import org.bukkit.configuration.ConfigurationSection;
  import org.bukkit.configuration.InvalidConfigurationException;
  import org.bukkit.configuration.file.YamlConfiguration;
@@ -17,24 +17,24 @@ index 98cc0b4bfe661879fd9b8f2eb7623e926ca82472..660aeeeb2caa8003550c8dca677a0e66
  
  import java.io.File;
  import java.io.IOException;
-@@ -73,7 +71,7 @@ public class PurpurConfig {
+@@ -75,7 +73,7 @@ public class PurpurConfig {
          verbose = getBoolean("verbose", false);
  
          commands = new HashMap<>();
 -        commands.put("purpur", new PurpurCommand("purpur"));
 +        commands.put("purpur", new org.purpurmc.purpur.command.PurpurCommand("purpur"));
  
-         version = getInt("config-version", 32);
-         set("config-version", 32);
+         version = getInt("config-version", 35);
+         set("config-version", 35);
 diff --git a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-index b10d98af806def01e5c8e764162c1efaa5410f21..a3f9c922471ba5bfef56d2dbfbb093e8f8c0a949 100644
+index c13c05f7f971fc82b384bc2a9aa6c4c2841d6b84..9eca55959e200fe455f716d98d948e8f743c0fd2 100644
 --- a/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
 +++ b/src/main/java/org/purpurmc/purpur/PurpurWorldConfig.java
-@@ -12,11 +12,6 @@ import net.minecraft.world.level.Explosion;
+@@ -12,11 +12,6 @@ import net.minecraft.world.item.Items;
  import net.minecraft.world.level.block.Block;
  import net.minecraft.world.level.block.Blocks;
  import net.minecraft.world.level.block.state.properties.Tilt;
--import org.purpurmc.purpur.entity.GlowSquidColor;
+-import org.purpurmc.purpur.tool.Flattenable;
 -import org.purpurmc.purpur.tool.Strippable;
 -import org.purpurmc.purpur.tool.Tillable;
 -import org.purpurmc.purpur.tool.Waxable;

@@ -1,23 +1,32 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 21 Jun 2023 18:18:04 +0800
+Date: Mon, 2 Sep 2024 16:15:09 +1200
 Subject: [PATCH] purpur API Changes commit
- fa3166a24d0dd49f41eb0257fc043ea02320fe38
+ 49db8494f127327dd8bc41dd797f71b6bbcaaf4e
 
 Purpur config files
 
 Lagging threshold
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..74f5b552f0e86280cbceb9f0a37ee8d2de173acd 100644
+index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..2bdd85284ae4c10fe26594be85aa9d8aa699b84f 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2910,4 +2910,15 @@ public final class Bukkit {
+@@ -2910,4 +2910,24 @@ public final class Bukkit {
      public static Server.Spigot spigot() {
          return server.spigot();
      }
 +
 +    // Purpur start
++    /**
++     * Get the name of this server
++     * @return the name of the server
++     */
++    @NotNull
++    public static String getServerName() {
++        return server.getServerName();
++    }
++
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
 +     *
@@ -29,7 +38,7 @@ index 4705c1d91e39fcc3c608b1f1a38a30d063ccf06e..74f5b552f0e86280cbceb9f0a37ee8d2
 +    // Purpur end
  }
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..32232bb35ec54f4c86ab938d89c215684c1831d6 100644
+index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..988d00a4ad9330e338240db6b0bbe2b5157b342c 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
 @@ -2254,6 +2254,18 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
@@ -51,11 +60,19 @@ index c043d239c449bf4bb13a24467f2f6c67b4d28d2d..32232bb35ec54f4c86ab938d89c21568
          /**
           * Sends the component to the player
           *
-@@ -2543,4 +2555,12 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2543,4 +2555,20 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
       */
      boolean isOwnedByCurrentRegion(@NotNull Entity entity);
      // Paper end - Folia region threading API
++
 +    // Purpur start
++    /**
++     * Get the name of this server
++     * @return the name of the server
++     */
++    @NotNull
++    String getServerName();
++
 +    /**
 +     * Check if server is lagging according to laggy threshold setting
 +     *
