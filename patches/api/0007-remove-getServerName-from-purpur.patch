@@ -1,0 +1,44 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 2 Sep 2024 16:23:31 +1200
+Subject: [PATCH] remove getServerName from purpur
+
+
+diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
+index 2bdd85284ae4c10fe26594be85aa9d8aa699b84f..74f5b552f0e86280cbceb9f0a37ee8d2de173acd 100644
+--- a/src/main/java/org/bukkit/Bukkit.java
++++ b/src/main/java/org/bukkit/Bukkit.java
+@@ -2912,15 +2912,6 @@ public final class Bukkit {
+     }
+ 
+     // Purpur start
+-    /**
+-     * Get the name of this server
+-     * @return the name of the server
+-     */
+-    @NotNull
+-    public static String getServerName() {
+-        return server.getServerName();
+-    }
+-
+     /**
+      * Check if server is lagging according to laggy threshold setting
+      *
+diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
+index 988d00a4ad9330e338240db6b0bbe2b5157b342c..a70af5242799a3ebfff7465d0184b345431365c1 100644
+--- a/src/main/java/org/bukkit/Server.java
++++ b/src/main/java/org/bukkit/Server.java
+@@ -2557,13 +2557,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+     // Paper end - Folia region threading API
+ 
+     // Purpur start
+-    /**
+-     * Get the name of this server
+-     * @return the name of the server
+-     */
+-    @NotNull
+-    String getServerName();
+-
+     /**
+      * Check if server is lagging according to laggy threshold setting
+      *
