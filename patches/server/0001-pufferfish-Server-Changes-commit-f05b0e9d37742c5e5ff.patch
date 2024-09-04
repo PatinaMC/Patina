@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Tue, 20 Aug 2024 20:37:17 +1200
+Date: Wed, 4 Sep 2024 18:46:28 +1200
 Subject: [PATCH] pufferfish Server Changes commit
- f05b0e9d37742c5e5ff2438b9fec8c870734342f
+ 3554f78476cb75871ae6ff1bb238871e0ff70d75
 
 Pufferfish Utils
 
@@ -258,7 +258,7 @@ an end crystal.
 TPS catchup
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 421f6b3dc8890d63d2e7aa774d0bf8f7e15890ab..bfc716db35bdd418c24d3d2219c9d6938f1c8750 100644
+index 3588770a9ea6ee0a9508b218758650f43d994715..50267d9475f8064c66ad64bde5a42f773a820fb2 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -47,6 +47,14 @@ dependencies {
@@ -2140,7 +2140,7 @@ index 8ea2f24695f5dad55e21f238b69442513e7a90c6..5a2f7f7cf79dcbb996574e18cad86ebb
                      this.wasOnGround = this.entity.onGround();
                      this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..5a9712de8abe3c3ccd08c5699f89e3ce54b1f28d 100644
+index c96f3dcd365bc140b1f4680ef6bd770c80f8eda1..67d4b15143358c8947a7102a325dad66967e73a6 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -715,6 +715,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -2186,7 +2186,7 @@ index 2fe9d9b38c01d04416843fdd48d3e33899b7de63..5a9712de8abe3c3ccd08c5699f89e3ce
  
              if (this.isRainingAt(blockposition)) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index 750f216400a473ed6895273c99ff89960bb56833..3d1dc6d712f61de2a4927b3bf2973f75af24cf11 100644
+index fcccf989c25f0a259b160c4ff7873f7009e64d14..9422d8bd512555f54410391d55c4072474c1ae4e 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1157,6 +1157,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -2195,10 +2195,10 @@ index 750f216400a473ed6895273c99ff89960bb56833..3d1dc6d712f61de2a4927b3bf2973f75
      public void handleEditBook(ServerboundEditBookPacket packet) {
 +        if (!gg.pufferfish.pufferfish.PufferfishConfig.enableBooks && !this.player.getBukkitEntity().hasPermission("pufferfish.usebooks")) return; // Pufferfish
          // Paper start - Book size limits
-         if (!this.cserver.isPrimaryThread()) {
-             List<String> pageList = packet.pages();
+         final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
+         if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 490ee48346395fcbaf2eb0151e9248f18974fea6..3f7812c55dae82433336d6e091aa83434615fa04 100644
+index e0827d8bb3fa17d4f590a5342ff41a514f623e68..de5276b9ba5b3cd2f565714995e86edd4447c1ca 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -429,6 +429,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -2407,7 +2407,7 @@ index ccd9dff20a60f019e0c320acfb526b8bf3e5f806..ce0d28cafcae0b7edc861749a1652ecc
          if (this.isSpectator()) {
              return false;
 diff --git a/src/main/java/net/minecraft/world/entity/Mob.java b/src/main/java/net/minecraft/world/entity/Mob.java
-index bd7c6ce15698aed70376c109ba36f52d6794a2f8..7c207bd1da82255bf504f9212c08201fe9389f1a 100644
+index 763abeea3f14f15c27d600e0bdae44b387687bb4..1f3a55d34f58964fb1f642ad59c9d7b7aa6fa4ff 100644
 --- a/src/main/java/net/minecraft/world/entity/Mob.java
 +++ b/src/main/java/net/minecraft/world/entity/Mob.java
 @@ -232,14 +232,16 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
@@ -2429,7 +2429,7 @@ index bd7c6ce15698aed70376c109ba36f52d6794a2f8..7c207bd1da82255bf504f9212c08201f
              this.targetSelector.tick();
          }
      }
-@@ -925,16 +927,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
+@@ -929,16 +931,20 @@ public abstract class Mob extends LivingEntity implements EquipmentUser, Leashab
  
          if (i % 2 != 0 && this.tickCount > 1) {
              gameprofilerfiller.push("targetSelector");
