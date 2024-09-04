@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Wed, 4 Sep 2024 18:54:39 +1200
+Subject: [PATCH] enable SIMD on java 17 and later
+
+
+diff --git a/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java
+index ab5fea0b03224bf249352ce340e94704ff713345..7024a47b0de5083c3ba49c8e45b4c4b1369ab2c5 100644
+--- a/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java
++++ b/src/main/java/gg/pufferfish/pufferfish/simd/SIMDChecker.java
+@@ -15,7 +15,7 @@ public class SIMDChecker {
+ 	@Deprecated
+ 	public static boolean canEnable(Logger logger) {
+ 		try {
+-			if (SIMDDetection.getJavaVersion() != 17 && SIMDDetection.getJavaVersion() != 18 && SIMDDetection.getJavaVersion() != 19) {
++			if (SIMDDetection.getJavaVersion() < 17) {
+ 				return false;
+ 			} else {
+ 				SIMDDetection.testRun = true;
