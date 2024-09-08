@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: foss-mc <69294560+foss-mc@users.noreply.github.com>
+Date: Mon, 9 Sep 2024 08:54:32 +1200
+Subject: [PATCH] rebrand
+
+
+diff --git a/src/main/java/io/papermc/paper/ServerBuildInfo.java b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+index 9df9d09aa477d4cd3c496ba0933c816df1ef0964..6c71fca2954d3ef8aafa498cd3c25d0622bb8c15 100644
+--- a/src/main/java/io/papermc/paper/ServerBuildInfo.java
++++ b/src/main/java/io/papermc/paper/ServerBuildInfo.java
+@@ -18,6 +18,9 @@ public interface ServerBuildInfo {
+      */
+     Key BRAND_PAPER_ID = Key.key("papermc", "paper");
+ 
++    Key BRAND_PUFFERFISH_ID = Key.key("pufferfish", "pufferfish"); // Patina
++    Key BRAND_PATINA_ID = Key.key("patina", "patina"); // Patina
++
+     /**
+      * Gets the {@code ServerBuildInfo}.
+      *

@@ -59,10 +59,10 @@ index dc02a3d84b397f634f77f4df9c06e245cc4dcb75..4f946102ff69861784cccc1be0b01bd5
              LootTable loottable = this.level.getServer().reloadableRegistries().getLootTable(this.lootTable);
  
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-index 362ca138a5cd5ad19f1300015c2571794adc3649..6e861bd9e3406f37871efb235d4fe9e72282ddc2 100644
+index 90d4834f97d3ba996d46493246b1947511553424..03dab2d3278b122065d11f6592afe088986be2cb 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftWorld.java
-@@ -409,7 +409,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
+@@ -414,7 +414,7 @@ public class CraftWorld extends CraftRegionAccessor implements World {
  
      @Override
      public boolean unloadChunk(int x, int z) {

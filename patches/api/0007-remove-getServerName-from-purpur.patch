@@ -5,10 +5,10 @@ Subject: [PATCH] remove getServerName from purpur
 
 
 diff --git a/src/main/java/org/bukkit/Bukkit.java b/src/main/java/org/bukkit/Bukkit.java
-index 2bdd85284ae4c10fe26594be85aa9d8aa699b84f..74f5b552f0e86280cbceb9f0a37ee8d2de173acd 100644
+index 8f3462f3242ec9f583a5d7a297fdd9c6f43cfc31..a5d77a6530b5a68ebf9cc725c57615064327b376 100644
 --- a/src/main/java/org/bukkit/Bukkit.java
 +++ b/src/main/java/org/bukkit/Bukkit.java
-@@ -2912,15 +2912,6 @@ public final class Bukkit {
+@@ -2923,15 +2923,6 @@ public final class Bukkit {
      }
  
      // Purpur start
@@ -25,10 +25,10 @@ index 2bdd85284ae4c10fe26594be85aa9d8aa699b84f..74f5b552f0e86280cbceb9f0a37ee8d2
       * Check if server is lagging according to laggy threshold setting
       *
 diff --git a/src/main/java/org/bukkit/Server.java b/src/main/java/org/bukkit/Server.java
-index 988d00a4ad9330e338240db6b0bbe2b5157b342c..a70af5242799a3ebfff7465d0184b345431365c1 100644
+index 766b4908ba5057bcda566f8a8cf1914416ede910..e11c7ceb9b11c3b7dc5f6ebaa542b8d90d182110 100644
 --- a/src/main/java/org/bukkit/Server.java
 +++ b/src/main/java/org/bukkit/Server.java
-@@ -2557,13 +2557,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
+@@ -2568,13 +2568,6 @@ public interface Server extends PluginMessageRecipient, net.kyori.adventure.audi
      // Paper end - Folia region threading API
  
      // Purpur start
