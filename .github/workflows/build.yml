@@ -39,7 +39,7 @@ jobs:
         run: |
           ./gradlew createReobfPaperclipJar --stacktrace --no-daemon
       - name: Archive Paperclip
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: Patina
           path: build/libs/patina-paperclip-${{ steps.mcver.outputs.mcver }}-R0.1-SNAPSHOT-reobf.jar
