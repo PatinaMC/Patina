@@ -5,10 +5,10 @@ Subject: [PATCH] remove getServerName from purpur
 
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index 3c21bde0724e325a1db13f8f02142b2b7372fab1..f5c3a5a8dc0ae2cff8d534a6057e9bb315636cf9 100644
+index 5f5f513e538df378884cda2da13988d96bf24e63..f90c7414ac4dc7a738f97b73ec8516604348fc19 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-@@ -3233,10 +3233,6 @@ public final class CraftServer implements Server {
+@@ -3230,10 +3230,6 @@ public final class CraftServer implements Server {
          return this.potionBrewer;
      }
      // Paper end

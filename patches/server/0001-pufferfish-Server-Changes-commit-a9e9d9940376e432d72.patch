@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Wed, 4 Sep 2024 18:46:28 +1200
+Date: Thu, 19 Sep 2024 10:22:07 +1200
 Subject: [PATCH] pufferfish Server Changes commit
- 3554f78476cb75871ae6ff1bb238871e0ff70d75
+ a9e9d9940376e432d72cdebbdffcf40eb48bd713
 
 Pufferfish Utils
 
@@ -258,7 +258,7 @@ an end crystal.
 TPS catchup
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 3588770a9ea6ee0a9508b218758650f43d994715..50267d9475f8064c66ad64bde5a42f773a820fb2 100644
+index 648281575eb8d45a5c06549eb3d0f517c086fe64..a93f36df99b433d5824bf04447016028469507b7 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -47,6 +47,14 @@ dependencies {
@@ -1970,7 +1970,7 @@ index dd56c8e041116ef3602a9f89c998c8208ab89b51..18bf9c42e76c8c35f57d74ea4adfa5b3
          }
      }
 diff --git a/src/main/java/net/minecraft/server/level/ChunkMap.java b/src/main/java/net/minecraft/server/level/ChunkMap.java
-index 1e0a6e5a3c907ab55ee6f2780a7d43bd455f2b7b..305bcd9f76eb2927da143b9c7f022ff073e9518a 100644
+index af8cb316ac169aa8d98a88765b85bb013b9ba961..6abae547de1c9de07a75800550631ca5ee693e0a 100644
 --- a/src/main/java/net/minecraft/server/level/ChunkMap.java
 +++ b/src/main/java/net/minecraft/server/level/ChunkMap.java
 @@ -172,6 +172,10 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
@@ -1984,7 +1984,7 @@ index 1e0a6e5a3c907ab55ee6f2780a7d43bd455f2b7b..305bcd9f76eb2927da143b9c7f022ff0
  
      public ChunkMap(ServerLevel world, LevelStorageSource.LevelStorageAccess session, DataFixer dataFixer, StructureTemplateManager structureTemplateManager, Executor executor, BlockableEventLoop<Runnable> mainThreadExecutor, LightChunkGetter chunkProvider, ChunkGenerator chunkGenerator, ChunkProgressListener worldGenerationProgressListener, ChunkStatusUpdateListener chunkStatusChangeListener, Supplier<DimensionDataStorage> persistentStateManagerFactory, int viewDistance, boolean dsync) {
          super(new RegionStorageInfo(session.getLevelId(), world.dimension(), "chunk"), session.getDimensionPath(world.dimension()).resolve("region"), dataFixer, dsync);
-@@ -1281,8 +1285,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1282,8 +1286,28 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
              return ChunkMap.this.level.getServer().getScaledTrackingDistance(initialDistance);
          }
  
@@ -2013,7 +2013,7 @@ index 1e0a6e5a3c907ab55ee6f2780a7d43bd455f2b7b..305bcd9f76eb2927da143b9c7f022ff0
              Iterator iterator = this.entity.getIndirectPassengers().iterator();
  
              while (iterator.hasNext()) {
-@@ -1294,6 +1318,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
+@@ -1295,6 +1319,9 @@ public class ChunkMap extends ChunkStorage implements ChunkHolder.PlayerProvider
                      i = j;
                  }
              }
@@ -2198,7 +2198,7 @@ index fcccf989c25f0a259b160c4ff7873f7009e64d14..9422d8bd512555f54410391d55c40724
          final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
          if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index e0827d8bb3fa17d4f590a5342ff41a514f623e68..de5276b9ba5b3cd2f565714995e86edd4447c1ca 100644
+index 9f68c0fda7f5526eb97619f1a35ed3b78d1b3751..aa4a4691d1a17a72df26d3132cb87b3183bb7052 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -429,6 +429,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -2345,7 +2345,7 @@ index cb61462d4691a055a4b25f7b953609d8a154fdfe..f9440014ab2fe753c16b9383f5fffbb8
      private String descriptionId;
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index ccd9dff20a60f019e0c320acfb526b8bf3e5f806..ce0d28cafcae0b7edc861749a1652ecc08d298b5 100644
+index 30f4f1254fc295442d72d50479e8af635f2fe983..731f5111127f048f8afed8ed970cd6cfc492fb89 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -157,7 +157,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2818,7 +2818,7 @@ index 6e66141dca61f777b354854b5d0bac2570b8bf3b..abf231e6099cda766d73e67f31234e9f
          return false;
      }
 diff --git a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
-index de64de5d1328d3e0826c9990eb7c7eca5088cb9c..245d3d1630a11b3527f20f1135ce29cfe22ff347 100644
+index 10ade433c083851d9ea4797c6ec618db122229f9..091ca20cc7e495dbff90f2fcaae51fb1b2bb33d5 100644
 --- a/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 +++ b/src/main/java/net/minecraft/world/entity/projectile/Projectile.java
 @@ -52,6 +52,36 @@ public abstract class Projectile extends Entity implements TraceableEntity {

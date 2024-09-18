@@ -175,7 +175,7 @@ index 18bf9c42e76c8c35f57d74ea4adfa5b3bb53762f..ca9afa93a9c43208ef64f86d534e5540
          gg.pufferfish.pufferfish.PufferfishConfig.load(); // Pufferfish
          gg.pufferfish.pufferfish.PufferfishCommand.init(); // Pufferfish
 diff --git a/src/main/java/net/minecraft/server/level/ServerPlayer.java b/src/main/java/net/minecraft/server/level/ServerPlayer.java
-index 6c280abdef5f80b668d6090f9d35283a33e21e0c..907ecfe9acfc3ea01c4d0dee8fb826e3950eb98c 100644
+index c396580a9cfd86ff261bed439bb4662ae88010b5..099a0d17d7b36869e2673199fad445609e447556 100644
 --- a/src/main/java/net/minecraft/server/level/ServerPlayer.java
 +++ b/src/main/java/net/minecraft/server/level/ServerPlayer.java
 @@ -1667,6 +1667,7 @@ public class ServerPlayer extends net.minecraft.world.entity.player.Player imple
@@ -199,10 +199,10 @@ index 5a8a33638ceb1d980ffc3e6dd86e7eb11dfd9375..1c059f4698cfe944ab21cb62f9f3ccb7
              Util.logAndPauseIfInIde("Detected setBlock in a far chunk [" + i + ", " + j + "], pos: " + String.valueOf(pos) + ", status: " + String.valueOf(this.generatingStep.targetStatus()) + (this.currentlyGenerating == null ? "" : ", currently generating: " + (String) this.currentlyGenerating.get()));
                  hasSetFarWarned = true;
 diff --git a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-index b43f87ff4b9853b5d4bbea5ff9686d64d9d0d26b..42bf405b2e36b8cfd2dea04cfcf38872d4179717 100644
+index 6998f32f8d79dbdb6b31ffaa126602fc4a428616..0f64f38c7eb9a8b0afdeec061e8492e72330be7a 100644
 --- a/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerCommonPacketListenerImpl.java
-@@ -74,6 +74,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -79,6 +79,7 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
      private long keepAliveChallenge;
      private long closedListenerTime;
      private boolean closed = false;
@@ -210,7 +210,7 @@ index b43f87ff4b9853b5d4bbea5ff9686d64d9d0d26b..42bf405b2e36b8cfd2dea04cfcf38872
      private int latency;
      private volatile boolean suspendFlushingOnServerThread = false;
      public final java.util.Map<java.util.UUID, net.kyori.adventure.resource.ResourcePackCallback> packCallbacks = new java.util.concurrent.ConcurrentHashMap<>(); // Paper - adventure resource pack callbacks
-@@ -124,6 +125,16 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -129,6 +130,16 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
  
      @Override
      public void handleKeepAlive(ServerboundKeepAlivePacket packet) {
@@ -227,7 +227,7 @@ index b43f87ff4b9853b5d4bbea5ff9686d64d9d0d26b..42bf405b2e36b8cfd2dea04cfcf38872
          //PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel()); // CraftBukkit // Paper - handle ServerboundKeepAlivePacket async
          if (this.keepAlivePending && packet.getId() == this.keepAliveChallenge) {
              int i = (int) (Util.getMillis() - this.keepAliveTime);
-@@ -253,6 +264,21 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
+@@ -258,6 +269,21 @@ public abstract class ServerCommonPacketListenerImpl implements ServerCommonPack
          long currentTime = Util.getMillis();
          long elapsedTime = currentTime - this.keepAliveTime;
  
@@ -262,10 +262,10 @@ index 532f09089b8d6798999cf3f83e852df7479e450e..43c63d203859eaa0999937e2f9254c22
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index 0368d6ba9cc9fe557d3c7172a87a7a5b15445e47..14cba5a8e574c22a19b4bc8dd253eb49c979c489 100644
+index c13922d2fb1c15f895b14d4cb6d5379b59ea1ef8..8025435544bd739e1a647b9ce765b9a6b26d15a2 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
-@@ -1123,6 +1123,7 @@ public abstract class PlayerList {
+@@ -1129,6 +1129,7 @@ public abstract class PlayerList {
              } else {
                  b0 = (byte) (24 + permissionLevel);
              }
@@ -306,7 +306,7 @@ index d3cc65612c44f42ecae2e09b942438a03bc244bd..116cfd126df3ed5c6643e70912c0d6a6
          this.world = new CraftWorld((ServerLevel) this, gen, biomeProvider, env);
  
 diff --git a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
-index a28be7a332659be655f419d969e0c64e659b6c21..8cd812a25b1cc05ea14675658bf9c1503ebebd51 100644
+index 3070cd2b588f5a69fd8c0d3551e16251680d8c27..c9a1c071780351b584ad8e071ddc26f9a27e5964 100644
 --- a/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 +++ b/src/main/java/net/minecraft/world/level/block/entity/SignBlockEntity.java
 @@ -201,16 +201,31 @@ public class SignBlockEntity extends BlockEntity implements CommandSource { // C
@@ -373,7 +373,7 @@ index a28be7a332659be655f419d969e0c64e659b6c21..8cd812a25b1cc05ea14675658bf9c150
      public ClientboundBlockEntityDataPacket getUpdatePacket() {
          return ClientboundBlockEntityDataPacket.create(this);
 diff --git a/src/main/java/org/bukkit/craftbukkit/CraftServer.java b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
-index f6de1c6e8fd9086b7bd725f75ee2606583591d6a..3c21bde0724e325a1db13f8f02142b2b7372fab1 100644
+index b7af2d4300facf41a025c8ca322bf6541949b3ab..5f5f513e538df378884cda2da13988d96bf24e63 100644
 --- a/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 +++ b/src/main/java/org/bukkit/craftbukkit/CraftServer.java
 @@ -1070,6 +1070,7 @@ public final class CraftServer implements Server {
@@ -400,7 +400,7 @@ index f6de1c6e8fd9086b7bd725f75ee2606583591d6a..3c21bde0724e325a1db13f8f02142b2b
          this.overrideAllCommandBlockCommands = this.commandsConfiguration.getStringList("command-block-overrides").contains("*");
          this.ignoreVanillaPermissions = this.commandsConfiguration.getBoolean("ignore-vanilla-permissions");
  
-@@ -2991,6 +2994,18 @@ public final class CraftServer implements Server {
+@@ -2988,6 +2991,18 @@ public final class CraftServer implements Server {
              return CraftServer.this.console.paperConfigurations.createLegacyObject(CraftServer.this.console);
          }
  
@@ -419,7 +419,7 @@ index f6de1c6e8fd9086b7bd725f75ee2606583591d6a..3c21bde0724e325a1db13f8f02142b2b
          @Override
          public void restart() {
              org.spigotmc.RestartCommand.restart();
-@@ -3218,4 +3233,13 @@ public final class CraftServer implements Server {
+@@ -3215,4 +3230,13 @@ public final class CraftServer implements Server {
          return this.potionBrewer;
      }
      // Paper end
