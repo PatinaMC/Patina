@@ -1916,10 +1916,10 @@ index 0000000000000000000000000000000000000000..facd55463d44cb7e3d2ca6892982f549
 +	}
 +}
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 23ddd26af762c1cd7fb3920669abb96b3213ab37..30907b63234642a4e760ae865c4a91e3162e52f2 100644
+index 696d075ca2883f3c37e35f983c4d020e5db89d16..e63721261258dba60b1eef2eee011e0aa18b0fd2 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -323,6 +323,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -322,6 +322,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
      public static final long SERVER_INIT = System.nanoTime(); // Paper - Lag compensation
@@ -1927,7 +1927,7 @@ index 23ddd26af762c1cd7fb3920669abb96b3213ab37..30907b63234642a4e760ae865c4a91e3
  
      public static <S extends MinecraftServer> S spin(Function<Thread, S> serverFactory) {
          AtomicReference<S> atomicreference = new AtomicReference();
-@@ -1314,6 +1315,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1312,6 +1313,12 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.profiler.popPush("nextTickWait");
                  this.mayHaveDelayedTasks = true;
                  this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
@@ -1940,7 +1940,7 @@ index 23ddd26af762c1cd7fb3920669abb96b3213ab37..30907b63234642a4e760ae865c4a91e3
                  this.startMeasuringTaskExecutionTime();
                  this.waitUntilNextTick();
                  this.finishMeasuringTaskExecutionTime();
-@@ -2577,6 +2584,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -2575,6 +2582,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
      }
  
      public ProfilerFiller getProfiler() {

@@ -114,18 +114,18 @@ index 1d1e76de60e40224f5cb81893f9ee50fe987badb..7e291ffff86bdcdb8a0a15c211c3f84d
      }
  
 diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
-index 30907b63234642a4e760ae865c4a91e3162e52f2..fa10849064b95101e382785fbd2890af4bfa2382 100644
+index e63721261258dba60b1eef2eee011e0aa18b0fd2..01884bca3dbd397fd59eddd80aab35179e792b46 100644
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
-@@ -319,6 +319,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -318,6 +318,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+     // Spigot end
      public final io.papermc.paper.configuration.PaperConfigurations paperConfigurations; // Paper - add paper configuration files
-     public static long currentTickLong = 0L; // Paper - track current tick as a long
      public boolean isIteratingOverLevels = false; // Paper - Throw exception on world create while being ticked
 +    public boolean lagging = false; // Purpur
  
      public volatile Thread shutdownThread; // Paper
      public volatile boolean abnormalExit = false; // Paper
-@@ -1285,6 +1286,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1283,6 +1284,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                      this.recentTps[0] = tps1.getAverage();
                      this.recentTps[1] = tps5.getAverage();
                      this.recentTps[2] = tps15.getAverage();
@@ -133,7 +133,7 @@ index 30907b63234642a4e760ae865c4a91e3162e52f2..fa10849064b95101e382785fbd2890af
                      tickSection = currentTime;
                  }
                  // Paper end - further improve server tick loop
-@@ -1316,7 +1318,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
+@@ -1314,7 +1316,7 @@ public abstract class MinecraftServer extends ReentrantBlockableEventLoop<TickTa
                  this.mayHaveDelayedTasks = true;
                  this.delayedTasksMaxNextTickTimeNanos = Math.max(Util.getNanos() + i, this.nextTickTimeNanos);
                  // Pufferfish start - tps catchup
