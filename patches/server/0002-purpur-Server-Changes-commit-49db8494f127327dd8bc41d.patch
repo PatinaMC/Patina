@@ -94,10 +94,10 @@ index 2d344df35d47b4b1ecddf32ccaa4dae41e5f58cb..2f7ed5b38e8930b3a615f160cdf4c5b0
          boolean flag1 = this.source.acceptsSuccess() && !this.silent;
          boolean flag2 = broadcastToOps && this.source.shouldInformAdmins() && !this.silent;
 diff --git a/src/main/java/net/minecraft/commands/Commands.java b/src/main/java/net/minecraft/commands/Commands.java
-index 1d1e76de60e40224f5cb81893f9ee50fe987badb..7e291ffff86bdcdb8a0a15c211c3f84d6ae18e38 100644
+index 5af48400f87500166dd889c57a8df0aadb08d43d..058d13f681d7aa616846b4b6d24c668da703eb34 100644
 --- a/src/main/java/net/minecraft/commands/Commands.java
 +++ b/src/main/java/net/minecraft/commands/Commands.java
-@@ -515,6 +515,7 @@ public class Commands {
+@@ -509,6 +509,7 @@ public class Commands {
      private void runSync(ServerPlayer player, Collection<String> bukkit, RootCommandNode<SharedSuggestionProvider> rootcommandnode) {
          // Paper end - Perf: Async command map building
          new com.destroystokyo.paper.event.brigadier.AsyncPlayerSendCommandsEvent<CommandSourceStack>(player.getBukkitEntity(), (RootCommandNode) rootcommandnode, true).callEvent(); // Paper - Brigadier API
@@ -105,7 +105,7 @@ index 1d1e76de60e40224f5cb81893f9ee50fe987badb..7e291ffff86bdcdb8a0a15c211c3f84d
          PlayerCommandSendEvent event = new PlayerCommandSendEvent(player.getBukkitEntity(), new LinkedHashSet<>(bukkit));
          event.getPlayer().getServer().getPluginManager().callEvent(event);
  
-@@ -525,6 +526,7 @@ public class Commands {
+@@ -519,6 +520,7 @@ public class Commands {
              }
          }
          // CraftBukkit end
@@ -143,7 +143,7 @@ index e63721261258dba60b1eef2eee011e0aa18b0fd2..01884bca3dbd397fd59eddd80aab3517
                      this.delayedTasksMaxNextTickTimeNanos = nextTickTimeNanos;
                  }
 diff --git a/src/main/java/net/minecraft/server/PlayerAdvancements.java b/src/main/java/net/minecraft/server/PlayerAdvancements.java
-index 9fabf9322acd663c4452b562494e74aa42eb19da..b286b157bba78021efa18f01bc91b067b0bd5874 100644
+index 862a4bf003b7f810fb57dbcd150a1417c902b633..c3cc63c7bbfab346cfd25b69fbb4872bf66b142f 100644
 --- a/src/main/java/net/minecraft/server/PlayerAdvancements.java
 +++ b/src/main/java/net/minecraft/server/PlayerAdvancements.java
 @@ -199,6 +199,7 @@ public class PlayerAdvancements {
@@ -262,7 +262,7 @@ index 532f09089b8d6798999cf3f83e852df7479e450e..43c63d203859eaa0999937e2f9254c22
              // Paper end
          }
 diff --git a/src/main/java/net/minecraft/server/players/PlayerList.java b/src/main/java/net/minecraft/server/players/PlayerList.java
-index c13922d2fb1c15f895b14d4cb6d5379b59ea1ef8..8025435544bd739e1a647b9ce765b9a6b26d15a2 100644
+index 5e2c4969e77c669acbb4a13c07033cb267c3d586..8e99f48a0b24b587b26784499ea1f135c148bc73 100644
 --- a/src/main/java/net/minecraft/server/players/PlayerList.java
 +++ b/src/main/java/net/minecraft/server/players/PlayerList.java
 @@ -1129,6 +1129,7 @@ public abstract class PlayerList {
@@ -286,7 +286,7 @@ index 8a2584deccbf19de8a18fcfcb9c65318b60afe57..6146ca9fef0e33601c132d4867c9399e
                  } else {
                      handler.accept((RecipeHolder) optional.get());
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index d3cc65612c44f42ecae2e09b942438a03bc244bd..116cfd126df3ed5c6643e70912c0d6a63f4a6eb2 100644
+index 2479b47186202de40cdb4ae773c696a4adee9bad..97f83c9737726be0c3b6dc847b56970e81cc6b6f 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -173,6 +173,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl

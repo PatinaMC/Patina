@@ -5,10 +5,10 @@ Subject: [PATCH] (Akarin) Swaps the predicate order of collision
 
 
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 3f7812c55dae82433336d6e091aa83434615fa04..5e103140fe8cea538880c6a29288dd83793c2fae 100644
+index 8492421ed2186c0eab517a67f3140b9988f65250..2d579d0acef974ee1a13bcecb6e603df56c6a2f6 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
-@@ -2185,8 +2185,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2187,8 +2187,7 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      public void playerTouch(Player player) {}
  
      public void push(Entity entity) {
@@ -18,7 +18,7 @@ index 3f7812c55dae82433336d6e091aa83434615fa04..5e103140fe8cea538880c6a29288dd83
                  if (this.level.paperConfig().collisions.onlyPlayersCollide && !(entity instanceof ServerPlayer || this instanceof ServerPlayer)) return; // Paper - Collision option for requiring a player participant
                  double d0 = entity.getX() - this.getX();
                  double d1 = entity.getZ() - this.getZ();
-@@ -2214,8 +2213,6 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -2216,8 +2215,6 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                          entity.push(d0, 0.0D, d1);
                      }
                  }

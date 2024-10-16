@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 19 Sep 2024 10:22:08 +1200
+Date: Thu, 17 Oct 2024 10:51:56 +1300
 Subject: [PATCH] pufferfish API Changes commit
- a9e9d9940376e432d72cdebbdffcf40eb48bd713
+ 8abd47bc9140fbfa2f94bef0c18995ccbcabeb35
 
 Add Sentry
 
@@ -22,7 +22,7 @@ This patch does not add any API that should be used by plugins. Any
 classes and methods added by this patch should NOT be used in plugins.
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index 540fe7e2c110e79c3742f229b3ed8c54b101d260..07945418e95cbe07c45bfa815d828fa311c7f033 100644
+index ab84a1405acc1f0d5f267892243b82b8dab03e21..4114aa99614ae588b1cf465ea7900308476a7568 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
 @@ -52,6 +52,7 @@ dependencies {
@@ -33,7 +33,7 @@ index 540fe7e2c110e79c3742f229b3ed8c54b101d260..07945418e95cbe07c45bfa815d828fa3
  
      implementation("org.ow2.asm:asm:9.7")
      implementation("org.ow2.asm:asm-commons:9.7")
-@@ -130,6 +131,13 @@ val generateApiVersioningFile by tasks.registering {
+@@ -131,6 +132,13 @@ val generateApiVersioningFile by tasks.registering {
      }
  }
  

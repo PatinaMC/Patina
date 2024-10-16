@@ -1,8 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: foss-mc <69294560+foss-mc@users.noreply.github.com>
-Date: Thu, 19 Sep 2024 10:22:07 +1200
+Date: Thu, 17 Oct 2024 10:51:56 +1300
 Subject: [PATCH] pufferfish Server Changes commit
- a9e9d9940376e432d72cdebbdffcf40eb48bd713
+ 8abd47bc9140fbfa2f94bef0c18995ccbcabeb35
 
 Pufferfish Utils
 
@@ -2140,7 +2140,7 @@ index 8ea2f24695f5dad55e21f238b69442513e7a90c6..5a2f7f7cf79dcbb996574e18cad86ebb
                      this.wasOnGround = this.entity.onGround();
                      this.teleportDelay = 0;
 diff --git a/src/main/java/net/minecraft/server/level/ServerLevel.java b/src/main/java/net/minecraft/server/level/ServerLevel.java
-index c96f3dcd365bc140b1f4680ef6bd770c80f8eda1..67d4b15143358c8947a7102a325dad66967e73a6 100644
+index f9abf63e12ea930275121b470e4e4906cff0fc12..2a8ffcdd262ea73844500846c6401cdda7153d61 100644
 --- a/src/main/java/net/minecraft/server/level/ServerLevel.java
 +++ b/src/main/java/net/minecraft/server/level/ServerLevel.java
 @@ -715,6 +715,7 @@ public class ServerLevel extends Level implements WorldGenLevel, ca.spottedleaf.
@@ -2186,7 +2186,7 @@ index c96f3dcd365bc140b1f4680ef6bd770c80f8eda1..67d4b15143358c8947a7102a325dad66
  
              if (this.isRainingAt(blockposition)) {
 diff --git a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-index fcccf989c25f0a259b160c4ff7873f7009e64d14..9422d8bd512555f54410391d55c4072474c1ae4e 100644
+index befeaac4786760f6847a5945da2296a3e68dbb17..6c28390e33c07d4c65493019375b669ccfa5ae2d 100644
 --- a/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/src/main/java/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 @@ -1157,6 +1157,7 @@ public class ServerGamePacketListenerImpl extends ServerCommonPacketListenerImpl
@@ -2198,7 +2198,7 @@ index fcccf989c25f0a259b160c4ff7873f7009e64d14..9422d8bd512555f54410391d55c40724
          final io.papermc.paper.configuration.type.number.IntOr.Disabled pageMax = io.papermc.paper.configuration.GlobalConfiguration.get().itemValidation.bookSize.pageMax;
          if (!this.cserver.isPrimaryThread() && pageMax.enabled()) {
 diff --git a/src/main/java/net/minecraft/world/entity/Entity.java b/src/main/java/net/minecraft/world/entity/Entity.java
-index 9f68c0fda7f5526eb97619f1a35ed3b78d1b3751..aa4a4691d1a17a72df26d3132cb87b3183bb7052 100644
+index 4b54d0ea31062972e68ee8fafe3cfaf68f65a5cd..8492421ed2186c0eab517a67f3140b9988f65250 100644
 --- a/src/main/java/net/minecraft/world/entity/Entity.java
 +++ b/src/main/java/net/minecraft/world/entity/Entity.java
 @@ -429,6 +429,9 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
@@ -2224,7 +2224,7 @@ index 9f68c0fda7f5526eb97619f1a35ed3b78d1b3751..aa4a4691d1a17a72df26d3132cb87b31
          this.baseTick();
      }
  
-@@ -4448,16 +4457,18 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4452,16 +4461,18 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
      }
  
      public boolean updateFluidHeightAndDoFluidPushing(TagKey<Fluid> tag, double speed) {
@@ -2250,7 +2250,7 @@ index 9f68c0fda7f5526eb97619f1a35ed3b78d1b3751..aa4a4691d1a17a72df26d3132cb87b31
              double d1 = 0.0D;
              boolean flag = this.isPushedByFluid();
              boolean flag1 = false;
-@@ -4465,14 +4476,61 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4469,14 +4480,61 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
              int k1 = 0;
              BlockPos.MutableBlockPos blockposition_mutableblockposition = new BlockPos.MutableBlockPos();
  
@@ -2318,7 +2318,7 @@ index 9f68c0fda7f5526eb97619f1a35ed3b78d1b3751..aa4a4691d1a17a72df26d3132cb87b31
  
                              if (d2 >= axisalignedbb.minY) {
                                  flag1 = true;
-@@ -4494,9 +4552,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
+@@ -4498,9 +4556,12 @@ public abstract class Entity implements SyncedDataHolder, Nameable, EntityAccess
                                  // CraftBukkit end
                              }
                          }
@@ -2345,7 +2345,7 @@ index cb61462d4691a055a4b25f7b953609d8a154fdfe..f9440014ab2fe753c16b9383f5fffbb8
      private String descriptionId;
      @Nullable
 diff --git a/src/main/java/net/minecraft/world/entity/LivingEntity.java b/src/main/java/net/minecraft/world/entity/LivingEntity.java
-index 30f4f1254fc295442d72d50479e8af635f2fe983..731f5111127f048f8afed8ed970cd6cfc492fb89 100644
+index 2aa6374cd4a96efd85899be8cd3172a8257bfe6b..5132e108df37ca97ba94b8b72c0ef292cbb2ec94 100644
 --- a/src/main/java/net/minecraft/world/entity/LivingEntity.java
 +++ b/src/main/java/net/minecraft/world/entity/LivingEntity.java
 @@ -157,7 +157,6 @@ import org.bukkit.event.entity.EntityTeleportEvent;
@@ -2927,7 +2927,7 @@ index 213ee4aa988dd4c2a5a7be99b1d13f67338e5209..8e46753af60aa9fd8e4b4c0f955f7a55
          if (input.ingredientCount() != this.ingredients.size()) {
              return false;
 diff --git a/src/main/java/net/minecraft/world/level/Level.java b/src/main/java/net/minecraft/world/level/Level.java
-index e2a0487089eb5a7bdc1433e4c75f69d8e9f9d5f9..d3cc65612c44f42ecae2e09b942438a03bc244bd 100644
+index 507671476c3d2d92a2fdb05be24443af27d26dcf..2479b47186202de40cdb4ae773c696a4adee9bad 100644
 --- a/src/main/java/net/minecraft/world/level/Level.java
 +++ b/src/main/java/net/minecraft/world/level/Level.java
 @@ -1418,16 +1418,16 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
@@ -2950,7 +2950,7 @@ index e2a0487089eb5a7bdc1433e4c75f69d8e9f9d5f9..d3cc65612c44f42ecae2e09b942438a0
      }
      // Paper start - Option to prevent armor stands from doing entity lookups
      @Override
-@@ -1944,6 +1944,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
+@@ -1961,6 +1961,7 @@ public abstract class Level implements LevelAccessor, AutoCloseable, ca.spottedl
      }
  
      public ProfilerFiller getProfiler() {
